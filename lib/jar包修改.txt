@@ -1,0 +1,6 @@
+﻿1-把plugin删除，目前plugin中是UGA的内容不需要
+2-配置文件删除
+  a)mybatisConfig/dcSys.mapper.cfg.xml
+  b)springConfig/gisSmSpring.xml
+  这些配置文件，都与UGA相关，因此没有用
+删除后，此jar包更干净。

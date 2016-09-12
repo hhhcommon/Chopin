@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="renderer" content="webkit">
+  <title>我听，我享听</title>
+  <meta name="keywords" content="我听，我享听">
+  <meta name="description" content="我听，我享听">
+  <!--[if lt IE 8]>
+    <script>
+	  alert('本系统已不支持IE6-8，请使用谷歌、火狐等浏览器\n或360、QQ等国产浏览器的极速模式浏览本页面！');
+    </script>
+  <![endif]-->
+  <link rel="shortcut icon" href="./resources/images/favicon.ico" />
+  <link href="./resources/plugins/hplus/css/bootstrap.min.css" rel="stylesheet">
+  <link href="./resources/plugins/hplus/css/font-awesome.min.css" rel="stylesheet">
+  <link href="./resources/plugins/hplus/css/animate.min.css" rel="stylesheet">
+  <link href="./resources/plugins/hplus/css/style.min.css" rel="stylesheet">
+  <link href="./resources/plugins/hplus/js/plugins/layer/skin/layer.css" rel="stylesheet" id="layui_layer_skinlayercss">
+  <link href="./resources/plugins/hplus/js/plugins/layer/skin/layer.ext.css" rel="stylesheet" id="layui_layer_skinlayerextcss">
+  <link href="./resources/plugins/hplus/js/plugins/layer/skin/moon/style.css" rel="stylesheet" id="layui_layer_skinmoonstylecss">
+  <script src="./resources/plugins/hplus/js/jquery-2.1.1.min.js"></script>
+  <script src="./resources/js/mainPage.js"></script>
+  <script src="./resources/js/index_wt.js"></script>
+<script>
+$(function(){
+  var menuTree={
+    "menuList": [
+      {
+        "itemList": [
+                      {
+                        "menuListId": "353434344",
+                        "menuListName": "待审核",
+                        "menuListStatus": "0",
+                        "menuListUrl":"./review/publish1.html"
+                      },
+                      {
+                        "menuListId": "353242344",
+                        "menuListName": "已审核",
+                        "menuListStatus": "1",
+                        "menuListUrl":"./review/publish2.html"
+                      },
+                      {
+                        "menuListId": "351111344",
+                        "menuListName": "未通过",
+                        "menuListStatus": "2",
+                        "menuListUrl":"./review/publish3.html"
+                      },
+                      {
+                        "menuListId": "3453221344",
+                        "menuListName": "已撤回",
+                        "menuListStatus": "3",
+                        "menuListUrl":"./review/publish4.html"
+                      }
+                    ],
+                    "menuGroupId": "0023fasf2fasd",
+                    "menuGroupName": "发布管理"
+                  }
+                ],
+                "ReturnType": "1001"
+              }
+  menuTreeLoad(menuTree);
+//$.ajax({
+//  type: "POST",    
+//  url: "http://182.92.175.134:908/CM/passport/user/login.do",
+//  dataType: "json",
+//  data: {
+//    UserName:"woting", 
+//    Password: "111111"
+//  },
+//  success: function(returnStatus) {
+//    if(returnStatus.ReturnType=="1001") {
+//      alert("验证通过！");
+//      //加载菜单树列表
+//      menuTreeLoad(returnStatus);
+//    } else {
+//       alert("获取数据出现问题了:"+returnStatus.Message);
+//    }  
+//  },
+//  error: function(jqXHR){     
+//    alert("发生错误：" + jqXHR.status);
+//  }    
+//});
+});
+</script>
+</head>
+<body class="fixed-sidebar full-height-layout gray-bg pace-done fixed-nav">
+  <div class="pace  pace-inactive">
+    <div class="pace-progress" data-progress-text="100%" data-progress="99" style="width: 100%;">
+	  <div class="pace-progress-inner"></div>
+	</div>
+	<div class="pace-activity"></div>
+  </div>
+  <div id="wrapper">
+    <!--左侧导航开始-->
+	  <nav class="navbar-default navbar-static-side" role="navigation" style="height:calc(100% - 60px);">
+	    <div class="slimScrollDiv" style="position: relative; width: auto; height: 100%;border-right:1px solid #ccc;">
+		    <div class="sidebar-collapse" style="width: auto; height: 100%;">
+		      <ul class="nav" id="side-menu" style="display: block;">
+		        <!--主菜单-->
+		        <li>
+		          <a href="javascript:;"><i class="fa fa-desktop"></i><span class="nav-label">系统管理</span><span class="fa arrow"></span></a>
+		            <ul class="nav nav-second-level collapse">
+		              <li><a class="J_menuItem" href="./version/main.html">Apk版本</a></li>
+		              <li><a class="J_menuItem" href="./channel/channel.html">栏目管理</a></li>
+		              <li><a class="J_menuItem" href="./catalog/catalog.html">分类管理</a></li> 
+		            </ul>
+		        </li>
+		      </ul>
+		    </div>
+	    </div>
+	  </nav>
+	  <!--左侧导航结束-->
+	  <!--右侧部分开始-->
+	  <div id="page-wrapper" class="gray-bg dashbard-1" style="height:calc(100%);">
+	    <div class="row border-bottom">
+	      <nav class="navbar navbar-fixed-top" role="navigation" style="margin-bottom:0;height:60px;line-height:60px;">
+	        <div class="" style="float:left;width:15%;">
+	          <img alt="woting logo" style="width:80%;height:32px;padding-left:30px;" src="./resources/images/logo_white.png">
+	        </div>
+	        <div class="navbar-header">
+	          <!--汉堡按钮，伸缩菜单栏-->
+	          <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="javascript:void(0);">
+	            <i class="fa fa-bars"></i>
+	          </a> 
+	        </div> 
+          <div class="dropdown" style="position:relative;width:12%;float:right;max-height: 60px;">
+            <a data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0)" style="color:#f3f3f4;">
+              <img alt="image" class="img-circle" style="width:48px;height:48px;" src="./resources/images/profile_small.jpg">
+	            <strong class="font-bold">Yunjiao</strong><b class="caret"></b>
+            </a>
+            <!--用户个人信息修改-->
+            <ul class="dropdown-menu m-t-xs">
+              <li><a class="J_menuItem" href="./review/form_avatar.html" data-index="0">修改头像</a></li>
+              <li><a class="J_menuItem" href="./review/layer.html" data-index="1">个人资料</a></li>
+              </li>
+                <li class="divider"></li>
+                <li><a href="./login.html">安全退出</a>
+              </li>
+            </ul>
+          </div>     
+	      </nav>
+	    </div>
+	    <!--右侧菜单TAB头-->
+	    <div class="row content-tabs">
+	      <button class="roll-nav roll-left J_tabLeft"><i class="fa fa-backward"></i></button>
+	        <nav class="page-tabs J_menuTabs">
+	          <div class="page-tabs-content" style="margin-left: 0px;">
+	            <a href="javascript:;" class="J_menuTab active" data-id="review/home.html">首页</a>
+	          </div>
+	        </nav>
+	        <button class="roll-nav roll-right J_tabRight"><i class="fa fa-forward"></i></button>
+	        <div class="btn-group roll-nav roll-right">
+	          <button class="dropdown J_tabClose" data-toggle="dropdown">关闭操作<span class="caret"></span></button>
+	          <ul role="menu" class="dropdown-menu dropdown-menu-right">
+	            <li class="J_tabShowActive"><a>定位当前选项卡</a></li>
+	            <li class="divider"></li>
+	            <li class="J_tabCloseAll"><a>关闭全部选项卡</a></li>
+	            <li class="J_tabCloseOther"><a>关闭其他选项卡</a></li>
+	          </ul>
+	        </div>
+	    </div>
+	    <!--右侧主操作区-->
+	    <div class="row J_mainContent" id="content-main">
+	      <!--登录进来，默认显示Home欢迎首页-->
+	      <iframe class="J_iframe" width="100%" height="100%" src="./review/home.html" frameborder="0" data-id="home.html" seamless=""></iframe>
+	    </div>
+	  </div>
+	  <!--右侧部分结束-->
+  </div>
+  <!-- 全局js -->
+	<script src="./resources/plugins/hplus/js/bootstrap.min.js"></script>
+	<script src="./resources/plugins/hplus/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+	<script src="./resources/plugins/hplus/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="./resources/plugins/hplus/js/layer.min.js"></script>
+	<!-- 自定义js -->
+	<script src="./resources/plugins/hplus/js/hplus.min.js"></script>
+	<!-- 自定义js:负责主框架内显示iFrame页面的-->
+	<script src="./resources/plugins/hplus/js/contabs.min.js"></script>
+	<!-- 第三方插件 -->
+	<script src="./resources/plugins/hplus/js/plugins/pace/pace.min.js"></script>
+</body>
+</html>

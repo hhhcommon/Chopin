@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title></title>
+        <meta name="keywords" content="">
+        <meta name="description" content="">
+        <link href="../resources/plugins/hplus/css/bootstrap.min.css" rel="stylesheet">
+        <link href="../resources/plugins/hplus/css/font-awesome.min.css" rel="stylesheet">
+        <!-- <link href="../resources/plugins/css_others/custom.css" rel="stylesheet"> -->
+        <link href="../resources/plugins/hplus/css/animate.min.css" rel="stylesheet">
+        <link href="../resources/plugins/hplus/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+        <link href="../resources/plugins/hplus/css/style.min.css" rel="stylesheet">
+        <link href="../resources/plugins/hplus/css/plugins/jqpagination/fy.css" rel="stylesheet"/>
+        <link href="../resources/css/publish.css" rel="stylesheet">
+        <script src="../resources/plugins/hplus/js/jquery-2.1.1.min.js"></script>
+        <script src="../resources/js/context.utils.js"></script>
+        <script src="../resources/js/publish.js"></script>
+        <script>
+			$(function(){
+				var flowFlag="2";//节目审核状态
+				
+				//首次请求加载节目列表
+				getContentList(1,flowFlag);
+				//获得查询条件
+				getConditions();
+			    //翻页
+				$(".pagination").on("click","span",{"flowFlag":flowFlag},fy);
+				//点击节目，获取详情及列表
+				$(".actList").on("click",".listBox",function(ev){
+					var url=rootPath+"content/getContentInfo.do";
+					var data={
+	                   UserId: "zhangsan", 
+	                   ContentFlowFlag:flowFlag,
+	                   Page:"1",
+	                   PageSize:"10",
+	                   ContentId:$(this).attr("actId"),
+	                   MediaType:$(this).attr("actType")
+				    };
+					commonAjax(url,data,$(".table"),ContentInfoLoad);
+					$(".conTable").css({"height":$(".mainShow").height()-$(".itemSortBox").height()-$(".conTitle").height()-150});
+					$(".actList .listBox").children(".listCon").children("h3").css({"color":"#636363"});
+					$("div").remove(".clickBar");
+					$(this).children(".listCon").children("h3").css({"color":"#0077c7"}).end().end().append("<div class='clickBar'></div>");
+				});
+				//鼠标经过列表时的样式
+				$(".actList").on("mouseenter",".listBox",function(ev){
+					$(".hoverBar").css({"top":($(".pubList").scrollTop()+$(this).offset().top-30)});
+				});
+				$(".actList").on("mouseleave",".listBox",function(ev){
+                    $(".hoverBar").css({"top":"-70px"});
+                });
+				$(window).on("resize",function(){
+					$(".conTable").css({"height":$(".mainShow").height()-$(".itemSortBox").height()-$(".conTitle").height()-150});
+				});
+                //复选框和排序号输入框获取焦点时，阻止向上冒泡触发li标签的click事件
+                $(".actList").on("click","input",function(ev){
+        	       //阻止事件向上级冒泡
+                   ev.stopPropagation();
+                });
+		        
+				//修改排序号确定，然后再加载节目列表
+				$(document).on("click",".listBox .sortUpdateBtn",function(ev){
+					var url=rootPath+"content/updateContentStatus.do";
+					var data={
+                      UserId: "zhangsan", 
+                      ContentFlowFlag:flowFlag,
+                      Id:$(this).parents(".listBox")[0].getAttribute("columnId"),
+                      ContentSort:$(this).prev().val(),//js的获取属性值方法
+                      OpeType:"sort"
+	                };
+					commonAjax(url,data,$(".pubList>.actList"),getContentList);
+					//阻止事件向上级冒泡
+					ev.stopPropagation();
+				});
+				//查询  请求后台数据
+				$(".selectBtn").on("click",function(){
+					isSelect=true;
+					current_page=1;
+					$(".toPage").val("");
+					$(".currentPage").text(current_page);
+					getContentList(current_page,flowFlag,isSelect);
+				});
+				//节目列表全选全不选
+				$("input[name='all']").on('click',function(){
+					if($(this).prop("checked")){
+						$(":checkbox").prop({"checked":"checked"});
+					}else{
+						$(":checkbox").prop({"checked":null});
+					}
+				});
+				//审核处理
+				$("button[opeType]").on('click',function(){
+					var checkedList="";
+					$.each($("input[type='checkBox'][name!='all']:checked"),function(i,val){
+						checkedList+=val.parentNode.parentNode.getAttribute("columnId")+",";
+					});
+					if(checkedList==""){
+						alert("您还没有选择任何节目！");
+						$("input[type='checkBox'][name='all']").prop({"checked":null});
+						return;
+					}
+					$("input[type='checkBox'][name='all']").prop({"checked":null});
+					var url=rootPath+"content/updateContentStatus.do";
+					var data={
+	                      UserId: "zhangsan", 
+	                      ContentFlowFlag:flowFlag,
+	                      Id:checkedList,
+	                      OpeType:$(this).attr("opeType")
+				    };
+					commonAjax(url,data,$(".pubList>.actList"),getContentList);
+					
+				});
+				
+				//专辑对应的单体列表播放控制
+				var audio=$("<audio></audio>")[0];
+				$(".table").on("click","span",function(){
+					if($(this).hasClass("fa-youtube-play")){
+						$.each($(".table span"), function(i,val){
+		                  if($(val).hasClass("fa-pause")){
+		                      $(val).removeClass("fa-pause").addClass("fa-youtube-play");
+		                  }
+			            });
+			            $(this).removeClass("fa-youtube-play").addClass("fa-pause");
+			            audio.src=$(this).parent().parent("tr").attr("contentURI");
+		                audio.play();
+			        }else if($(this).hasClass("fa-pause")){
+			    	    $(this).removeClass("fa-pause").addClass("fa-youtube-play");
+			    	    audio.pause();
+			        } 
+				});
+				
+				//专辑下单体资源排序
+				var sort=true;
+				$(".itemSort").on("click",function(){
+					if(sort){
+						AudioListLoad(subList,sort);
+						sort=false;
+					}else{
+						AudioListLoad(subList,sort);
+						sort=true;
+					}
+				});
+				
+			});
+		</script>
+    </head>
+    <body style="overflow:hidden;">
+        <div class="wrapper wrapper-content" style="height:calc(100%);">
+        	<!--菜单栏-->
+            <div class="operate">
+                <div class="allCheck">
+                    <input type="checkBox" name="all"/>
+                </div>
+                <button type="button" opeType="revoke" class="btn" style="margin-right:325px">撤回</button>
+                
+                <label>栏目:</label>
+                    <select class="catalogs" name="column">
+                    <option value="">不 限</option>                     
+                    </select>&nbsp;&nbsp;&nbsp;
+                <label>来源:</label>
+                    <select class="source" name="source">
+                        <option value="">不 限</option>                   
+                    </select>&nbsp;&nbsp;&nbsp;
+                <!-- 
+                <div class="form-group cDate" id="data_5">
+                  <span>发布日期：</span>
+                  <div class="input-daterange input-group" id="datepicker" style="display:inline-block;vertical-align:top;margin-top:-2px;">
+                      <input type="text" class="input-sm form-control" name="StartPubTime" value="2016-03-21" />
+                      <input type="text" class="input-sm form-control" name="EndPubTime" value="2016-04-22" />
+                  </div>
+                </div>
+                 -->
+                <button type="button" class="btn selectBtn">查 询</button><!-- 
+                <a href="javascript:void(0)" class="searchMore" data-toggle="modal" data-target="#searchMore">更多条件&gt;&gt;</a>
+                 -->
+              </div> 
+            <!--显示主区域-->
+            <div class="mainShow">
+                <!--左侧列表 onselectstart="return false;"-->
+                <div class="pubList">
+                	<!-- 动态节目列表actList -->
+                	<div class="actList"></div>
+                    <!--左右区块拖动条
+                    <div class="drag" onselectstart="return false;"></div>-->
+                    <!--使右区块隐藏块
+                    <div class="toHid"></div>-->
+	                
+                </div>
+                <div class="page">
+                  <div class="gigantic pagination">
+                    <i class="currentPage">1</i><i>/</i><i class="totalPage">1</i><i>页</i>
+                    <span class="previous" data-action="previous">上一页</span>
+                    <span class="next" data-action="next">下一页</span>
+                    <span class="jump" data-action="toPage">跳至</span><input type="text" class="toPage" value="" />
+                  </div>
+                </div>
+                <!--右侧详情-->
+                <div class="pubDetail" onselectstart="return false;">
+                	<div class="conBox" style="display:none;">
+                        <div class="conTitle" >
+                        	<div class="titleImg">
+                        		<img alt="image" class="actThumb">
+                        	</div>
+                        	<div class="detail">
+                        		<div class="title">
+                        			<h2 style="display:inline" class="actTitle"></h2>
+                            		<span class="actSource"></span><span class="actPubTime"></span>
+                        		</div>
+                        		<dl>
+                              <dt>主播 :</dt>
+                              <dd class="vjName"></dd>
+                              <dt>简介 :</dt>
+                              <dd class="actDesn"></dd>
+                              <dt>标签 :</dt>
+                              <dd class="cloumn"></dd>
+                            </dl>
+                        	</div>
+                            <!--标志状态的圆点 <span class="conDot"></span> -->
+                        </div>
+                        <!--  
+                        <div class="conPlay">
+                            <a href="javascript:void(0)">
+                                <img alt="image" class="img-circle" style="width:72px;height:72px;" src="../resources/images/profile_small.jpg">
+                                <span class="playArr"></span>
+                            </a>
+                            <div class="progress" style="display:inline-block;width:60%;height:8px;margin:0 18px">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 25%;">
+                                </div>
+                            </div>
+                            <i>08:35/25:16</i>
+                        </div>
+                        --> 
+												<div class="itemSortBox">
+													<!-- 如果是专辑，此处显示专辑内列表总数，否则不显示 -->
+													<span class="itemCount"></span>
+													<a href="javascript:;" class="itemSort">排序</a>
+												</div>
+				              	<!-- 专辑内对应单体列表 -->
+				              	<div class="conTable">
+					                <table class="table"></table>
+				              	</div>
+				          	</div>
+				      	</div>
+				  	  </div>
+				  </div>	
+        <!-- 全局js -->
+        <script src="../resources/plugins/hplus/js/bootstrap.min.js"></script>
+        <!--以下3个Js支撑日期控件-->
+        <script src="../resources/plugins/hplus/js/plugins/datapicker/bootstrap-datepicker.js"></script>
+        <!-- 
+        <script src="../resources/plugins/js_others/cropper.min.js"></script>
+        <script src="../resources/plugins/js_others/form-advanced-demo.min.js"></script>
+         -->
+        <!-- 自定义js -->
+        <script src="../resources/plugins/hplus/js/content.min(1).js"></script>
+        <!--更多查询选项弹出框-->
+        <div class="modal inmodal" id="searchMore" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">×</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                    </div>
+                    <small class="font-bold">
+                        <div class="modal-body">
+                            <p>更多查询条件</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+                        </div>
+                    </small>
+                </div>
+                <small class="font-bold"></small>
+            </div>
+            <small class="font-bold"></small>
+        </div>
+    </body>
+</html>

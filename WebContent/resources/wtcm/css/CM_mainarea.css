@@ -1,0 +1,64 @@
+@charset "utf-8";
+/**
+ * 内容管理-实际操作区：主显示区域
+ */
+
+body{font-family:微软雅黑,'Microsoft Yahei',黑体,Verdana,Arial,sans-serif !important;}
+
+/*一、主显示*/
+.mainArea {/*主显示区域*/
+  height:calc(100% - 40px);
+  width:100%;
+  position:absolute;
+  overflow:auto;
+}
+
+/*二、左侧列表*/
+.leftlistArea {/*左侧列表区域样式*/
+  position:absolute;
+  left:0;
+  top:0;
+  width:420px;
+  height:100%;
+  border-right:1px solid #ccc;
+  overflow:hidden;
+  padding-bottom:30px;
+}
+.leftlistArea  .cntList {/*列表内容样式*/
+  position:absolute;
+  border-bottom:1px solid #ccc;
+  left:0;
+  top:0;
+  width:100%;
+  height:calc(100% - 43px);
+  overflow:auto;
+}
+.leftlistArea  .page {/*翻页*/
+  position:fixed;
+  left:0;
+  bottom:0;
+  height:43px;
+  width:100%;
+}
+
+/*三、右侧详细区域*/
+.detailArea {
+  position:absolute;
+  right:0;
+  top:0;
+  height:100%;
+  width:calc(100% - 420px);
+  background:white;
+}
+
+/*四、滚动条统一设置*/
+::-webkit-scrollbar-track {
+  background-color: #f5f5f5
+}
+::-webkit-scrollbar {
+  width: 2px;
+  background-color: #f5f5f5
+}
+::-webkit-scrollbar-thumb {
+  background-color: #2e7eb1
+}

@@ -1,0 +1,76 @@
+.pagination {
+  display:inline-block;
+  padding-left:30px;
+}
+
+.pagination span {
+  display:block;
+  float:left;
+  height:40px;
+  width:50px;
+  line-height:40px;
+  color:#0077c7;
+  vertical-align:middle;
+  text-align:center;
+  font-size:12px;
+  font-weight:bold;
+  background-color:#f3f3f4;
+  background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%, #f3f3f4), color-stop(100%, #f3f3f4));
+  background-image:-webkit-linear-gradient(#f3f3f4, #f3f3f4);
+  background-image:linear-gradient(#f3f3f4, #f3f3f4); 
+}
+.pagination span.disabled, .pagination span.disabled:hover, .pagination span.disabled:focus, .pagination span.disabled:active {
+  background-color:red;
+  background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%, #f3f3f4), color-stop(100%, #f3f3f4));
+  background-image:-webkit-linear-gradient(#f3f3f4, #f3f3f4);
+  background-image:linear-gradient(#f3f3f4, #f3f3f4);
+  color:#A8A8A8;
+  cursor:default;
+  text-decoration:none;
+}
+
+.gigantic.pagination {
+  margin:0;
+}
+
+.gigantic.pagination input {
+  width:40px;
+  margin-top:10px;
+  height:20px;
+  line-height:20px;
+  font-size:12px;
+  background:white;
+  color:black;
+  text-align:center;
+  padding:0 2px;
+  border:1px solid #ccc;
+}
+
+.pagination i {
+  display:block;
+  float:left;
+  height:40px;
+  width:auto;
+  line-height:40px;
+  color:black;
+  vertical-align:middle;
+  text-align:center;
+  padding:0 2px;
+  font-size:12px;
+  font-style:normal;
+  font-weight:bold;
+  /* ATTN:need a better font stack */
+  background-color:#f3f3f4;
+  background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%, #f3f3f4), color-stop(100%, #f3f3f4));
+  background-image:-webkit-linear-gradient(#f3f3f4, #f3f3f4);
+  background-image:linear-gradient(#f3f3f4, #f3f3f4); 
+}
+
+.pagination .first:hover,
+.pagination .previous:hover,
+.pagination .next:hover,
+.pagination .last:hover,
+.pagination .jump:hover{
+  cursor:pointer;
+  text-decoration:underline;
+}

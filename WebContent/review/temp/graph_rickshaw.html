@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<!-- saved from url=(0067)http://www.sucaihuo.com/modals/3/328/demo/graph_rickshaw.html?v=3.0 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+
+    <title>H+ 后台主题UI框架 - Rickshaw图表</title>
+    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome.min.css" rel="stylesheet">
+
+    <link href="animate.min.css" rel="stylesheet">
+    <link href="style.min.css" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>面积图 <small>自定义颜色</small></h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="http://www.sucaihuo.com/modals/3/328/demo/graph_rickshaw.html#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="http://www.sucaihuo.com/modals/3/328/demo/graph_rickshaw.html#">选项1</a>
+                                </li>
+                                <li><a href="http://www.sucaihuo.com/modals/3/328/demo/graph_rickshaw.html#">选项2</a>
+                                </li>
+                            </ul>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div id="chart" class="rickshaw_graph"><svg width="498" height="250"><path class="path" d="M0,47.93897757122653Q107.9,1.8017107833232728,124.5,2.4752475247525183C149.4,3.4855526368963865,224.1,48.44413012729848,249,58.04202869266521S348.6,95.42331784198828,373.5,98.45423317841988Q390.1,100.47484340270762,498,88.35118205698123L498,250Q390.1,250,373.5,250C348.6,250,273.9,250,249,250S149.4,250,124.5,250Q107.9,250,0,250Z" fill="#1ab394" stroke="none" stroke-width="2"></path></svg></div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>多面积图</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="http://www.sucaihuo.com/modals/3/328/demo/graph_rickshaw.html#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="http://www.sucaihuo.com/modals/3/328/demo/graph_rickshaw.html#">选项1</a>
+                                </li>
+                                <li><a href="http://www.sucaihuo.com/modals/3/328/demo/graph_rickshaw.html#">选项2</a>
+                                </li>
+                            </ul>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div id="rickshaw_multi" class="rickshaw_graph"><svg width="495" height="250"><g><path d="M0,119.72381448671186Q107.25,89.97741879451104,123.75,90.411672746222C148.5,91.06305367378843,222.75,116.79260031266287,247.5,126.23762376237626S346.5,177.69671704012507,371.25,184.86190724335592Q387.75,189.63870071217647,495,197.88952579468474L495,250Q387.75,250,371.25,250C346.5,250,272.25,250,247.5,250S148.5,250,123.75,250Q107.25,250,0,250Z" class="area" fill="#1ab394"></path><path d="M0,119.72381448671186Q107.25,89.97741879451104,123.75,90.411672746222C148.5,91.06305367378843,222.75,116.79260031266287,247.5,126.23762376237626S346.5,177.69671704012507,371.25,184.86190724335592Q387.75,189.63870071217647,495,197.88952579468474" class="line" fill="none" stroke="#17997f" stroke-width="2"></path></g><g><path d="M0,48.07191245440336Q107.25,12.028834462393654,123.75,8.989056800416932C148.5,4.4293903074518495,222.75,-0.7816571130796826,247.5,2.4752475247525183S346.5,36.99843668577386,371.25,41.558103178738946Q387.75,44.59788084071567,495,48.07191245440336L495,197.88952579468474Q387.75,189.63870071217647,371.25,184.86190724335592C346.5,177.69671704012507,272.25,135.68264721208965,247.5,126.23762376237626S148.5,91.06305367378843,123.75,90.411672746222Q107.25,89.97741879451104,0,119.72381448671186Z" class="area" fill="#eeeeee"></path><path d="M0,48.07191245440336Q107.25,12.028834462393654,123.75,8.989056800416932C148.5,4.4293903074518495,222.75,-0.7816571130796826,247.5,2.4752475247525183S346.5,36.99843668577386,371.25,41.558103178738946Q387.75,44.59788084071567,495,48.07191245440336" class="line" fill="none" stroke="#d7d7d7" stroke-width="2"></path></g></svg></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>线性图</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="http://www.sucaihuo.com/modals/3/328/demo/graph_rickshaw.html#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="http://www.sucaihuo.com/modals/3/328/demo/graph_rickshaw.html#">选项1</a>
+                                </li>
+                                <li><a href="http://www.sucaihuo.com/modals/3/328/demo/graph_rickshaw.html#">选项2</a>
+                                </li>
+                            </ul>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div id="rickshaw_line" class="rickshaw_graph"><svg width="495" height="250"><path class="path" d="M0,47.93897757122653Q107.25,1.8017107833232728,123.75,2.4752475247525183C148.5,3.4855526368963865,222.75,48.44413012729848,247.5,58.04202869266521S346.5,95.42331784198828,371.25,98.45423317841988Q387.75,100.47484340270762,495,88.35118205698123" fill="none" stroke="#1ab394" stroke-width="2"></path><path class="stroke"></path></svg></div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>多线性图</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="http://www.sucaihuo.com/modals/3/328/demo/graph_rickshaw.html#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="http://www.sucaihuo.com/modals/3/328/demo/graph_rickshaw.html#">选项1</a>
+                                </li>
+                                <li><a href="http://www.sucaihuo.com/modals/3/328/demo/graph_rickshaw.html#">选项2</a>
+                                </li>
+                            </ul>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div id="rickshaw_multi_line" class="rickshaw_graph"><svg width="495" height="250"><path class="path" d="M0,47.93897757122653Q107.25,1.8017107833232728,123.75,2.4752475247525183C148.5,3.4855526368963865,222.75,48.44413012729848,247.5,58.04202869266521S346.5,95.42331784198828,371.25,98.45423317841988Q387.75,100.47484340270762,495,88.35118205698123" fill="none" stroke="#1ab394" stroke-width="2"></path><path class="path" d="M0,148.96948878561327Q107.25,128.4266181720213,123.75,128.76338654273593C148.5,129.26853909880785,222.75,149.4746413416852,247.5,154.0210143463326S346.5,172.71165892099415,371.25,174.22711658920994Q387.75,175.2374217013538,495,169.1755910284906" fill="none" stroke="#d7d7d7" stroke-width="2"></path><path class="stroke"></path><path class="stroke"></path></svg></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>柱状图</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="http://www.sucaihuo.com/modals/3/328/demo/graph_rickshaw.html#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="http://www.sucaihuo.com/modals/3/328/demo/graph_rickshaw.html#">选项1</a>
+                                </li>
+                                <li><a href="http://www.sucaihuo.com/modals/3/328/demo/graph_rickshaw.html#">选项2</a>
+                                </li>
+                            </ul>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div id="rickshaw_bars" class="rickshaw_graph"><svg width="495" height="250"><rect x="0" y="47.93897757122653" width="94.05" height="202.06102242877347" transform="matrix(1,0,0,1,0,0)" fill="#1ab394"></rect><rect x="99" y="2.4752475247525183" width="94.05" height="247.52475247524748" transform="matrix(1,0,0,1,0,0)" fill="#1ab394"></rect><rect x="198" y="58.04202869266521" width="94.05" height="191.9579713073348" transform="matrix(1,0,0,1,0,0)" fill="#1ab394"></rect><rect x="297.00000000000006" y="98.45423317841988" width="94.05" height="151.54576682158012" transform="matrix(1,0,0,1,0,0)" fill="#1ab394"></rect><rect x="396" y="88.35118205698123" width="94.05" height="161.64881794301877" transform="matrix(1,0,0,1,0,0)" fill="#1ab394"></rect></svg></div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>堆积柱状图</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="http://www.sucaihuo.com/modals/3/328/demo/graph_rickshaw.html#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="http://www.sucaihuo.com/modals/3/328/demo/graph_rickshaw.html#">选项1</a>
+                                </li>
+                                <li><a href="http://www.sucaihuo.com/modals/3/328/demo/graph_rickshaw.html#">选项2</a>
+                                </li>
+                            </ul>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div id="rickshaw_bars_stacked" class="rickshaw_graph"><svg width="495" height="250"><rect x="0" y="114.36999864369997" width="94.05" height="135.63000135630003" transform="matrix(1,0,0,1,0,0)" fill="#1ab394"></rect><rect x="99" y="83.8532483385325" width="94.05" height="166.1467516614675" transform="matrix(1,0,0,1,0,0)" fill="#1ab394"></rect><rect x="198" y="121.15149871151499" width="94.05" height="128.848501288485" transform="matrix(1,0,0,1,0,0)" fill="#1ab394"></rect><rect x="297.00000000000006" y="148.277498982775" width="94.05" height="101.722501017225" transform="matrix(1,0,0,1,0,0)" fill="#1ab394"></rect><rect x="396" y="141.49599891496" width="94.05" height="108.50400108504" transform="matrix(1,0,0,1,0,0)" fill="#1ab394"></rect><rect x="0" y="46.55499796555" width="94.05" height="67.81500067815001" transform="matrix(1,0,0,1,0,0)" fill="#d7d7d7"></rect><rect x="99" y="2.47524752475249" width="94.05" height="81.37800081378" transform="matrix(1,0,0,1,0,0)" fill="#d7d7d7"></rect><rect x="198" y="56.72724806727251" width="94.05" height="64.4242506442425" transform="matrix(1,0,0,1,0,0)" fill="#d7d7d7"></rect><rect x="297.00000000000006" y="97.4162484741625" width="94.05" height="50.8612505086125" transform="matrix(1,0,0,1,0,0)" fill="#d7d7d7"></rect><rect x="396" y="87.24399837243999" width="94.05" height="54.25200054252" transform="matrix(1,0,0,1,0,0)" fill="#d7d7d7"></rect></svg></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>散点图</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="http://www.sucaihuo.com/modals/3/328/demo/graph_rickshaw.html#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="http://www.sucaihuo.com/modals/3/328/demo/graph_rickshaw.html#">选项1</a>
+                                </li>
+                                <li><a href="http://www.sucaihuo.com/modals/3/328/demo/graph_rickshaw.html#">选项2</a>
+                                </li>
+                            </ul>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div id="rickshaw_scatterplot" class="rickshaw_graph"><svg width="1060" height="250"><circle cx="48.07256235827664" cy="134.79262672811058" r="4" fill="#1ab394"></circle><circle cx="144.2176870748299" cy="111.7511520737327" r="4" fill="#1ab394"></circle><circle cx="240.36281179138322" cy="173.19508448540705" r="4" fill="#1ab394"></circle><circle cx="336.5079365079365" cy="157.83410138248846" r="4" fill="#1ab394"></circle><circle cx="432.6530612244898" cy="134.79262672811058" r="4" fill="#1ab394"></circle><circle cx="528.798185941043" cy="65.66820276497691" r="4" fill="#1ab394"></circle><circle cx="624.9433106575963" cy="34.94623655913975" r="4" fill="#1ab394"></circle><circle cx="721.0884353741496" cy="11.904761904761898" r="4" fill="#1ab394"></circle><circle cx="817.233560090703" cy="81.02918586789554" r="4" fill="#1ab394"></circle><circle cx="913.3786848072563" cy="111.7511520737327" r="4" fill="#1ab394"></circle><circle cx="1009.5238095238095" cy="127.1121351766513" r="4" fill="#1ab394"></circle></svg></div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- 全局js -->
+    <script src="jquery-2.1.1.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+
+
+
+    <!-- Rickshaw -->
+    <script src="d3.v3.js"></script>
+    <script src="rickshaw.min.js"></script>
+
+    <!-- 自定义js -->
+    <script src="content.min(1).js"></script>
+
+
+    <!-- Rickshaw demo data -->
+    <script src="rickshaw-demo.min.js"></script>
+
+    
+    
+
+
+
+</body></html>

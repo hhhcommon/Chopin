@@ -1,0 +1,17 @@
+@CHARSET "UTF-8";
+
+/*=手风琴=========*/
+/* 手风琴容器 */
+.accordionsContainer {
+  border:0;
+  border-bottom:1px solid #589C8D;
+  background-color:#fff;
+}
+
+/* 手风琴头 */
+.accordion_header {
+}
+
+/* 手风琴体 */
+.accordion_body {
+}

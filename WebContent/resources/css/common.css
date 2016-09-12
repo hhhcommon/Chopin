@@ -1,0 +1,41 @@
+@charset "utf-8";
+/* CSS Document */
+
+/* reset begin */
+html { color:#000; background:#FFF; }
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, table, th, td { padding:0; margin:0; }
+table { border-collapse:collapse; border-spacing:0; }
+fieldset, img { border:0; }
+address, caption, cite, code, dfn, em, strong, th, var { font-weight:normal; font-style:normal; }
+del, ins { text-decoration:none; }
+ol, ul { list-style:none; }
+caption, th { text-align:left; }
+q:before, q:after { content:''; }
+h1, h2, h3, h4, h5, h6 { font-weight:normal; font-size:100%; }
+input, button, textarea, select, optgroup, option { font-family:inherit; font-size:inherit; font-style:inherit; font-weight:inherit; }
+input, button, textarea, select { *font-size:100%; }
+/* fonts */
+body { font:12px/1.231 'arial', '宋体', 'helvetica', 'clean', 'sans-serif';}
+select, input, button, textarea, button { font:'arial', '宋体', 'helvetica', 'clean', 'sans-serif';}
+table { font-size:inherit; font:100%; }
+/* reset end */
+
+/* common begin 
+/*
+html { overflow-x:hidden; overflow-y:hidden; }
+html { overflow-x:auto; overflow-y:auto; }
+*/
+html { overflow-x:auto; overflow-y:auto; }
+input,textarea,select { margin:0 3px; }
+input { vertical-align:middle; }
+input[type="text"] { width:100px; height:16px; line-height:16px; }
+*input{ width:expression((this.type == "text")?"100px":"auto");  }
+textarea { overflow:auto; width:500px; }
+select{ height:20px; font-size:10px; vertical-align:middle; }
+a { color:black; text-decoration:none; outline:none; blr:expression(this.onFocus=this.blur()); cursor:pointer; }
+a:link { color:black; }
+a:visited { color:black; }
+a:hover { color:#c00; }
+a:active { color:#c00; text-decoration:underline; }
+img { vertical-align:middle; }
+/* common end */

@@ -1,0 +1,190 @@
+<!DOCTYPE HTML>
+<!-- saved from url=(0051)http://www.jqplot.com/tests/rotated-tick-labels.php -->
+<HTML lang="en"><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+<META name="Author" content="Chris Leonello">     
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">     
+<META name="keywords" content="chart, plot, graph, javascript, jquery, jqplot, charting, plotting, graphing"> 
+         
+      <LINK href="style.css"  rel="stylesheet" type="text/css">     
+      <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="../src/excanvas.min.js"></script><![endif]--> 
+<SCRIPT language="javascript" src="jquery.min.js" type="text/javascript"></SCRIPT>
+   
+<SCRIPT language="javascript" src="jquery.jqplot.min.js" type="text/javascript"></SCRIPT>
+	 
+	 <LINK href="shCoreDefault.css" 
+rel="stylesheet" type="text/css">   <LINK href="shThemejqPlot.css" 
+rel="stylesheet" type="text/css">       <LINK href="jquery.jqplot.min.css" 
+rel="stylesheet" type="text/css">   <LINK href="examples.css" 
+rel="stylesheet" type="text/css">     
+      <!-- title -->   <TITLE>Rotated Axis Tick Labels | jqPlot</TITLE>   <!-- and title --> 
+  <!-- jqPlot renderers and plugins -->   
+<SCRIPT class="include" language="javascript" src="jqplot.dateAxisRenderer.min.js" type="text/javascript"></SCRIPT>
+   
+<SCRIPT class="include" language="javascript" src="jqplot.canvasTextRenderer.min.js" type="text/javascript"></SCRIPT>
+   
+<SCRIPT class="include" language="javascript" src="jqplot.canvasAxisTickRenderer.min.js" type="text/javascript"></SCRIPT>
+   
+<SCRIPT class="include" language="javascript" src="jqplot.categoryAxisRenderer.min.js" type="text/javascript"></SCRIPT>
+   
+<SCRIPT class="include" language="javascript" src="jqplot.barRenderer.min.js" type="text/javascript"></SCRIPT>
+<script type="text/javascript">
+  function jqplotToImg(obj) {
+    var newCanvas = document.createElement("canvas");
+    newCanvas.width = obj.find("canvas.jqplot-base-canvas").width()+10;
+    newCanvas.height = obj.find("canvas.jqplot-base-canvas").height()+10;
+    var baseOffset = obj.find("canvas.jqplot-base-canvas").offset();
+    
+    // make white background for pasting
+    var context = newCanvas.getContext("2d");
+    context.fillStyle = "rgba(255,255,255,1)";
+    context.fillRect(0, 0, newCanvas.width, newCanvas.height);
+    
+    obj.children().each(function () {
+    // for the div's with the X and Y axis
+        if ($(this)[0].tagName.toLowerCase() == 'div') {
+            // X axis is built with canvas
+            $(this).children("canvas").each(function() {
+                var offset = $(this).offset();
+                newCanvas.getContext("2d").drawImage(this,
+                    offset.left - baseOffset.left+20,
+                    offset.top - baseOffset.top
+                );
+            });
+            // Y axis got div inside, so we get the text and draw it on the canvas
+            $(this).children("div").each(function() {
+                var offset = $(this).offset();
+                var context = newCanvas.getContext("2d");
+                context.font = $(this).css('font-style') + " " + $(this).css('font-size') + " " + $(this).css('font-family');
+                context.fillStyle = $(this).css('color');
+                context.fillText($(this).text(),
+                    offset.left - baseOffset.left+20,
+                    offset.top - baseOffset.top + $(this).height()
+                );
+            });
+        } else if($(this)[0].tagName.toLowerCase() == 'canvas') {
+            // all other canvas from the chart
+            var offset = $(this).offset();
+            newCanvas.getContext("2d").drawImage(this,
+                offset.left - baseOffset.left+20,
+                offset.top - baseOffset.top
+            );
+        }
+    });
+    
+    // add the point labels
+    obj.children(".jqplot-point-label").each(function() {
+        var offset = $(this).offset();
+        var context = newCanvas.getContext("2d");
+        context.font = $(this).css('font-style') + " " + $(this).css('font-size') + " " + $(this).css('font-family');
+        context.fillStyle = $(this).css('color');
+        context.fillText($(this).text(),
+            offset.left - baseOffset.left+20,
+            offset.top - baseOffset.top + $(this).height()*3/4
+        );
+    });
+    
+    // add the title
+    obj.children("div.jqplot-title").each(function() {
+        var offset = $(this).offset();
+        var context = newCanvas.getContext("2d");
+        context.font = $(this).css('font-style') + " " + $(this).css('font-size') + " " + $(this).css('font-family');
+        context.textAlign = $(this).css('text-align');
+        context.fillStyle = $(this).css('color');
+        context.fillText($(this).text(),
+            newCanvas.width / 2,
+            offset.top - baseOffset.top + $(this).height()
+        );
+    });
+    
+    // add the legend
+    obj.children("table.jqplot-table-legend").each(function() {
+        var offset = $(this).offset();
+        var context = newCanvas.getContext("2d");
+        context.strokeStyle = $(this).css('border-top-color');
+        context.strokeRect(
+            offset.left - baseOffset.left+20,
+            offset.top - baseOffset.top,
+            $(this).width(),$(this).height()
+        );
+        context.fillStyle = $(this).css('background-color');
+        context.fillRect(
+            offset.left - baseOffset.left+20,
+            offset.top - baseOffset.top,
+            $(this).width(),$(this).height()
+        );
+    });
+    
+    // add the rectangles
+    obj.find("div.jqplot-table-legend-swatch").each(function() {
+        var offset = $(this).offset();
+        var context = newCanvas.getContext("2d");
+        context.fillStyle = $(this).css('background-color');
+        context.fillRect(
+            offset.left - baseOffset.left+20,
+            offset.top - baseOffset.top,
+            $(this).parent().width(),$(this).parent().height()
+        );
+    });
+        
+    obj.find("td.jqplot-table-legend").each(function() {
+        var offset = $(this).offset();
+        var context = newCanvas.getContext("2d");
+        context.font = $(this).css('font-style') + " " + $(this).css('font-size') + " " + $(this).css('font-family');
+        context.fillStyle = $(this).css('color');
+        context.textAlign = $(this).css('text-align');
+        context.textBaseline = $(this).css('vertical-align');
+        context.fillText($(this).text(),
+            offset.left - baseOffset.left+20,
+            offset.top - baseOffset.top + $(this).height()/2 + parseInt($(this).css('padding-top').replace('px',''))
+        );
+    });
+
+    // convert the image to base64 format
+    return newCanvas.toDataURL("image/png");
+}
+
+</script>
+<SCRIPT class="code" type="text/javascript">
+$(document).ready(function(){
+  var line1 = [['Cup Holder Pinion Bob', 7], ['Generic Fog Lamp', 9], ['HDTV Receiver', 15], 
+  ['8 Track Control Module', 12], [' Sludge Pump Fourier Modulator', 3], 
+  ['Transcender/Spice Rack', 6], ['Hair Spray Danger Indicator', 18]];
+  var plot3 = $.jqplot('chart3', [line1], {
+    title: 'Concern vs. Occurrance',
+    series:[{renderer:$.jqplot.BarRenderer}],
+    axesDefaults: {
+        tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+        tickOptions: {
+          angle: -30
+        }
+    },
+    axes: {
+      xaxis: {
+        renderer: $.jqplot.CategoryAxisRenderer,
+        tickOptions: {
+          labelPosition: 'middle'
+        }
+      },
+      yaxis: {
+        autoscale:true,
+        tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+        tickOptions: {
+          labelPosition: 'start'
+        }
+      }
+    }
+  });
+  //alert($("#chart3").html());
+});
+function saveImg(){
+  $("#imgdata").val(jqplotToImg($('#chart3')));
+}
+</SCRIPT>
+ 
+<META name="GENERATOR" content="MSHTML 11.00.9600.16663"></HEAD> 
+<BODY>
+<INPUT TYPE="button" VALUE="save" ONCLICK="saveImg();">
+<DIV id="chart3" style="width: 500px; height: 300px;"></DIV>
+<textarea id="imgdata" cols="100" rows="20"></textarea>
+</BODY></HTML>

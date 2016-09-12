@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee  http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+
+  <display-name>wtPlat</display-name>
+
+  <!-- begin上下文参数 -->
+  <!-- Spring配置文件位置 后三项是为了让Spring环境不报错误，具体意义不详 -->
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>
+      classpath*:springConfig/*Spring.xml,
+      /WEB-INF/applicationContext.xml
+    </param-value>
+  </context-param>
+  <context-param>
+    <param-name>spring.profiles.active</param-name>
+    <param-value>dev</param-value>
+  </context-param>
+  <context-param>
+    <param-name>spring.profiles.default</param-name>
+    <param-value>dev</param-value>
+  </context-param>
+  <context-param>
+    <param-name>spring.liveBeansView.mbeanDomain</param-name>
+    <param-value>dev</param-value>
+  </context-param>
+  <!-- logback配置 -->
+  <context-param>
+    <param-name>logbackConfigLocation</param-name>  
+    <param-value>/WEB-INF/logback.xml</param-value>  
+  </context-param>
+  <!-- end上下文参数 -->
+
+  <!-- begin监听设置，顺序不能改变 -->
+  <!-- 刷新JDK的JavaBeans的Introspector缓存，防止内存泄漏 -->
+  <listener>
+    <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+  </listener>
+  <!-- logback -->
+  <listener>
+    <listener-class>ch.qos.logback.ext.spring.web.LogbackConfigListener</listener-class>
+  </listener>
+  <!-- spring 通过contextLoader创建applicationContext,注意，这里所加载的类，是全局的，与SpringMVC sevlet中加载的不同-->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <!-- 平台监听器，加载平台信息 -->
+  <listener>
+    <listener-class>com.spiritdata.framework.core.web.InitSysConfigListener</listener-class>
+  </listener>
+  <!-- end监听设置 -->
+
+  <!-- begin过滤器 -->
+  <!-- 编码 原来自己写这部分，现在采用Spring现成的-->
+  <filter>
+    <filter-name>CharacterEncodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>utf-8</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>CharacterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <!-- 登录
+  <filter>
+    <filter-name>loginFilter</filter-name>
+    <filter-class>com.spiritdata.framework.component.login.web.LoginFilter</filter-class>
+    <init-param>
+      <param-name>ingores</param-name> -->
+      <!--
+      <param-value>login,logout.do,asIndex.jsp,fileUpLoad.do,templet,jsonD,plugins,images,checkCodeImges,getReport.do,demo,report</param-value>
+      -->
+      <!-- <param-value>/, \\</param-value>
+    </init-param>
+    <init-param>
+      <param-name>noLogin</param-name>
+      <param-value>/login/noLogin.jsp</param-value>
+    </init-param>
+    <init-param>
+      <param-name>hasNewLogin</param-name>
+      <param-value>/login/hasNewLogin.jsp</param-value>
+    </init-param>
+  </filter>                  resources/images,resources/plugins/easyui
+  <filter-mapping>
+    <filter-name>loginFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping> -->
+  <!-- end过滤器 -->
+
+  <!-- begin Servlet设置 -->
+  <!-- Spring MVC配置 -->
+  <servlet>
+    <servlet-name>springMvc</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+      <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath*:springMvcConfig/*Mvc.xml</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>springMvc</servlet-name>
+    <url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+  <!-- end Servlet设置 -->
+
+  <welcome-file-list>
+    <welcome-file>/broadcast/list.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>

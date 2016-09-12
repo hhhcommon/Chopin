@@ -1,0 +1,96 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>wtContentMng</groupId>
+  <artifactId>wtContentMng</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
+  <!-- 配置编码格式，与eclpse的IDE环境编码格式匹配 -->
+  <!-- D:\workIDE\projects\WtContentMng || D:\workIDE\work\WtContentMng || D:\WBWorkDir\WtContentMng -->
+
+  <properties>
+    <projectDir>D:\workIDE\projects\Chopin</projectDir>
+  </properties>
+
+  <parent>
+  	<groupId>team.gm</groupId>
+  	<artifactId>framework</artifactId>
+  	<version>0.1.0.0</version>
+  	<relativePath>pom.framework.xml</relativePath>
+  </parent>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.4</version>
+    </dependency>  
+    <!-- dbcp连接池 -->
+    <dependency>
+      <groupId>commons-dbcp</groupId>
+      <artifactId>commons-dbcp</artifactId>
+      <version>1.4</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-pool</groupId>
+      <artifactId>commons-pool</artifactId>
+      <version>1.6</version>
+    </dependency>
+    <!-- 数据库连接驱动mysql -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>5.1.29</version>
+    </dependency>
+    <!-- Redis -->
+    <dependency>
+      <groupId>redis.clients</groupId>
+      <artifactId>jedis</artifactId>
+      <version>2.8.0</version>
+    </dependency>
+    <!-- 引入平台包 -->
+    <dependency>
+      <groupId>com.spiritdata</groupId>
+      <artifactId>BasicPlat</artifactId>
+      <version>0.1.0.10</version>
+      <scope>system</scope>
+      <systemPath>${projectDir}/lib/BasicPlat-0.1.0.10.jar</systemPath>
+    </dependency>
+    <!-- HTML解析包 -->
+    <dependency>
+      <groupId>org.jsoup</groupId>
+      <artifactId>jsoup</artifactId>
+      <version>1.7.3</version>
+    </dependency>
+  </dependencies>
+  <build>
+    <!-- 设置源代码的根目录 -->
+    <sourceDirectory>${projectDir}\src</sourceDirectory>
+    <!-- 设置测试代码的根目录 -->
+    <testSourceDirectory>${projectDir}\test</testSourceDirectory>
+    <!-- 设置源代码编译后的字节代码的目录 -->
+    <outputDirectory>${projectDir}\WebContent\WEB-INF\classes</outputDirectory>
+    <!-- 设置测试代码编译后的字节代码的目录 -->
+    <testOutputDirectory>${projectDir}\target\test-classes</testOutputDirectory>
+    <!-- 这里定义的资源将作为资源拷贝或打包到目标中。所有的配置文件(xml,propertis)都会按目录进行打包了 -->
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+          <warSourceDirectory>WebContent</warSourceDirectory>
+          <webResources>
+            <resource>
+              <directory>WebContent</directory>
+              <targetPath>WEB-INF</targetPath>
+              <includes>
+                <include>web.xml</include>
+              </includes>
+            </resource>
+          </webResources>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

@@ -1,0 +1,135 @@
+html {
+	margin: 0px; padding: 0px; height: 100%;
+}
+.heading {
+	color: rgb(255, 197, 60); font-size: 2.2em; font-weight: bold; margin-top: 50px; margin-left: 60px;
+}
+#main {
+	margin: 0px auto; padding: 0px 0px 20px; top: 0px; width: 780px; min-height: 100%; background-color: white;
+}
+div.logo {
+	margin: 0px auto; padding: 0px; top: 0px; width: 780px; height: 94px; position: relative; background-image: url("images/logo.jpg"); background-color: rgb(41, 41, 41);
+}
+div.announcement {
+	top: 4px; width: 160px; height: 48px; text-align: center; right: 0px; color: rgb(170, 170, 170); line-height: 1; font-size: 12px; vertical-align: middle; display: table-cell; position: absolute; min-height: 48px;
+}
+div.announcement-underlay {
+	top: 4px; width: 160px; height: 48px; text-align: center; right: 0px; color: rgb(170, 170, 170); line-height: 1; font-size: 12px; vertical-align: middle; display: table-cell; position: absolute; min-height: 48px;
+}
+div.announcement a {
+	color: rgb(227, 164, 81);
+}
+div.announcement p {
+	padding: 0px; margin-top: 3px;
+}
+div.announcement-underlay {
+	background: rgb(238, 203, 105); opacity: 0.15; -moz-opacity: 0.15; -khtml-opacity: 0.15;
+}
+#donate {
+	top: 330px; width: 300px; text-align: center; right: 110px; color: rgb(68, 68, 68); line-height: 1.2; font-size: 12px; vertical-align: middle; display: table-cell; position: absolute; min-height: 52px; -moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 5px; -moz-border-radius-topright: 5px; -webkit-border-top-right-radius: 5px; -moz-border-radius-bottomleft: 5px; -webkit-border-bottom-left-radius: 5px; -moz-border-radius-bottomright: 5px; -webkit-border-bottom-right-radius: 5px;
+}
+#donate_underlay {
+	top: 330px; width: 300px; text-align: center; right: 110px; color: rgb(68, 68, 68); line-height: 1.2; font-size: 12px; vertical-align: middle; display: table-cell; position: absolute; min-height: 52px; -moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 5px; -moz-border-radius-topright: 5px; -webkit-border-top-right-radius: 5px; -moz-border-radius-bottomleft: 5px; -webkit-border-bottom-left-radius: 5px; -moz-border-radius-bottomright: 5px; -webkit-border-bottom-right-radius: 5px;
+}
+#donate a {
+	color: rgb(241, 145, 9); font-size: 16px;
+}
+#donate p {
+	margin: 0px; padding: 0px;
+}
+#donate p span {
+	font-size: 14px;
+}
+#donate_underlay {
+	background: rgb(238, 203, 105); opacity: 0.45; -moz-opacity: 0.45; -khtml-opacity: 0.45;
+}
+div.nav {
+	top: 70px; text-align: right; position: relative;
+}
+a.nav span {
+	bottom: 2px; font-size: 11px; position: relative;
+}
+a.nav:visited {
+	border: 0px currentColor; border-image: none; color: rgb(170, 170, 170); text-decoration: none;
+}
+a.nav {
+	border: 0px currentColor; border-image: none; color: rgb(170, 170, 170); font-family: Tahoma, "Helvetica Neue", "Trebuchet MS", Verdana, Arial, sans-serif; font-size: 16px; text-decoration: none; margin-right: 11px;
+}
+a.nav:link {
+	border: 0px currentColor; border-image: none; color: rgb(170, 170, 170); font-family: Tahoma, "Helvetica Neue", "Trebuchet MS", Verdana, Arial, sans-serif; font-size: 16px; text-decoration: none; margin-right: 11px;
+}
+a.nav:hover {
+	border: 0px currentColor; border-image: none; color: rgb(224, 119, 28); text-decoration: none;
+}
+a.nav:active {
+	border: 0px currentColor; border-image: none; color: rgb(224, 119, 28); text-decoration: none;
+}
+#heading1 {
+	
+}
+#holder1 {
+	width: 780px; height: 325px; margin-top: 35px; position: relative;
+}
+#floater1 {
+	background: url("images/backgroundchart.jpg") no-repeat center white; left: 347px; top: 0px; width: 325px; height: 319px; line-height: 17px; position: absolute;
+}
+#floater1 .paragraph {
+	padding: 15px 20px 15px 30px; font-size: 14px; font-weight: bold;
+}
+#floater1 ul {
+	font-size: 13px; margin-top: 6px;
+}
+#floater1 li {
+	margin-right: 20px; margin-left: 30px; list-style-type: disc;
+}
+#chartsImage {
+	left: 30px; top: 51px; position: absolute;
+}
+#heading2 {
+	margin-top: 80px;
+}
+p.text {
+	font-size: 1.5em; margin-right: 60px; margin-left: 60px;
+}
+p.description {
+	font-size: 1.5em; margin-right: 60px; margin-left: 60px;
+}
+.large.text {
+	line-height: 1.35em; padding-top: 15px; font-size: 16px;
+}
+.sig.large.text {
+	padding-top: 0px; font-family: "Handwriting - Dakota", "Bradley Hand ITC TT", "Segoe Script", "Segoe Print", Tahoma, "Helvetica Neue", "Trebuchet MS", Verdana, Arial, sans-serif; margin-top: 0px;
+}
+table.home-content {
+	border-width: 0px; width: 640px; margin-top: 40px; margin-right: auto; margin-left: auto; border-collapse: collapse;
+}
+table.home-content td {
+	border: 0px rgb(126, 126, 126); width: 33%; text-align: center; padding-right: 25px; padding-left: 25px; vertical-align: top; border-collapse: collapse;
+}
+table.home-content td div {
+	width: 149px; text-align: left; font-size: 1.3em; margin-top: 10px; margin-bottom: 20px; margin-left: 5px;
+}
+table.home-content td img {
+	margin-top: 20px;
+}
+#downloadButton {
+	background-position: left top; border: 0px currentColor; border-image: none; width: 102px; height: 39px; right: 20px; bottom: 20px; font-family: "Arial Narrow Bold", sans-serif; text-decoration: none; position: absolute; background-image: url("images/downloadnow.png"); background-repeat: no-repeat;
+}
+#downloadButton span {
+	display: none;
+}
+#downloadButton:hover {
+	border: 0px currentColor; border-image: none; text-decoration: none; background-image: url("images/downloadnowover.png");
+}
+#downloadButton:active {
+	border: 0px currentColor; border-image: none; text-decoration: none; background-image: url("images/downloadnowover.png");
+}
+#downloadButton:visited {
+	border: 0px currentColor; border-image: none; text-decoration: none;
+}
+#openSourceProject {
+	left: 30px; width: 160px; bottom: 24px; color: rgb(153, 153, 153); font-size: 14px; position: absolute;
+}
+#new {
+	background: url("images/new.png"); left: 400px; top: 20px; width: 140px; height: 140px; position: absolute;
+}

@@ -1,0 +1,148 @@
+@CHARSET "UTF-8";
+
+/*=页面框架=========*/
+/* 悬浮区域 */
+.hoverArea {
+  margin:0px;
+  padding:0px;
+  position:fixed;
+  z-index:1000;
+  overflow:hidden;
+  /* for IE6 */
+  _top:expression(documentElement.scrollTop + documentElement.clientHeight-this.offsetHeight);
+  _position:absolute;
+  /* for IE6 */
+}
+/* 头部 */
+.topSegment{
+  border:1px solid #95b8e7;
+  border-bottom:0;
+  background-color:#E0ECFF;
+  background:-webkit-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
+  background:-moz-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
+  background:-o-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
+  background:linear-gradient(to bottom,#EFF5FF 0,#E0ECFF 100%);
+  background-repeat:repeat-x;
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#EFF5FF,endColorstr=#E0ECFF,GradientType=0);
+  overflow:hidden;
+  border:0;
+  border-bottom:1px solid #284318;
+}
+/* .topSegment{
+  border:1px solid #95b8e7;
+  border-bottom:0;
+  background-color:#32C52F;
+  overflow:hidden;
+  border:0;
+  border-bottom:0px solid #284318;
+} */
+/* 主体容器 */
+#_main{
+  position:absolute;
+}
+/* 脚部 */
+.footSegment{
+  border:1px solid #95b8e7;
+  background-color:#E0ECFF;
+  background:-webkit-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
+  background:-moz-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
+  background:-o-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
+  background:linear-gradient(to bottom,#EFF5FF 0,#E0ECFF 100%);
+  background-repeat:repeat-x;
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#EFF5FF,endColorstr=#E0ECFF,GradientType=0);
+  filter:alpha(opacity=70); -moz-opacity:0.7; opacity:0.7;
+}
+/*.footSegment{
+  border:1px solid #95b8e7;
+  background-color:#32C52F;
+}*/
+/* 头部占位及尾部占位 */
+#_top, #_foot{ border:0; padding:0; margin:0; }
+
+/*=简单窗口=========*/
+/* 主体容器 */
+.sWin {
+  position:absolute;
+  background:#fff;
+  border:1px solid #D3D3D3;
+}
+/* 遮罩窗口 */
+._wMask {
+  position: absolute;
+  background: #ccc;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  filter: alpha(opacity=40);
+  opacity: 0.40;
+  font-size: 1px;
+  *zoom: 1;
+  overflow: hidden;
+}
+/* 窗口标题拦 //  background:#6FD469;DFDFDF*/
+.sWin_head {
+  position:absolute;
+  border-bottom:1px solid #D3D3D3;
+  height:32px;
+  line-height:32px;
+  top:0px;
+  left:0px;
+  padding-top:9px;
+  background:#F7F7F7;
+  cursor:move;
+}
+/* 窗口标题图标 */
+.sWin_icon {
+  position:absolute;
+  height:24px;
+  width:24px;
+  background:url(images/login_icons.png) no-repeat scroll transparent;
+  background-position: -112px 0px;
+  margin-left:8px;
+}
+/* 窗口标题区域 */
+.sWin_title {
+  position:absolute;
+  padding-left:40px;
+  padding-top: 2px;
+  height:24px;
+  line-height:24px;
+  valign:middle;
+  vertical-align:middle;
+  font-size:18px;
+  font-family:微软雅黑,黑体;
+  font-weight:bold;
+}
+/* 窗口提示区域 */
+.sWin_msg {
+  position:absolute;
+  padding-top: 2px;
+  height:24px;
+  line-height:24px;
+  valign:bottom;
+  vertical-align:bottom;
+  color:red;
+  margin-top: 4px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  text-decoration:inherit;
+}
+/* 窗口关闭按钮 */
+.sWin_closeBtn {
+  position:absolute;
+  width:16px;
+  height:16px;
+  margin-top:3px;
+  background-image: url("images/login_icons.png");
+  background-position: -56px -48px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+/* 窗口内容 */
+.sWin_content {
+  position:absolute;
+  left:0px;
+  background:#fff;
+}

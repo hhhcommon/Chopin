@@ -1,0 +1,115 @@
+@charset "utf-8";
+/**
+ * 内容管理-列表中的某一行
+ */
+
+/*行区域*/
+.lineBox {
+  width:100%;
+  height:70px;
+  padding:6px;
+  border-bottom:2px solid #f3f3f4;
+  background:white;
+  position:relative;
+  cursor:pointer;
+}
+.lineBox p {
+  margin:0 0 2px;
+}
+/*行区域::选择块*/
+.lineBox .l-check {
+  width:6%;
+  text-align: center;
+  height:58px;
+  line-height:58px;
+}
+/*行区域::图片区*/
+.lineBox .l-img {
+  height:100%;
+  width:15%;
+  margin-right:15px;
+  margin-left:6px;
+  border:1px solid #ccc;
+}
+.lineBox .l-img img {
+  height:100%;
+  width:100%;
+}
+/*行区域::文字内容区-右侧*/
+.lineBox .l-con {
+  width:70%;
+  height:100%;
+}
+/*行区域::文字内容区-右侧::标题*/
+.lineBox .l-con h3 {
+  font-size:12px;
+  font-family:微软雅黑,'Microsoft Yahei',黑体,Verdana,Arial,sans-serif !important;
+  font-weight:600;
+  margin-top:0;
+  margin-bottom:2px;
+  color:#636363;
+  position:relative;
+  display:inline-block;
+  max-width:180px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+/*行区域::文字内容区-右侧::描述区*/
+.lineBox .l-con .memo {
+  font-size:12px;
+  color:#ccc;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+/*行区域::文字内容区-右侧::其他区*/
+.lineBox .l-con .other {
+  font-size:12px;
+  color:#3871a6;
+}
+.lineBox .l-con .other span {
+  padding-right:12px;
+}
+/*行区域::文字内容区-右侧::标签区域*/
+.lineBox .typemark {
+  width:100px;
+  height:20px;
+  position:absolute;
+  top:5px;
+  right:5px;
+}
+.lineBox .typemark span {
+  text-align:center;
+  border:none;
+  border-radius:4px;
+  padding:0 5px 0 5px;
+  margin-left:5px;
+}
+
+.lineBox .l-check,
+.lineBox .l-img,
+.lineBox .l-con {
+  float:left;
+}
+
+/*选中和划过某行*/
+.selectLine {
+  position:absolute;
+  top:0;
+  left:0;
+  width:4px;
+  height:70px;
+  background-color:#0077c7;
+  border-radius:2px;
+}
+.hoverLine {
+  position:absolute;
+  top:0;
+  left:0;
+  width:4px;
+  height:68px;
+  background-color:#F8AC59;
+  border-radius:2px;
+}
+

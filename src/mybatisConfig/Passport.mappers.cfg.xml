@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!-- 用户相关设置 -->
+<configuration>
+  <!-- 别名设置 -->
+  <typeAliases>
+    <typeAlias alias="WtUser" type="com.woting.passport.UGA.persistence.pojo.UserPo"/>
+    <typeAlias alias="WtGroup" type="com.woting.passport.UGA.persistence.pojo.GroupPo"/>
+    <typeAlias alias="WtGroupUser" type="com.woting.passport.UGA.persistence.pojo.GroupUserPo"/>
+    <typeAlias alias="WtThirdUser" type="com.woting.passport.thirdlogin.persis.po.ThirdUserPo"/>
+  </typeAliases>
+  <mappers>
+    <mapper resource="com/woting/passport/UGA/persistence/sql/WotingUser.mapper.xml"/>
+    <mapper resource="com/woting/passport/UGA/persistence/sql/Group.mapper.xml"/>
+    <mapper resource="com/woting/passport/thirdlogin/persis/sql/ThirdUser.mapper.xml"/>
+  </mappers>
+</configuration>

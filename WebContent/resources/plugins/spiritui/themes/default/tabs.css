@@ -1,0 +1,152 @@
+@CHARSET "UTF-8";
+
+/*=页签=========*/
+/* 页签容器 */
+.tabsContainer {
+  border:0;
+  border-bottom:1px solid #589C8D;
+  background-color:#fff;
+}
+/* 页签文字 */
+.tab_title {
+  position:absolute;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  text-decoration:inherit;
+  font-size:inherit;
+  font-family:inherit;
+}
+/* 页签主体 */
+.tab {
+  position:absolute;
+  text-align:center; align:center;
+  background-color:#fff;
+  font-size:16px; font-family:Times, '黑体'; color:#2F4A1F;
+}
+/* 一般页签未选中 */
+.tab_normal {
+  border:0;
+  border-top:2px solid #2F4A1F;
+  border-right:0px solid #589C8D;
+}
+/* 一般页签选中 */
+.tab_sel {
+  border:0;
+  border-top:2px solid #2F4A1F;
+  background-color:#589C8D;
+  font-weight:bold;
+  color:#fff;
+}
+/* 第一页签未选中 */
+.tab_normal_f {
+  border:0;
+  border-top:2px solid #2F4A1F;
+  border-left:0px solid #589C8D;
+}
+/* 第一页签选中 */
+.tab_sel_f {
+  border:0;
+  border-top:2px solid #2F4A1F;
+  background-color:#589C8D;
+  font-weight:bold;
+  color:#fff;
+}
+/* 最后页签未选中 */
+.tab_normal_l {
+  border:0;
+  border-top:2px solid #2F4A1F;
+  border-right:0px solid #589C8D;
+}
+/* 最后页签选中 */
+.tab_sel_l {
+  border:0;
+  border-top:2px solid #2F4A1F;
+  background-color:#589C8D;
+  font-weight:bold;
+  color:#fff;
+}
+/* 页签鼠标悬停 */
+.tab_mouseOver {
+  color:blue;
+  cursor:pointer;
+  text-decoration:underline;
+  text-shadow:0px 0px 1px #2F4A1F;
+}
+
+/* 页签交互区 */
+.tab_m{
+  position:absolute;
+}
+/* 第一页签交互区未选中 */
+.tab_m_f_n {
+  border-top:2px solid #2F4A1F;
+  border-right:0px solid #2F4A1F;
+  border-left:2px solid #2F4A1F;
+  border-top-left-radius:10px;
+  border-top-right-radius:0px;
+  background-color:#fff;
+}
+/* 第一页签交互区选中 */
+.tab_m_f_s {
+  border:0;
+  border-top:2px solid #2F4A1F;
+  border-left:2px solid #2F4A1F;
+  border-top-left-radius:10px;
+  border-top-right-radius:0px;
+  background-color:#589C8D;
+}
+/* 一般页签交互区未选中_左 */
+.tab_m_nl {
+  border-top:2px solid #2F4A1F;
+  border-right:0px solid #2F4A1F;
+  border-left:2px solid #2F4A1F;
+  border-top-left-radius:10px;
+  border-top-right-radius:0px;
+  background-color:#fff;
+}
+/* 一般页签交互区未选中_右 */
+.tab_m_nr {
+  border-top:2px solid #2F4A1F;
+  border-right:2px solid #2F4A1F;
+  border-left:0px solid #2F4A1F;
+  border-top-left-radius:0px;
+  border-top-right-radius:10px;
+  background-color:#fff;
+}
+/* 一般页签交互区选中_左 */
+.tab_m_sl {
+  border-top:2px solid #2F4A1F;
+  border-right:0px solid #2F4A1F;
+  border-left:2px solid #2F4A1F;
+  border-top-left-radius:10px;
+  border-top-right-radius:0px;
+  background-color:#589C8D;
+}
+/* 一般页签交互区选中_右 */
+.tab_m_sr {
+  border-top:2px solid #2F4A1F;
+  border-right:2px solid #2F4A1F;
+  border-left:0px solid #2F4A1F;
+  border-top-left-radius:0px;
+  border-top-right-radius:10px;
+  background-color:#589C8D;
+}
+/* 最后页签交互区未选中 */
+.tab_m_l_n {
+  border-top:2px solid #2F4A1F;
+  border-right:2px solid #2F4A1F;
+  border-left:0px solid #2F4A1F;
+  border-top-left-radius:0px;
+  border-top-right-radius:10px;
+  background-color:#fff;
+}
+/* 最后页签交互区选中 */
+.tab_m_l_s {
+  border-top:2px solid #2F4A1F;
+  border-right:2px solid #2F4A1F;
+  border-left:0px solid #2F4A1F;
+  border-top-left-radius:0px;
+  border-top-right-radius:10px;
+  background-color:#589C8D;
+}

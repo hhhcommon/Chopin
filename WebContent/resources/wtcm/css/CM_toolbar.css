@@ -1,0 +1,64 @@
+@charset "utf-8";
+
+/**
+ * 内容管理-实际操作区：顶部工具条
+ */
+
+.toobarArea {/*工具条区域样式*/
+  height:40px;
+  width:100%;
+  line-height:30px;
+  background:#eff3f6;
+  border-top:1px solid #ccc;
+  border-bottom:1px solid #ccc;
+  padding-left:15px;
+  padding-top:5px;
+  overflow:hidden;
+}
+.toobarArea .allCheck {/*所有选择功能样式*/
+  height:30px;
+  line-height:30px;
+  margin:0 12px;
+  display:inline-block;
+}
+.toobarArea .cDate {/*内部层div*/
+  display:inline-block;
+  margin-right:12px;
+}
+.toobarArea .cDate span{
+  font-weight:bold;
+}
+.toobarArea .cDate input{
+  height:24px;
+  width:100px;
+  border-radius:4px;
+  outline:none;
+  border-style:none;
+  border:1px solid #ccc;
+}
+.toobarArea .splite {/*分割线*/
+  position:absolute;
+  display:inline-block;
+  background-color:#F6F6F6;
+  width:3px;
+  border-left:solid #ccc 1px;
+  border-right:solid #ccc 1px;
+  height:40px;
+  margin-right:12px;
+  margin-top:-6px;
+}
+/*按钮*/
+.toobarArea button {
+  width:60px;
+  height:24px;
+  margin-top:-4px;
+  background:#0077c7;
+  color:white;
+  text-align:center;
+  padding:2px;
+  font-size:12px;
+  border-radius: 0px;
+}
+.toobarArea button:disabled {
+  background:#B2CEE0;
+}

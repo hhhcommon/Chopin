@@ -1,0 +1,141 @@
+/*工具条区域样式*/
+.toobarArea{
+  height:40px;
+  width:100%;
+  line-height:30px;
+  background:#eff3f6;
+  border-top:1px solid #ccc;
+  border-bottom:1px solid #ccc;
+  padding-left:15px;
+  padding-top:5px;
+  overflow:hidden;
+}
+/*按钮*/
+.toobarArea button{
+  width:60px;
+  height:24px;
+  margin-top:-4px;
+  background:#0077c7;
+  color:white;
+  text-align:center;
+  padding:2px;
+  font-size:12px;
+  border-radius: 0px;
+}
+/*主区域*/
+.mainArea{
+  height: calc(100% - 40px);
+  width: 100%;
+  position: absolute;
+  overflow: auto;
+}
+/*分类列表*/
+.catListArea{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 420px;
+  height: 100%;
+  border-right: 1px solid #ccc;
+  overflow: hidden;
+  padding-bottom: 30px;
+}
+.ztree{
+  width:290px;
+  height:430px;
+  margin-left:35px;
+  margin-top:35px;
+  border: 1px solid #3370b7;
+  overflow:auto;
+}
+/*内容详情*/
+.catDetailArea{
+  position:absolute;
+  right:0;
+  top:0;
+  height:100%;
+  width:calc(100% - 400px);
+  background:white;
+}
+
+/*模态窗口样式设置*/
+.my-mbody{
+  background-color: #F8FAFB;
+}
+h4{
+  font-weight:bold;
+  padding-left:10px;
+  text-align:left;
+}
+
+/* 配置：表单区域 */
+.modal-body tr{
+  width:100%;
+}
+.modal-body tr .th{
+  margin-left:30px;
+  height:60px;
+  line-height:36px;
+  font-size:14px;
+  font-weight:bold;
+  font-family:"open sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+  width:200px;
+  text-width:190px;
+  padding-right:10px;
+  font-weight:nomal;
+  text-align:right;
+}
+.modal-body tr .add-th{
+  width:120px;
+}
+.modal-body tr td input{
+  width:380px;
+}
+#catalogBelong{
+  position:absolute;
+  top:70px;
+  margin-left:314px;
+  font-weight:bold;
+  font-size:17px;
+}
+#nodePath{
+  width:162px;
+  height:20px;
+  display:inline-block;
+  margin-top:3px;
+  margin-left:409px;
+  text-align:left;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+/*遮罩层样式*/
+#shade{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0,0,0,0.65);
+  z-index: 100;
+  display: none;
+}
+/* 配置：表单区域 */
+.opeBox{
+  display: none;
+  position: absolute;
+  top: 10%;
+  left: 20%;
+  width: 560px;
+  background: white;
+  border-radius: 4px;
+  font-size: 14px;
+  z-index: 10000;
+}
+/*左侧样式*/
+ul,li{
+  list-style: none;
+}
+a:link,a:visited{
+  text-direction:none;
+}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>我听FM</title>
+        <meta name="keywords" content="">
+        <meta name="description" content="">
+        <link href="./resources/plugins/hplus/css/bootstrap.min.css" rel="stylesheet">
+	      <link href="./resources/plugins/hplus/css/font-awesome.min.css" rel="stylesheet">
+	      <link href="./resources/plugins/hplus/css/animate.min.css" rel="stylesheet">
+	      <link href="./resources/plugins/hplus/css/style.min.css" rel="stylesheet">
+        <script src="./resources/plugins/hplus/js/jquery-2.1.1.min.js"></script>
+        <script>
+            //if(window.top !== window.self){ window.top.location = window.location;}
+            $(function(){
+                //点击登录按钮
+                $(".loginBtn").bind("click",function(){
+                    $.ajax({
+                        type: "POST",    
+                        url: "http://localhost:908/CM/passport/user/login.do",
+                        dataType: "json",
+                        data: {
+                            UserName: $("input:first").val(), 
+                            Password: $("input:last").val()
+                        },
+                        success: function(resultStatus) {
+                            if (resultStatus.ReturnType=="1001") {
+                                alert("正确，即将进入后台！");
+                                window.location.href="./index_wt.html";
+                            } else {
+                                alert("账户或密码有误:"+resultStatus.Message);
+                            }  
+                        },
+                        error: function(jqXHR){     
+                           alert("发生错误：" + jqXHR.status);
+                        },     
+                    });
+                    //return false;
+                });
+            });
+        </script>
+    </head>
+    <body class="gray-bg">
+        <div class="middle-box text-center loginscreen  animated fadeInDown">
+            <div>
+                <div>
+                    <h1 class="logo-name">W T</h1>
+                </div>
+                <h3>我听，我享听</h3>
+                <form class="m-t" role="form" action="javascript:;">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="用户名" value="woting"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" placeholder="密码" value="111111"/>
+                    </div>
+                    <button class="btn btn-primary block full-width m-b loginBtn">登 录</button>
+                    <p class="text-muted text-center"><a href="#"><small>忘记密码了？</small></a> | <a href="./review/register.html">注册一个新账号</a></p>
+                </form>
+            </div>
+        </div>
+        <!-- 全局js -->
+        <script src="./resources/plugins/hplus/js/bootstrap.min.js"></script>
+    </body>
+</html>

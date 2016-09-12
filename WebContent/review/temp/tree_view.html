@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<!-- saved from url=(0062)http://www.sucaihuo.com/modals/3/328/demo/tree_view.html?v=3.0 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+
+    <title>H+ 后台主题UI框架 - 树形视图</title>
+    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome.min.css" rel="stylesheet">
+
+    <link href="animate.min.css" rel="stylesheet">
+    <link href="style.min.css" rel="stylesheet">
+    <link href="bootstrap-treeview.css" rel="stylesheet">
+
+<style type="text/css" id="treeview1-style"> .list-group-item{cursor:pointer;}span.indent{margin-left:10px;margin-right:10px}span.icon{margin-right:5px}.node-treeview1{}.node-treeview1:hover{background-color:#F5F5F5;} </style><style type="text/css" id="treeview2-style"> .list-group-item{cursor:pointer;}span.indent{margin-left:10px;margin-right:10px}span.icon{margin-right:5px}.node-treeview2{}.node-treeview2:hover{background-color:#F5F5F5;} </style><style type="text/css" id="treeview3-style"> .list-group-item{cursor:pointer;}span.indent{margin-left:10px;margin-right:10px}span.icon{margin-right:5px}.node-treeview3{}.node-treeview3:hover{background-color:#F5F5F5;} </style><style type="text/css" id="treeview4-style"> .list-group-item{cursor:pointer;}span.indent{margin-left:10px;margin-right:10px}span.icon{margin-right:5px}.node-treeview4{color:#428bca;}.node-treeview4:hover{background-color:#F5F5F5;} </style><style type="text/css" id="treeview5-style"> .list-group-item{cursor:pointer;}span.indent{margin-left:10px;margin-right:10px}span.icon{margin-right:5px}.node-treeview5{color:#428bca;}.node-treeview5:hover{background-color:#F5F5F5;} </style><style type="text/css" id="treeview6-style"> .list-group-item{cursor:pointer;}span.indent{margin-left:10px;margin-right:10px}span.icon{margin-right:5px}.node-treeview6{color:#428bca;}.node-treeview6:hover{background-color:#F5F5F5;} </style><style type="text/css" id="treeview7-style"> .list-group-item{cursor:pointer;}span.indent{margin-left:10px;margin-right:10px}span.icon{margin-right:5px}.node-treeview7{color:#428bca;border:none;}.node-treeview7:hover{background-color:#F5F5F5;} </style><style type="text/css" id="treeview8-style"> .list-group-item{cursor:pointer;}span.indent{margin-left:10px;margin-right:10px}span.icon{margin-right:5px}.node-treeview8{color:yellow;background-color:purple;border:none;}.node-treeview8:hover{background-color:orange;} </style><style type="text/css" id="treeview9-style"> .list-group-item{cursor:pointer;}span.indent{margin-left:10px;margin-right:10px}span.icon{margin-right:5px}.node-treeview9{color:yellow;background-color:purple;border:none;}.node-treeview9:hover{background-color:orange;} </style><style type="text/css" id="treeview10-style"> .list-group-item{cursor:pointer;}span.indent{margin-left:10px;margin-right:10px}span.icon{margin-right:5px}.node-treeview10{color:#428bca;}.node-treeview10:hover{background-color:#F5F5F5;} </style><style type="text/css" id="treeview11-style"> .list-group-item{cursor:pointer;}span.indent{margin-left:10px;margin-right:10px}span.icon{margin-right:5px}.node-treeview11{color:#428bca;}.node-treeview11:hover{background-color:#F5F5F5;} </style><style type="text/css" id="treeview12-style"> .list-group-item{cursor:pointer;}span.indent{margin-left:10px;margin-right:10px}span.icon{margin-right:5px}.node-treeview12{}.node-treeview12:hover{background-color:#F5F5F5;} </style></head>
+
+<body class="gray-bg">
+    <div class="row wrapper wrapper-content animated fadeInRight">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Bootstrap Tree View 简介</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">选项1</a>
+                            </li>
+                            <li><a href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">选项2</a>
+                            </li>
+                        </ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <p>Bootstrap Tree View 是一个简单而优雅的Bootstrap树形视图解决方案。
+                        <br>您可以访问作者的
+                        <a href="https://github.com/jonmiles/bootstrap-treeview" target="_blank">GitHub页面</a> 了解其用法及更多信息。</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>默认</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">选项1</a>
+                            </li>
+                            <li><a href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">选项2</a>
+                            </li>
+                        </ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div id="treeview1" class="test treeview"><ul class="list-group"><li class="list-group-item node-treeview1" data-nodeid="0" style=""><span class="icon"><i class="click-collapse glyphicon glyphicon-minus"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 1</li><li class="list-group-item node-treeview1" data-nodeid="1" style=""><span class="indent"></span><span class="icon"><i class="click-expand glyphicon glyphicon-plus"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>子节点 1</li><li class="list-group-item node-treeview1" data-nodeid="2" style=""><span class="indent"></span><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>子节点 2</li><li class="list-group-item node-treeview1" data-nodeid="3" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 2</li><li class="list-group-item node-treeview1 node-selected" data-nodeid="4" style="color:#FFFFFF;background-color:#428bca;"><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 3</li><li class="list-group-item node-treeview1" data-nodeid="5" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 4</li><li class="list-group-item node-treeview1" data-nodeid="6" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 5</li></ul></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>收起</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">选项1</a>
+                            </li>
+                            <li><a href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">选项2</a>
+                            </li>
+                        </ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div id="treeview2" class="test treeview"><ul class="list-group"><li class="list-group-item node-treeview2" data-nodeid="0" style=""><span class="icon"><i class="click-expand glyphicon glyphicon-plus"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 1</li><li class="list-group-item node-treeview2" data-nodeid="1" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 2</li><li class="list-group-item node-treeview2" data-nodeid="2" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 3</li><li class="list-group-item node-treeview2" data-nodeid="3" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 4</li><li class="list-group-item node-treeview2" data-nodeid="4" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 5</li></ul></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>展开</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">选项1</a>
+                            </li>
+                            <li><a href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">选项2</a>
+                            </li>
+                        </ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div id="treeview3" class="test treeview"><ul class="list-group"><li class="list-group-item node-treeview3" data-nodeid="0" style=""><span class="icon"><i class="click-expand glyphicon glyphicon-plus"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 1</li><li class="list-group-item node-treeview3" data-nodeid="1" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 2</li><li class="list-group-item node-treeview3" data-nodeid="2" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 3</li><li class="list-group-item node-treeview3" data-nodeid="3" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 4</li><li class="list-group-item node-treeview3" data-nodeid="4" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 5</li></ul></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>蓝色主题</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">选项1</a>
+                            </li>
+                            <li><a href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">选项2</a>
+                            </li>
+                        </ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div id="treeview4" class="test treeview"><ul class="list-group"><li class="list-group-item node-treeview4" data-nodeid="0" style=""><span class="icon"><i class="click-collapse glyphicon glyphicon-minus"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 1</li><li class="list-group-item node-treeview4" data-nodeid="1" style=""><span class="indent"></span><span class="icon"><i class="click-expand glyphicon glyphicon-plus"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>子节点 1</li><li class="list-group-item node-treeview4" data-nodeid="2" style=""><span class="indent"></span><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>子节点 2</li><li class="list-group-item node-treeview4" data-nodeid="3" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 2</li><li class="list-group-item node-treeview4" data-nodeid="4" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 3</li><li class="list-group-item node-treeview4" data-nodeid="5" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 4</li><li class="list-group-item node-treeview4" data-nodeid="6" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 5</li></ul></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>自定义图标</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">选项1</a>
+                            </li>
+                            <li><a href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">选项2</a>
+                            </li>
+                        </ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div id="treeview5" class="test treeview"><ul class="list-group"><li class="list-group-item node-treeview5" data-nodeid="0" style=""><span class="icon"><i class="click-collapse glyphicon glyphicon-chevron-down"></i></span><span class="icon"><i class="glyphicon glyphicon-bookmark"></i></span>父节点 1</li><li class="list-group-item node-treeview5" data-nodeid="1" style=""><span class="indent"></span><span class="icon"><i class="click-expand glyphicon glyphicon-chevron-right"></i></span><span class="icon"><i class="glyphicon glyphicon-bookmark"></i></span>子节点 1</li><li class="list-group-item node-treeview5" data-nodeid="2" style=""><span class="indent"></span><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-bookmark"></i></span>子节点 2</li><li class="list-group-item node-treeview5" data-nodeid="3" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-bookmark"></i></span>父节点 2</li><li class="list-group-item node-treeview5" data-nodeid="4" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-bookmark"></i></span>父节点 3</li><li class="list-group-item node-treeview5" data-nodeid="5" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-bookmark"></i></span>父节点 4</li><li class="list-group-item node-treeview5" data-nodeid="6" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-bookmark"></i></span>父节点 5</li></ul></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>使用徽章作为标签</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">选项1</a>
+                            </li>
+                            <li><a href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">选项2</a>
+                            </li>
+                        </ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div id="treeview6" class="test treeview"><ul class="list-group"><li class="list-group-item node-treeview6" data-nodeid="0" style=""><span class="icon"><i class="click-collapse glyphicon glyphicon-unchecked"></i></span><span class="icon"><i class="glyphicon glyphicon-user"></i></span>父节点 1<span class="badge">4</span></li><li class="list-group-item node-treeview6" data-nodeid="1" style=""><span class="indent"></span><span class="icon"><i class="click-expand glyphicon glyphicon-stop"></i></span><span class="icon"><i class="glyphicon glyphicon-user"></i></span>子节点 1<span class="badge">2</span></li><li class="list-group-item node-treeview6" data-nodeid="2" style=""><span class="indent"></span><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-user"></i></span>子节点 2<span class="badge">0</span></li><li class="list-group-item node-treeview6" data-nodeid="3" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-user"></i></span>父节点 2<span class="badge">0</span></li><li class="list-group-item node-treeview6" data-nodeid="4" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-user"></i></span>父节点 3<span class="badge">0</span></li><li class="list-group-item node-treeview6" data-nodeid="5" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-user"></i></span>父节点 4<span class="badge">0</span></li><li class="list-group-item node-treeview6" data-nodeid="6" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-user"></i></span>父节点 5<span class="badge">0</span></li></ul></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>无边框</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">选项1</a>
+                            </li>
+                            <li><a href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">选项2</a>
+                            </li>
+                        </ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div id="treeview7" class="test treeview"><ul class="list-group"><li class="list-group-item node-treeview7" data-nodeid="0" style=""><span class="icon"><i class="click-collapse glyphicon glyphicon-minus"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 1</li><li class="list-group-item node-treeview7" data-nodeid="1" style=""><span class="indent"></span><span class="icon"><i class="click-expand glyphicon glyphicon-plus"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>子节点 1</li><li class="list-group-item node-treeview7" data-nodeid="2" style=""><span class="indent"></span><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>子节点 2</li><li class="list-group-item node-treeview7" data-nodeid="3" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 2</li><li class="list-group-item node-treeview7" data-nodeid="4" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 3</li><li class="list-group-item node-treeview7" data-nodeid="5" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 4</li><li class="list-group-item node-treeview7" data-nodeid="6" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 5</li></ul></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>多彩</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">选项1</a>
+                            </li>
+                            <li><a href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">选项2</a>
+                            </li>
+                        </ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div id="treeview8" class="test treeview"><ul class="list-group"><li class="list-group-item node-treeview8" data-nodeid="0" style=""><span class="icon"><i class="click-collapse glyphicon glyphicon-unchecked"></i></span><span class="icon"><i class="glyphicon glyphicon-user"></i></span>父节点 1<span class="badge">4</span></li><li class="list-group-item node-treeview8" data-nodeid="1" style=""><span class="indent"></span><span class="icon"><i class="click-expand glyphicon glyphicon-stop"></i></span><span class="icon"><i class="glyphicon glyphicon-user"></i></span>子节点 1<span class="badge">2</span></li><li class="list-group-item node-treeview8" data-nodeid="2" style=""><span class="indent"></span><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-user"></i></span>子节点 2<span class="badge">0</span></li><li class="list-group-item node-treeview8" data-nodeid="3" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-user"></i></span>父节点 2<span class="badge">0</span></li><li class="list-group-item node-treeview8" data-nodeid="4" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-user"></i></span>父节点 3<span class="badge">0</span></li><li class="list-group-item node-treeview8" data-nodeid="5" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-user"></i></span>父节点 4<span class="badge">0</span></li><li class="list-group-item node-treeview8" data-nodeid="6" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-user"></i></span>父节点 5<span class="badge">0</span></li></ul></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>节点覆盖</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">选项1</a>
+                            </li>
+                            <li><a href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">选项2</a>
+                            </li>
+                        </ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div id="treeview9" class="test treeview"><ul class="list-group"><li class="list-group-item node-treeview9" data-nodeid="0" style=""><span class="icon"><i class="click-collapse glyphicon glyphicon-unchecked"></i></span><span class="icon"><i class="glyphicon glyphicon-user"></i></span>父节点 1<span class="badge">2</span></li><li class="list-group-item node-treeview9" data-nodeid="1" style=""><span class="indent"></span><span class="icon"><i class="click-expand glyphicon glyphicon-stop"></i></span><span class="icon"><i class="glyphicon glyphicon-user"></i></span>子节点 1<span class="badge">3</span></li><li class="list-group-item node-treeview9" data-nodeid="2" style=""><span class="indent"></span><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-user"></i></span>子节点 2<span class="badge">3</span></li><li class="list-group-item node-treeview9" data-nodeid="3" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-user"></i></span>父节点 2<span class="badge">7</span></li><li class="list-group-item node-treeview9" data-nodeid="4" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-earphone"></i></span>父节点 3<span class="badge">11</span></li><li class="list-group-item node-treeview9" data-nodeid="5" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-cloud-download"></i></span>父节点 4<span class="badge">19</span></li><li class="list-group-item node-treeview9" data-nodeid="6" style="color:pink;background-color:red;"><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-certificate"></i></span>父节点 5<span class="badge">available</span><span class="badge">0</span></li></ul></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>使用链接</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">选项1</a>
+                            </li>
+                            <li><a href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">选项2</a>
+                            </li>
+                        </ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div id="treeview10" class="test treeview"><ul class="list-group"><li class="list-group-item node-treeview10" data-nodeid="0" style=""><span class="icon"><i class="click-collapse glyphicon glyphicon-minus"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span><a href="http://www.sucaihuo.com/modals/3/328/demo/tree_view.html?v=3.0#parent1" style="color:inherit;">父节点 1</a></li><li class="list-group-item node-treeview10" data-nodeid="1" style=""><span class="indent"></span><span class="icon"><i class="click-expand glyphicon glyphicon-plus"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span><a href="http://www.sucaihuo.com/modals/3/328/demo/tree_view.html?v=3.0#child1" style="color:inherit;">子节点 1</a></li><li class="list-group-item node-treeview10" data-nodeid="2" style=""><span class="indent"></span><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span><a href="http://www.sucaihuo.com/modals/3/328/demo/tree_view.html?v=3.0#child2" style="color:inherit;">子节点 2</a></li><li class="list-group-item node-treeview10" data-nodeid="3" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span><a href="http://www.sucaihuo.com/modals/3/328/demo/tree_view.html?v=3.0#parent2" style="color:inherit;">父节点 2</a></li><li class="list-group-item node-treeview10" data-nodeid="4" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span><a href="http://www.sucaihuo.com/modals/3/328/demo/tree_view.html?v=3.0#parent3" style="color:inherit;">父节点 3</a></li><li class="list-group-item node-treeview10" data-nodeid="5" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span><a href="http://www.sucaihuo.com/modals/3/328/demo/tree_view.html?v=3.0#parent4" style="color:inherit;">父节点 4</a></li><li class="list-group-item node-treeview10" data-nodeid="6" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span><a href="http://www.sucaihuo.com/modals/3/328/demo/tree_view.html?v=3.0#parent5" style="color:inherit;">父节点 5</a></li></ul></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>事件</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">选项1</a>
+                            </li>
+                            <li><a href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">选项2</a>
+                            </li>
+                        </ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="col-sm-6">
+                        <div id="treeview11" class="test treeview"><ul class="list-group"><li class="list-group-item node-treeview11" data-nodeid="0" style=""><span class="icon"><i class="click-collapse glyphicon glyphicon-minus"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 1</li><li class="list-group-item node-treeview11" data-nodeid="1" style=""><span class="indent"></span><span class="icon"><i class="click-expand glyphicon glyphicon-plus"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>子节点 1</li><li class="list-group-item node-treeview11" data-nodeid="2" style=""><span class="indent"></span><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>子节点 2</li><li class="list-group-item node-treeview11" data-nodeid="3" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 2</li><li class="list-group-item node-treeview11" data-nodeid="4" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 3</li><li class="list-group-item node-treeview11" data-nodeid="5" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 4</li><li class="list-group-item node-treeview11" data-nodeid="6" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 5</li></ul></div>
+                    </div>
+                    <div class="col-sm-6">
+                        <h5>事件输出：</h5>
+                        <hr>
+                        <div id="event_output"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>JSON数据</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">选项1</a>
+                            </li>
+                            <li><a href="http://www.sucaihuo.com/modals/3/328/demo/buttons.html#">选项2</a>
+                            </li>
+                        </ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div id="treeview12" class="test treeview"><ul class="list-group"><li class="list-group-item node-treeview12" data-nodeid="0" style=""><span class="icon"><i class="click-collapse glyphicon glyphicon-minus"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 1</li><li class="list-group-item node-treeview12" data-nodeid="1" style=""><span class="indent"></span><span class="icon"><i class="click-expand glyphicon glyphicon-plus"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>子节点 1</li><li class="list-group-item node-treeview12" data-nodeid="2" style=""><span class="indent"></span><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>子节点 2</li><li class="list-group-item node-treeview12" data-nodeid="3" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 2</li><li class="list-group-item node-treeview12" data-nodeid="4" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 3</li><li class="list-group-item node-treeview12" data-nodeid="5" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 4</li><li class="list-group-item node-treeview12" data-nodeid="6" style=""><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>父节点 5</li></ul></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="jquery-2.1.1.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+
+    <!-- 自定义js -->
+    <script src="content.min(1).js"></script>
+
+
+    <!-- Bootstrap-Treeview plugin javascript -->
+    <script src="bootstrap-treeview.js"></script>
+    <script src="treeview-demo.min.js"></script>
+
+    
+    
+
+
+
+</body></html>

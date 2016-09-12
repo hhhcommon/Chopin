@@ -1,0 +1,32 @@
+<!doctype html>  
+<html dir="ltr" lang="en-US">
+	<head>
+
+		<title>jqPagination, a jQuery pagination plugin (obviously)</title>
+		<link href="../resources/plugins/hplus/css/plugins/jqpagination/jqpagination.css" rel="stylesheet"/>
+		<!-- scripts -->
+		<script src="../resources/plugins/hplus/js/jquery-2.1.1.min.js"></script>
+		<script src="../resources/plugins/hplus/js/plugins/jqpagination/jquery.jqpagination.js"></script>
+		<script>
+			$(document).ready(function() {
+				$('.pagination').jqPagination({
+					link_string	: '/?page={page_number}',
+					max_page	: 30,
+					paged		: function(page) {
+						//alert({page_number});
+					}
+				});
+
+			});
+		</script>
+	</head>
+	<body>
+			<div class="gigantic pagination">
+			    <a href="#" class="first" data-action="first">&laquo;</a>
+			    <a href="#" class="previous" data-action="previous">&lsaquo;</a>
+			    <input type="text" readonly="readonly" value=""/>
+			    <a href="#" class="next" data-action="next">&rsaquo;</a>
+			    <a href="#" class="last" data-action="last">&raquo;</a>
+			</div>
+	</body>
+</html>

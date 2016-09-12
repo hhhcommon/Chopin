@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+  电台
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BROADCAST">
+  <!-- 对象定义:元数据模式 -->
+  <resultMap id="BaseResultMap" type="broadcast">
+    <id     column="id"            property="id"            jdbcType="VARCHAR"/>
+    <result column="bcTitle"       property="bcTitle"       jdbcType="VARCHAR"/>
+    <result column="bcPubType"     property="bcPubType"     jdbcType="INTEGER"/>
+    <result column="bcPubId"       property="bcPubId"       jdbcType="VARCHAR"/>
+    <result column="bcPublisher"   property="bcPublisher"   jdbcType="VARCHAR"/>
+    <result column="bcImg"         property="bcImg"         jdbcType="VARCHAR"/>
+    <result column="bcUrl"         property="bcUrl"         jdbcType="VARCHAR"/>
+    <result column="descn"         property="desc"          jdbcType="VARCHAR"/>
+    <result column="cTime"         property="CTime"         jdbcType="TIMESTAMP"/>
+  </resultMap>
+
+  <!-- 所有列 -->
+  <sql id="Base_Column_List">
+    id, bcTitle, bcPubType, bcPubId, bcPublisher, bcImg, bcUrl, descn, cTime 
+  </sql>
+  <sql id="Base_Column_List_A">
+    a.id, a.bcTitle, a.bcPubType, a.bcPubId, a.bcPublisher, a.bcImg, a.bcUrl, a.descn, a.cTime 
+  </sql>
+
+  <!-- 条件子句 -->
+  <sql id="WhereClauseByEntiey">
+    <where>
+      <trim prefix="(" suffix=")" prefixOverrides="and">
+        <if test="id!=null"> and id=#{id,jdbcType=VARCHAR}</if>
+        <if test="bcTitle!=null"> and bcTitle=#{bcTitle,jdbcType=VARCHAR}</if>
+        <if test="bcPubType!=null and bcPubType!=0"> and bcPubType=#{bcPubType,jdbcType=INTEGER}</if>
+        <if test="bcPubId!=null"> and bcPubId=#{bcPubId,jdbcType=VARCHAR}</if>
+        <if test="bcPublisher!=null"> and bcPublisher=#{bcPublisher,jdbcType=VARCHAR}</if>
+        <if test="bcImg!=null"> and bcImg=#{bcImg,jdbcType=VARCHAR}</if>
+        <if test="bcUrl!=null"> and bcUrl=#{bcUrl,jdbcType=VARCHAR}</if>
+        <if test="desc!=null"> and descn=#{desc,jdbcType=VARCHAR}</if>
+        <if test="CTime!=null"> and cTime=#{CTime,jdbcType=TIMESTAMP}</if>
+      </trim>
+    </where>
+  </sql>
+  <sql id="WhereClauseByEntiey_A">
+    <trim prefix="(" suffix=")" prefixOverrides="and">
+        <if test="id!=null"> and a.id=#{id,jdbcType=VARCHAR}</if>
+        <if test="bcTitle!=null"> and a.bcTitle=#{bcTitle,jdbcType=VARCHAR}</if>
+        <if test="bcPubType!=null and bcPubType!=0"> and a.bcPubType=#{bcPubType,jdbcType=INTEGER}</if>
+        <if test="bcPubId!=null"> and a.bcPubId=#{bcPubId,jdbcType=VARCHAR}</if>
+        <if test="bcPublisher!=null"> and a.bcPublisher=#{bcPublisher,jdbcType=VARCHAR}</if>
+        <if test="bcImg!=null"> and a.bcImg=#{bcImg,jdbcType=VARCHAR}</if>
+        <if test="bcUrl!=null"> and a.bcUrl=#{bcUrl,jdbcType=VARCHAR}</if>
+        <if test="desc!=null"> and a.descn=#{desc,jdbcType=VARCHAR}</if>
+        <if test="CTime!=null"> and a.cTime=#{CTime,jdbcType=TIMESTAMP}</if>
+    </trim>
+  </sql>
+
+  <!-- 获得记录条数-->
+  <select id="count" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(*) from wt_Broadcast <if test="_parameter!=null"><include refid="WhereClauseByEntiey"/></if>
+  </select>
+
+  <!-- 获得列表 -->
+  <select id="getList" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select <include refid="Base_Column_List"/> from wt_Broadcast
+    <if test="_parameter!=null"><include refid="WhereClauseByEntiey"/>
+    <if test="orderByClause!=null">order by ${orderByClause}</if>
+    </if>
+  </select>
+  <!-- 获得列表为显示:临时 -->
+  <select id="query4ViewTemp" resultType="java.util.HashMap" parameterType="java.util.Map">
+    select <include refid="Base_Column_List_A"/>, b.bcSource, b.flowURI from wt_Broadcast a
+    left join wt_BCLiveFlow b on a.id=b.bcId and b.isMain=1
+      <if test="mId!=null">
+      	<if test="mId==1">
+      	join wt_ResDict_Ref c on c.resId=a.id and c.dictMid=#{mId,jdbcType=VARCHAR} and c.dictDid=#{rId,jdbcType=VARCHAR}
+     	</if>
+      	<if test="mId==2">
+      	join wt_ResDict_Ref c on c.resId=a.id and c.dictMid=#{mId,jdbcType=VARCHAR} and c.dictDid in (${rId})
+     	 </if>
+     </if>
+    <if test="_parameter!=null"><include refid="WhereClauseByEntiey_A"/>
+      <if test="orderByClause!=null">order by ${orderByClause}</if>
+    </if>
+  </select>
+
+  <!-- 获得一条数据 -->
+  <select id="getInfo" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select <include refid="Base_Column_List"/> from wt_Broadcast <if test="_parameter!=null"><include refid="WhereClauseByEntiey"/></if>
+  </select>
+  <select id="getInfoById" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select <include refid="Base_Column_List"/> from wt_Broadcast where id=#{id,jdbcType=VARCHAR} limit 1
+  </select>
+
+  <!-- 新增数据 -->
+  <insert id="insert" parameterType="java.util.Map">
+    insert into wt_Broadcast
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id!=null">id,</if>
+      <if test="bcTitle!=null">bcTitle,</if>
+      <if test="bcPubType!=null">bcPubType,</if>
+      <if test="bcPubId!=null">bcPubId,</if>
+      <if test="bcPublisher!=null">bcPublisher,</if>
+      <if test="bcImg!=null">bcImg,</if>
+      <if test="bcUrl!=null">bcUrl,</if>
+      <if test="desc!=null">descn,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id!=null">#{id,jdbcType=VARCHAR},</if>
+      <if test="bcTitle!=null">#{bcTitle,jdbcType=VARCHAR},</if>
+      <if test="bcPubType!=null and bcPubType!=0">#{bcPubType,jdbcType=INTEGER},</if>
+      <if test="bcPubId!=null">#{bcPubId,jdbcType=VARCHAR},</if>
+      <if test="bcPublisher!=null">#{bcPublisher,jdbcType=VARCHAR},</if>
+      <if test="bcImg!=null">#{bcImg,jdbcType=VARCHAR},</if>
+      <if test="bcUrl!=null">#{bcUrl,jdbcType=VARCHAR},</if>
+      <if test="desc!=null">#{desc,jdbcType=VARCHAR},</if>
+    </trim>
+  </insert>
+
+  <!-- 修改 根据主键-->
+  <update id="update" parameterType="java.util.Map">
+    update wt_Broadcast
+    <set>
+      <if test="bcTitle!=null">bcTitle=#{bcTitle,jdbcType=VARCHAR},</if>
+      <if test="bcPubType!=null and bcPubType!=0">bcPubType=#{bcPubType,jdbcType=INTEGER},</if>
+      <if test="bcPubId!=null">bcPubId=#{bcPubId,jdbcType=VARCHAR},</if>
+      <if test="bcPublisher!=null">bcPublisher=#{bcPublisher,jdbcType=VARCHAR},</if>
+      <if test="bcImg!=null">bcImg=#{bcImg,jdbcType=VARCHAR},</if>
+      <if test="bcUrl!=null">bcUrl=#{bcUrl,jdbcType=VARCHAR},</if>
+      <if test="desc!=null">descn=#{desc,jdbcType=VARCHAR},</if>
+      <if test="CTime=null">cTime=#{CTime,jdbcType=TIMESTAMP},</if>
+    </set>
+    where id=#{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 删除数据 -->
+  <delete id="delete" parameterType="java.lang.String">
+    delete from wt_Broadcast where id=#{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByEntity" parameterType="java.util.Map">
+    delete from wt_Broadcast <if test="_parameter!=null"><include refid="WhereClauseByEntiey"/></if>
+  </delete>
+  <delete id="multiDelBc" parameterType="java.lang.String">
+    delete from wt_Broadcast where id in (${value})
+  </delete>
+</mapper>

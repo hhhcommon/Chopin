@@ -1,0 +1,395 @@
+@charset "utf-8";
+li,a,input{
+	outline:0;
+}
+body{
+	font-family:'Microsoft Yahei','Arial';
+}
+/*鏈〉澶存煡璇㈠尯绛涢�夊尯*/
+.operate{
+	height:30px;
+	width:100%;
+	background:#eff3f6;
+	border-top:1px solid #ccc;
+	overflow:hidden;
+}
+.operate .allCheck{
+	height:30px;
+	line-height: 30px;
+	margin:0 12px;
+	display:inline-block;
+}
+.operate button{
+ width:52px;
+ height:24px;
+ margin-top:-4px;
+ background:#0077c7;
+ color:#f1fcff;
+ text-align:center;
+ padding:2px;
+ font-size:12px;
+}
+.operate select,
+.operate .btn-group button{
+	height:22px;
+	background-color:white;
+	border:1px solid #ccc;
+	border-radius: 4px;
+	padding:1px 5px;
+	margin-bottom:4px;
+	margin-right:10px;
+	font-size: 12px;
+	/*瑙ｅ喅chrome娴忚鍣ㄦ渶灏忓瓧鍙峰彧鑳戒负12鐨勯棶棰�
+    -webkit-transform: scale(0.9);*/
+}
+
+.operate .searchMore{
+	color:#a0a1a3;
+
+}
+.operate .searchMore:hover{
+	text-decoration: underline;
+	font-weight:bold;
+}
+.operate .cDate{
+	 display:inline-block;
+	 margin-right:12px;
+}
+.operate .cDate span{
+	font-weight:bold;
+}
+.operate .cDate input{
+	height:22px;
+	width:100px;
+	border-radius: 4px;
+	outline: none;
+	border-style:none;
+	border:1px solid #ccc;
+	/*padding:4px 6px;*/
+}
+
+.mainShow{
+	height:calc(100% - 30px);
+	width:100%;
+	position:relative;
+	overflow:hidden;
+}
+
+/*宸︿晶鍒楄〃鏍峰紡*/
+.pubList{
+	position:absolute;
+	left:0;
+	top:0;
+	width:420px;
+	height:100%;
+	border-right:1px solid #ccc;
+	overflow-y:auto;
+}
+.mainShow .page{
+	width:419px;
+	height:40px;
+	position:fixed;
+	bottom:0;
+	left:0;
+	padding:0 80px 0 28px;
+	background-color:#f3f3f4;
+	border-top:1px solid #ccc;
+}
+
+/* 鎷栧姩杈规潯锛屽乏鍙虫媺澶э紝缂╁皬
+.pubList .drag{
+	 position:absolute;
+	 top:0;
+	 width:4px;
+	 height:500px;
+	 z-index:9;
+	background-color:#ccc;
+}
+
+.pubList .drag:hover{
+    cursor:col-resize;
+}
+.pubList .toHid{
+	width:20px;
+	height:50px;
+	background:#ccc;
+	z-index:10;
+	position:absolute;
+	top:200px;
+	right:-10px;
+}
+*/
+.pubList .actList{
+	position:relative;
+	padding-bottom:50px;
+}
+.clickBar{
+	position:absolute;
+  top:0;
+  left:0;
+	width:4px;
+	height:70px;
+	background-color:#0077c7;
+	border-radius:2px;
+}
+.hoverBar{
+  position:absolute;
+  top:0;
+  left:0;
+  width:4px;
+  height:70px;
+  background-color:#0077c7;
+  border-radius:2px;
+}
+.listBox{
+	width:100%;
+	height:70px;
+	padding:6px;
+	border-bottom:2px solid #f3f3f4;
+	background:white;
+	position:relative;
+	cursor:pointer;
+}
+
+.listBox .listImg{
+	height:100%;
+	width:15%;
+	margin-right:15px;
+	margin-left:6px;
+}
+.listBox .listImg img{
+	height:100%;
+	width:100%;
+}
+.listBox .listImg,
+.listBox .listCon,
+.listBox .listCheck{
+	float:left;
+}
+.listBox .listCon{
+	width:70%;
+	height:100%;
+}
+
+.listBox .listCheck{
+	width:6%;
+	text-align: center;
+	height:58px;
+	line-height:58px;
+}
+
+.listBox p{
+	margin:0 0 2px;
+}
+.listBox .listCon h3{
+	font-size:12px;
+	margin-top:0;
+	margin-bottom:2px;
+	color:#636363;
+	position:relative;
+	display:inline-block;
+	max-width:180px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.listBox .kind{
+	width:30px;
+	height:16px;
+	font-size:10px;
+	font-weight: normal;
+	line-height:20px;
+	text-align: center;
+	border-radius: 5px;
+	position:absolute;
+	right:0;
+	bottom:0;
+	color:white;
+	-webkit-transform: scale(0.9);
+}
+.listBox .secTitle{
+	font-size:12px;
+	color:#ccc;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.listBox .other{
+	font-size:12px;
+	color:#3871a6;
+}
+.listBox .other span{
+	padding-right:12px;
+}
+.pubList .listBox .sortUpdate{
+	width:100px;
+	height:20px;
+	position:absolute;
+	top:5px;
+	right:5px;
+}
+.pubList .listBox .sortUpdate .sortNum{
+	width:60px;
+	height:20px;
+	background-color:#f3f3f4;
+	color:black;
+	text-align:center;
+	border:none;
+	border-radius:4px;
+	outline:0px;
+}
+.pubList .listBox .sortUpdate .sortUpdateBtn{
+	height:20px;
+	line-heihgt:20px;
+	width:24px;
+	margin:0;
+	padding:0;
+	border-radius:20px;
+	border:none;
+}
+
+/*鍙充晶鍐呭璇︽儏鏍峰紡*/
+.pubDetail{
+	position:absolute;
+	right:0;
+	top:0;
+	height:100%;
+	/*鍔ㄦ�佽幏寰楁湰鍖哄潡鐨勫搴︼紝娉ㄦ剰鎿嶄綔绗﹀墠鍚庨渶鏈夌┖鏍�*/
+	width:calc(100% - 420px);
+	background:white;
+	/*z-index:-2; z-index的取值会影响滚动条的使用，overflow:auto时，只显示滚动条，但滚不动*/
+}
+.pubDetail .conBox{
+	padding:25px 30px 10px 40px;
+	height:100%;
+}
+.pubDetail .conBox .conTitle{
+	position:relative;
+	overflow:hidden;
+}
+
+.pubDetail .conBox .conTitle .titleImg{
+	float:left;
+	width:98px;
+	height:98px;
+	border:1px solid #f3f3f4;
+}
+.pubDetail .conBox .conTitle .titleImg img{
+	width:100%;
+	height:100%;
+}
+.pubDetail .conBox .conTitle .detail{
+	float:left;
+	padding-left:20px;
+	width:calc(100% - 120px);
+}
+.pubDetail .conBox .conTitle h2{
+	font-weight:600;
+	margin-right:24px;
+	position:relative;
+	font-size:20px;
+}
+.pubDetail .conBox .conTitle h2 span{
+	width:30px;
+	height:16px;
+	font-size:10px;
+	font-weight: normal;
+	line-height:16px;
+	text-align: center;
+	background:#f9be36;
+	border-radius: 5px;
+	position:absolute;
+	right:-36px;
+	top:7px;
+	color:white;
+	-webkit-transform: scale(0.9);
+	padding-left:0;
+}
+.conBox .conTitle span{
+	padding-left:24px;
+	color:#ccc;
+	font-size:12px;
+}
+
+.pubDetail .conBox .conTitle dl{
+	font-size:12px;
+	color:#343434;
+  line-height:1.6em;
+  padding-top:10px;
+}
+.pubDetail .conBox .conTitle dl dt{
+	float:left;
+	padding-right:8px;
+	clear:left;
+	color:#767676;
+	clear:both;
+}
+.pubDetail .conBox .conTitle dl dt dd{
+	float:left;
+}
+
+.pubDetail .conBox .conPlay{
+	margin-bottom:20px;
+	position:relative;
+}
+.pubDetail .conBox .conPlay span{
+	  display: inline-block;
+    width: 0;
+    height: 0;
+    vertical-align: middle;
+    border-left: 18px dashed;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    position:absolute;
+    top:24px;
+    left:28px;
+    color:#0077c7;
+}
+.pubDetail .conBox .itemSortBox{
+	clear:both;
+	padding:25px 0 10px;
+	font-size:14px;
+	color:#343434;
+	font-weight: bold;
+	border-bottom:1px solid #ccc;
+}
+.pubDetail .conBox .itemSortBox .itemSort{
+	display:inline-block;
+	float:right;
+	border:1px solid #aaa;
+	border-radius: 8px;
+	width:36px;
+	height:20px;
+	line-height:20px;
+	text-align:center;
+	font-size:12px;
+	color:#343434
+}
+
+	
+.pubDetail .conBox .conTable{
+	width:100%;
+	height:auto;
+  padding-bottom:30px;
+	overflow-y:auto;
+}
+
+.conBox .conTable td span{
+	margin-right:8px;
+}
+.conBox .conTable td span:hover{
+	cursor:pointer;
+}
+/*鍙戝竷绠＄悊鍐呭璇︽儏鍓嶇殑褰╄壊鍦嗙偣-宸插鏍�*/
+.conDot{
+  display:inline-block;
+  width:15px;
+  height:15px;
+  border:4px solid:#00a643;
+  border-radius:15px;
+  background:#00c940;
+  position:absolute;
+  left:-25px;
+  top:30px;
+}
+

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="renderer" content="webkit">
+  <title>我听，我享听</title>
+  <meta name="keywords" content="我听，我享听,主播,主播平台,专业主播平台">
+  <meta name="description" content="我听，我享听">
+  <!--[if lt IE 8]>
+    <script>
+      alert('本系统已不支持IE6-8，请使用谷歌、火狐等浏览器\n或360、QQ等国产浏览器的极速模式浏览本页面！');
+    </script>
+  <![endif]-->
+  <link rel="shortcut icon" href="./resources/images/favicon.ico" />
+  <link href="./resources/plugins/hplus/css/bootstrap.min.css" rel="stylesheet">
+  <link href="./resources/plugins/hplus/css/font-awesome.min.css" rel="stylesheet">
+  <link href="./resources/plugins/hplus/js/plugins/layer/skin/layer.css" rel="stylesheet" id="layui_layer_skinlayercss">
+  <link href="./resources/plugins/hplus/js/plugins/layer/skin/layer.ext.css" rel="stylesheet" id="layui_layer_skinlayerextcss">
+  <link href="./resources/plugins/hplus/js/plugins/layer/skin/moon/style.css" rel="stylesheet" id="layui_layer_skinmoonstylecss">
+  <link href="./resources/plugins/hplus/css/style.min.css" rel="stylesheet">
+  <link href="./resources/css/host.css" rel="stylesheet">
+  <script src="./resources/plugins/hplus/js/jquery-2.1.1.min.js"></script>
+  <script src="./resources/js/mainPage.js"></script>
+  <script src="./resources/js/context.utils.js"></script>
+  <script src="./resources/js/host.js"></script>
+</head>
+<body style="background:#f2f2f2;overflow:auto;">
+  <!-- 页头 -->
+  <div style="width:100%;height:52px;background:#fff;border-bottom:2px solid #ccc;">
+    <div class="" style="float:left;width:15%;line-height:50px;">
+      <img alt="woting logo" style="width:80%;height:32px;padding-left:30px;" src="http://wotingfm.com:908/CM/resources/images/logo_yellow.png" />
+    </div>
+  </div>
+  <!-- 页主体 -->
+  <div id="wrapper">
+    <!--左侧导航-->
+    <div class="navLeft">
+      <!-- 个人信息 -->
+      <div class="person">
+        <div class="perImg">
+          <img src="http://wotingfm.com:908/CM/resources/images/a5.jpg" alt=""/>
+          <p>胖胖</p>
+        </div>
+        <div class="perRelation">
+          <div class="fs"><span><a href="#">1.3万</a></span>粉丝</div>
+          <div class="gz"><span><a href="#">668</a></span>关注</div>
+        </div>
+      </div>
+      <!-- 导航列表 -->
+      <nav class="nav">
+        <ul>
+          <li class="navList active"><a _href="./host/zj.html" href="javascript:void(0);">专辑管理</a></li>  
+          <li class="navList"><a _href="./host/audio.html" href="javascript:void(0);">声音管理</a></li>
+          <span class="bar"></span>                
+        </ul>
+      </nav>
+    </div>
+    <!--中间部分开始-->
+    <div class="" id="content-main">
+      <!--登录进来，默认显示Host欢迎首页-->
+      <iframe width="100%" height="100%" src="./host/zj.html" frameborder="0" name="myIframe" id="myIframe"></iframe>
+      <iframe width="100%" height="680px" src="./host/audio.html" scrolling="no" frameborder="0" name="newIframe" id="newIframe"></iframe>
+    </div>
+    <!-- 右侧热点区 -->
+    <div class="sources">
+      <div class="hots">新闻热点</div>
+      <div class="dataAnalysis">数据分析</div>
+    </div>
+  </div>
+  <!-- 全局js -->
+  <script src="./resources/plugins/hplus/js/bootstrap.min.js"></script>
+  <script src="./resources/plugins/hplus/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+  <script src="./resources/plugins/hplus/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+  <script src="./resources/plugins/hplus/js/layer.min.js"></script>
+  <!-- 自定义js -->
+  <script src="./resources/plugins/hplus/js/hplus.min.js"></script>
+  <!-- jQuery Validation plugin javascript-->
+  <script src="./resources/plugins/hplus/js/plugins/validate/jquery.validate.min.js"></script>
+  <!-- 第三方插件 -->
+  <script src="./resources/plugins/hplus/js/plugins/pace/pace.min.js"></script>
+  <script>
+  $.validator.setDefaults({
+    highlight:function(a){$(a).closest(".form-group").addClass("has-error")},
+    success:function(a){$(a).closest(".form-group").removeClass("has-error")},
+    errorElement:"span",
+    errorPlacement:function(a,b){if(b.is(":radio")||b.is(":checkbox")){a.appendTo(b.parent().parent().parent())}else{a.appendTo(b.parent())}},
+    errorClass:"help-block m-b-none",
+    validClass:"help-block m-b-none"
+  });
+  $(function(){
+    /*清除浏览器缓存*/
+    $.ajaxSetup ({
+      cache: false 
+    });
+    var dataParam={};
+    var iframe;
+    //点击功能列表，切换页面
+    $(".navList").on("click",function(){
+      $("#myIframe").attr({"src":$(this).children("a").attr("_href")});
+      $(this).addClass("active").siblings().removeClass("active");
+      $(".bar").css({"top":$(this).index()*$(this).height()});
+    });
+
+    /*
+              以下是创建专辑节目相关内容
+    */
+    //初始化创建专辑元素的位置
+    $(".opeBox,#newIframe").css({"left":($(window).width()-$(".opeBox").width())/2});
+    //点击遮罩，或取消，确定，关闭这些按钮时，隐藏窗口和遮罩,并重置表单
+    $(".shade,.close-link").on("click",function(){
+      $("form")[0].reset();
+      $(".opeBox").attr({"opeType":"conAdd"}).find("h5").text("创建专辑");
+      $("input").remove("#ContentId");
+      $("<div class='previewImg'><img class='defaultImg' src='http://wotingfm.com:908/CM/resources/images/default.png' alt='front cover' /></div>").replaceAll(".previewImg");
+      $(".shade,.opeBox,#newIframe").css({"display":"none"});
+    });
+      
+    //封面图片预览与上传
+    $("input[type='file']").change(function(){
+      var _this=$(this);
+      //图片预览
+      if($(".defaultImg").css("display")!="none"){
+        $(".defaultImg").css({"display":"none"});
+      }
+      var fileReader = new FileReader();
+      fileReader.onload = function(evt){
+        if(FileReader.DONE==fileReader.readyState){
+          var newImg = $("<img alt='front cover' class='newImg' />");
+          newImg.attr({"src":this.result});//是Base64的data url数据
+          if($(".previewImg").children().length>=1){
+            $(".previewImg img:last").replaceWith(newImg);
+          }else{
+            $(".previewImg").append(newImg);
+          }
+        }
+      }
+      fileReader.readAsDataURL($(this)[0].files[0]);
+         
+      //文件上传
+      var oMyForm = new FormData();
+      oMyForm.append("ContentFile", $(this)[0].files[0]);
+      $.ajax({
+        url:rootPath+"common/uploadCM.do",
+        type:"POST",
+        data:oMyForm,
+        cache: false,
+        processData: false,
+        contentType: false,
+        dataType:"json",
+        //表单提交前进行验证
+        success: function (opeResult) {
+          if(opeResult.ful[0].storeFilename){
+            _this.siblings("input[type='hidden']").val(opeResult.ful[0].storeFilename);
+          }else{
+            alert(opeResult.err)
+          }
+        },
+        error: function(jqXHR){
+          alert("发生错误" + jqXHR.status);
+        }
+      });
+    });
+    
+    //专辑分类
+    $("#ContentCatalogsId").on("change",function(){
+      $(".changeLabel").css({"display":"none"});
+      $(".ul-metas").empty();
+      var categoryId=$(this).children('option:selected').val();
+      $(".changeLabel").css({"display":"block"});
+      $.ajax({
+        type: "POST",    
+        url:rootPath+"common/getCategoryTags.do",
+        dataType: "json",
+        data:{CategoryId:categoryId},
+        success: function(categoryTags) {
+          if (categoryTags.ReturnType=="1001") {
+            for(var i=0;i<categoryTags.AllCount;i++){
+              li_tags=$("<li><input  type='checkbox' Title="+categoryTags.ResultList[i].Title+" Mid="+categoryTags.ResultList[i].Mid+" Id="+categoryTags.ResultList[i].Id+" value="+categoryTags.ResultList[i].Id+"><span class='ic-checkbox'></span>"+categoryTags.ResultList[i].Title+"</li>");
+              $(".ul-metas").append(li_tags);
+            }
+            //专辑分类标签最多可选个数
+            $(".ul-metas li input[type='checkbox']").on("click",function(){
+              $("input[type='checkbox']").attr('disabled', true);
+              if($("input[type='checkbox']:checked").length>=3){
+                $("input[type='checkbox']:checked").attr('disabled', false);
+              }else{
+                $("input[type='checkbox']").attr('disabled', false);
+              }
+            })
+          }
+        },
+        error: function(jqXHR){
+          alert("发生错误" + jqXHR.status);
+        }
+      });
+    })
+        
+    //form表单提交
+    $("#submitBtn,#draftBtn").click(function (){
+      var values="";
+      var i=0;
+      var checked=$("input[type='checkbox']:checked");
+      for(var i=0;i<checked.length;i++){
+        if(i<checked.length-1){
+          values+=checked[i].value+',';
+        }else{
+          values+=checked[i].value;
+        }
+      }  
+      $("#ContentTags").val(values);
+      var contentStatus=$(this).attr("id")=="submitBtn"?"1":"0";
+      $("#ContentStatus").val(contentStatus);
+      var opeType=$(".opeBox").attr("opeType");
+      if(opeType=="conAdd"){
+        if($("#ContentImg").val()==""){
+          //如未设置封面，将使用平台默认图片
+          $("#ContentImg").val($(".defaultImg").attr("src"));
+        }
+        dataParam={
+          "url":rootPath+"content/seq/addSeqMediaInfo.do",
+          "data":$("#addSequForm").serializeArray()
+        };
+        $(".changeLabel").css({"display":"none"});
+        submitForm(dataParam);
+        $(".changeLabel").css({"display":"none"});
+        $(".ul-metas").empty();
+      }else{
+        dataParam={
+          "url":rootPath+"content/seq/updateSeqMediaInfo.do",
+          "data":$("#addSequForm").serializeArray(),
+          "contentId":$("#ContentId").val()
+        };
+        $(".changeLabel").css({"display":"none"});
+        submitForm(dataParam);
+        $(".changeLabel").css({"display":"none"});
+        $(".ul-metas").empty();
+      }
+    });
+         
+    /*
+    beforeSend : function() {
+      //制定表单验证规则与提示
+      $("#addSequForm").validate({
+        rules:{
+          ContentName:{required:true},
+        },
+        messages:{
+          ContentName:{required:"<i class='fa fa-times-circle'></i> "+"请输入专辑名称"}
+        }
+      });
+      if($(".form-group").hasClass("has-error")){//这判断有问题，找时间研究一下 第一次总是false，第二次才生效，验证执行的先后问题
+        return false;
+      }
+    },
+    */
+    function submitForm(obj){
+      $.ajax({
+        url:obj.url,
+        type:"POST",
+        dataType:"json",
+        data:obj.data,
+        success: function (opeResult) {
+          if (opeResult.ReturnType=="1001") {
+            if(obj.contentId){
+              alert("专辑修改成功");
+              $(".opeBox").attr({"opeType":"conAdd"}).find("h5").text("创建专辑");
+              $("input").remove("#ContentId");
+              $("<div class='previewImg'><img class='defaultImg' src='http://wotingfm.com:908/CM/resources/images/default.png' alt='front cover' /></div>").replaceAll(".previewImg");
+            }else{
+              alert("专辑创建成功");
+            }
+            $("#addSequForm")[0].reset();
+            $(".shade,.opeBox").css({"display":"none"});
+            //添加成功后，重新加载列表
+            AfterAddList({"UserId":userId,"url":rootPath+"content/seq/getHostSeqMediaList.do"});
+          }else{
+            alert(opeResult.Message);
+          }
+        },
+        error: function(jqXHR){
+          alert("发生错误" + jqXHR.status);
+        }
+      });
+    }
+            
+    function AfterAddList(obj) {
+      iframe=$(document.getElementById('myIframe').contentWindow.document);
+      $.ajax({
+        type : "POST",
+        url : obj.url,
+        dataType : "json",
+        data : JSON.stringify(obj),
+        beforeSend : function() {
+          iframe.find(".actList").html("<div style='text-align:center;height:300px;line-height:200px;'>数据加载中...</div>");
+        },
+        success : function(resultData) {
+          if (resultData.ReturnType == "1001") {
+            iframe.find(".actList").html(""); //再重新创建新的数据集时，先清空之前的
+            iframe.find(".totalCount").text(resultData.ResultList.AllCount);
+            ContentListLoad2(resultData);
+          } else {
+            iframe.find(".actList").html("<div style='text-align:center;height:300px;padding:20px;padding-top:140px;'>"+ resultData.Message)+ ")";
+          }
+        },
+        error : function(jqXHR) {
+          iframe.find(".actList").html("<div style='text-align:center;height:300px;line-height:200px;'>获取数据发生错误："+ jqXHR.status+ "</div>");
+        }
+      });
+    }
+            
+    //创建节目列表DOM树
+    function ContentListLoad2(actList) {
+      iframe=$(document.getElementById('myIframe').contentWindow.document);
+      var actListLength = actList.ResultList.AllCount;
+      var mediaType=actList.ResultList.List[0].MediaType;
+      if (actListLength == 0) {
+        iframe.find(".actList").html("<div style='text-align:center;height:500px;line-height:300px;'>还没有创建节目哦！</div>");
+      } else {
+        //声明下面需要创建的节点，以便添加内容和添加到文档中
+        var actListDiv,listDiv,imgDiv,imgA,thumbImg,imgShade,conUpdate,conEye,conDel,conPub,infoDiv,infoH,infHA,infoP1,infoP2;
+        //循环加载列表
+        for (var i = 0; i < actListLength; i++) {
+          listDiv = $("<div class='listBox'></div>");
+          listDiv.attr({
+            "contentId": actList.ResultList.List[i].ContentId,
+            "contentName": actList.ResultList.List[i].ContentName,
+            "contentDesc": actList.ResultList.List[i].ContentDesc,
+            "contentImg": actList.ResultList.List[i].ContentImg,
+            "subjectWords": actList.ResultList.List[i].SubjectWords
+          });
+          imgDiv = $("<div></div>");
+          imgA=$("<a href='javascript:;'></a>");
+          thumbImg = $("<img alt='节目封面图片'>");
+          thumbImg.attr({'src' : actList.ResultList.List[i].ContentImg});
+          imgShade=$("<div class='imgShade'></div>");
+          conUpdate=$("<i class='fa fa-pencil' opeType='conUpdate'></i>");
+          conEye=$("<i class='fa fa-eye' opeType='conEye'></i>");
+          conDel=$("<i class='fa fa-trash-o' opeType='conDel'></i>");
+          conPub=$("<i class='fa fa-plus-square-o' opeType='conPub'></i>");
+          infoDiv = $("<div class='infoBox'>");
+          infoH = $("<h4></h4>");
+          infoHA=$("<a href='javascript:;'></a>");
+          imgShade.append(conUpdate).append(conEye).append(conDel).append(conPub);
+          infoHA.text(actList.ResultList.List[i].ContentName);
+          infoP2 = $("<p class='lastTime'></p>");
+          infoP2.text((actList.ResultList.List[i].CTime).slice(0,10));
+          if(mediaType=="SEQU"){
+            listDiv.attr({
+    	        "contentCatalogsId": actList.ResultList.List[i].ContentCatalogs[0].CataDid
+    	        //contentChannelId 有的专辑没有选择栏目分类，后面根据需要再改动
+    	        // "contentChannelId": actList.ResultList.List[i].ContentPubChannels[0].ChannelId
+    	      });
+            imgDiv.addClass("imgBox");
+            infoP1 = $("<p class='subCount'></p>");
+            infoP1.text(actList.ResultList.List[i].SubCount+"个声音");
+            infoDiv.append(infoH.append(infoHA)).append(infoP1).append(infoP2);
+          }else{
+            listDiv.attr({"contentSeqId": actList.ResultList.List[i].ContentSeqId});
+            imgDiv.addClass("subImg");
+            infoDiv.append(infoH.append(infoHA)).append(infoP2);
+          }
+            imgDiv.append(imgA.append(thumbImg)).append(imgShade);
+            listDiv.append(imgDiv).append(infoDiv);
+            iframe.find(".actList").append(listDiv);
+        }
+      }
+    }
+    
+    //获取分类列表
+    getCatalogs();
+    //获得栏目列表
+    getChannel();
+  });
+  </script>
+  <!-- 遮罩 -->
+  <div class="shade"></div>
+  <!--创建专辑界面-->
+  <div class="row opeBox" id="sequ" opeType="conAdd">
+    <div class="col-sm-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>创建专辑</h5>
+          <div class="ibox-tools">
+            <a class="close-link">
+              <i class="fa fa-times"></i>
+            </a>
+          </div>
+        </div>
+        <div class="ibox-content">
+          <form class="form-horizontal m-t" id="addSequForm" onsubmit="return false;">
+            <input id="UserId" name="UserId" class="form-control" type="hidden" value="123" />
+            <input id="ContentStatus" name="ContentStatus" class="form-control" type="hidden" value="" />
+            <div class="form-group">
+              <label class="col-sm-3 control-label">专辑名称：</label>
+              <div class="col-sm-8">
+                <input id="ContentName" name="ContentName" class="form-control" type="text" aria-required="true">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">专辑封面：</label>
+              <div class="col-sm-8">
+                <div class="previewImg">
+                  <img class="defaultImg" src="resources/images/default.png" alt="front cover" />
+                </div>
+                <input id="uploadImg" name="uploadImg" class="form-control" type="file" accept=".png,.jpg" />
+                <input id="ContentImg" name="ContentImg" type="hidden" value="" />
+                <span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大1M，支持JPG、PNG格式</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">专辑分类：</label>
+              <div class="col-sm-8">
+                <select class="form-control" name="ContentCatalogsId" id="ContentCatalogsId">
+                  <option value="">请选择</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="changeLabel">
+                <label class="col-sm-5 control-label change-label">选择标签(最多可选3个)</label>
+                <input type="hidden" name="ContentTags" id="ContentTags" value="0">
+                <div class="metas clearfix new_tags" style="">
+                  <ul class="ul-metas" id="ul-metas"></ul>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+            <label class="col-sm-3 control-label">发布栏目：</label>
+              <div class="col-sm-8">
+                <select class="form-control" name="ContentChannelId" id="ContentChannelId" value="" >
+                  <option value="">请选择</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+            <label class="col-sm-3 control-label">专辑简介：</label>
+            <div class="col-sm-8">
+              <textarea id="ContentDesc" name="ContentDesc" class="form-control"></textarea>
+            </div>
+            </div>
+            <!-- 
+            <div class="form-group">
+              <label class="col-sm-3 control-label">添加声音：</label>
+              <div class="col-sm-8">
+                <input id="contentUrl" name="contentUrl" class="form-control" type="file">
+              </div>
+            </div>
+             -->
+            <div class="form-group">
+              <div class="col-sm-3 text-right">
+                <button class="btn btn-warning" id="submitBtn" type="submit">提交</button>
+              </div>
+              <div class="col-sm-3 text-center">
+                <button class="btn btn-warning" id="pubBtn" type="publish">发布</button>
+              </div>
+              <div class="col-sm-3 text-center">
+                <button class="btn btn-warning" id="draftBtn" type="draftBtn">存草稿</button>
+              </div>
+              <div class="col-sm-3 text-left">
+                <button class="close-link btn btn-warning">取消</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

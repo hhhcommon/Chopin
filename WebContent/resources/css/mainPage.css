@@ -1,0 +1,54 @@
+@charset "utf-8";
+/* CSS Document */
+
+/* body */
+body {
+  background-image:url(text.txt); /*for IE6 防抖，也可以用一张图片URL*/
+  background-attachment:fixed; /*是否存在这文件无所谓,要fixed,不能用scroll */
+}
+._body {background-color: white;  margin-left:2px; margin-top:2px;}
+
+#logoImg_top {
+  position:absolute;
+  width:80px;
+  height:80px;
+  border:1px solid red;
+  left:5px; top:2px;
+}
+
+#titleImg_top {
+  position:absolute;
+  width:600px;
+  height:60px;
+  border:1px solid red;
+  left:87px; top:22px;
+}
+
+#commonFunc_top {
+  position:absolute;margin-left:20px;
+  width:150px;
+  height:40px;
+  border:1px solid red;
+  left:694px; top:2px;
+}
+
+#welcom_top {
+  position:absolute;
+  border:0px solid red;
+}
+
+#bar_top {
+  position:absolute;
+  width:600px;
+  border:0px solid red;
+  left:210px; top:87px;
+}
+
+#mainTab_top {
+  position:absolute; top:0; left:0;
+}
+
+#quickFunc_top {
+  position:absolute; top:0; right:0;
+  border:0px solid orange;
+}

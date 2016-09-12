@@ -1,0 +1,210 @@
+.jqplot-target {
+	color: rgb(102, 102, 102); font-family: "Trebuchet MS",Arial,Helvetica,sans-serif; font-size: 1em; position: relative;
+}
+.jqplot-axis {
+	font-size: 0.75em;
+}
+.jqplot-xaxis {
+	margin-top: 10px;
+}
+.jqplot-x2axis {
+	margin-bottom: 10px;
+}
+.jqplot-yaxis {
+	margin-right: 10px;
+}
+.jqplot-y2axis {
+	margin-right: 10px; margin-left: 10px;
+}
+.jqplot-y3axis {
+	margin-right: 10px; margin-left: 10px;
+}
+.jqplot-y4axis {
+	margin-right: 10px; margin-left: 10px;
+}
+.jqplot-y5axis {
+	margin-right: 10px; margin-left: 10px;
+}
+.jqplot-y6axis {
+	margin-right: 10px; margin-left: 10px;
+}
+.jqplot-y7axis {
+	margin-right: 10px; margin-left: 10px;
+}
+.jqplot-y8axis {
+	margin-right: 10px; margin-left: 10px;
+}
+.jqplot-y9axis {
+	margin-right: 10px; margin-left: 10px;
+}
+.jqplot-axis-tick {
+	position: absolute;
+}
+.jqplot-xaxis-tick {
+	position: absolute;
+}
+.jqplot-yaxis-tick {
+	position: absolute;
+}
+.jqplot-x2axis-tick {
+	position: absolute;
+}
+.jqplot-y2axis-tick {
+	position: absolute;
+}
+.jqplot-y3axis-tick {
+	position: absolute;
+}
+.jqplot-y4axis-tick {
+	position: absolute;
+}
+.jqplot-y5axis-tick {
+	position: absolute;
+}
+.jqplot-y6axis-tick {
+	position: absolute;
+}
+.jqplot-y7axis-tick {
+	position: absolute;
+}
+.jqplot-y8axis-tick {
+	position: absolute;
+}
+.jqplot-y9axis-tick {
+	position: absolute;
+}
+.jqplot-xaxis-tick {
+	left: 15px; top: 0px; vertical-align: top;
+}
+.jqplot-x2axis-tick {
+	left: 15px; bottom: 0px; vertical-align: bottom;
+}
+.jqplot-yaxis-tick {
+	top: 15px; text-align: right; right: 0px;
+}
+.jqplot-breakTick.jqplot-yaxis-tick {
+	padding: 1px 5px; right: -20px; font-size: 1.5em; margin-right: 0px; z-index: 2;
+}
+.jqplot-y2axis-tick {
+	left: 0px; top: 15px; text-align: left;
+}
+.jqplot-y3axis-tick {
+	left: 0px; top: 15px; text-align: left;
+}
+.jqplot-y4axis-tick {
+	left: 0px; top: 15px; text-align: left;
+}
+.jqplot-y5axis-tick {
+	left: 0px; top: 15px; text-align: left;
+}
+.jqplot-y6axis-tick {
+	left: 0px; top: 15px; text-align: left;
+}
+.jqplot-y7axis-tick {
+	left: 0px; top: 15px; text-align: left;
+}
+.jqplot-y8axis-tick {
+	left: 0px; top: 15px; text-align: left;
+}
+.jqplot-y9axis-tick {
+	left: 0px; top: 15px; text-align: left;
+}
+.jqplot-meterGauge-tick {
+	color: rgb(153, 153, 153); font-size: 0.75em;
+}
+.jqplot-meterGauge-label {
+	color: rgb(153, 153, 153); font-size: 1em;
+}
+.jqplot-xaxis-label {
+	font-size: 11pt; margin-top: 10px; position: absolute;
+}
+.jqplot-x2axis-label {
+	font-size: 11pt; margin-bottom: 10px; position: absolute;
+}
+.jqplot-yaxis-label {
+	font-size: 11pt; margin-right: 10px; position: absolute;
+}
+.jqplot-y2axis-label {
+	font-size: 11pt; position: absolute;
+}
+.jqplot-y3axis-label {
+	font-size: 11pt; position: absolute;
+}
+.jqplot-y4axis-label {
+	font-size: 11pt; position: absolute;
+}
+.jqplot-y5axis-label {
+	font-size: 11pt; position: absolute;
+}
+.jqplot-y6axis-label {
+	font-size: 11pt; position: absolute;
+}
+.jqplot-y7axis-label {
+	font-size: 11pt; position: absolute;
+}
+.jqplot-y8axis-label {
+	font-size: 11pt; position: absolute;
+}
+.jqplot-y9axis-label {
+	font-size: 11pt; position: absolute;
+}
+table.jqplot-table-legend {
+	margin: 12px;
+}
+table.jqplot-table-legend {
+	border: 1px solid rgb(204, 204, 204); border-image: none; font-size: 0.75em; position: absolute; background-color: rgba(255, 255, 255, 0.6);
+}
+table.jqplot-cursor-legend {
+	border: 1px solid rgb(204, 204, 204); border-image: none; font-size: 0.75em; position: absolute; background-color: rgba(255, 255, 255, 0.6);
+}
+td.jqplot-table-legend {
+	vertical-align: middle;
+}
+td.jqplot-seriesToggle:hover {
+	cursor: pointer;
+}
+td.jqplot-seriesToggle:active {
+	cursor: pointer;
+}
+td.jqplot-table-legend > div {
+	padding: 1px; border: 1px solid rgb(204, 204, 204); border-image: none;
+}
+div.jqplot-table-legend-swatch {
+	border-width: 5px 6px; border-style: solid; width: 0px; height: 0px;
+}
+.jqplot-title {
+	left: 0px; top: 0px; padding-bottom: 0.5em; font-size: 1.2em;
+}
+table.jqplot-cursor-tooltip {
+	border: 1px solid rgb(204, 204, 204); border-image: none; font-size: 0.75em;
+}
+.jqplot-cursor-tooltip {
+	background: rgba(208, 208, 208, 0.5); padding: 1px; border: 1px solid rgb(204, 204, 204); border-image: none; font-size: 0.75em; white-space: nowrap;
+}
+.jqplot-highlighter-tooltip {
+	background: rgba(208, 208, 208, 0.5); padding: 1px; border: 1px solid rgb(204, 204, 204); border-image: none; font-size: 0.75em; white-space: nowrap;
+}
+.jqplot-point-label {
+	font-size: 0.75em; z-index: 2;
+}
+td.jqplot-cursor-legend-swatch {
+	text-align: center; vertical-align: middle;
+}
+div.jqplot-cursor-legend-swatch {
+	width: 1.2em; height: 0.7em;
+}
+.jqplot-error {
+	text-align: center;
+}
+.jqplot-error-message {
+	top: 46%; display: inline-block; position: relative;
+}
+div.jqplot-bubble-label {
+	color: rgb(51, 51, 51); padding-right: 2px; padding-left: 2px; font-size: 0.8em;
+}
+div.jqplot-bubble-label-highlight.jqplot-bubble-label {
+	background: rgba(230, 230, 230, 0.7);
+}
+div.jqplot-noData-container {
+	text-align: center; background-color: rgba(245, 245, 245, 0.3);
+}
