@@ -5,10 +5,10 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
   <!-- 配置编码格式，与eclpse的IDE环境编码格式匹配 -->
-  <!-- D:\workIDE\projects\WtContentMng || D:\workIDE\work\WtContentMng || D:\WBWorkDir\WtContentMng -->
+  <!-- D:\workIDE\projects\WtContentMng || D:\workIDE\work\WtContentMng || D:\WBWorkDir\Chopin -->
 
   <properties>
-    <projectDir>D:\workIDE\projects\Chopin</projectDir>
+    <projectDir>D:\WBWorkDir\Chopin</projectDir>
   </properties>
 
   <parent>
@@ -51,9 +51,9 @@
     <dependency>
       <groupId>com.spiritdata</groupId>
       <artifactId>BasicPlat</artifactId>
-      <version>0.1.0.10</version>
+      <version>0.1.0.11</version>
       <scope>system</scope>
-      <systemPath>${projectDir}/lib/BasicPlat-0.1.0.10.jar</systemPath>
+      <systemPath>${projectDir}/lib/BasicPlat-0.1.0.11.jar</systemPath>
     </dependency>
     <!-- HTML解析包 -->
     <dependency>
