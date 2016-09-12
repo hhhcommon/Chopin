@@ -51,9 +51,9 @@
     <dependency>
       <groupId>com.spiritdata</groupId>
       <artifactId>BasicPlat</artifactId>
-      <version>0.1.0.10</version>
+      <version>0.1.0.11</version>
       <scope>system</scope>
-      <systemPath>${projectDir}/lib/BasicPlat-0.1.0.10.jar</systemPath>
+      <systemPath>${projectDir}/lib/BasicPlat-0.1.0.11.jar</systemPath>
     </dependency>
     <!-- HTML解析包 -->
     <dependency>

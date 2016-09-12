@@ -5,13 +5,10 @@
   <!-- 别名设置 -->
   <typeAliases>
     <typeAlias alias="WtUser" type="com.woting.passport.UGA.persistence.pojo.UserPo"/>
-    <typeAlias alias="WtGroup" type="com.woting.passport.UGA.persistence.pojo.GroupPo"/>
-    <typeAlias alias="WtGroupUser" type="com.woting.passport.UGA.persistence.pojo.GroupUserPo"/>
     <typeAlias alias="WtThirdUser" type="com.woting.passport.thirdlogin.persis.po.ThirdUserPo"/>
   </typeAliases>
   <mappers>
     <mapper resource="com/woting/passport/UGA/persistence/sql/WotingUser.mapper.xml"/>
-    <mapper resource="com/woting/passport/UGA/persistence/sql/Group.mapper.xml"/>
     <mapper resource="com/woting/passport/thirdlogin/persis/sql/ThirdUser.mapper.xml"/>
   </mappers>
 </configuration>
