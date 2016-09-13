@@ -1,5 +1,8 @@
 package com.woting.discuss.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.spiritdata.framework.core.model.ModelSwapPo;
 import com.spiritdata.framework.exceptionC.Plat0006CException;
 import com.spiritdata.framework.util.SequenceUUID;
@@ -38,5 +41,16 @@ public class Discuss extends DiscussPo implements  ModelSwapPo {
         ret.setOpinion(this.getOpinion());
         ret.setCTime(this.getCTime());
         return ret;
+    }
+
+    public Map<String, Object> toHashMap4Mobile() {
+        Map<String, Object> retM = new HashMap<String, Object>();
+        if (!StringUtils.isNullOrEmptyOrSpace(this.id)) retM.put("Id", this.id);
+        if (!StringUtils.isNullOrEmptyOrSpace(this.imei)) retM.put("IMEI", this.imei);
+        if (!StringUtils.isNullOrEmptyOrSpace(this.userId)) retM.put("UserId", this.userId);
+        if (!StringUtils.isNullOrEmptyOrSpace(this.articalId)) retM.put("ContentId", this.articalId);
+        if (!StringUtils.isNullOrEmptyOrSpace(this.opinion)) retM.put("Discuss", this.opinion);
+        if (this.CTime!=null) retM.put("Time", this.CTime.getTime());
+        return retM;
     }
 }

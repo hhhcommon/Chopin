@@ -12,12 +12,12 @@ import com.spiritdata.framework.core.model.BaseObject;
 public class DiscussPo extends BaseObject {
     private static final long serialVersionUID = 219569952009222030L;
 
-    private String id; //评论Id
-    private String imei; //手机串号，若是PC，则必须是网卡的Mac地址
-    private String userId; //提意见用户Id
-    private String articalId; //评论文章的Id
-    private String opinion; //意见内容
-    private Timestamp CTime; //意见意见成功提交时间
+    protected String id; //评论Id
+    protected String imei; //手机串号，若是PC，则必须是网卡的Mac地址
+    protected String userId; //提意见用户Id
+    protected String articalId; //评论文章的Id
+    protected String opinion; //意见内容
+    protected Timestamp CTime; //意见意见成功提交时间
 
     public String getId() {
         return id;
