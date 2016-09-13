@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.spiritdata.framework.util.StringUtils;
 import com.woting.discuss.model.Discuss;
 import com.woting.discuss.service.DiscussService;
+import com.woting.passport.UGA.service.UserService;
 import com.spiritdata.framework.util.RequestUtils;
+import com.woting.passport.UGA.persistence.pojo.UserPo;
 import com.woting.passport.mobile.MobileParam;
 import com.woting.passport.mobile.MobileUDKey;
 import com.woting.passport.session.SessionService;
@@ -25,6 +27,8 @@ import com.woting.passport.session.SessionService;
 public class DiscussController {
     @Resource
     private DiscussService discussService;
+    @Resource
+    private UserService userService;
     @Resource(name="redisSessionService")
     private SessionService sessionService;
 
@@ -206,7 +210,6 @@ public class DiscussController {
         com.spiritdata.framework.core.web.InitSysConfigListener cc;
         try {
             //0-获取参数
-            String userId="";
             MobileUDKey mUdk=null;
             Map<String, Object> m=RequestUtils.getDataFromRequest(request);
             if (m==null||m.size()==0) {
@@ -217,7 +220,7 @@ public class DiscussController {
                 if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
                     mUdk.setDeviceId(request.getSession().getId());
                 }
-                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "discuss/article/getList");
+                sessionService.dealUDkeyEntry(mUdk, "discuss/article/getList");
             }
 
             //1-获取文章Id
@@ -262,30 +265,39 @@ public class DiscussController {
      * @param ol
      * @return
      */
-    private List<Map<String, Object>> convertDiscissView(List<Discuss> ol) {
-//        List<Map<String, Object>> ret=new ArrayList<Map<String, Object>>();
-//        List<Map<String, Object>> rel=null;
-//        List<Discuss> reApl=null;
-//        Map<String, Object> selfOpinion=null, reOpinion=null;
-//        for (Discuss ap: ol) {
-//            selfOpinion=new HashMap<String, Object>();
-//            selfOpinion.put("OpinionId", ap.getId());
-//            selfOpinion.put("Opinion", ap.getOpinion());
-//            selfOpinion.put("OpinionTime", ap.getCTime().getTime());
-//            reApl=ap.getReList();
-//            if (reApl!=null&&reApl.size()>0) {
-//                rel=new ArrayList<Map<String, Object>>();
-//                for (AppReOpinionPo aro: reApl) {
-//                    reOpinion=new HashMap<String, Object>();
-//                    reOpinion.put("OpinionReId", aro.getId());
-//                    reOpinion.put("ReOpinion", aro.getReOpinion());
-//                    reOpinion.put("ReOpinionTime", aro.getCTime().getTime());
-//                    rel.add(reOpinion);
-//                }
-//                selfOpinion.put("ReList", rel);
-//            }
-//            ret.add(selfOpinion);
-//        }
-        return null;
+    private List<Map<String, Object>> convertDiscissView(List<Discuss> disList) {
+        //得到用户列表
+        List<String> userIds=new ArrayList<String>();
+        Map<String, String> userMap=new HashMap<String, String>();
+        for (Discuss d: disList) {
+            if (d.getUserId()!=null||!d.getUserId().equals("0")) {
+                userMap.put(d.getUserId(), d.getUserId());
+            }
+        }
+        if (userMap!=null&&!userMap.isEmpty()) {
+            for (String key: userMap.keySet()) {
+                userIds.add(key);
+            }
+        }
+
+        List<UserPo> ul=userService.getUserByIds(userIds);
+        List<Map<String, Object>> ret=new ArrayList<Map<String, Object>>();
+
+        Map<String, Object> oneDiscuss=null;
+        for (Discuss d: disList) {
+            oneDiscuss=d.toHashMap4Mobile();
+            if (oneDiscuss!=null) {
+                if (d.getUserId()!=null||!d.getUserId().equals("0")) {
+                    for (UserPo up: ul) {
+                        if (up.getUserId().equals(d.getUserId())) {
+                            oneDiscuss.put("UserInfo", up.toHashMap4Mobile());
+                            break;
+                        }
+                    }
+                }
+                ret.add(oneDiscuss);
+            }
+        }
+        return ret==null||ret.isEmpty()?null:ret;
     }
 }

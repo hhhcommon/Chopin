@@ -10,3 +10,18 @@ CREATE TABLE wt_Discuss (
   PRIMARY KEY(id)
 )
 ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='012文章评论表';
+
+/**DA002 用户喜欢或举报谋篇文章 */
+DROP TABLE IF EXISTS da_UserFavorite;
+CREATE TABLE da_UserFavorite (
+  id            varchar(32)    NOT NULL                             COMMENT '用户喜欢Id',
+  ownerType     int unsigned   NOT NULL                             COMMENT '所有者类型',
+  ownerId       varchar(32)    NOT NULL                             COMMENT '所有者Id',
+  resTableName  varchar(200)   NOT NULL                             COMMENT '类型：=1是喜欢;=2是举报',
+  resId         varchar(32)    NOT NULL                             COMMENT '资源Id',
+  sumNum        int unsigened  NOT NULL                             COMMENT '同一用户对同一文件的喜欢或举报的数量',
+  cTime         timestamp      NOT NULL  DEFAULT CURRENT_TIMESTAMP  COMMENT '创建时间',
+  INDEX bizIdx (ownerType, ownerId, resTableName, resId) USING HASH,
+  PRIMARY KEY (id)
+)
+ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='DA002用户喜欢或举报谋篇文章';
