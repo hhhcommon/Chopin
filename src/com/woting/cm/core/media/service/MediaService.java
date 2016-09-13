@@ -56,6 +56,14 @@ public class MediaService {
         dictRefDao.setNamespace("A_DREFRES");
     }
     
+    public MediaAsset getMaInfoByTitle(String title) {
+    	MediaAssetPo mapo = mediaAssetDao.getInfoObject("getMaInfoByTitle",title);
+    	if (mapo==null) return null;
+    	MediaAsset ma = new MediaAsset();
+    	ma.buildFromPo(mapo);
+    	return ma;
+    }
+    
     public MaSource getMasInfoByMasId(Map<String, Object> m) {
     	MaSource mas = new MaSource();
     	MaSourcePo maspo = maSourceDao.getInfoObject("getMasInfoByMaId", m);
