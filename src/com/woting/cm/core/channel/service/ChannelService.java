@@ -302,14 +302,22 @@ public class ChannelService {
     public List<ChannelPo> getChannelsByPcId(String pcId) {
     	Map<String, Object> m = new HashMap<>();
     	m.put("pcId", pcId);
-		return channelDao.queryForList("getList", pcId);
+		return channelDao.queryForList("getList", m);
     }
     
-    public List<ChannelAssetPo> getChannelAssetsByChannelId(String channelId) {
+    public List<ChannelAssetPo> getChannelAssetsByChannelId(String channelId, int page, int pageSize) {
     	Map<String, Object> m = new HashMap<>();
     	m.put("channelId", channelId);
     	m.put("assetType", "wt_MediaAsset");
     	m.put("sortByClause", "pubTime");
-		return channelAssetDao.queryForList("getList", m);
+    	m.put("page", page);
+    	m.put("pageSize", pageSize);
+		return channelAssetDao.queryForList("getListByLimit", m);
+    }
+    
+    public int getChannelAssetsNum(String channelId) {
+    	Map<String, Object> m = new HashMap<>();
+    	m.put("channelId", channelId);
+		return channelAssetDao.getCount("getListNumByChannelId", m);
     }
 }

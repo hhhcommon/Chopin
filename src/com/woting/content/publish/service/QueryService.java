@@ -31,8 +31,6 @@ import com.woting.cm.core.media.model.SeqMediaAsset;
 import com.woting.cm.core.media.persis.po.SeqMaRefPo;
 import com.woting.cm.core.media.service.MediaService;
 import com.woting.cm.core.utils.ContentUtils;
-import com.woting.content.broadcast.persis.pojo.BroadcastPo;
-import com.woting.content.broadcast.service.BroadcastService;
 import com.woting.content.manage.channel.service.ChannelContentService;
 import com.woting.content.publish.utils.CacheUtils;
 @Service
@@ -43,8 +41,6 @@ public class QueryService {
 	private MediaService mediaService;
 	@Resource
 	private ChannelContentService chaService;
-	@Resource
-	private BroadcastService bcService;
 
 	/**
 	 * 查询列表
@@ -162,9 +158,6 @@ public class QueryService {
 		case "wt_MediaAsset":
 			map = getAudioInfo(id, acttype);
 			break;
-		case "wt_Broadcast":
-			map = getBroadcastInfo(id, acttype);
-			break;
 		default:
 			break;
 		}
@@ -247,28 +240,6 @@ public class QueryService {
 		}
 		audioData.put("ContentCatalogs", (StringUtils.isNullOrEmptyOrSpace(catalogs)||catalogs.toLowerCase().equals("null"))?null:catalogs.substring(1));
 		return audioData;
-	}
-
-	/**
-	 * 查询电台信息
-	 * 
-	 * @param contentid
-	 * @param acttype
-	 * @return
-	 */
-	public Map<String, Object> getBroadcastInfo(String contentid, String acttype) {
-		Map<String, Object> broadcastData = new HashMap<String, Object>();// 单体信息
-		BroadcastPo bc = bcService.getBroadcastList(contentid);
-		if (bc==null) return null;
-		broadcastData.put("ContentId", bc.getId());
-		broadcastData.put("ContentName", bc.getBcTitle());
-		broadcastData.put("MediaType", bc.getBcTitle());
-		broadcastData.put("ContentImg", bc.getBcImg());
-		broadcastData.put("ContentCTime", bc.getCTime());
-		broadcastData.put("ContentDesc", bc.getDesc());
-		broadcastData.put("ContentSource", bc.getBcPublisher());
-		broadcastData.put("ContentPersons", null);
-		return broadcastData;
 	}
 
 	/**
