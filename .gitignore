@@ -1,6 +1,4 @@
-<<<<<<< HEAD
-﻿logs
-/logs
+﻿/logs
 target
 /target
 fs-config
@@ -22,10 +20,3 @@ fs-config
 /WebContent/test.jsp
 /lib/httpmime-4.1.1.jar
 /lib/android.jar
-
-/pom.xml
-=======
-/build/
-/target/
-/bin/
->>>>>>> refs/remotes/origin/master
