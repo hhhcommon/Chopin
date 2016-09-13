@@ -1,6 +1,5 @@
 package com.woting.discuss.web;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -263,6 +262,14 @@ public class DiscussController {
      * @return
      */
     private List<Map<String, Object>> convertDiscissView(List<Discuss> ol) {
+        //得到用户列表
+        Map<String, String> userIdMap=new HashMap<String, String>();
+        for (Discuss d: ol) {
+            if (d.getUserId()!=null||!d.getUserId().equals("0")) {
+                userIdMap.put(d.getUserId(), d.getUserId());
+            }
+        }
+        
 //        List<Map<String, Object>> ret=new ArrayList<Map<String, Object>>();
 //        List<Map<String, Object>> rel=null;
 //        List<Discuss> reApl=null;
