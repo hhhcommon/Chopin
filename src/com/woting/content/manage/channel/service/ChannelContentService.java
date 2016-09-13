@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+
 import com.spiritdata.framework.core.cache.CacheEle;
 import com.spiritdata.framework.core.cache.SystemCache;
 import com.spiritdata.framework.core.model.tree.TreeNode;
@@ -12,8 +14,11 @@ import com.woting.WtContentMngConstants;
 import com.woting.cm.core.channel.mem._CacheChannel;
 import com.woting.cm.core.channel.model.Channel;
 import com.woting.cm.core.channel.persis.po.ChannelAssetPo;
+import com.woting.cm.core.channel.service.ChannelService;
 
 public class ChannelContentService {
+	@Resource
+	private ChannelService channelService;
 	private _CacheChannel _cc=null;
 	
 	@PostConstruct 
@@ -36,7 +41,7 @@ public class ChannelContentService {
 	    return ret;
 	}
 	
-	public void updateChannelAsset(){
+	public void getChannels(String channelId) {
 		
 	}
 }

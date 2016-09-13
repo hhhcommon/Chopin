@@ -294,4 +294,22 @@ public class ChannelService {
             }
         }
     }
+    
+    public ChannelPo getChannelById(String channelId) {
+		return channelDao.getInfoObject("getInfoById", channelId);
+    }
+    
+    public List<ChannelPo> getChannelsByPcId(String pcId) {
+    	Map<String, Object> m = new HashMap<>();
+    	m.put("pcId", pcId);
+		return channelDao.queryForList("getList", pcId);
+    }
+    
+    public List<ChannelAssetPo> getChannelAssetsByChannelId(String channelId) {
+    	Map<String, Object> m = new HashMap<>();
+    	m.put("channelId", channelId);
+    	m.put("assetType", "wt_MediaAsset");
+    	m.put("sortByClause", "pubTime");
+		return channelAssetDao.queryForList("getList", m);
+    }
 }
