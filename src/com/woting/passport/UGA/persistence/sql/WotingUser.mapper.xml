@@ -71,6 +71,12 @@
     <if test="_parameter!=null"><include refid="WhereClauseByEntiey"/></if>
     <if test="orderByClause!=null">order by ${orderByClause}</if>
   </select>
+  <select id="getListByWhere" resultMap="userMap" parameterType="java.util.Map">
+    select <include refid="Base_Column_List"/> from plat_User
+    <if test="whereByClause!=null">where ${whereByClause}</if>
+    <if test="orderByClause!=null">order by ${orderByClause}</if>
+  </select>
+
   <!-- 获得好友列表 -->
   <select id="getFriends" resultMap="userMap" parameterType="java.util.Map">
     select <include refid="Base_Column_List_A"/> from plat_User a, vWt_Friend_Rel b

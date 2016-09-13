@@ -64,6 +64,24 @@ public class UserService implements UgaUserService {
         return null;
     }
 
+    public List<UserPo> getUserByIds(List<String> userIds) {
+        try {
+            String whereStr="";
+            if (userIds!=null&&userIds.size()>0) {
+                for (String id: userIds) {
+                    whereStr+=" or id='"+id+"'";
+                }
+            }
+            Map<String, String> param=new HashMap<String, String>();
+            if (!StringUtils.isNullOrEmptyOrSpace(whereStr)) param.put("whereByClause", whereStr.substring(4));
+            param.put("orderByClause", "cTime desc");
+            return userDao.queryForList("getListByWhere", param);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     /**
      * 创建用户
      * @param user 用户信息
@@ -97,36 +115,6 @@ public class UserService implements UgaUserService {
             e.printStackTrace();
         }
         return i;
-    }
-
-    /**
-     * 获得好友列表
-     * @param userId 用户id
-     * @return 好友列表
-     */
-    public List<UserPo> getFriendList(String userId) {
-        try {
-            List<UserPo> ul=userDao.queryForList();
-            return ul;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * 获得组成员，为创建用户组使用
-     * @param Members 组成员id，用逗号隔开
-     * @return 组成员类表
-     */
-    public List<UserPo> getMembers4BuildGroup(String members) {
-        try {
-            List<UserPo> ul=userDao.queryForList("getMembers", members);
-            return ul;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
     }
     
     /**
