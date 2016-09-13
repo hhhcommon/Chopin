@@ -209,11 +209,15 @@
   </insert>
   
   <select id="getMaInfoById" parameterType="java.lang.String" resultMap="mediaAssetMap">
-    select <include refid="Base_Media_List"/>from wt_MediaAsset where id=#{id,jdbcType=VARCHAR} limit 1
+    select <include refid="Base_Media_List"/>from wt_MediaAsset where id=#{id,jdbcType=VARCHAR}
   </select>
   
   <select id="getMaListBySmaId" parameterType="java.lang.String" resultMap="mediaAssetMap">
     select <include refid="Base_Media_List"/>from wt_MediaAsset where id in (select mId from wt_SeqMA_Ref where sId=#{sId,jdbcType=VARCHAR})
+  </select>
+  
+  <select id="getMaListByIds" parameterType="java.util.Map" resultMap="mediaAssetMap">
+    select <include refid="Base_Media_List"/>from wt_MediaAsset where id in (${ids}) <if test="sortByClause!=null">order by ${sortByClause}</if>
   </select>
   
   <!-- 根据主播id获取 -->
