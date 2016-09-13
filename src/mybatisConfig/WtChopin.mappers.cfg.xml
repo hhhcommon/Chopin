@@ -3,7 +3,9 @@
 <configuration>
   <!-- 类别名设置 -->
   <typeAliases>
+    <typeAlias alias="discuss"  type="com.woting.discuss.persis.pojo.DiscussPo"/>
   </typeAliases>
   <mappers>
+    <mapper resource="com/woting/discuss/persis/sql/Discuss.mapper.xml"/>
   </mappers>
 </configuration>

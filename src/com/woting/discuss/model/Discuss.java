@@ -23,6 +23,7 @@ public class Discuss extends DiscussPo implements  ModelSwapPo {
         this.setId(_po.getId());
         this.setImei(_po.getImei());
         this.setUserId(_po.getUserId());
+        this.setArticalId(_po.getArticalId());
         this.setOpinion(_po.getOpinion());
         this.setCTime(_po.getCTime());
     }
@@ -33,6 +34,7 @@ public class Discuss extends DiscussPo implements  ModelSwapPo {
         else ret.setId(this.getId());
         ret.setImei(this.getImei());
         ret.setUserId(this.getUserId());
+        ret.setArticalId(this.getArticalId());
         ret.setOpinion(this.getOpinion());
         ret.setCTime(this.getCTime());
         return ret;

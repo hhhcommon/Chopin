@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spiritdata.framework.util.StringUtils;
 import com.woting.discuss.model.Discuss;
-import com.woting.discuss.persis.pojo.DiscussPo;
 import com.woting.discuss.service.DiscussService;
 import com.spiritdata.framework.util.RequestUtils;
 import com.woting.passport.mobile.MobileParam;
@@ -22,7 +21,7 @@ import com.woting.passport.mobile.MobileUDKey;
 import com.woting.passport.session.SessionService;
 
 @Controller
-@RequestMapping(value="/opinion/app/")
+@RequestMapping(value="/discuss/")
 public class DiscussController {
     @Resource
     private DiscussService discussService;
@@ -30,13 +29,13 @@ public class DiscussController {
     private SessionService sessionService;
 
     /**
-     * 提交所提意见
+     * 提交文章评论
      * @param request
      * @return
      */
-    @RequestMapping(value="commit.do")
+    @RequestMapping(value="add.do")
     @ResponseBody
-    public Map<String,Object> commit(HttpServletRequest request) {
+    public Map<String,Object> add(HttpServletRequest request) {
         Map<String,Object> map=new HashMap<String, Object>();
         try {
             //0-获取参数
@@ -48,14 +47,18 @@ public class DiscussController {
                 map.put("Message", "无法获取需要的参数");
             } else {
                 mUdk=MobileParam.build(m).getUserDeviceKey();
-                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "opinion/commit");
+                if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
+                    mUdk.setDeviceId(request.getSession().getId());
+                }
+                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "discuss/add");
                 if ((retM.get("ReturnType")+"").equals("2001")) {
                     map.put("ReturnType", "0000");
                     map.put("Message", "无法获取设备Id(IMEI)");
-                } else if ((retM.get("ReturnType")+"").equals("2003")) {
-                    map.put("ReturnType", "200");
-                    map.put("Message", "需要登录");
                 } else {
+                    //处理过客
+                    if ((retM.get("ReturnType")+"").equals("2003")) {
+                        mUdk.setUserId("0");
+                    }
                     map.putAll(mUdk.toHashMapAsBean());
                     userId=mUdk.getUserId();
                     //注意这里可以写日志了
@@ -71,25 +74,33 @@ public class DiscussController {
             String opinion=(m.get("Opinion")==null?null:m.get("Opinion")+"");
             if (StringUtils.isNullOrEmptyOrSpace(opinion)) {
                 map.put("ReturnType", "1003");
-                map.put("Message", "无法获取意见");
+                map.put("Message", "无法评论内容");
                 return map;
             }
-            //3-存储意见
+            //3-获取文章Id
+            String articalId=(m.get("ContentId")==null?null:m.get("ContentId")+"");
+            if (StringUtils.isNullOrEmptyOrSpace(articalId)) {
+                map.put("ReturnType", "1004");
+                map.put("Message", "无法获取文章Id");
+                return map;
+            }
+            //4-存储意见
             try {
-                DiscussPo po=new DiscussPo();
-                po.setImei(mUdk.getDeviceId());
-                po.setUserId(userId);
-                po.setOpinion(opinion);
+                Discuss discuss=new Discuss();
+                discuss.setImei(mUdk.getDeviceId());
+                discuss.setUserId(userId);
+                discuss.setArticalId(articalId);
+                discuss.setOpinion(opinion);
                 //是否重复提交意见
-                List<DiscussPo> duplicates=discussService.getDuplicates(po);
+                List<Discuss> duplicates=discussService.getDuplicates(discuss);
                 if (duplicates!=null&&duplicates.size()>0) {
                     map.put("ReturnType", "1005");
-                    map.put("Message", "该意见已经提交");
+                    map.put("Message", "该评论已经提交");
                     return map;
                 };
-                discussService.insertOpinion(po);
+                discussService.insertDiscuss(discuss);
             } catch(Exception ei) {
-                map.put("ReturnType", "1004");
+                map.put("ReturnType", "1006");
                 map.put("Message", ei.getMessage());
                 return map;
             }
@@ -104,9 +115,14 @@ public class DiscussController {
         }
     }
 
-    @RequestMapping(value="getList.do")
+    /**
+     * 删除文章评论
+     * @param request
+     * @return
+     */
+    @RequestMapping(value="del.do")
     @ResponseBody
-    public Map<String,Object> getList(HttpServletRequest request) {
+    public Map<String,Object> del(HttpServletRequest request) {
         Map<String,Object> map=new HashMap<String, Object>();
         try {
             //0-获取参数
@@ -118,14 +134,18 @@ public class DiscussController {
                 map.put("Message", "无法获取需要的参数");
             } else {
                 mUdk=MobileParam.build(m).getUserDeviceKey();
-                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "opinion/getList");
+                if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
+                    mUdk.setDeviceId(request.getSession().getId());
+                }
+                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "discuss/del");
                 if ((retM.get("ReturnType")+"").equals("2001")) {
                     map.put("ReturnType", "0000");
                     map.put("Message", "无法获取设备Id(IMEI)");
-                } else if ((retM.get("ReturnType")+"").equals("2003")) {
-                    map.put("ReturnType", "200");
-                    map.put("Message", "还未登录");
                 } else {
+                    //处理过客
+                    if ((retM.get("ReturnType")+"").equals("2003")) {
+                        mUdk.setUserId("0");
+                    }
                     map.putAll(mUdk.toHashMapAsBean());
                     userId=mUdk.getUserId();
                     //注意这里可以写日志了
@@ -137,14 +157,38 @@ public class DiscussController {
             }
             if (map.get("ReturnType")!=null) return map;
 
-//            List<Discuss> ol=discussService.getOpinionsByOnwerId(userId, mUdk.getDeviceId());
-//            if (ol!=null&&ol.size()>0) {
-//                map.put("ReturnType", "1001");
-//                map.put("OpinionList", convertAppOpinon4View(ol));
-//            } else {
-//                map.put("ReturnType", "1011");
-//                map.put("Message", "无意见及反馈信息");
-//            }
+            //2-评论Id
+            String discussId=(m.get("DiscussId")==null?null:m.get("DiscussId")+"");
+            if (StringUtils.isNullOrEmptyOrSpace(discussId)) {
+                map.put("ReturnType", "1003");
+                map.put("Message", "无法获取评论Id");
+                return map;
+            }
+            //3-删除意见
+            try {
+                Discuss discuss=new Discuss();
+                discuss.setImei(mUdk.getDeviceId());
+                discuss.setUserId(userId);
+                discuss.setId(discussId);
+                int flag=discussService.delDiscuss(discuss);
+                if (flag==-1) {
+                    map.put("ReturnType", "1004");
+                    map.put("Message", "无对应评论，无法删除");
+                } else if (flag==-2) {
+                    map.put("ReturnType", "1005");
+                    map.put("Message", "无权删除");
+                } else if (flag==0) {
+                    map.put("ReturnType", "1006");
+                    map.put("Message", "删除失败");
+                } else {
+                    map.put("ReturnType", "1001");
+                }
+           } catch(Exception ei) {
+                map.put("ReturnType", "1006");
+                map.put("Message", ei.getMessage());
+                return map;
+            }
+            map.put("ReturnType", "1001");
             return map;
         } catch(Exception e) {
             e.printStackTrace();
@@ -155,7 +199,70 @@ public class DiscussController {
         }
     }
 
-    private List<Map<String, Object>> convertAppOpinon4View(List<Discuss> ol) {
+    @RequestMapping(value="article/getList.do")
+    @ResponseBody
+    public Map<String,Object> getList(HttpServletRequest request) {
+        Map<String,Object> map=new HashMap<String, Object>();
+        com.spiritdata.framework.core.web.InitSysConfigListener cc;
+        try {
+            //0-获取参数
+            String userId="";
+            MobileUDKey mUdk=null;
+            Map<String, Object> m=RequestUtils.getDataFromRequest(request);
+            if (m==null||m.size()==0) {
+                map.put("ReturnType", "0000");
+                map.put("Message", "无法获取需要的参数");
+            } else {
+                mUdk=MobileParam.build(m).getUserDeviceKey();
+                if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
+                    mUdk.setDeviceId(request.getSession().getId());
+                }
+                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "discuss/article/getList");
+            }
+
+            //1-获取文章Id
+            String articalId=(m.get("ContentId")==null?null:m.get("ContentId")+"");
+            if (StringUtils.isNullOrEmptyOrSpace(articalId)) {
+                map.put("ReturnType", "1004");
+                map.put("Message", "无法获取文章Id");
+                return map;
+            }
+            //2-获取分页信息
+            int page=-1;
+            try {
+                page=Integer.parseInt(m.get("Page")==null?null:m.get("Page")+"");
+            } catch(Exception e) {
+            }
+            int pageSize=10;
+            try {
+                page=Integer.parseInt(m.get("PageSize")==null?null:m.get("PageSize")+"");
+            } catch(Exception e) {
+            }
+
+            List<Discuss> ol=discussService.getArticleDiscusses(articalId, page, pageSize);
+            if (ol!=null&&ol.size()>0) {
+                map.put("ReturnType", "1001");
+                map.put("OpinionList", convertDiscissView(ol));
+            } else {
+                map.put("ReturnType", "1011");
+                map.put("Message", "无意见及反馈信息");
+            }
+            return map;
+        } catch(Exception e) {
+            e.printStackTrace();
+            map.put("ReturnType", "T");
+            map.put("TClass", e.getClass().getName());
+            map.put("Message", e.getMessage());
+            return map;
+        }
+    }
+
+    /**
+     * 获得返回的列表，包括用户的信息
+     * @param ol
+     * @return
+     */
+    private List<Map<String, Object>> convertDiscissView(List<Discuss> ol) {
 //        List<Map<String, Object>> ret=new ArrayList<Map<String, Object>>();
 //        List<Map<String, Object>> rel=null;
 //        List<Discuss> reApl=null;

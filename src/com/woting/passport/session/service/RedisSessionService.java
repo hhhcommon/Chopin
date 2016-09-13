@@ -104,6 +104,9 @@ public class RedisSessionService implements SessionService {
                             map.put("ReturnType", "2002");
                             map.put("Msg", "设备无法自动登录");
                         }
+                    } else {
+                        map.put("ReturnType", "2003");
+                        map.put("Msg", "请先登录");
                     }
                 }
             }
