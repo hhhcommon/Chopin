@@ -116,7 +116,8 @@
 
   <!-- 获得列表 -->
   <select id="getList" parameterType="java.util.Map" resultMap="channelAssetMap">
-    select <include refid="Base_Column_List"/>from wt_ChannelAsset
+    select <include refid="Base_Column_List"/>from wt_ChannelAsset <if test="_parameter!=null"><include refid="WhereClauseByEntiey"/></if>
+    <if test="sortByClause!=null">order by ${sortByClause}</if> 
   </select>
   
   <select id="getListByFlowFlag" resultMap="channelAssetMap" parameterType="java.util.Map">

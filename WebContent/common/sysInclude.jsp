@@ -1,5 +1,7 @@
 <%@page language="java" pageEncoding="UTF-8"%>
-<%String resourcePath = request.getContextPath();%>
+<%
+String resourcePath = request.getContextPath();
+%>
 <link rel="stylesheet" type="text/css" href="<%=resourcePath%>/resources/plugins/easyui-1.3.4/themes/default/easyui.css"/>
 <link rel="stylesheet" type="text/css" href="<%=resourcePath%>/resources/plugins/easyui-1.3.4/themes/icon.css"/>
 <link rel="stylesheet" type="text/css" href="<%=resourcePath%>/resources/plugins/easyui-1.3.4/demo.css"/>

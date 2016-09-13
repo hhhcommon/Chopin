@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿logs
 /logs
 target
@@ -23,3 +24,8 @@ fs-config
 /lib/android.jar
 
 /pom.xml
+=======
+/build/
+/target/
+/bin/
+>>>>>>> refs/remotes/origin/master

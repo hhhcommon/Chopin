@@ -5,26 +5,44 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
+
+import com.spiritdata.framework.core.cache.CacheEle;
+import com.spiritdata.framework.core.cache.SystemCache;
 import com.spiritdata.framework.util.SequenceUUID;
+import com.woting.WtContentMngConstants;
+import com.woting.cm.core.channel.mem._CacheChannel;
 import com.woting.cm.core.channel.model.Channel;
 import com.woting.cm.core.channel.model.ChannelAsset;
+import com.woting.cm.core.channel.persis.po.ChannelPo;
+import com.woting.cm.core.channel.service.ChannelService;
 import com.woting.cm.core.media.model.MaSource;
 import com.woting.cm.core.media.model.MediaAsset;
 import com.woting.cm.core.media.model.SeqMediaAsset;
 import com.woting.cm.core.media.persis.po.SeqMaRefPo;
+import com.woting.cm.core.media.service.MediaService;
 import com.woting.content.manage.dict.service.DictContentService;
 import com.woting.content.manage.seq.service.SeqContentService;
 
 @Service
 public class MediaContentService {
 	@Resource
-	private com.woting.cm.core.media.service.MediaService mediaService;
+	private MediaService mediaService;
 	@Resource
 	private DictContentService dictContentService;
 	@Resource
+	private ChannelService channelService;
+	@Resource
 	private SeqContentService seqContentService;
+	private _CacheChannel _cc=null;
+	
+	@PostConstruct
+    public void initParam() {
+        _cc=(SystemCache.getCache(WtContentMngConstants.CACHE_CHANNEL)==null?null:((CacheEle<_CacheChannel>)SystemCache.getCache(WtContentMngConstants.CACHE_CHANNEL)).getContent());
+    }
 	
 	/**
 	 * 查询主播的资源列表
@@ -224,5 +242,16 @@ public class MediaContentService {
 			map.put("Message", "单体删除成功");
 		}
 		return map;
+	}
+	
+	public Map<String, Object> getContents(String channelId, int perSize, int page, int pageSize) {
+		ChannelPo chPo = channelService.getChannelById(channelId);
+		if(chPo!=null) {
+			List<ChannelPo> chs = channelService.getChannelsByPcId(chPo.getId());
+			if(chs==null || chs.size()==0) {
+				
+			}
+		}
+		return null;
 	}
 }
