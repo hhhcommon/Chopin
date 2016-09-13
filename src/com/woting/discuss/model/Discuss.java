@@ -7,7 +7,7 @@ import com.spiritdata.framework.core.model.ModelSwapPo;
 import com.spiritdata.framework.exceptionC.Plat0006CException;
 import com.spiritdata.framework.util.SequenceUUID;
 import com.spiritdata.framework.util.StringUtils;
-import com.woting.discuss.persis.pojo.DiscussPo;
+import com.woting.discuss.persis.po.DiscussPo;
 
 /**
  * 反馈意见信息<br/>

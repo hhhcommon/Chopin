@@ -1,4 +1,4 @@
-package com.woting.discuss.persis.pojo;
+package com.woting.discuss.persis.po;
 
 import java.sql.Timestamp;
 

@@ -268,11 +268,18 @@ public class DiscussController {
     private List<Map<String, Object>> convertDiscissView(List<Discuss> disList) {
         //得到用户列表
         List<String> userIds=new ArrayList<String>();
+        Map<String, String> userMap=new HashMap<String, String>();
         for (Discuss d: disList) {
             if (d.getUserId()!=null||!d.getUserId().equals("0")) {
-                userIds.add(d.getUserId());
+                userMap.put(d.getUserId(), d.getUserId());
             }
         }
+        if (userMap!=null&&!userMap.isEmpty()) {
+            for (String key: userMap.keySet()) {
+                userIds.add(key);
+            }
+        }
+
         List<UserPo> ul=userService.getUserByIds(userIds);
         List<Map<String, Object>> ret=new ArrayList<Map<String, Object>>();
 

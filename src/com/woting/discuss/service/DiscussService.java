@@ -12,7 +12,7 @@ import com.spiritdata.framework.core.dao.mybatis.MybatisDAO;
 import com.spiritdata.framework.core.model.Page;
 import com.spiritdata.framework.util.SequenceUUID;
 import com.woting.discuss.model.Discuss;
-import com.woting.discuss.persis.pojo.DiscussPo;
+import com.woting.discuss.persis.po.DiscussPo;
 
 public class DiscussService {
     @Resource(name="defaultDAO")
