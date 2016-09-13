@@ -206,6 +206,13 @@ public class MediaService {
 		return catalist;
     }
     
+    public List<MediaAssetPo> getMaListByIds(String ids) {
+    	Map<String, Object> m = new HashMap<>();
+    	m.put("ids", ids);
+    	m.put("sortByClause", "cTime");
+		return mediaAssetDao.queryForList("getMaListByIds", m);
+    }
+    
     public List<DictRefResPo> getResDictRefByResId(String resid){
         List<DictRefResPo> rcrpL = dictRefDao.queryForList("getListByResId", resid);
 		return rcrpL;
