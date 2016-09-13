@@ -2,31 +2,71 @@
 <html lang="zh" class="">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta name="renderer" content="webkit">
-	<meta name="applicable-device" content="pc,mobile">
-	<title>我听肖邦</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="renderer" content="webkit">
+  <meta name="applicable-device" content="pc,mobile">
+  <title>我听肖邦</title>
   <meta name="keywords" content="我听肖邦">
   <meta name="description" content="我听肖邦">
   <link rel="stylesheet" id="ui_style-css" href="css/ui.style.min.css" type="text/css" media="all">
-  <link rel="shortcut icon" href="http://www.uiessays.com/favicon.ico">
-	<script async="" src="js/analytics.js"></script>
-	<script type="text/javascript">
-	var ajaxurl = 'http://www.uiessays.com/wp-admin/admin-ajax.php';
-	</script>
-	<!--[if lte IE 7]>
-  <script type='text/javascript' src='http://cdn.uiessays.com/static/bsie/json2.min.js?ver=2.1.1' defer='defer'></script>
-  <![endif]-->
-  <!--[if lt IE 9]>
-  <script src='http://cdn.uiessays.com/static/bsie/html5.js?ver=2.1.1' type='text/javascript' defer='defer'></script>
-  <![endif]-->
+  <link rel="stylesheet" id="ui_style-css" href="css/font-awesome.css" type="text/css" media="all">
+  <script async="" src="js/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" src="js/ui.script.min.js" defer="defer"></script>
+  <style type="text/css">
+    *{padding: 0;margin:0;text-decoration: none;}
+    /*导航样式*/
+    #main-nav a{border-top: 4px solid transparent;}
+    /*轮播图样式*/
+    #container{width: 600px;height: 400px;border: 3px solid black;overflow: hidden; position: relative;right:25%;}
+    #list{width:4200px;height: 400px;position: absolute;z-index: 1;}
+    #list img{float: left;}
+    #buttons{position: absolute;height: 10px;width: 100px; z-index:2;bottom: 20px;left: 250px;}
+    #buttons span{cursor: pointer;float: left;border: 1px solid #fff;width: 10px; height: 10px; border-radius: 50%;background: #333;margin-right: 5px;}
+    #buttons .on{background: orangered;}
+    .arrow{cursor: pointer;display: none;line-height: 39px;text-align: center;font-size: 36px;font-weight: bold;width: 40px;height: 40px;position: absolute;z-index: 2;top: 180px;background-color: rgba(0,0,0,0.3);color: #fff;}
+    .arrow:hover{background-color: rgba(0,0,0,0.7);}
+    #container:hover .arrow{display: block;}
+    #prev{left: 20px;}
+    #next{right:20px;}
+    /*赛况报道样式*/
+    .newsReports{width:100%;height:50px;border:1px solid red;}
+    .sideLine{width: 2px;height:50px;background:yellow;}
+    .matchChinese{position: absolute;margin-top: -40px;margin-left: 10px;}
+    .matchEnglish{position: absolute;margin-top: -18px;margin-left: 10px;}
+    .more{position: absolute;margin-top: -22px;margin-left: 1000px;}
+    .home .country ul li .picture{width:100%;height:240px;background:gray;display: inline-block;position: relative;}
+    .home .country ul li .picture .text1{font-size: 20px;position: relative;top: 99px;left: 0px;}
+    .home .country ul li .picture .text2{text-indent: -142px;font-size: 20px;position: relative;top: 86px;}
+    .home .country ul li .picture .time{text-indent: -129px;font-size: 20px;position: relative;top: 79px;left: 0px;}
+    /*周边活动*/
+    .home .around{margin: 50px 0 10px;}
+    .home .around ul li .picture{width:100%;height:240px;background:gray;display: inline-block;position: relative;}
+    .home .around ul li .picture .text1{text-indent: 10px;font-size: 20px;position: relative;top: 99px;left: 0px;}
+    .home .around ul li .picture .text2{text-indent: 10px;font-size: 20px;position: relative;top: 86px;}
+    .home .around ul li .picture .time{text-indent: 10px;font-size: 20px;position: relative;top: 79px;left: 0px;}
+    /*聆听大师*/
+    .home .listen{margin: 50px 0 10px;}
+    .home .listen ul li .picture{width:100%;height:240px;background:gray;display: inline-block;position: relative;}
+    .home .listen ul li .picture .text1{text-indent: 10px;font-size: 20px;position: relative;top: 99px;left: 0px;}
+    .home .listen ul li .picture .text2{text-indent: 10px;font-size: 20px;position: relative;top: 86px;}
+    .home .listen ul li .picture .time{text-indent: 10px;font-size: 20px;position: relative;top: 79px;left: 0px;}
+    /*关于比赛*/
+    .home .competition{margin: 50px 0 10px;}
+    .home .competition ul li .picture{width:100%;height:240px;background:gray;display: inline-block;position: relative;}
+    .home .competition ul li .picture .text1{text-indent: 10px;font-size: 20px;position: relative;top: 99px;left: 0px;}
+    .home .competition ul li .picture .text2{text-indent: 10px;font-size: 20px;position: relative;top: 86px;}
+    .home .competition ul li .picture .time{text-indent: 10px;font-size: 20px;position: relative;top: 79px;left: 0px;}
+    /*关于肖邦*/
+    .home .chopin{margin: 50px 0 10px;}
+    .home .chopin ul li .picture{width:100%;height:240px;background:gray;display: inline-block;position: relative;}
+    .home .chopin ul li .picture .text1{text-indent: 10px;font-size: 20px;position: relative;top: 99px;left: 0px;}
+    .home .chopin ul li .picture .text2{text-indent: 10px;font-size: 20px;position: relative;top: 86px;}
+    .home .chopin ul li .picture .time{text-indent: 10px;font-size: 20px;position: relative;top: 79px;left: 0px;}
+  </style>
 </head>
-<style type="text/css">
-  .fancybox-margin{margin-right:17px;}
-</style>
 <body class="home blog">
-	<div class="cd-cover-layer"></div> <!-- cover main content when search form is open -->
+	<div class="cd-cover-layer"></div>
   <header>
 	  <!--加载头部进度条-->
 	  <div id="w-loading"><div style="width: 100%; display: none;"></div></div>
@@ -34,75 +74,51 @@
 	  <nav class="navbar navbar-default nav-home ">
 		  <!--顶部信息 结束 -->
 		  <div class="header-main">
-			  <!--container Begin-->
 			  <div class="container header-wrap">
-				  <div class="navbar-header">
-					  <button aria-expanded="false" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
-					    <span class="sr-only">Toggle navigation</span> 
-					    <span class="icon-bar"></span> 
-					    <span class="icon-bar"></span> 
-					    <span class="icon-bar"></span>
-					  </button>
-					  <a href="http://www.uiessays.com/" title="我听肖邦"> <img alt="优易论文" src="./代写Assignment_代写Essay_代写留学生论文_代写Dissertation_代写Coursework_优易论文_files/11.png" class="lazy"></a>
-					  <div class="visible-xs  user-icon">
-						  <a class="qb" href="http://www.uiessays.com/#login" data-form="loginform" id="ui-login"></a>
-					  </div>
-				  </div>
 				  <div id="navbar" class="collapse navbar-collapse">
 					  <div id="main-nav" class="menu-header%e8%8f%9c%e5%8d%95-container">
 					    <ul id="menu-header%e8%8f%9c%e5%8d%95" class="nav navbar-nav">
 					      <li class="current-menu-item">
-					        <a href="http://www.uiessays.com/">首页</a>
+					        <a href="#">首页</a>
 					      </li>
-                <li class="service-list">
-                  <a href="http://www.uiessays.com/services">服务项目</a>
-                  <ul class="sub-menu">
-	                  <li class="cl-arrow"><a href="http://www.uiessays.com/essay">代写留学论文</a></li>
-	                  <li><a href="http://www.uiessays.com/dissertation">代写毕业论文</a></li>
-	                  <li><a href="http://www.uiessays.com/science">理工项目编程</a></li>
-	                  <li><a href="http://www.uiessays.com/application-service">留学文书申请</a></li>
-	                  <li><a href="http://www.uiessays.com/academic-translation">学术翻译服务</a></li>
-	                  <li><a href="http://www.uiessays.com/proofreading">语法校正服务</a></li>
-	                  <li><a href="http://www.uiessays.com/turnitin">Turnitin检测</a></li>
-                  </ul>
-                </li>
-                <li class="hidden-xs"><a href="http://www.uiessays.com/category/essays">优易文库</a></li>
-                <li><a href="http://www.uiessays.com/blog">优易博客</a></li>
-                <li class="hidden-xs"><a href="http://www.uiessays.com/school">院校库</a></li>
-                <li class="online-order"><a href="http://www.uiessays.com/order-now">在线定制</a>
-                  <ul class="sub-menu">
-	                  <li><a href="http://www.uiessays.com/order-now">论文写作</a></li>
-	                  <li><a href="http://www.uiessays.com/translate-order-now">学术翻译</a></li>
-	                  <li><a href="http://www.uiessays.com/grammar-order-now">语法校正</a></li>
-	                  <li><a href="http://www.uiessays.com/application-order-now">留学文书</a></li>
-	                  <li><a href="http://www.uiessays.com/polytechnic-order-now">理工项目</a></li>
-	                  <li><a href="http://www.uiessays.com/turnitin-order-now">Turnitin检测</a></li>
-                  </ul>
-                </li>
-              </ul>
+                          <li class="service-list">
+                            <a href="#">赛事消息 </a>
+                            <ul class="sub-menu">
+	                          <li class="cl-arrow"><a href="#">公告</a></li>
+	                          <li><a href="#">动态</a></li>
+                            </ul>
+                           </li>
+                           <li class="service-list"><a href="#">赛事介绍</a>
+                             <ul class="sub-menu">
+                               <li class="cl-arrow"><a href="#">组委会介绍</a></li>
+                               <li><a href="#">评委会介绍</a></li>
+                               <li><a href="#">章程</a></li>
+                             </ul>
+                           </li>
+                           <li class="service-list"><a href="#">赛事进程</a>
+                              <ul class="sub-menu">
+                                <li class="cl-arrow"><a href="#">日程安排</a></li>
+                                <li><a href="#">开幕式音乐会</a></li>
+                                <li><a href="#">晋级赛</a></li>
+                              </ul>
+                           </li>
+                           <li class="hidden-xs"><a href="#">合作伙伴</a></li>
+                           <li class="online-order"><a href="#" style="color: #777;font-weight: 100;">视频汇总</a>
+                              <ul class="sub-menu">
+	                            <li><a href="#">肖邦故乡行</a></li>
+	                             <li><a href="#">视频征集</a></li>
+	                             <li><a href="#">获奖视频</a></li>
+                              </ul>
+                           </li>
+                         </ul>
 					  </div>
 					  <div class="nav-left-login navbar-nav hidden-xs">
-					    <a class="btn btn-default qb login_btn " href="http://www.uiessays.com/#login" data-form="loginform" id="ui-login">登录</a>
-					    <a class="btn btn-primary qb reg " href="http://www.uiessays.com/#login">注册</a>
-					    <a class="btn-search uicon-search2" href="javascript:;"></a>
+					    <a class="btn btn-default qb login_btn " href="#" data-form="loginform" id="ui-login">登录</a>
+					    <a class="btn btn-primary qb reg " href="#">注册</a>
 					  </div>
 				  </div>
 			  </div>
-			  <div class="header-search-slide">
-				  <form method="get" id="searchform-slide" class="searchform" action="http://www.uiessays.com/" role="search">
-					  <input class="field" name="s" value="" placeholder="输入关键词并回车" type="search">
-					  <button class="search-btn" type="submit"><i class="uicon-search2"></i></button>
-					  <label>热门搜索：</label>
-					  <ul>
-						  <li><a href="http://www.uiessays.com/?s=%E7%95%99%E5%AD%A6%E7%94%9F%E8%AE%BA%E6%96%87">留学生论文</a></li>
-						  <li><a href="http://www.uiessays.com/?s=%E4%BB%A3%E5%86%99essay">代写essay</a></li>
-						  <li><a href="http://www.uiessays.com/?s=%E4%BB%A3%E5%86%99assignment">代写assignment</a></li>
-						  <li><a href="http://www.uiessays.com/?s=%E8%8B%B1%E8%AF%AD%E7%95%99%E5%AD%A6%E6%96%87%E4%B9%A6">英语留学文书</a></li>
-						  <li><a href="http://www.uiessays.com/?s=%E7%95%99%E5%AD%A6%E7%94%9F%E4%BD%9C%E4%B8%9A">留学生作业</a></li>
-						  <li><a href="http://www.uiessays.com/?s=%E4%BB%A3%E5%86%99dissertation">代写dissertation</a></li>
-				    </ul>				
-				  </form>
-			  </div>
+			  
 		  </div>
 	  </nav>
 	  <div id="login" style="display: none">
@@ -188,593 +204,303 @@
 	  </div>
   </header>
   <section class="main-body">
-  <!-- 测试图片轮播 开始 -->
+  <!-- 图片轮播  -->
   <div id="bannerWarp">
-	  <div class="banner">
-		  <div class="container">
-			  <div class="col-md-12" id="intro-main">
-				  <h1>优易论文 让留学更美好</h1>
-				  <h3>通过强大的学术作家团队为您打造专属优质的论文服务，<br>并提供Turnitin官方检测、以及享受长达2个月免费修改服务。</h3>
-				  <div class="btn-banner-group">
-					  <a href="http://www.uiessays.com/order-now" class="btn btn-default btn-online-order btn-white">立即开始定制论文</a>
-				  </div>
-			  </div>
-		  </div>
-	  </div>
+	  <div id="container">	 
+      <div id="list" style="left:-600px;">
+        <img src="images/5.jpg" alt="1"/>
+        <img src="images/1.jpg" alt="1"/>
+        <img src="images/2.jpg" alt="2"/>
+        <img src="images/3.jpg" alt="3"/>
+        <img src="images/4.jpg" alt="4"/>
+        <img src="images/5.jpg" alt="5"/>
+        <img src="images/1.jpg" alt="5"/>
+      </div>
+      <div id="buttons">
+        <span index="1" class="on"></span>
+        <span index="2"></span>
+        <span index="3"></span>
+        <span index="4"></span>
+        <span index="5"></span>
+      </div>
+      <a href="javascript:;" id="prev" class="arrow">&lt;</a>
+      <a href="javascript:;" id="next" class="arrow">&gt;</a>
+    </div>
+		 
   </div>
+  <!-- 赛况报道 -->
   <div class="country">
 	  <div class="container">
-		  <ul>
-				<li class="col-md-2 country-item">
-				  <a href="http://www.uiessays.com/area-usa">
-					  <div class="country-picture">
-						  <img class="lazy" data-original="http://cdn.uiessays.com/static/timthumb.php?src=http://www.uiessays.com/wp-content/uploads/2016/06/318768-130621145437551.jpg&amp;w=160&amp;h=105&amp;zc=1&amp;f=0" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC">
-						  <span class="mask"></span>
-						  <span class="text">美国</span>
+	    <div class="newsReports">
+	      <div class="sideLine"></div>
+	      <div class="matchChinese">赛况报道</div>
+	      <div class="matchEnglish">Show time</div>
+	      <div class="more">更多</div>
+	    </div>
+	    <ul style="margin-top:10px;">
+				<li class="col-md-3 country-item">
+				  <a href="#">
+					  <div class="picture">
+						  <img class="lazy">
+						  <p class="text1">第1届北京肖邦青少年钢琴</p>
+						  <p class="text2">比赛公告</p>
+						  <p class="time">2016.10.11</p>
 					  </div>
 				  </a>
 			  </li>
-				<li class="col-md-2 country-item">
-				  <a href="http://www.uiessays.com/area-uk">
-					  <div class="country-picture">
-						  <img class="lazy" data-original="http://cdn.uiessays.com/static/timthumb.php?src=http://www.uiessays.com/wp-content/uploads/2016/06/240421-1305300K14066.jpg&amp;w=160&amp;h=105&amp;zc=1&amp;f=0" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC">
-						  <span class="mask"></span>
-						  <span class="text">英国</span>
-					  </div>
-				  </a>
+				<li class="col-md-3 country-item">
+				  <a href="#">
+            <div class="picture">
+              <img class="lazy">
+              <p class="text1">第1届北京肖邦青少年钢琴</p>
+              <p class="text2">比赛公告</p>
+              <p class="time">2016.10.11</p>
+            </div>
+          </a>
 			  </li>
-				<li class="col-md-2 country-item">
-				  <a href="http://www.uiessays.com/area-au">
-					  <div class="country-picture">
-						  <img class="lazy" data-original="http://cdn.uiessays.com/static/timthumb.php?src=http://www.uiessays.com/wp-content/uploads/2016/07/au.jpg&amp;w=160&amp;h=105&amp;zc=1&amp;f=0" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC">
-						  <span class="mask"></span>
-						  <span class="text">澳大利亚</span>
-					  </div>
-				  </a>
+				<li class="col-md-3 country-item">
+				  <a href="#">
+            <div class="picture">
+              <img class="lazy">
+              <p class="text1">第1届北京肖邦青少年钢琴</p>
+              <p class="text2">比赛公告</p>
+              <p class="time">2016.10.11</p>
+            </div>
+          </a>
 			  </li>
-				<li class="col-md-2 country-item">
-				  <a href="http://www.uiessays.com/area-nz">
-					  <div class="country-picture">
-						  <img class="lazy" data-original="http://cdn.uiessays.com/static/timthumb.php?src=http://www.uiessays.com/wp-content/uploads/2016/07/nz.jpg&amp;w=160&amp;h=105&amp;zc=1&amp;f=0" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC">
-						  <span class="mask"></span>
-						  <span class="text">新西兰</span>
-					  </div>
-				  </a>
+				<li class="col-md-3 country-item">
+				  <a href="#">
+            <div class="picture">
+              <img class="lazy">
+              <p class="text1">第1届北京肖邦青少年钢琴</p>
+              <p class="text2">比赛公告</p>
+              <p class="time">2016.10.11</p>
+            </div>
+          </a>
 			  </li>
-			  <li class="col-md-2 country-item">
-				  <a href="http://www.uiessays.com/area-ca">
-					  <div class="country-picture">
-						  <img class="lazy" data-original="http://cdn.uiessays.com/static/timthumb.php?src=http://www.uiessays.com/wp-content/uploads/2016/07/ca.jpg&amp;w=160&amp;h=105&amp;zc=1&amp;f=0" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC">
-						  <span class="mask"></span>
-						  <span class="text">加拿大</span>
-					  </div>
-				  </a>
-			  </li>
-				<li class="col-md-2 country-item">
-				  <a href="http://www.uiessays.com/area-sg">
-					  <div class="country-picture">
-						  <img class="lazy" data-original="http://cdn.uiessays.com/static/timthumb.php?src=http://www.uiessays.com/wp-content/uploads/2016/07/sg.jpg&amp;w=160&amp;h=105&amp;zc=1&amp;f=0" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC">
-						  <span class="mask"></span>
-						  <span class="text">新加坡</span>
-					  </div>
-				  </a>
-			  </li>
+			  
 			</ul>
 	  </div>
   </div>
-  <!--留学生服务项目-->
-  <div id="servicesWarp">
-	  <div class="service-header">
-		  <div class="container">
-			  <h2>我们的服务</h2>
-			  <p>任何服务都严格按要求完成，保证每个服务的原创和质量，定制专属您的论文服务。</p>
-		  </div>
-	  </div>
-	  <div class="homebanner serviceItem-item">
-		  <div class="container">
-			  <a class="prev" href="javascript:"><img class="retina lazy" data-original="http://cdn.uiessays.com/static/images/home/left.png" heigth="47" width="23" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"></a>
-			  <a class="next" href="javascript:"><img class="retina lazy" data-original="http://cdn.uiessays.com/static/images/home/right.png" heigth="47" width="23" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"></a>
-			  <div class="hd hidden"><ul><li class="on"></li><li></li></ul></div>
-			  <div class="bd">
-				  <div class="tempWrap" style="overflow:hidden; position:relative; width:1140px">
-				    <ul style="width: 2280px; left: 0px; position: relative; overflow: hidden; padding: 0px; margin: 0px;">
-					    <li style="float: left; width: 1140px;">
-						    <div class="col-xs-12 col-md-3">
-							    <div class="servie-item-box">
-								    <div class="details">
-								      <div class="serviceItem-brand">
-									      <span>优易论文</span>
-									      <span>质量保证</span>
-								      </div>
-								      <h3>学术论文定制写作服务</h3>
-								      <p>优易论文提供专业论文代写服务，专业写手代写并且可提供Turnitin官方检测保证100%原创。
-								        <a href="http://www.uiessays.com/essay" title="查看学术论文定制写作服务">详情→</a>
-								      </p>
-								      <div class="serviceItem-other">
-									      <div class="col-xs-6 col-md-6">
-										      <span class="serviceItem-percent">3</span>分钟
-										      <br><small>轻松下单</small>
-									      </div>
-									      <div class="col-xs-6 col-md-6">
-										      <span class="serviceItem-remain">100</span>%
-										      <br><small>原创写作</small>
-									      </div>
-								      </div>
-							      </div>
-							      <a class="project-item-btn biding" href="http://www.uiessays.com/order-now" target="_blank">立即预订</a>
-							      <div class="section-bottom-a"></div>
-							      <div class="section-bottom-b"></div>
-							    </div>
-						    </div>
-						    <div class="col-xs-12 col-md-3">
-							    <div class="servie-item-box">
-								    <div class="details">
-								      <div class="serviceItem-brand">
-									      <span>专家修改润色</span>
-									      <span>保留修改痕迹</span>
-								      </div>
-								      <h3>语法校正服务</h3>
-								      <p>优易论文拥有资深中/英语母语专业写手，提供高质量的语法校正、编辑等服务为您的文章润色添彩。
-									      <span><a href="http://www.uiessays.com/proofreading">详情→</a></span>
-								      </p>
-								      <div class="serviceItem-other">
-									      <div class="col-xs-6 col-md-6">
-										      <span class="serviceItem-percent">1+1</span>
-										      <br><small>校正润色</small>
-									      </div>
-									      <div class="col-xs-6 col-md-6">
-										      <span class="serviceItem-remain">100</span>%
-										      <br><small>母语编辑</small>
-									      </div>
-								      </div>
-							      </div>
-							      <a class="project-item-btn biding" href="http://www.uiessays.com/grammar-order-now" target="_blank">立即预订</a>
-							      <div class="section-bottom-a"></div>
-							      <div class="section-bottom-b"></div>
-							    </div>
-						    </div>
-						    <div class="col-xs-12 col-md-3">
-							<div class="servie-item-box">
-								<div class="details">
-								  <div class="serviceItem-brand">
-									  <span>语言风格优化</span>
-									  <span>简历风格美化</span>
-								  </div>
-								  <h3>留学文书申请写作服务</h3>
-								  <p>优易论文量身定制专属您的个人简历、PS、推荐信、Essay，让您在众多文书中脱颖而出。
-									<span><a href="http://www.uiessays.com/application-service">详情→</a></span>
-								</p>
-								<div class="serviceItem-other">
-									<div class="col-xs-6 col-md-6">
-										<span class="serviceItem-percent">1:1</span>
-										<br><small>服务顾问</small>
-									</div>
-									<div class="col-xs-6 col-md-6">
-										<span class="serviceItem-remain">
-										100</span>%
-										<br><small>私人定制</small>
-									</div>
-								</div>
-							</div>
-							<a class="project-item-btn biding" href="http://www.uiessays.com/application-order-now" target="_blank">文书定制</a>
-							<div class="section-bottom-a"></div>
-							<div class="section-bottom-b"></div>
-							</div>
-						</div>
-						<div class="col-xs-12 col-md-3">
-							<div class="servie-item-box">
-								<div class="details">
-								<div class="serviceItem-brand">
-									<span>同领域译员翻译</span>
-									<span>资深译员审核</span>
-								</div>
-								<h3>专业翻译服务</h3>
-								<p>
-									优易论文提供专业中英文学术翻译，由中英文母语学者权威翻译，高翻译质量助您轻松毕业。
-									<span><a href="http://www.uiessays.com/academic-translation">详情→</a></span>
-								</p>
-								<div class="serviceItem-other">
-									<div class="col-xs-6 col-md-6">
-										<span class="serviceItem-percent">48</span> %
-										<br><small>资深译员</small>
-									</div>
-									<div class="col-xs-6 col-md-6">
-										<span class="serviceItem-remain">
-										100</span>%
-										<br><small>行业精英</small>
-									</div>
-								</div>
-							</div>
-							<a class="project-item-btn biding" href="http://www.uiessays.com/translate-order-now" target="_blank">立即预订</a>
-							<div class="section-bottom-a"></div>
-							<div class="section-bottom-b"></div>
-							</div>
-						</div>
-					</li>
-					<li style="float: left; width: 1140px;">
+   <!--周边活动-->
+  <div class="around">
+    <div class="container">
+      <div class="newsReports">
+        <div class="sideLine"></div>
+        <div class="matchChinese">周边活动</div>
+        <div class="matchEnglish">Around competion</div>
+        <div class="more">更多</div>
+      </div>
+      <ul style="margin-top:10px;">
+        <li class="col-md-3 country-item">
+          <a href="#">
+            <div class="picture">
+              <img class="lazy" src="">
+              <p class="text1">第1届北京肖邦青少年钢琴</p>
+              <p class="text2">比赛公告</p>
+              <p class="time">2016.10.11</p>
+            </div>
+          </a>
+        </li>
+        <li class="col-md-3 country-item">
+          <a href="#">
+            <div class="picture">
+              <img class="lazy" src="">
+              <p class="text1">第1届北京肖邦青少年钢琴</p>
+              <p class="text2">比赛公告</p>
+              <p class="time">2016.10.11</p>
+            </div>
+          </a>
+        </li>
+        <li class="col-md-3 country-item">
+          <a href="#">
+            <div class="picture">
+              <img class="lazy" src="">
+              <p class="text1">第1届北京肖邦青少年钢琴</p>
+              <p class="text2">比赛公告</p>
+              <p class="time">2016.10.11</p>
+            </div>
+          </a>
+        </li>
+        <li class="col-md-3 country-item">
+          <a href="#">
+            <div class="picture">
+              <img class="lazy" src="">
+              <p class="text1">第1届北京肖邦青少年钢琴</p>
+              <p class="text2">比赛公告</p>
+              <p class="time">2016.10.11</p>
+            </div>
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+<!-- 聆听大师-->
+<div class="listen">
+    <div class="container">
+      <div class="newsReports">
+        <div class="sideLine"></div>
+        <div class="matchChinese">聆听大师</div>
+        <div class="matchEnglish">Listen to masters</div>
+        <div class="more">更多</div>
+      </div>
+      <ul style="margin-top:10px;">
+        <li class="col-md-3 country-item">
+          <a href="#">
+            <div class="picture">
+              <img class="lazy" src="">
+              <p class="text1">第1届北京肖邦青少年钢琴</p>
+              <p class="text2">比赛公告</p>
+              <p class="time">2016.10.11</p>
+            </div>
+          </a>
+        </li>
+        <li class="col-md-3 country-item">
+          <a href="#">
+            <div class="picture">
+              <img class="lazy" src="">
+              <p class="text1">第1届北京肖邦青少年钢琴</p>
+              <p class="text2">比赛公告</p>
+              <p class="time">2016.10.11</p>
+            </div>
+          </a>
+        </li>
+        <li class="col-md-3 country-item">
+          <a href="#">
+            <div class="picture">
+              <img class="lazy" src="">
+              <p class="text1">第1届北京肖邦青少年钢琴</p>
+              <p class="text2">比赛公告</p>
+              <p class="time">2016.10.11</p>
+            </div>
+          </a>
+        </li>
+        <li class="col-md-3 country-item">
+          <a href="#">
+            <div class="picture">
+              <img class="lazy" src="">
+              <p class="text1">第1届北京肖邦青少年钢琴</p>
+              <p class="text2">比赛公告</p>
+              <p class="time">2016.10.11</p>
+            </div>
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+<!-- 关于比赛-->
+<div class="competition">
+    <div class="container">
+      <div class="newsReports">
+        <div class="sideLine"></div>
+        <div class="matchChinese">关于比赛</div>
+        <div class="matchEnglish">About conpetition</div>
+        <div class="more">更多</div>
+      </div>
+      <ul style="margin-top:10px;">
+        <li class="col-md-3 country-item">
+          <a href="#">
+            <div class="picture">
+              <img class="lazy" src="">
+              <p class="text1">第1届北京肖邦青少年钢琴</p>
+              <p class="text2">比赛公告</p>
+              <p class="time">2016.10.11</p>
+            </div>
+          </a>
+        </li>
+        <li class="col-md-3 country-item">
+          <a href="#">
+            <div class="picture">
+              <img class="lazy" src="">
+              <p class="text1">第1届北京肖邦青少年钢琴</p>
+              <p class="text2">比赛公告</p>
+              <p class="time">2016.10.11</p>
+            </div>
+          </a>
+        </li>
+        <li class="col-md-3 country-item">
+          <a href="#">
+            <div class="picture">
+              <img class="lazy" src="">
+              <p class="text1">第1届北京肖邦青少年钢琴</p>
+              <p class="text2">比赛公告</p>
+              <p class="time">2016.10.11</p>
+            </div>
+          </a>
+        </li>
+        <li class="col-md-3 country-item">
+          <a href="#">
+            <div class="picture">
+              <img class="lazy" src="">
+              <p class="text1">第1届北京肖邦青少年钢琴</p>
+              <p class="text2">比赛公告</p>
+              <p class="time">2016.10.11</p>
+            </div>
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+<!--关于肖邦-->
+<div class="chopin">
+    <div class="container">
+      <div class="newsReports">
+        <div class="sideLine"></div>
+        <div class="matchChinese">关于肖邦</div>
+        <div class="matchEnglish">About chopin</div>
+        <div class="more">更多</div>
+      </div>
+      <ul style="margin-top:10px;">
+        <li class="col-md-3 country-item">
+          <a href="#">
+            <div class="picture">
+              <img class="lazy" src="">
+              <p class="text1">第1届北京肖邦青少年钢琴</p>
+              <p class="text2">比赛公告</p>
+              <p class="time">2016.10.11</p>
+            </div>
+          </a>
+        </li>
+        <li class="col-md-3 country-item">
+          <a href="#">
+            <div class="picture">
+              <img class="lazy" src="">
+              <p class="text1">第1届北京肖邦青少年钢琴</p>
+              <p class="text2">比赛公告</p>
+              <p class="time">2016.10.11</p>
+            </div>
+          </a>
+        </li>
+        <li class="col-md-3 country-item">
+          <a href="#">
+            <div class="picture">
+              <img class="lazy" src="">
+              <p class="text1">第1届北京肖邦青少年钢琴</p>
+              <p class="text2">比赛公告</p>
+              <p class="time">2016.10.11</p>
+            </div>
+          </a>
+        </li>
+        <li class="col-md-3 country-item">
+          <a href="#">
+            <div class="picture">
+              <img class="lazy" src="">
+              <p class="text1">第1届北京肖邦青少年钢琴</p>
+              <p class="text2">比赛公告</p>
+              <p class="time">2016.10.11</p>
+            </div>
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
 
-						<div class="col-xs-12 col-md-3">
-							<div class="servie-item-box">
-								<div class="details">
-								<div class="serviceItem-brand">
-									<span>官方授权</span>
-									<span>重复提交</span>
-								</div>
-								<h3>Turnitin检测服务</h3>
-								<p>
-									优易论文作为turnitin官方合作伙伴，提供专业防抄袭检测服务，可重复提交100%不收录。<span><a href="http://www.uiessays.com/turnitin">详情→</a></span>
-								</p>
-								<div class="serviceItem-other">
-									<div class="col-xs-6 col-md-6">
-										<span class="serviceItem-percent">10</span>分钟
-										<br><small>快速检测</small>
-									</div>
-									<div class="col-xs-6 col-md-6">
-										<span class="serviceItem-remain">
-										100</span>%
-										<br><small>不被收录</small>
-									</div>
-								</div>
-							</div>
-							<a class="project-item-btn biding" href="http://www.uiessays.com/turnitin-order-now" target="_blank">立即检测</a>
-							<div class="section-bottom-a"></div>
-							<div class="section-bottom-b"></div>
-							</div>
-						</div>
-						<div class="col-xs-12 col-md-3">
-							<div class="servie-item-box">
-								<div class="details">
-								<div class="serviceItem-brand">
-									<span>开发+指导+售后</span>
-									<span>一站式服务</span>
-								</div>
-								<h3>理工编程服务</h3>
-								<p>
-									优易论文代做IT编程、Eviews作业、Matlab编程等理工作业，全方面专业服务解决的您的学业烦恼。
-									<span><a href="http://www.uiessays.com/science">详情→</a></span>
-								</p>
-								<div class="serviceItem-other">
-									<div class="col-xs-6 col-md-6">
-										<span class="serviceItem-percent">1+1+1</span>
-										<br><small>一站式服务</small>
-									</div>
-									<div class="col-xs-6 col-md-6">
-										<span class="serviceItem-remain">
-										100</span>%
-										<br><small>论文服务</small>
-									</div>
-								</div>
-							</div>
-							<a class="project-item-btn biding" href="http://www.uiessays.com/polytechnic-order-now" target="_blank">立即预订</a>
-							<div class="section-bottom-a"></div>
-							<div class="section-bottom-b"></div>
-							</div>
-						</div>
-						<div class="col-xs-12 col-md-3 special-reservation">
-							<div class="servie-item-box">
-								<div class="details">
-								<div class="serviceItem-brand">
-									<span>8年品质</span>
-									<span>效益保证</span>
-								</div>
-								<h3>特色写作服务</h3>
-								<p>
-									优易论文会根据您的喜好以及个性化的需求来进行专门的定制写作，您的满意就是我们最大的追求。
-								</p>
-								<div class="serviceItem-other">
-									<div class="col-xs-6 col-md-6">
-										<span class="serviceItem-percent">8</span>年
-										<br><small>行业经验</small>
-									</div>
-									<div class="col-xs-6 col-md-6">
-										<span class="serviceItem-remain">
-										100</span>%
-										<br><small>优质服务</small>
-									</div>
-								</div>
-							</div>
-							<a class="project-item-btn biding" href="http://wpa.qq.com/msgrd?v=3&amp;uin=903898506&amp;site=qq&amp;menu=yes" target="_blank" rel="nofollow">特色预订</a>
-							<div class="section-bottom-a"></div>
-							<div class="section-bottom-b"></div>
-							</div>
-						</div>
-					</li>
-				</ul></div>
-			</div>
-		</div>
-	</div>
 </div>
-<!-- 订单流程 -->
-<div id="processWrap">
-	<div class="container">
-		<div class="process-header">
-			<h3>完善的服务流程</h3>
-			<p>优易论文团队积沉数十年的论文服务经验, 不断总结完善论文服务流程。</p>
-		</div>
-		<div class="proDetail">
-			<ul>
-				<li class="one">
-					<div class="title">填写需求</div>
-					<p>请详细准确的填写需求订单，以便我们能更准确的了解您的需求</p>
-				</li>
-				<li class="two">
-					<div class="title">支付订单</div>
-					<p>合理的报价，支付订单报价后，将开始写作</p>
-				</li>
-				<li class="three">
-					<div class="title">写手撰稿</div>
-					<p>安排合适的专家写手，进行写作，满足您的需求</p>
-				</li>
-				<li class="four">
-					<div class="title">确定交稿</div>
-					<p>订单完成，将通过邮件或者上传到网站的方式发送给您</p>
-				</li>
-				<li class="five">
-					<div class="title">售后服务</div>
-					<p>订单完成后，不改变原始要求的情况下，2个月内免费进行修改甚至重写</p>
-				</li>
-			</ul>
-		</div>
-	</div>
-</div>
-<div id="customerWitness">
-	<div class="cumulative">
-		<h3>订单累计完成 <span class="timer count-title digitalDetailsView" data-to="53634" data-speed="1000">53,634</span> ，实力见证!</h3>
-		<p class="hot-comment"><span class="comment-name" style="opacity: 1;">无人岛：</span><span style="opacity: 1;">如此棒的代写你也值得拥有哦。</span></p>
-		<a href="http://www.uiessays.com/order-now" class="btn btn-info btn-place-order">立即下单</a>
-	</div>
-</div>
-<!--公告、帮助、范文、博客-->
-<div id="postWrap">
-	<div class="container cat-posts">
-		<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-			<div class="cat-list-title">
-				<a href="javascript:;" title="点击查看更多公告" rel="nofollow">
-					<img class="lazy" data-original="http://cdn.uiessays.com/static/images/home/index.jpg" alt="点击查看更多公告" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC">
-					<div class="title-text">
-						<div class="title-text-detail">
-							<p class="title-text-read">[ 公告 ]</p>
-						</div>
-					</div>
-				</a>
-			</div>
-			<ul>
-										<li>
-							<a href="http://www.uiessays.com/bulletin/3984.html" title="填写订单请准确填写个人信息">填写订单请准确填写个人信息</a>
-							<span>2016-03-22</span>
-						</li>
-										<li>
-							<a href="http://www.uiessays.com/bulletin/3918.html" title="祝大家2016年万事如意，学业顺利">祝大家2016年万事如意，学业顺利</a>
-							<span>2016-02-17</span>
-						</li>
-										<li>
-							<a href="http://www.uiessays.com/bulletin/3104.html" title="请准确填写交稿日期">请准确填写交稿日期</a>
-							<span>2015-05-19</span>
-						</li>
-										<li>
-							<a href="http://www.uiessays.com/bulletin/2762.html" title="优易论文新春佳节照常营业！">优易论文新春佳节照常营业！</a>
-							<span>2015-02-14</span>
-						</li>
-										<li>
-							<a href="http://www.uiessays.com/bulletin/2361.html" title="优易论文圣诞节照常营业">优易论文圣诞节照常营业</a>
-							<span>2014-12-23</span>
-						</li>
-										<li>
-							<a href="http://www.uiessays.com/bulletin/537.html" title="关于新版官方网站上线的公告">关于新版官方网站上线的公告</a>
-							<span>2014-08-27</span>
-						</li>
-										<li>
-							<a href="http://www.uiessays.com/bulletin/539.html" title="优易论文服务郑重承诺保证">优易论文服务郑重承诺保证</a>
-							<span>2014-08-27</span>
-						</li>
-							</ul>
-		</div>
-		<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-			<div class="cat-list-title">
-				<a href="http://www.uiessays.com/blog" title="点击查看更多文章">
-					<img class="lazy" data-original="http://cdn.uiessays.com/static/images/home/help.png" alt="点击查看更多文章" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC">
-					<div class="title-text">
-						<div class="title-text-detail">
-							<p class="title-text-read">[ 优易博客 ]</p>
-						</div>
-					</div>
-				</a>
-			</div>
-			<ul>
-											<li>
-								<a href="http://www.uiessays.com/blog/meiguoliuxuesheng.html" title="美国留学生毕业回国，学历认证是关键！" class="cn">
-									美国留学生毕业回国，学历认证是关键！								</a>
-								<span>05-28</span>
-							</li>
-											<li>
-								<a href="http://www.uiessays.com/blog/liuxuexinxilan.html" title="留学新西兰，论文写作让留学生苦不堪言" class="cn">
-									留学新西兰，论文写作让留学生苦不堪言								</a>
-								<span>05-28</span>
-							</li>
-											<li>
-								<a href="http://www.uiessays.com/blog/cankaowenxian1.html" title="参考文献引用的内容还算剽窃吗？" class="cn">
-									参考文献引用的内容还算剽窃吗？								</a>
-								<span>05-28</span>
-							</li>
-											<li>
-								<a href="http://www.uiessays.com/blog/yingguolunwen1.html" title="英国留学生的焦虑：论文堪比家庭作业" class="cn">
-									英国留学生的焦虑：论文堪比家庭作业								</a>
-								<span>05-28</span>
-							</li>
-											<li>
-								<a href="http://www.uiessays.com/blog/feizhouliuxue.html" title="非洲留学：会汉语成为毕业就职的“香饽饽”" class="cn">
-									非洲留学：会汉语成为毕业就职的“香饽饽”								</a>
-								<span>05-28</span>
-							</li>
-											<li>
-								<a href="http://www.uiessays.com/blog/lvlibiao.html" title="留学生文书履历表注意事项" class="cn">
-									留学生文书履历表注意事项								</a>
-								<span>05-16</span>
-							</li>
-											<li>
-								<a href="http://www.uiessays.com/blog/liuxueshenglunwenfanli.html" title="留学生论文范例-人才是第一竞争力" class="cn">
-									留学生论文范例-人才是第一竞争力								</a>
-								<span>05-16</span>
-							</li>
-											<li>
-								<a href="http://www.uiessays.com/blog/essay-example.html" title="essay范文 essay example：Paper Support Services" class="cn">
-									essay范文 essay example：Paper Support Services								</a>
-								<span>05-08</span>
-							</li>
-											<li>
-								<a href="http://www.uiessays.com/blog/liuxueshenqingshu.html" title="美国留学申请信写作范文" class="cn">
-									美国留学申请信写作范文								</a>
-								<span>05-08</span>
-							</li>
-											<li>
-								<a href="http://www.uiessays.com/blog/review.html" title="代写英国留学论文 Literature review" class="cn">
-									代写英国留学论文 Literature review								</a>
-								<span>05-08</span>
-							</li>
-							</ul>
-		</div>
-		<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-			<div class="cat-list-title">
-				<a href="javascript:;" title="点击查看更多范文" rel="nofollow">
-					<img class="lazy" data-original="http://cdn.uiessays.com/static/images/home/index2.png" alt="点击查看更多范文" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC">
-					<div class="title-text">
-						<div class="title-text-detail">
-							<p class="title-text-read">[ 范文赏析 ]</p>
-						</div>
-					</div>
-				</a>
-			</div>
-			<ul>
-									<li>
-						<a href="http://www.uiessays.com/hughes-belding-personal-reflection-assignment%e8%8c%83%e6%96%87.html" title="Hughes-Belding Personal Reflection Assignment范文">
-							Hughes-Belding Personal Reflection Assignment范文						</a>
-						<span>英国论文</span>
-					</li>
-										<li>
-						<a href="http://www.uiessays.com/guidelines-for-ba-thesis-format.html" title="Guidelines for BA thesis format: (to BA candidates 2012)">
-							Guidelines for BA thesis format: (to BA candidates 2012)						</a>
-						<span>英国论文</span>
-					</li>
-										<li>
-						<a href="http://www.uiessays.com/the-role-of-polis-in-greek-civilization.html" title="The Role of Polis in Greek civilization">
-							The Role of Polis in Greek civilization						</a>
-						<span>美国论文</span>
-					</li>
-										<li>
-						<a href="http://www.uiessays.com/the-future-of-printed-books-in-the-digital-ag.html" title="THE FUTURE OF PRINTED BOOKS IN THE DIGITAL AG">
-							THE FUTURE OF PRINTED BOOKS IN THE DIGITAL AG						</a>
-						<span>美国论文</span>
-					</li>
-										<li>
-						<a href="http://www.uiessays.com/introduction.html" title="Introduction">
-							Introduction						</a>
-						<span>英国论文</span>
-					</li>
-										<li>
-						<a href="http://www.uiessays.com/employee-motivation%ef%bc%9arole-inmodern-management.html" title="employee motivation：role inmodern management">
-							employee motivation：role inmodern management						</a>
-						<span>美国论文</span>
-					</li>
-										<li>
-						<a href="http://www.uiessays.com/runninghead.html" title="running head：automobile  safety belt law">
-							running head：automobile  safety belt law						</a>
-						<span>英国论文</span>
-					</li>
-										<li>
-						<a href="http://www.uiessays.com/%e8%8b%b1%e5%9b%bdfinancial-accounting%e4%bd%9c%e4%b8%9a.html" title="英国Financial accounting作业">
-							英国Financial accounting作业						</a>
-						<span>英国论文</span>
-					</li>
-										<li>
-						<a href="http://www.uiessays.com/microeconomics.html" title="Microeconomics">
-							Microeconomics						</a>
-						<span>英国论文</span>
-					</li>
-										<li>
-						<a href="http://www.uiessays.com/critical-perspectives-in-global-management.html" title="Critical Perspectives in Global Management">
-							Critical Perspectives in Global Management						</a>
-						<span>英国论文</span>
-					</li>
-								</ul>
-		</div>
-	</div>
-</div>
-<div id="links">
-	<div class="homebanner links_Partner  container">
-		<div class="links_Partner_slide">
-			<div class="hd">
-				<!-- 下面是前/后按钮代码，如果不需要删除即可 -->
-				<span class="arrow"><a class="next"></a><a class="prev"></a></span>
-				<ul class="tab"><li class="on">专题推荐</li><li>友情链接</li></ul>
-				<div class="tab_more"><a href="http://wpa.qq.com/msgrd?v=3&amp;uin=903898506&amp;site=qq&amp;menu=yes" target="_blank" rel="nofollow">申请加入友情链接</a></div>
-			</div>
-			<div class="bd">
-				<div><h2>专题推荐</h2>
-	<ul class="xoxo blogroll">
-<li><a href="http://www.uiessays.com/personal-statement">PS写作注意事项</a></li>
 
-	</ul>
-</div>
-				<div style="display: none;"><h2>友情链接</h2>
-	<ul class="xoxo blogroll">
-<li><a href="http://www.0460.com/view/182931.html" title="0460网站之家" target="_blank">0460网站之家</a></li>
-<li><a href="http://www.958xuexi.com/" target="_blank">958学习网</a></li>
-<li><a href="http://www.haoxue.com/sat/">sat考试</a></li>
-<li><a href="http://www.jiasulian.com/">pua</a></li>
-<li><a href="http://www.43d.net/" target="_blank">留学网</a></li>
-<li><a href="http://www.cq8811.com/">艺术高考</a></li>
-<li><a href="http://www.yabojiaoyu.net/">戒网瘾</a></li>
-<li><a href="http://www.xxubbs.cn/" target="_blank">新乡学院论坛</a></li>
-<li><a href="http://lwno1.com/" target="_blank">武汉美容学校</a></li>
-<li><a href="http://www.edu399.com/" target="_blank">无忧教育网</a></li>
-<li><a href="http://www.0757bdqn.com/" target="_blank">佛山职业技术学院</a></li>
-<li><a href="http://www.foshanbdqn.com/" target="_blank">佛山北大青鸟</a></li>
-<li><a href="http://www.ccmsxx.com/" target="_blank">郑州美术培训</a></li>
-<li><a href="http://www.maisuiyu.com/" target="_blank">教育资讯网</a></li>
-<li><a href="http://wyx186.net/" target="_blank">营销网</a></li>
-<li><a href="http://yili.bianmin369.com/" target="_blank">伊犁分类信息网</a></li>
-<li><a href="http://www.pnstudy.com/" target="_blank">留学生论文代写</a></li>
-<li><a href="http://www.googcc.com.cn/">学术期刊</a></li>
-<li><a href="http://www.oqiao.cn/">美国高中课程</a></li>
-<li><a href="http://www.lxgmgl.com/">六西格玛培训</a></li>
-<li><a href="http://www.xdspx.com/">洛阳会计培训</a></li>
-<li><a href="http://www.dn-peixun.com/">广州java培训</a></li>
-<li><a href="http://www.cdtlxx.com/">成都铁路学校</a></li>
-<li><a href="http://www.sgbowei.cn/">新加坡博伟教育学院</a></li>
-<li><a href="http://magorobot.com/">机器人教育</a></li>
-<li><a href="http://aicpa.lixinedu.com.cn/">USCPA</a></li>
-
-	</ul>
-</div>
-<div style="display: none;"><h2>专题推荐</h2>
-	<ul class="xoxo blogroll">
-<li><a href="http://www.uiessays.com/personal-statement">PS写作注意事项</a></li>
-
-	</ul>
-</div>
-			</div>
-		</div>
-	</div>
-</div>
-<!--wp-compress-html--><!--wp-compress-html no compression-->
-<script async="">
-	var KeywordConfig = {
-		title: "",
-		num: 1, //一次显示几个
-		delay: 3, //间隔多少秒换一次，不要少于3
-		data: [{
-		name: "浪荡奇葩狗", comment:"很好很好。", fwxm:"论文代写"},{
-		name: "danny  cox", comment:"找代写一定要擦亮双眼，我以前就被骗过...", fwxm:"论文代写"},{
-		name: "MichiGO", comment:"这么好的代写网站不能一人独吞，我要去...", fwxm:"论文代写"},{
-		name: "penny  hayes", comment:"Very  very  very good!!", fwxm:"论文代写"},{
-		name: "Miracle", comment:"代写的非常不错，服务也超级超级好。", fwxm:"论文代写"},{
-		name: "celina  sutton", comment:"不错", fwxm:"论文代写"},{
-		name: "Daissment", comment:"朋友介绍来的，真的不错，点个赞。", fwxm:"论文代写"},{
-		name: "Elaborate°", comment:"整体来说不错，值得信赖。", fwxm:"论文代写"},{
-		name: "无人岛", comment:"如此棒的代写你也值得拥有哦。", fwxm:"论文代写"},{
-		name: "Crazy", comment:"找了这么多家代写，优易最合我心。", fwxm:"论文代写"},]
-	};
-</script>
 <!--wp-compress-html no compression--><!--wp-compress-html-->
 <div id="sidebar" class="widget-area">
 	<aside id="fixed-contact-3" class="widget widget_fixed_contact"><div class="c_meau">
@@ -798,10 +524,10 @@
     </div>
     <div class="clear"></div>
 </div>
-</aside></div>
-
-			</section>
-<footer id="footer">
+</aside>
+</div>
+</section>
+  <footer id="footer">
 	<div class="container">
 		<div class="footleft col-xs-12 col-md-10">
 			<div class="col-xs-12 col-md-5 text-left">
@@ -867,33 +593,87 @@
 			</ul>
 		</div>
 	</div>
-	<div class="col-xs-12 col-md-12 text-center ui-intro">
-		<h3>优易论文 - 全球领先的论文代写机构</h3>
-		<i class="uicon-logo"></i>
-	</div>
 </footer>
-<script type="text/javascript" src="./代写Assignment_代写Essay_代写留学生论文_代写Dissertation_代写Coursework_优易论文_files/ui.script.min.js" defer="defer"></script>
-	
-<script type="text/javascript">
-	var ui_config = {
-		static_path:"http://cdn.uiessays.com/static",
-		theme_path:"http://www.uiessays.com/wp-content/themes/Essays",
-		domain:"http://www.uiessays.com"
-	}
+</body>
+<script>  
+/*轮播效果*/
+$(function(){
+  var container = $('#container');
+  var list = $('#list');
+  var buttons = $('#buttons span');
+  var prev = $('#prev');
+  var next = $('#next');
+  var index = 1;
+  var len = 5;
+  var interval = 2000;
+  var timer;
+  function animate (offset){
+    var left = parseInt(list.css('left')) + offset;
+    if(offset>0){
+      offset = '+=' + offset;
+                   
+    }else{
+      offset = '-=' + Math.abs(offset);
+    }
+    list.animate({'left': offset}, 300, function () {
+      if(left > -200){
+        list.css('left', -600 * len);
+      }
+      if(left < (-600 * len)){
+        list.css('left', -600);
+      }
+    });
+  }
+  function showButton() {
+    buttons.eq(index-1).addClass('on').siblings().removeClass('on');
+  }
+  function play() {
+    timer = setTimeout(function () {
+      next.trigger('click');
+      play();
+    }, interval);
+  }
+  function stop() {
+    clearTimeout(timer);
+  }
+  next.on('click', function () {
+    if(list.is(':animated')){
+      return;
+    }
+    if(index == 5){
+      index = 1;
+    }else{
+      index += 1;
+    }
+    animate(-600);
+    showButton();
+  });
+  prev.on('click', function () {
+    if(list.is(':animated')){
+      return;
+    }
+    if(index == 1){
+      index = 5;
+    }else{
+      index -= 1;
+    }
+    animate(600);
+    showButton();
+  });
+  buttons.each(function () {
+    $(this).on('click', function () {
+      if(list.is(':animated') || $(this).attr('class')=='on'){
+        return;
+      }
+      var myIndex = parseInt($(this).attr('index'));
+      var offset = -600 * (myIndex - index);
+      animate(offset);
+      index = myIndex;
+      showButton();
+    })
+  });
+  container.hover(stop, play);
+  play();
+});
 </script>
-
-<div class="hidden analytics-code">
-	<script type="text/javascript">
-	var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1253423356'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/z_stat.php%3Fid%3D1253423356%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));
-	</script><span id="cnzz_stat_icon_1253423356"><a href="http://www.cnzz.com/stat/website.php?web_id=1253423356" target="_blank" title="站长统计"><img border="0" hspace="0" vspace="0" src="./代写Assignment_代写Essay_代写留学生论文_代写Dissertation_代写Coursework_优易论文_files/pic.gif"></a></span><script src="./代写Assignment_代写Essay_代写留学生论文_代写Dissertation_代写Coursework_优易论文_files/z_stat.php" type="text/javascript"></script><script src="./代写Assignment_代写Essay_代写留学生论文_代写Dissertation_代写Coursework_优易论文_files/core.php" charset="utf-8" type="text/javascript"></script>
-	<script type="text/javascript">
-			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-			ga('create', 'UA-64177202-1', 'auto');
-			ga('send', 'pageview');
-	</script>
-</div>
-    
-</body></html>
+</html>
