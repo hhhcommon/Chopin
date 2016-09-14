@@ -19,14 +19,11 @@ import com.woting.cm.core.media.persis.po.MediaAssetPo;
 import com.woting.cm.core.media.service.MediaService;
 import com.woting.cm.core.utils.ContentUtils;
 import com.woting.content.manage.channel.service.ChannelContentService;
-import com.woting.content.manage.dict.service.DictContentService;
 
 @Service
 public class MediaContentService {
 	@Resource
 	private MediaService mediaService;
-	@Resource
-	private DictContentService dictContentService;
 	@Resource
 	private ChannelContentService channelContentService;
 	@Resource
@@ -56,8 +53,6 @@ public class MediaContentService {
 		    	    for (MediaAssetPo maPo : mas) {
 						MediaAsset mediaAsset = new MediaAsset();
 						mediaAsset.buildFromPo(maPo);
-						
-						Map<String, Object> m = mediaAsset.toHashMap();
 						
 						Map<String, Object> mam = ContentUtils.convert2Ma(mediaAsset.toHashMap(), null, null, chsm, null);
 						l.add(mam);

@@ -133,6 +133,7 @@
   <select id="getListByAssetIds" resultMap="channelAssetMap" parameterType="java.util.Map">
     select <include refid="Base_Column_List"/> from wt_ChannelAsset
     where assetType=#{assetType,jdbcType=VARCHAR} and assetId in (${assetIds})
+    <if test="sortByClause!=null">order by ${sortByClause}</if> 
   </select>
 
   <!-- 获得一条数据 -->
