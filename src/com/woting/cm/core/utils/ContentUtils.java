@@ -35,8 +35,8 @@ public abstract class ContentUtils {
         Object cnls=fetchChannels(pubChannelList, getResTableName(mediaType), one.get("ContentId")+"");
         if (cnls!=null) one.put("ContentPubChannels", cnls);
         //P15-公共：是否喜欢
-        temp=fetchFavorite(favoriteList, getResTableName(mediaType), one.get("ContentId")+"");
-        one.put("ContentFavorite", (temp==null?0:(((Integer)temp)==1?(cnls==null?"您喜欢的内容已经下架":1):0))+"");
+        fetchFavorite(favoriteList, one, getResTableName(mediaType), one.get("ContentId")+"");
+//        one.put("ContentFavorite", (temp==null?0:(((Integer)temp)==1?(cnls==null?"您喜欢的内容已经下架":1):0))+"");
         //P16-公共：播放次数
         one.put("PlayCount", "1234");
     }
@@ -214,16 +214,17 @@ public abstract class ContentUtils {
         return ret.size()>0?ret:null;
     }
     
-    private static int fetchFavorite(List<Map<String, Object>> favoriteList, String resTableName, String resId) {//喜欢处理
-        if (favoriteList==null||favoriteList.size()==0) return 0;
-        int ret=0;
-        for (Map<String, Object> _f: favoriteList) {
-            if ((_f.get("resTableName")+"").equals(resTableName)&&(_f.get("resId")+"").equals(resId)) {
-                ret=1;
-                break;
-            }
+    private static void fetchFavorite(List<Map<String, Object>> favoriteList, Map<String, Object> one, String resTableName, String resId) {//喜欢处理
+        if (favoriteList!=null&&favoriteList.size()>0) {
+        	for (Map<String, Object> m : favoriteList) {
+				if(m.get("ContentId").equals(resId)) {
+					one.put("IsFavorate", m.get("IsFavorate"));
+					one.put("FavoSum",m.get("FavoSum"));
+					one.put("IsReport", m.get("IsReport"));
+					one.put("RepoSum",m.get("RepoSum"));
+				}
+			}
         }
-        return ret;
     }
 
     /** 计算分享地址的功能 */
