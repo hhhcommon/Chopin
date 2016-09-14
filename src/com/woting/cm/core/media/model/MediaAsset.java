@@ -31,7 +31,7 @@ public class MediaAsset extends BaseObject implements Serializable, ModelSwapPo 
     private String descn; //说明
     private int pubCount=0; //发布状态：0未发布;>0被发布到多少个栏目中（系列节目的发布，这里的单曲也要被加1）
     private int maStatus=0; //资源状态：0草稿;1提交（包括发布和未发布）
-   
+    private String fullText; //全文
 
 	private Timestamp CTime; //记录创建时间
 
@@ -130,7 +130,13 @@ public class MediaAsset extends BaseObject implements Serializable, ModelSwapPo 
     public void setCTime(Timestamp cTime) {
         CTime=cTime;
     }
-    
+    public String getFullText() {
+        return fullText;
+    }
+    public void setFullText(String fullText) {
+        this.fullText = fullText;
+    }
+
     public List<SeqMediaAsset> getSeqMaList() {
         return seqMaList;
     }

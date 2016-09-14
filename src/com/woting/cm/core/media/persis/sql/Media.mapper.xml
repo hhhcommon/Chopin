@@ -21,12 +21,13 @@
     <result  column="descn"          property="descn"          jdbcType="VARCHAR"/>
     <result  column="pubCount"       property="pubCount"       jdbcType="INTEGER"/>
     <result  column="maStatus"       property="maStatus"       jdbcType="INTEGER"/>
+    <result  column="fullText"       property="fullText"       jdbcType="VARCHAR"/>
     <result  column="cTime"          property="CTime"          jdbcType="TIMESTAMP"/>
   </resultMap>
   
    <!-- 所有列 -->
   <sql id="Base_Media_List">
-    id, maTitle, maPubType, maPubId, maPublisher, maPublishTime, maImg, maURL, subjectWords, keyWords, langDid, language, timeLong, descn, pubCount, maStatus, cTime
+    id, maTitle, maPubType, maPubId, maPublisher, maPublishTime, maImg, maURL, subjectWords, keyWords, langDid, language, timeLong, descn, pubCount, maStatus, fullText, cTime
   </sql>
   
 
@@ -105,6 +106,7 @@
       <if test="descn!=null">descn,</if>
       <if test="pubCount!=null and pubCount>0">pubCount,</if>
       <if test="maStatus!=null and maStatus>0">maStatus,</if>
+      <if test="fullText!=null">fullText,</if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id!=null">#{id,jdbcType=VARCHAR},</if>
@@ -121,7 +123,8 @@
       <if test="timeLong!=null">#{timeLong,jdbcType=VARCHAR},</if>
       <if test="descn!=null">#{descn,jdbcType=VARCHAR},</if>
       <if test="pubCount!=null and pubCount>0">#{pubCount,jdbcType=VARCHAR},</if>
-      <if test="maStatus!=null and maStatus>0">#{maStatus,jdbcType=VARCHAR},</if>
+      <if test="maStatus!=null and maStatus>0">#{maStatus,jdbcType=INTEGER},</if>
+      <if test="fullText!=null">#{fullText,jdbcType=VARCHAR},</if>
     </trim>
   </insert>
 
@@ -207,7 +210,7 @@
       <if test="descn!=null">#{descn,jdbcType=VARCHAR},</if>
     </trim>
   </insert>
-  
+
   <select id="getMaInfoById" parameterType="java.lang.String" resultMap="mediaAssetMap">
     select <include refid="Base_Media_List"/>from wt_MediaAsset where id=#{id,jdbcType=VARCHAR}
   </select>
@@ -241,10 +244,23 @@
     select <include refid="Base_SeqMaRef_List"/>from wt_SeqMA_Ref where mid=#{mid,jdbcType=VARCHAR} limit 1
   </select>
   
-   <select id="getS2MRefInfoBySId" parameterType="java.lang.String" resultMap="seqMaRefMap">
+  <select id="getS2MRefInfoBySId" parameterType="java.lang.String" resultMap="seqMaRefMap">
     select <include refid="Base_SeqMaRef_List"/>from wt_SeqMA_Ref where sid=#{sid,jdbcType=VARCHAR}
   </select>
-  
+
+  <!-- 根据全文获得内容 -->
+  <select id="getListBySearchText" parameterType="java.util.Map" resultMap="mediaAssetMap">
+    select d.id, d.maTitle, d.maPubType, d.maPubId, d.maPublisher, d.maPublishTime, d.maImg, d.maURL, d.subjectWords, d.keyWords, d.langDid, d.language, d.timeLong, d.descn, d.pubCount, d.maStatus, d.fullText, d.cTime
+    from wt_MediaAsset d, (
+    select distinct a.id
+    from wt_MediaAsset a, wt_ChannelAsset b
+    where a.id=b.assetId and b.isValidate=1
+    <if test="whereByClause!=null">and ${whereByClause}</if>
+    ) c
+    where d.id=c.id
+    <if test="sortByClause!=null">order by ${sortByClause}</if>
+  </select>
+
   <!-- 修改 根据主键-->
   <update id="updateMa" parameterType="java.util.Map">
     update wt_MediaAsset
@@ -263,7 +279,8 @@
       <if test="timeLong!=null">timeLong=#{timeLong,jdbcType=VARCHAR},</if>
       <if test="descn!=null">descn=#{descn,jdbcType=VARCHAR},</if>
       <if test="pubCount!=null and pubCount>0">pubCount=#{pubCount,jdbcType=VARCHAR},</if>
-      <if test="maStatus!=null and maStatus>0">maStatus=#{maStatus,jdbcType=VARCHAR},</if>
+      <if test="maStatus!=null and maStatus>0">maStatus=#{maStatus,jdbcType=INTEGER},</if>
+      <if test="fullText!=null">maStatus=#{fullText,jdbcType=VARCHAR},</if>
     </set>
     where id=#{id,jdbcType=VARCHAR}
   </update>

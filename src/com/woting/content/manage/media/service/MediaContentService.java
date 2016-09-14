@@ -9,6 +9,9 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.spiritdata.framework.core.cache.CacheEle;
 import com.spiritdata.framework.core.cache.SystemCache;
+import com.spiritdata.framework.core.dao.mybatis.MybatisDAO;
+import com.spiritdata.framework.core.model.Page;
+import com.spiritdata.framework.util.StringUtils;
 import com.woting.WtContentMngConstants;
 import com.woting.cm.core.channel.mem._CacheChannel;
 import com.woting.cm.core.channel.persis.po.ChannelAssetPo;
@@ -20,6 +23,7 @@ import com.woting.cm.core.media.service.MediaService;
 import com.woting.cm.core.utils.ContentUtils;
 import com.woting.content.manage.channel.service.ChannelContentService;
 import com.woting.favorite.service.FavoriteService;
+import com.woting.passport.mobile.MobileUDKey;
 
 @Service
 public class MediaContentService {
@@ -31,9 +35,13 @@ public class MediaContentService {
 	private ChannelContentService channelContentService;
 	@Resource
 	private ChannelService channelService;
-	private _CacheChannel _cc = null;
+    @Resource(name="defaultDAO")
+    private MybatisDAO<ChannelAssetPo> channelAssetDao;
+    private _CacheChannel _cc=null;
+    @Resource(name="defaultDAO")
+    private MybatisDAO<MediaAssetPo> mediaAssetDao;
 
-	@PostConstruct
+    @PostConstruct
 	public void initParam() {
 		_cc = (SystemCache.getCache(WtContentMngConstants.CACHE_CHANNEL) == null ? null : ((CacheEle<_CacheChannel>) SystemCache.getCache(WtContentMngConstants.CACHE_CHANNEL)).getContent());
 	}
@@ -111,6 +119,73 @@ public class MediaContentService {
 		}
 		return l;
 	}
+	
+    public Map<String, Object> searchByText(String searchStr, int page, int pageSize, MobileUDKey mUdk) {
+        if (StringUtils.isNullOrEmptyOrSpace(searchStr)) {
+            Map<String, Object> m=new HashMap<>();
+            m.put("ReturnType", "1002");
+            return m;
+        }
+        //拼Sql串
+        String __s[]=searchStr.split(",");
+        String _s[]=new String[__s.length];
+        for (int i=0; i<__s.length; i++) _s[i]=__s[i].trim();
+        String whereStr="";
+        for (int k=0; k<_s.length; k++) {
+            if (k==0) whereStr+="(a.fullText like '%"+_s[k]+"%'";
+            else whereStr+=" or a.fullText like '%"+_s[k]+"%'";
+        }
+        whereStr+=")";
+
+        Map<String, Object> param=new HashMap<String, Object>();
+        param.put("whereByClause", whereStr);
+        param.put("sortByClause", "d.cTime desc");
+
+        List<MediaAssetPo> mas=null;
+        if (page==-1) {
+            mas=mediaAssetDao.queryForList("getListBySearchText", param);
+        } else {
+            if (page==0) page=1;
+            if (pageSize<0) pageSize=10;
+            Page<MediaAssetPo> p=mediaAssetDao.pageQuery("getListBySearchText", param, page, pageSize);//查询内容列表
+            if (!p.getResult().isEmpty()) {
+                mas=new ArrayList<MediaAssetPo>();
+                mas.addAll(p.getResult());
+            }
+        }
+        if (!mas.isEmpty()) {
+            //获得栏目列表
+            whereStr="";
+            String[] articlaIds=new String[mas.size()];
+            int i=0;
+            for (MediaAssetPo maPo:mas) {
+                whereStr+=" or assetId='"+maPo.getId()+"'";
+                articlaIds[i++]=maPo.getId();
+            }
+            param.clear();
+            param.put("whereByClause", whereStr.substring(4));
+            List<ChannelAssetPo> chas=channelAssetDao.queryForList("getListByWhere", param);
+            List<Map<String, Object>> chasm=channelContentService.getChannelAssetList(chas);
+            //获得喜欢列表
+            String userId=(mUdk==null?null:(StringUtils.isNullOrEmptyOrSpace(mUdk.getUserId())?null:(mUdk.getUserId().equals("0")?null:mUdk.getUserId())));
+            List<Map<String, Object>> fsm=favoriteService.getContentFavoriteInfo(articlaIds, userId);
+
+            //组织返回值
+            List<Map<String, Object>> rl = new ArrayList<>();
+            for (MediaAssetPo maPo : mas) {
+                MediaAsset mediaAsset = new MediaAsset();
+                mediaAsset.buildFromPo(maPo);
+                Map<String, Object> mam=ContentUtils.convert2Ma(mediaAsset.toHashMap(), null, null, chasm, fsm);
+                rl.add(mam);
+            }
+            Map<String, Object> m=new HashMap<>();
+            m.put("AllCount", rl.size());
+            m.put("List", rl);
+            m.put("ReturnType", "1001");
+            return m;
+        }
+        return null;
+    }
 
 	//获得内容信息
 	public Map<String, Object> getContentInfo(String userId, String contentId) {

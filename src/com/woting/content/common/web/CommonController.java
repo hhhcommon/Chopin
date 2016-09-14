@@ -24,6 +24,7 @@ import com.woting.cm.core.common.model.Owner;
 import com.woting.cm.core.dict.mem._CacheDictionary;
 import com.woting.cm.core.dict.model.DictDetail;
 import com.woting.cm.core.dict.model.DictModel;
+import com.woting.content.manage.media.service.MediaContentService;
 import com.woting.passport.mobile.MobileParam;
 import com.woting.passport.mobile.MobileUDKey;
 import com.woting.passport.session.SessionService;
@@ -42,6 +43,57 @@ public class CommonController {
     private SessionService sessionService;
     @Resource
     private WordService wordService;
+    @Resource
+    private MediaContentService mediaContentService;
+
+    /**
+     * 进入App
+     * @param request 请求对象。数据包含在Data流中，以json格式存储，其中必须包括手机串号。如：{"imei":"123456789023456789"}
+     * @return 分为如下情况<br/>
+     *   若有异常：{ReturnType:T, TClass:exception.class, Message: e.getMessage()}
+     *   已经登录：{ReturnType:1001, userInfo:{userName:un, mphone:138XXXX2345, email:a@b.c, realName:实名, headImg:hiUrl}}
+     *     其中用户信息若没有相关内容，则相关的key:value对就不存在
+     *   还未登录：{ReturnType:1002}
+     */
+    @RequestMapping(value="/common/entryApp.do")
+    @ResponseBody
+    public Map<String,Object> entryApp(HttpServletRequest request) {
+        Map<String,Object> map=new HashMap<String, Object>();
+        try {
+            //0-获取参数
+            MobileUDKey mUdk=null;
+            Map<String, Object> m=RequestUtils.getDataFromRequest(request);
+            if (m==null||m.size()==0) {
+                map.put("ReturnType", "0000");
+                map.put("Message", "无法获取需要的参数");
+                return map;
+            } else {
+                mUdk=MobileParam.build(m).getUserDeviceKey();
+                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "common/entryApp");
+                if ((retM.get("ReturnType")+"").equals("2001")) {
+                    map.put("ReturnType", "0000");
+                    map.put("Message", "无法获取设备Id(IMEI)");
+                } else {
+                    if ((retM.get("ReturnType")+"").equals("1002")) {
+                        map.put("ReturnType", "1002");
+                    } if ((retM.get("ReturnType")+"").equals("2002")) {
+                        map.put("ReturnType", "2002");
+                        map.put("Message", "无法找到相应的用户");
+                    }else {
+                        map.put("ReturnType", "1001");
+                    }
+                }
+                map.put("ServerStatus", "1"); //服务器状态
+            }
+            return map;
+        } catch(Exception e) {
+            e.printStackTrace();
+            map.put("ReturnType", "T");
+            map.put("TClass", e.getClass().getName());
+            map.put("Message", e.getMessage());
+            return map;
+        }
+    }
 
     @RequestMapping(value="/searchByText.do")
     @ResponseBody
@@ -80,14 +132,19 @@ public class CommonController {
             String _s[]=searchStr.split(",");
             for (int i=0; i<_s.length; i++) wordService.addWord2Online(_s[i].trim(), o);
 
-            //得到每页条数
+            //获取分页信息
+            int page=-1;
+            try {
+                page=Integer.parseInt(m.get("Page")==null?null:m.get("Page")+"");
+            } catch(Exception e) {
+            }
             int pageSize=10;
-            try {pageSize=Integer.parseInt(m.get("PageSize")+"");} catch(Exception e) {};
-            //得到页数
-            int page=1;
-            try {page=Integer.parseInt(m.get("Page")+"");} catch(Exception e) {};
+            try {
+                page=Integer.parseInt(m.get("PageSize")==null?null:m.get("PageSize")+"");
+            } catch(Exception e) {
+            }
 
-            Map<String, Object> cl = new HashMap<String,Object>();
+            Map<String, Object> cl=mediaContentService.searchByText(searchStr, page, pageSize, mUdk);
 
             if (cl!=null&&cl.size()>0) {
                 map.put("ResultType", cl.get("ResultType"));
