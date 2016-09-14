@@ -27,6 +27,6 @@ public class FileUploadController extends AbstractFileUploadController{
 
     @Override
     public void afterUploadAllFiles(Map<String, Object> retMap, Map<String, Object> a, Map<String, Object> p) {
-//        System.out.println(fl.toString());
+    	
     }
 }
