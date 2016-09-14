@@ -209,7 +209,7 @@
   </insert>
   
   <select id="getMaInfoById" parameterType="java.lang.String" resultMap="mediaAssetMap">
-    select <include refid="Base_Media_List"/>from wt_MediaAsset where id=#{id,jdbcType=VARCHAR} limit 1
+    select <include refid="Base_Media_List"/>from wt_MediaAsset where id=#{id,jdbcType=VARCHAR}
   </select>
   
   <select id="getMaInfoByTitle" parameterType="java.lang.String" resultMap="mediaAssetMap">

@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.spiritdata.framework.util.StringUtils;
 import com.spiritdata.framework.util.RequestUtils;
 import com.woting.content.manage.media.service.MediaContentService;
 
@@ -16,7 +15,6 @@ import com.woting.content.manage.media.service.MediaContentService;
 public class MediaContentController {
 	@Resource
 	private MediaContentService mediaContentService;
-
 	
     @RequestMapping(value="/content/getContents.do")
     @ResponseBody
@@ -68,6 +66,7 @@ public class MediaContentController {
             return map;
         }
     }
+
     
     @RequestMapping(value="/content/getContentInfo.do")
     @ResponseBody
@@ -107,3 +106,4 @@ public class MediaContentController {
         }
     }
 }
+
