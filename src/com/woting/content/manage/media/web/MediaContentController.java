@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -13,13 +14,11 @@ import com.spiritdata.framework.util.RequestUtils;
 import com.woting.content.manage.media.service.MediaContentService;
 
 @Controller
-@RequestMapping(value="/content/")
 public class MediaContentController {
 	@Resource
 	private MediaContentService mediaContentService;
-
 	
-    @RequestMapping(value="getContents.do")
+    @RequestMapping(value="/content/getContents.do")
     @ResponseBody
     public Map<String,Object> getContents(HttpServletRequest request) {
         Map<String,Object> map=new HashMap<String, Object>();

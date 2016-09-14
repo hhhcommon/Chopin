@@ -51,6 +51,12 @@
     <if test="_parameter!=null"><include refid="WhereClauseByEntiey"/></if>
     <if test="sortByClause!=null">order by ${sortByClause}</if>
   </select>
+  <!-- 获得列表：按照文章Id -->
+  <select id="getListByWhere" parameterType="java.util.Map" resultMap="favoriteMap">
+    select <include refid="Base_Column_List"/> from da_UserFavorite
+    <if test="whereByClause!=null">where ${whereByClause}</if>
+    <if test="sortByClause!=null">order by ${sortByClause}</if>
+  </select>
   <select id="getFavoriteAssets" parameterType="java.util.Map" resultMap="favoriteMap">
     select <include refid="Base_Column_List"/> from da_UserFavorite
     where ((ownerType='202' and ownerId=#{mobileId,jdbcType=TIMESTAMP}) <if test="userId!=null"> or (ownerType='201' and ownerId=#{userId,jdbcType=TIMESTAMP})</if>)
@@ -88,6 +94,17 @@
       <if test="resId!=null">#{resId,jdbcType=VARCHAR},</if>
     </trim>
   </insert>
+
+  <!-- 计数增加1 -->
+  <update id="increment" parameterType="java.lang.String">
+    update da_UserFavorite set sumNum=sumNum+1
+    where id=#{id,jdbcType=VARCHAR}
+  </update>
+  <!-- 计数减少1 -->
+  <update id="decrement" parameterType="java.lang.String">
+    update da_UserFavorite set sumNum=sumNum-1
+    where id=#{id,jdbcType=VARCHAR} and sumNum>0
+  </update>
 
   <!-- 删除数据 -->
   <delete id="delete" parameterType="java.lang.String">

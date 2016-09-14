@@ -83,7 +83,7 @@ public class DiscussService {
     }
 
     /**
-     * 根据用户指标（userId或Imei）得到意见及反馈列表
+     * 根据文章Id获得文章的评论列表
      * @param userId 用户Id
      * @param imei 设备编码
      * @return 意见及反馈列表
