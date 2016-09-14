@@ -3,11 +3,13 @@
 <configuration>
   <!-- 类别名设置 -->
   <typeAliases>
-    <typeAlias alias="discuss"   type="com.woting.discuss.persis.po.DiscussPo"/>
-    <typeAlias alias="favorite"  type="com.woting.favorite.persis.po.UserFavoritePo"/>
+    <typeAlias alias="discuss"    type="com.woting.discuss.persis.po.DiscussPo"/>
+    <typeAlias alias="favorite"   type="com.woting.favorite.persis.po.UserFavoritePo"/>
+    <typeAlias alias="DaUserWord" type="com.woting.searchword.persis.po.UserWordPo"/>
   </typeAliases>
   <mappers>
     <mapper resource="com/woting/discuss/persis/sql/Discuss.mapper.xml"/>
-    <mapper resource="com/woting/favorite/persis\sql/UserFavorite.mapper.xml"/>
+    <mapper resource="com/woting/favorite/persis/sql/UserFavorite.mapper.xml"/>
+    <mapper resource="com/woting/searchword/persis/sql/UserWord.mapper.xml"/>
   </mappers>
 </configuration>
