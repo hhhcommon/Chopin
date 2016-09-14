@@ -19,7 +19,7 @@ CREATE TABLE da_UserFavorite (
   ownerId       varchar(32)    NOT NULL                             COMMENT '所有者Id',
   resTableName  varchar(200)   NOT NULL                             COMMENT '类型：=1是喜欢;=2是举报',
   resId         varchar(32)    NOT NULL                             COMMENT '资源Id',
-  sumNum        int unsigened  NOT NULL                             COMMENT '同一用户对同一文件的喜欢或举报的数量',
+  sumNum        int unsigned   NOT NULL  DEFAULT 1                  COMMENT '同一用户对同一文件的喜欢或举报的数量',
   cTime         timestamp      NOT NULL  DEFAULT CURRENT_TIMESTAMP  COMMENT '创建时间',
   INDEX bizIdx (ownerType, ownerId, resTableName, resId) USING HASH,
   PRIMARY KEY (id)

@@ -67,9 +67,9 @@ public class RedisSessionService implements SessionService {
                 map.put("Msg", "用户已登录");
             } else {//未登录
                 //查找用户
-                MobileUDKey mudk=new MobileUDKey(udk);
-                if (mudk.isUser()) {
-                    UserPo up=userService.getUserById(mudk.getUserId());
+                MobileUDKey mUdk=new MobileUDKey(udk);
+                if (mUdk.isUser()) {
+                    UserPo up=userService.getUserById(mUdk.getUserId());
                     if (up==null) {
                         map.put("ReturnType", "1002");
                         map.put("Msg", "不能找到相应的用户");
