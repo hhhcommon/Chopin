@@ -19,11 +19,14 @@ import com.woting.cm.core.media.persis.po.MediaAssetPo;
 import com.woting.cm.core.media.service.MediaService;
 import com.woting.cm.core.utils.ContentUtils;
 import com.woting.content.manage.channel.service.ChannelContentService;
+import com.woting.favorite.service.FavoriteService;
 
 @Service
 public class MediaContentService {
 	@Resource
 	private MediaService mediaService;
+	@Resource
+	private FavoriteService favoriteService;
 	@Resource
 	private ChannelContentService channelContentService;
 	@Resource
@@ -35,8 +38,7 @@ public class MediaContentService {
 		_cc = (SystemCache.getCache(WtContentMngConstants.CACHE_CHANNEL) == null ? null : ((CacheEle<_CacheChannel>) SystemCache.getCache(WtContentMngConstants.CACHE_CHANNEL)).getContent());
 	}
 
-	public List<Map<String, Object>> getContents(String channelId, int perSize, int page, int pageSize,
-			String beginCatalogId) {
+	public List<Map<String, Object>> getContents(String userId, String channelId, int perSize, int page, int pageSize, String beginCatalogId) {
 		List<Map<String, Object>> l = new ArrayList<>();
 		ChannelPo chPo = channelService.getChannelById(channelId);
 		if (chPo != null) {
@@ -46,16 +48,18 @@ public class MediaContentService {
 				if (chas != null && chas.size() > 0) {
 					List<Map<String, Object>> chsm = channelContentService.getChannelAssetList(chas);
 					String resids = "";
-					for (ChannelAssetPo chapo : chas) {
-						resids += ",'" + chapo.getAssetId() + "'";
+					String[] ids = new String[chas.size()];
+					for (int i = 0; i < chas.size(); i++) {
+						resids += ",'" + chas.get(i).getAssetId() + "'";
+						ids[i] = chas.get(i).getAssetId();
 					}
 					resids = resids.substring(1);
+					List<Map<String, Object>> fm = favoriteService.getContentFavoriteInfo(ids, userId);
 					List<MediaAssetPo> mas = mediaService.getMaListByIds(resids);
 					for (MediaAssetPo maPo : mas) {
 						MediaAsset mediaAsset = new MediaAsset();
 						mediaAsset.buildFromPo(maPo);
-						Map<String, Object> mam = ContentUtils.convert2Ma(mediaAsset.toHashMap(), null, null, chsm, null);
-						
+						Map<String, Object> mam = ContentUtils.convert2Ma(mediaAsset.toHashMap(), null, null, chsm, fm);
 						l.add(mam);
 					}
 				}
@@ -78,16 +82,18 @@ public class MediaContentService {
 							List<Map<String, Object>> ll = new ArrayList<>();
 							List<Map<String, Object>> chasm = channelContentService.getChannelAssetList(chas);
 							String resids = "";
-							for (ChannelAssetPo chapo : chas) {
-								resids += ",'" + chapo.getAssetId() + "'";
+							String[] ids = new String[chas.size()];
+							for (int i = 0; i < chas.size(); i++) {
+								resids += ",'" + chas.get(i).getAssetId() + "'";
+								ids[i] = chas.get(i).getAssetId();
 							}
 							resids = resids.substring(1);
+							List<Map<String, Object>> fm = favoriteService.getContentFavoriteInfo(ids, userId);
 							List<MediaAssetPo> mas = mediaService.getMaListByIds(resids);
 							for (MediaAssetPo maPo : mas) {
 								MediaAsset mediaAsset = new MediaAsset();
 								mediaAsset.buildFromPo(maPo);
-								Map<String, Object> mam = ContentUtils.convert2Ma(mediaAsset.toHashMap(), null, null, chasm, null);
-								
+								Map<String, Object> mam = ContentUtils.convert2Ma(mediaAsset.toHashMap(), null, null, chasm, fm);
 								ll.add(mam);
 							}
 							if (ll.size() > 0) {
@@ -110,10 +116,13 @@ public class MediaContentService {
 	public Map<String, Object> getContentInfo(String userId, String contentId) {
 		Map<String, Object> mam = null;
 		MediaAsset ma = mediaService.getMaInfoById(contentId);
+		String[] ids = new String[1];
+		ids[0] = ma.getId();
 		List<ChannelAssetPo> chas = channelService.getChannelAssetsByAssetId(contentId);
+		List<Map<String, Object>> fm = favoriteService.getContentFavoriteInfo(ids, userId);
 		if (chas != null && chas.size() > 0) {
 			List<Map<String, Object>> chasm = channelContentService.getChannelAssetList(chas);
-			mam = ContentUtils.convert2Ma(ma.toHashMap(), null, null, chasm, null);
+			mam = ContentUtils.convert2Ma(ma.toHashMap(), null, null, chasm, fm);
 		}
 		return mam;
 	}
