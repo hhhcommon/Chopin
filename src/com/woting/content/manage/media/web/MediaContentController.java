@@ -53,7 +53,7 @@ public class MediaContentController {
             
             List<Map<String, Object>> contents=mediaContentService.getContents(userId, channelId, perSize, page, pageSize, beginCatalogId);
             if (contents!=null&&contents.size()>0) {
-                map.put("ResultList", contents);
+                map.put("ResultInfo", contents);
                 map.put("AllCount", contents.size());
                 map.put("ReturnType", "1001");
             } else {
@@ -92,7 +92,7 @@ public class MediaContentController {
             
             Map<String, Object> contents=mediaContentService.getContentInfo(userId, contentId);
             if (contents!=null) {
-                map.put("ResultList", contents);
+                map.put("ResultInfo", contents);
                 map.put("AllCount", contents.size());
                 map.put("ReturnType", "1001");
             } else {
@@ -108,5 +108,7 @@ public class MediaContentController {
             return map;
         }
     }
+    
+    
 }
 

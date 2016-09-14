@@ -26,6 +26,7 @@ import com.woting.cm.core.media.persis.po.SeqMediaAssetPo;
 import com.woting.cm.core.utils.ContentUtils;
 import com.woting.content.manage.channel.service.ChannelContentService;
 import com.woting.exceptionC.Wtcm0101CException;
+import com.woting.favorite.service.FavoriteService;
 
 public class MediaService {
     @Resource(name="defaultDAO")
@@ -42,6 +43,8 @@ public class MediaService {
     private MybatisDAO<ChannelPo> channelDao;
     @Resource(name="defaultDAO")
     private MybatisDAO<DictRefResPo> dictRefDao;
+    @Resource
+    private FavoriteService favoriteService;
     @Resource
     private ChannelContentService channelContentService;
 
@@ -73,22 +76,25 @@ public class MediaService {
     }
     
     //根据主播id查询其所有单体资源
-    public List<Map<String, Object>> getMaInfoByMaPubId(String id) {
+    public List<Map<String, Object>> getMaInfoByMaPubId(String userId) {
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
         List<MediaAssetPo> listpo = new ArrayList<MediaAssetPo>();
-        listpo = mediaAssetDao.queryForList("getMaListByMaPubId", id);
+        listpo = mediaAssetDao.queryForList("getMaListByMaPubId", userId);
         if(listpo!=null&&listpo.size()>0){
         	String ids = "";
-        	for (MediaAssetPo ma : listpo) {
-				ids = ",'"+ma.getId()+"'";
+        	String[] articlaIds = new String[listpo.size()];
+        	for (int i = 0; i < listpo.size(); i++) {
+				ids = ",'"+listpo.get(i).getId()+"'";
+				articlaIds[i] = listpo.get(i).getId();
 			}
         	ids = ids.substring(1);
+        	List<Map<String, Object>> fm = favoriteService.getContentFavoriteInfo(articlaIds, userId);
         	List<ChannelAssetPo> chas = getChaListByIds(ids);
         	List<Map<String, Object>> chsm = channelContentService.getChannelAssetList(chas);
         	for (MediaAssetPo mediaAssetPo : listpo) {
         	    MediaAsset ma=new MediaAsset();
 			    ma.buildFromPo(mediaAssetPo);
-			    Map<String, Object> mam = ContentUtils.convert2Ma(ma.toHashMap(), null, null, chsm, null);
+			    Map<String, Object> mam = ContentUtils.convert2Ma(ma.toHashMap(), null, null, chsm, fm);
 			    list.add(mam);
 		    }
         }

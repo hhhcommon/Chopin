@@ -85,8 +85,7 @@ public class QueryService {
 	}
 	
 	public List<Map<String, Object>> getContentListByApp(String userId) {
-		mediaService.getMaInfoByMaPubId(userId);
-		return null;
+		return mediaService.getMaInfoByMaPubId(userId);
 	}
 	
 	public void removeContentByApp(String userId, String contentId) {

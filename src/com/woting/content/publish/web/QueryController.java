@@ -1,6 +1,7 @@
 package com.woting.content.publish.web;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -80,9 +81,13 @@ public class QueryController {
 			map.put("Message", "无法获得用户Id");
 			return map;
 		}
-//		queryService.removeContentByApp(userId, contentId);
-		map.put("ReturnType", "1001");
-		map.put("Message", "成功删除");
+		List<Map<String, Object>> mm = queryService.getContentListByApp(userId);
+		if(mm!=null&&mm.size()>0) {
+			map.put("ReturnType", "1001");
+			map.put("ResultInfo", mm);
+		    map.put("Message", "查询成功");
+		}
+		
 		return map;
 	}
 	
