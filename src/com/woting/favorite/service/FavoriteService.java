@@ -1,6 +1,8 @@
 package com.woting.favorite.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -145,5 +147,66 @@ public class FavoriteService {
             }
         }
         return -1;
+    }
+
+    /**
+     * 得到给定文章列表的点赞举报情况
+     * @param articlaIds 内容Id的数组
+     * @param userId 用户Id，若过客，则可以为空
+     * @return 返回的是一个list，list中的元素是Map，表明每文章的情况，具体每条返回数据如下：<br/>
+     * <pre>
+     *    ContentId:文章Id
+     *    IsFavorate:该用户是否喜欢，如果喜欢是1否则是0
+     *    FavoSum:该文章被喜欢的次数
+     *    IsReport:该用户是否举报，如果举报是1否则是0
+     *    RepoSum:该文章被举报的次数
+     * </pre>
+     * 注意：若是过客：IsFavorate、IsReport都是0；若该文章未找到，FavoSum、RepoSum都是-1
+     */
+    public List<Map<String, Object>> getContentFavoriteInfo(String[] articlaIds, String userId) {
+        if (articlaIds==null||articlaIds.length==0) return null;
+        List<Map<String, Object>> ret= new ArrayList<Map<String, Object>>();
+        String whereSql="";
+        for (String cid: articlaIds) {
+            Map<String, Object> one=new HashMap<String, Object>();
+            one.put("ContentId", cid);
+            one.put("IsFavorate", 0);
+            one.put("FavoSum", -1);
+            one.put("IsReport", 0);
+            one.put("RepoSum", -1);
+            ret.add(one);
+            whereSql+=" or resId='"+cid+"'";
+        }
+        Map<String, Object> param=new HashMap<String, Object>();
+        param.put("whereByClause", whereSql.substring(4));
+        List<UserFavoritePo> ufList=userFavoriteDao.queryForList("getListByWhere", param);//不排序了，这样会慢一些
+        if (ufList!=null&&!ufList.isEmpty()) {
+            for (UserFavoritePo ufPo: ufList) {
+                //找到对应的Content
+                Map<String, Object> findOne=null;
+                for (Map<String, Object> o: ret) {
+                    if (ufPo.getResId().equals(o.get("ContentId"))) {
+                        findOne=o;
+                        break;
+                    }
+                }
+                //喜欢
+                if (ufPo.getResTableName().equals("1")) {
+                    if (ufPo.getOwnerId().equals(userId)) findOne.put("IsFavorate", 1);
+                    findOne.put("FavoSum", (Integer)findOne.get("FavoSum")+ufPo.getSumNum());
+                }
+                //举报
+                if (ufPo.getResTableName().equals("2")) {
+                    if (ufPo.getOwnerId().equals(userId)) findOne.put("IsReport", 1);
+                    findOne.put("RepoSum", (Integer)findOne.get("RepoSum")+ufPo.getSumNum());
+                }
+            }
+        }
+        //最后的调整
+        for (Map<String, Object> o: ret) {
+            if ((Integer)o.get("FavoSum")!=-1) o.put("FavoSum", (Integer)o.get("FavoSum")+1);
+            if ((Integer)o.get("RepoSum")!=-1) o.put("RepoSum", (Integer)o.get("RepoSum")+1);
+        }
+        return ret;
     }
 }

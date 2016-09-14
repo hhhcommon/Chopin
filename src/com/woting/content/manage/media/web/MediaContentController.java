@@ -5,18 +5,24 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.spiritdata.framework.util.StringUtils;
 import com.spiritdata.framework.util.RequestUtils;
+import com.woting.cm.core.common.model.Owner;
 import com.woting.content.manage.media.service.MediaContentService;
+import com.woting.passport.mobile.MobileParam;
+import com.woting.passport.mobile.MobileUDKey;
+import com.woting.passport.session.SessionService;
+import com.woting.searchword.service.WordService;
 
 @Controller
 public class MediaContentController {
 	@Resource
 	private MediaContentService mediaContentService;
-
 	
     @RequestMapping(value="/content/getContents.do")
     @ResponseBody
