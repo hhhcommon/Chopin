@@ -245,8 +245,6 @@
     select <include refid="Base_SeqMaRef_List"/>from wt_SeqMA_Ref where sid=#{sid,jdbcType=VARCHAR}
   </select>
   
-  
-  
   <!-- 修改 根据主键-->
   <update id="updateMa" parameterType="java.util.Map">
     update wt_MediaAsset
