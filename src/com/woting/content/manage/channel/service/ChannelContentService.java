@@ -40,8 +40,4 @@ public class ChannelContentService {
 	    }
 	    return ret;
 	}
-	
-	public void getChannels(String channelId) {
-		
-	}
 }
