@@ -132,7 +132,17 @@ public class FavoriteController {
                 map.put("Message", "还未点赞，不能删除");
                 return map;
             }
-
+            if (flag==60) {
+                map.put("ReturnType", "2004");
+                map.put("Message", "您已投票");
+                return map;
+            }
+            if (flag==61) {
+                map.put("ReturnType", "1008");
+                map.put("Message", "您已点赞");
+                return map;
+            }
+            map.put("ReturnType", "1001");
             return map;
         } catch(Exception e) {
             e.printStackTrace();

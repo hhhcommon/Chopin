@@ -94,6 +94,9 @@ public class FavoriteService {
      *     2——参赛选手，只能投票(点赞)
      *     3——参赛选手，不能取消投票(点赞)
      *     4——参赛选手投票(点赞)，必须先登录
+     *     5——还未点赞，不能删除
+     *    60——已对参赛选手投票
+     *    61——已点赞
      */
     public int favorite(String articalId, int flag, int dealType, MobileUDKey mUdk) {
         //获得文章信息
@@ -118,11 +121,18 @@ public class FavoriteService {
         UserFavoritePo ufPo=userFavoriteDao.getInfoObject(param);
         if (flag==1) { //点赞(投票)
             if (dealType==1) {//增加
-                
+                if (!isTraveler&&ufPo!=null) {
+                    return isPlayer?60:61;
+                }
+                if (ufPo==null) {//新增投票/点赞
+                    param.put("id", SequenceUUID.getUUIDSubSegment(4));
+                    userFavoriteDao.insert(param);
+                } else { //投票/点赞数加1
+                    userFavoriteDao.update("increment", ufPo.getId());
+                }
             } else { //删除
                 if (ufPo==null) return 5;//还未点赞，不能删除
-                //判断是否允许删除
-                
+                if (ufPo.getSumNum()>0) userFavoriteDao.update("decrement", ufPo.getId());
             }
         }
         if (flag==2) { //举报，只有增加
@@ -131,7 +141,7 @@ public class FavoriteService {
                 param.put("id", SequenceUUID.getUUIDSubSegment(4));
                 userFavoriteDao.insert(param);
             } else { //举报数加1
-                userFavoriteDao.update("increme", ufPo.getId());
+                userFavoriteDao.update("increment", ufPo.getId());
             }
         }
         return -1;

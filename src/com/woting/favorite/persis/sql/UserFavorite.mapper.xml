@@ -89,6 +89,17 @@
     </trim>
   </insert>
 
+  <!-- 计数增加1 -->
+  <update id="increment" parameterType="java.lang.String">
+    update da_UserFavorite set sumNum=sumNum+1
+    where id=#{id,jdbcType=VARCHAR}
+  </update>
+  <!-- 计数减少1 -->
+  <update id="decrement" parameterType="java.lang.String">
+    update da_UserFavorite set sumNum=sumNum-1
+    where id=#{id,jdbcType=VARCHAR} and sumNum>0
+  </update>
+
   <!-- 删除数据 -->
   <delete id="delete" parameterType="java.lang.String">
     delete from da_UserFavorite where id=#{id,jdbcType=VARCHAR}

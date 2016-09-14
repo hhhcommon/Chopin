@@ -13,13 +13,12 @@ import com.spiritdata.framework.util.RequestUtils;
 import com.woting.content.manage.media.service.MediaContentService;
 
 @Controller
-@RequestMapping(value="/content/")
 public class MediaContentController {
 	@Resource
 	private MediaContentService mediaContentService;
 
 	
-    @RequestMapping(value="getContents.do")
+    @RequestMapping(value="/content/getContents.do")
     @ResponseBody
     public Map<String,Object> getContents(HttpServletRequest request) {
         Map<String,Object> map=new HashMap<String, Object>();
