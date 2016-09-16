@@ -132,8 +132,8 @@ public class MediaContentService {
         for (int i=0; i<__s.length; i++) _s[i]=__s[i].trim();
         String whereStr="";
         for (int k=0; k<_s.length; k++) {
-            if (k==0) whereStr+="(a.fullText like '%"+_s[k]+"%'";
-            else whereStr+=" or a.fullText like '%"+_s[k]+"%'";
+            if (k==0) whereStr+="(a.allText like '%"+_s[k]+"%'";
+            else whereStr+=" or a.allText like '%"+_s[k]+"%'";
         }
         whereStr+=")";
 

@@ -36,6 +36,8 @@ public class DiscussService {
     @PostConstruct
     public void initParam() {
         discussDao.setNamespace("WT_DISCUSS");
+        mediaAssetDao.setNamespace("A_MEDIA");
+        channelAssetDao.setNamespace("A_CHANNELASSET");
     }
 
     /**
@@ -146,10 +148,12 @@ public class DiscussService {
      * @return 文章列表
      */
     public List<Map<String, Object>> getUserDiscusses(String userId, int page, int pageSize) {
+        if (StringUtils.isNullOrEmptyOrSpace(userId)) return null;
         try {
             //获得列表
             Map<String, String> param=new HashMap<String, String>();
-            param.put("userId", userId);
+            param.put("whereByClause", "e.userId='"+userId+"'");
+            param.put("sortByClause", "d.cTime desc");
             List<MediaAssetPo> mas=null;
             if (page==-1) {
                 mas=mediaAssetDao.queryForList("getUserDiscussContents", param);

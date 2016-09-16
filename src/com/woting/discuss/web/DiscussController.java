@@ -308,6 +308,7 @@ public class DiscussController {
         try {
             //0-获取参数
             MobileUDKey mUdk=null;
+            String userId="";
             Map<String, Object> m=RequestUtils.getDataFromRequest(request);
             if (m==null||m.size()==0) {
                 map.put("ReturnType", "0000");
@@ -317,7 +318,7 @@ public class DiscussController {
                 if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
                     mUdk.setDeviceId(request.getSession().getId());
                 }
-                sessionService.dealUDkeyEntry(mUdk, "discuss/article/getList");
+                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "discuss/article/getList");
                 if (!mUdk.isUser()||"0".equals(mUdk.getUserId())) {
                     map.put("ReturnType", "1002");
                     map.put("Message", "无法获得用户Id");
@@ -326,6 +327,20 @@ public class DiscussController {
                         map.put("ReturnType", "1003");
                         map.put("Message", "用户不存在");
                     }
+                    if ((retM.get("ReturnType")+"").equals("2001")) {
+                        map.put("ReturnType", "0000");
+                        map.put("Message", "无法获取设备Id(IMEI)");
+                    } else if ((retM.get("ReturnType")+"").equals("2003")) {
+                        map.put("ReturnType", "200");
+                        map.put("Message", "需要登录");
+                    } else {
+                        if (mUdk.isUser()) userId=mUdk.getUserId();
+                    }
+                    if (map.get("ReturnType")==null&&StringUtils.isNullOrEmptyOrSpace(userId)) {
+                        map.put("ReturnType", "1002");
+                        map.put("Message", "无法获取用户Id");
+                    }
+
                 }
             }
             if (map.get("ReturnType")!=null) return map;
@@ -349,7 +364,7 @@ public class DiscussController {
                 map.put("ContentList", al);
             } else {
                 map.put("ReturnType", "1011");
-                map.put("Message", "无意见及反馈信息");
+                map.put("Message", "无用户评论列表");
             }
             return map;
         } catch(Exception e) {
