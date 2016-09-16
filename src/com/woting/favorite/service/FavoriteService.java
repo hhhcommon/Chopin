@@ -85,7 +85,7 @@ public class FavoriteService {
 
     /**
      * 点赞或举报某个内容
-     * @param articalId 内容Id
+     * @param articleId 内容Id
      * @param flag 是点赞还是举报
      * @param dealType 操作类型:=1增加；=0删除，默认=1
      * @param mUdk 用户标识，可以是登录用户，也可以是手机设备
@@ -100,9 +100,9 @@ public class FavoriteService {
      *    60——已对参赛选手投票
      *    61——已点赞
      */
-    public int favorite(String articalId, int flag, int dealType, MobileUDKey mUdk) {
+    public int favorite(String articleId, int flag, int dealType, MobileUDKey mUdk) {
         //获得文章信息
-        MediaAsset ma=mediaService.getMaInfoById(articalId);
+        MediaAsset ma=mediaService.getMaInfoById(articleId);
         if (ma==null) return 0;//无内容
         //参数整理
         boolean isPlayer=(ma.getMaStatus()==1);
@@ -118,7 +118,7 @@ public class FavoriteService {
         param.put("ownerId", mUdk.getUserId());
         param.put("ownerType", "201");
         param.put("resTableName", flag+"");
-        param.put("resId", articalId);
+        param.put("resId", articleId);
 
         UserFavoritePo ufPo=userFavoriteDao.getInfoObject(param);
         if (flag==1) { //点赞(投票)

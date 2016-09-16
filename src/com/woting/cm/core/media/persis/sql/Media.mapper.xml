@@ -261,6 +261,19 @@
     <if test="sortByClause!=null">order by ${sortByClause}</if>
   </select>
 
+  <!-- 根据用户Id获得评论的文章 -->
+  <select id="getUserDiscussContents" parameterType="java.util.Map" resultMap="mediaAssetMap">
+    select d.id, d.maTitle, d.maPubType, d.maPubId, d.maPublisher, d.maPublishTime, d.maImg, d.maURL, d.subjectWords, d.keyWords, d.langDid, d.language, d.timeLong, d.descn, d.pubCount, d.maStatus, d.fullText, d.cTime
+    from wt_MediaAsset d, (
+    select distinct a.id
+    from wt_MediaAsset a, wt_ChannelAsset b
+    where a.id=b.assetId and b.isValidate=1
+    <if test="whereByClause!=null">and ${whereByClause}</if>
+    ) c
+    where d.id=c.id
+    <if test="sortByClause!=null">order by ${sortByClause}</if>
+  </select>
+
   <!-- 修改 根据主键-->
   <update id="updateMa" parameterType="java.util.Map">
     update wt_MediaAsset

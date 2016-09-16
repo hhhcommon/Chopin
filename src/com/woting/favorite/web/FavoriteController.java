@@ -67,8 +67,8 @@ public class FavoriteController {
             if (map.get("ReturnType")!=null) return map;
 
             //3-获取文章Id
-            String articalId=(m.get("ContentId")==null?null:m.get("ContentId")+"");
-            if (StringUtils.isNullOrEmptyOrSpace(articalId)) {
+            String articleId=(m.get("ContentId")==null?null:m.get("ContentId")+"");
+            if (StringUtils.isNullOrEmptyOrSpace(articleId)) {
                 map.put("ReturnType", "1003");
                 map.put("Message", "无法获取文章Id");
                 return map;
@@ -96,7 +96,7 @@ public class FavoriteController {
                 map.put("Message", "举报无法删除");
                 return map;
             }
-            flag=favoriteService.favorite(articalId, flag, dealType, mUdk);
+            flag=favoriteService.favorite(articleId, flag, dealType, mUdk);
             if (flag==-2) {
                 map.put("ReturnType", "1006");
                 map.put("Message", "举报无法删除");

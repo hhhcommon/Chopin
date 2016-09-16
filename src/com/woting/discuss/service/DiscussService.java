@@ -11,12 +11,27 @@ import javax.annotation.Resource;
 import com.spiritdata.framework.core.dao.mybatis.MybatisDAO;
 import com.spiritdata.framework.core.model.Page;
 import com.spiritdata.framework.util.SequenceUUID;
+import com.spiritdata.framework.util.StringUtils;
+import com.woting.cm.core.channel.persis.po.ChannelAssetPo;
+import com.woting.cm.core.media.model.MediaAsset;
+import com.woting.cm.core.media.persis.po.MediaAssetPo;
+import com.woting.cm.core.utils.ContentUtils;
+import com.woting.content.manage.channel.service.ChannelContentService;
 import com.woting.discuss.model.Discuss;
 import com.woting.discuss.persis.po.DiscussPo;
+import com.woting.favorite.service.FavoriteService;
 
 public class DiscussService {
+    @Resource
+    private FavoriteService favoriteService;
     @Resource(name="defaultDAO")
     private MybatisDAO<DiscussPo> discussDao;
+    @Resource(name="defaultDAO")
+    private MybatisDAO<MediaAssetPo> mediaAssetDao;
+    @Resource(name="defaultDAO")
+    private MybatisDAO<ChannelAssetPo> channelAssetDao;
+    @Resource
+    private ChannelContentService channelContentService;
 
     @PostConstruct
     public void initParam() {
@@ -84,14 +99,15 @@ public class DiscussService {
 
     /**
      * 根据文章Id获得文章的评论列表
-     * @param userId 用户Id
-     * @param imei 设备编码
-     * @return 意见及反馈列表
+     * @param articleId 文章Id
+     * @param page 页数
+     * @param pageSize 每页条数
+     * @return 文章评论列表
      */
-    public List<Discuss> getArticleDiscusses(String articalId, int page, int pageSize) {
+    public List<Discuss> getArticleDiscusses(String articleId, int page, int pageSize) {
         try {
             Map<String, String> param=new HashMap<String, String>();
-            param.put("articalId", articalId);
+            param.put("articleId", articleId);
             List<DiscussPo> ol=null;
             if (page>=0) { //分页
                 if (page==0) page=1;
@@ -114,6 +130,65 @@ public class DiscussService {
                     }
                 }
                 return ret;
+            }
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 根据用户Id,获得用户评论过的文章列表
+     * @param userId 用户Id
+     * @param page 页数
+     * @param pageSize 每页条数
+     * @return 文章列表
+     */
+    public List<Map<String, Object>> getUserDiscusses(String userId, int page, int pageSize) {
+        try {
+            //获得列表
+            Map<String, String> param=new HashMap<String, String>();
+            param.put("userId", userId);
+            List<MediaAssetPo> mas=null;
+            if (page==-1) {
+                mas=mediaAssetDao.queryForList("getUserDiscussContents", param);
+            } else {
+                if (page==0) page=1;
+                if (pageSize<0) pageSize=10;
+                Page<MediaAssetPo> p=mediaAssetDao.pageQuery("getUserDiscussContents", param, page, pageSize);//查询内容列表
+                if (!p.getResult().isEmpty()) {
+                    mas=new ArrayList<MediaAssetPo>();
+                    mas.addAll(p.getResult());
+                }
+            }
+
+            if (!mas.isEmpty()) {
+                //获得相关栏目信息
+                String whereStr="";
+                String[] articlaIds=new String[mas.size()];
+                int i=0;
+                for (MediaAssetPo maPo:mas) {
+                    whereStr+=" or assetId='"+maPo.getId()+"'";
+                    articlaIds[i++]=maPo.getId();
+                }
+                param.clear();
+                param.put("whereByClause", whereStr.substring(4));
+                List<ChannelAssetPo> chas=channelAssetDao.queryForList("getListByWhere", param);
+                List<Map<String, Object>> chasm=channelContentService.getChannelAssetList(chas);
+
+                //获得喜欢列表
+                List<Map<String, Object>> fsm=favoriteService.getContentFavoriteInfo(articlaIds, userId);
+
+                //组织返回值
+                List<Map<String, Object>> rl=new ArrayList<>();
+                for (MediaAssetPo maPo : mas) {
+                    MediaAsset mediaAsset = new MediaAsset();
+                    mediaAsset.buildFromPo(maPo);
+                    Map<String, Object> mam=ContentUtils.convert2Ma(mediaAsset.toHashMap(), null, null, chasm, fsm);
+                    rl.add(mam);
+                }
+                return rl;
             }
             return null;
         } catch (Exception e) {
