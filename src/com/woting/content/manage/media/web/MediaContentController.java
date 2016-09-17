@@ -15,100 +15,157 @@ import com.woting.content.manage.media.service.MediaContentService;
 public class MediaContentController {
 	@Resource
 	private MediaContentService mediaContentService;
-	
-    @RequestMapping(value="/content/getContents.do")
-    @ResponseBody
-    public Map<String,Object> getContents(HttpServletRequest request) {
-        Map<String,Object> map=new HashMap<String, Object>();
-        try {
-            Map<String, Object> m=RequestUtils.getDataFromRequest(request);
-            if (m==null||m.size()==0) {
-                map.put("ReturnType", "0000");
-                map.put("Message", "无法获取相关的参数");
-                return map;
-            }
-            String userId = m.get("UserId")+"";
-            if (userId.equals("null")) 
-            	userId = null;
-            String channelId=m.get("ChannelId")+"";
-            if (channelId.equals("null")) {
-            	map.put("ReturnType", "1002");
-                map.put("Message", "无法获得Id");
-                return map;
-            }
-            int perSize=3;
-            String perSizestr = m.get("PerSize")+"";
-            if (!perSizestr.equals("null")) 
-            	perSize = Integer.parseInt(perSizestr);
-            int pageSize=10;
-            String pageSizestr = m.get("PageSize")+"";
-            if(!pageSizestr.equals("null"))
-            	pageSize = Integer.parseInt(pageSizestr);
-            int page=1;
-            String pagestr = m.get("Page")+"";
-            if(!pagestr.equals("null"))
-            	page = Integer.parseInt(pagestr);
-            String beginCatalogId=m.get("BeginCatalogId")+"";
-            if (beginCatalogId.equals("null")) beginCatalogId=null;
-            
-            List<Map<String, Object>> contents=mediaContentService.getContents(userId, channelId, perSize, page, pageSize, beginCatalogId);
-            if (contents!=null&&contents.size()>0) {
-                map.put("ResultInfo", contents);
-                map.put("AllCount", contents.size());
-                map.put("ReturnType", "1001");
-            } else {
-                map.put("ReturnType", "1011");
-                map.put("Message", "查询无内容");
-            }
-            return map;
-        } catch(Exception e) {
-            e.printStackTrace();
-            map.put("ReturnType", "T");
-            map.put("TClass", e.getClass().getName());
-            map.put("Message", e.getMessage());
-            return map;
-        }
-    }
 
-    
-    @RequestMapping(value="/content/getContentInfo.do")
-    @ResponseBody
-    public Map<String,Object> getContentInfo(HttpServletRequest request) {
-        Map<String,Object> map=new HashMap<String, Object>();
-        try {
-            Map<String, Object> m=RequestUtils.getDataFromRequest(request);
-            if (m==null||m.size()==0) {
-                map.put("ReturnType", "0000");
-                map.put("Message", "无法获取相关的参数");
-                return map;
-            }
-            String userId=m.get("UserId")+"";
-            String contentId = m.get("ContentId")+"";
-            if(contentId.equals("null")) {
-            	map.put("ReturnType", "0000");
-                map.put("Message", "无法获取内容Id");
-                return map;
-            }
-            
-            Map<String, Object> contents=mediaContentService.getContentInfo(userId, contentId);
-            if (contents!=null) {
-                map.put("ResultInfo", contents);
-                map.put("AllCount", contents.size());
-                map.put("ReturnType", "1001");
-            } else {
-                map.put("ReturnType", "1011");
-                map.put("Message", "查询无内容");
-            }
-            return map;
-        } catch(Exception e) {
-            e.printStackTrace();
-            map.put("ReturnType", "T");
-            map.put("TClass", e.getClass().getName());
-            map.put("Message", e.getMessage());
-            return map;
-        }
-    }
-    
-    
+	@RequestMapping(value = "/content/getContents.do")
+	@ResponseBody
+	public Map<String, Object> getContents(HttpServletRequest request) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			Map<String, Object> m = RequestUtils.getDataFromRequest(request);
+			if (m == null || m.size() == 0) {
+				map.put("ReturnType", "0000");
+				map.put("Message", "无法获取相关的参数");
+				return map;
+			}
+			String userId = m.get("UserId") + "";
+			if (userId.equals("null"))
+				userId = null;
+			String channelId = m.get("ChannelId") + "";
+			if (channelId.equals("null")) {
+				map.put("ReturnType", "1002");
+				map.put("Message", "无法获得Id");
+				return map;
+			}
+			int perSize = 3;
+			String perSizestr = m.get("PerSize") + "";
+			if (!perSizestr.equals("null"))
+				perSize = Integer.parseInt(perSizestr);
+			int pageSize = 10;
+			String pageSizestr = m.get("PageSize") + "";
+			if (!pageSizestr.equals("null"))
+				pageSize = Integer.parseInt(pageSizestr);
+			int page = 1;
+			String pagestr = m.get("Page") + "";
+			if (!pagestr.equals("null"))
+				page = Integer.parseInt(pagestr);
+			String beginCatalogId = m.get("BeginCatalogId") + "";
+			if (beginCatalogId.equals("null"))
+				beginCatalogId = null;
+			List<Map<String, Object>> contents = mediaContentService.getContents(userId, channelId, perSize, page,
+					pageSize, beginCatalogId);
+			if (contents != null && contents.size() > 0) {
+				map.put("ResultInfo", contents);
+				map.put("AllCount", contents.size());
+				map.put("ReturnType", "1001");
+			} else {
+				map.put("ReturnType", "1011");
+				map.put("Message", "查询无内容");
+			}
+			return map;
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("ReturnType", "T");
+			map.put("TClass", e.getClass().getName());
+			map.put("Message", e.getMessage());
+			return map;
+		}
+	}
+
+	@RequestMapping(value = "/content/getContentInfo.do")
+	@ResponseBody
+	public Map<String, Object> getContentInfo(HttpServletRequest request) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			Map<String, Object> m = RequestUtils.getDataFromRequest(request);
+			if (m == null || m.size() == 0) {
+				map.put("ReturnType", "0000");
+				map.put("Message", "无法获取相关的参数");
+				return map;
+			}
+			String userId = m.get("UserId") + "";
+			String contentId = m.get("ContentId") + "";
+			if (contentId.equals("null")) {
+				map.put("ReturnType", "0000");
+				map.put("Message", "无法获取内容Id");
+				return map;
+			}
+			Map<String, Object> contents = mediaContentService.getContentInfo(userId, contentId);
+			if (contents != null) {
+				map.put("ResultInfo", contents);
+				map.put("AllCount", contents.size());
+				map.put("ReturnType", "1001");
+			} else {
+				map.put("ReturnType", "1011");
+				map.put("Message", "查询无内容");
+			}
+			return map;
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("ReturnType", "T");
+			map.put("TClass", e.getClass().getName());
+			map.put("Message", e.getMessage());
+			return map;
+		}
+	}
+
+	@RequestMapping(value = "/playSumCount.do")
+	@ResponseBody
+	public Map<String, Object> getPlaySumCount(HttpServletRequest request) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			Map<String, Object> contents = mediaContentService.getContentInfo("", "");
+			if (contents != null) {
+				map.put("ResultInfo", contents);
+				map.put("AllCount", contents.size());
+				map.put("ReturnType", "1001");
+			} else {
+				map.put("ReturnType", "1011");
+				map.put("Message", "查询无内容");
+			}
+			return map;
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("ReturnType", "T");
+			map.put("TClass", e.getClass().getName());
+			map.put("Message", e.getMessage());
+			return map;
+		}
+	}
+
+	@RequestMapping(value = "/directContent.do")
+	@ResponseBody
+	public Map<String, Object> getDirectContent(HttpServletRequest request) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			Map<String, Object> m = RequestUtils.getDataFromRequest(request);
+			if (m == null || m.size() == 0) {
+				map.put("ReturnType", "0000");
+				map.put("Message", "无法获取相关的参数");
+				return map;
+			}
+			String channelId = m.get("ChannelId") + "";
+			if (channelId.equals("null")) {
+				map.put("ReturnType", "1002");
+				map.put("Message", "无法获取栏目Id");
+				return map;
+			}
+			List<Map<String, Object>> contents = mediaContentService.getDirectContent(channelId, "1");
+			if (contents != null) {
+				map.put("ResultInfo", contents);
+				map.put("AllCount", contents.size());
+				map.put("ChannelId", channelId);
+				map.put("ReturnType", "1001");
+			} else {
+				map.put("ReturnType", "1011");
+				map.put("Message", "查询无内容");
+			}
+			return map;
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("ReturnType", "T");
+			map.put("TClass", e.getClass().getName());
+			map.put("Message", e.getMessage());
+			return map;
+		}
+	}
 }
-

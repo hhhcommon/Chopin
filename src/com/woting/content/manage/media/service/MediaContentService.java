@@ -35,14 +35,13 @@ public class MediaContentService {
 	private ChannelContentService channelContentService;
 	@Resource
 	private ChannelService channelService;
-    @Resource(name="defaultDAO")
-    private MybatisDAO<ChannelAssetPo> channelAssetDao;
     private _CacheChannel _cc=null;
     @Resource(name="defaultDAO")
     private MybatisDAO<MediaAssetPo> mediaAssetDao;
 
     @PostConstruct
 	public void initParam() {
+    	mediaAssetDao.setNamespace("A_MEDIA");
 		_cc = (SystemCache.getCache(WtContentMngConstants.CACHE_CHANNEL) == null ? null : ((CacheEle<_CacheChannel>) SystemCache.getCache(WtContentMngConstants.CACHE_CHANNEL)).getContent());
 	}
 
@@ -52,7 +51,7 @@ public class MediaContentService {
 		if (chPo != null) {
 			List<ChannelPo> chs = channelService.getChannelsByPcId(chPo.getId());
 			if (chs == null || chs.size() == 0) {
-				List<ChannelAssetPo> chas = channelService.getChannelAssetsByChannelId(chPo.getId(), page, pageSize);
+				List<ChannelAssetPo> chas = channelService.getChannelAssetsByChannelId(chPo.getId(), page, pageSize, 2);
 				if (chas != null && chas.size() > 0) {
 					List<Map<String, Object>> chsm = channelContentService.getChannelAssetList(chas);
 					String resids = "";
@@ -84,7 +83,7 @@ public class MediaContentService {
 					for (ChannelPo cho : chs) {
 						if (pageSize < 1)
 							return l;
-						List<ChannelAssetPo> chas = channelService.getChannelAssetsByChannelId(cho.getId(), page, perSize);
+						List<ChannelAssetPo> chas = channelService.getChannelAssetsByChannelId(cho.getId(), page, perSize, 2);
 						pageSize = pageSize - perSize;
 						if (chas != null && chas.size() > 0) {
 							List<Map<String, Object>> ll = new ArrayList<>();
@@ -107,7 +106,7 @@ public class MediaContentService {
 							if (ll.size() > 0) {
 								Map<String, Object> m = new HashMap<>();
 								m.put("List", ll);
-								m.put("AllCount", channelService.getChannelAssetsNum(cho.getId()));
+								m.put("AllCount", channelService.getChannelAssetsNum(cho.getId(), 2));
 								m.put("CatalogType", "1");
 								m.put("CatalogName", cho.getChannelName());
 								l.add(m);
@@ -164,7 +163,7 @@ public class MediaContentService {
             }
             param.clear();
             param.put("whereByClause", whereStr.substring(4));
-            List<ChannelAssetPo> chas=channelAssetDao.queryForList("getListByWhere", param);
+            List<ChannelAssetPo> chas=channelService.getListByWhere(param);
             List<Map<String, Object>> chasm=channelContentService.getChannelAssetList(chas);
             //获得喜欢列表
             String userId=(mUdk==null?null:(StringUtils.isNullOrEmptyOrSpace(mUdk.getUserId())?null:(mUdk.getUserId().equals("0")?null:mUdk.getUserId())));
@@ -200,5 +199,32 @@ public class MediaContentService {
 			mam = ContentUtils.convert2Ma(ma.toHashMap(), null, null, chasm, fm);
 		}
 		return mam;
+	}
+	
+	public List<Map<String, Object>> getPlaySumCounts() {
+		
+		return null;
+	}
+
+	public List<Map<String, Object>> getDirectContent(String channelId, String flowFlag) {
+		Map<String, Object> m = new HashMap<>();
+		m.put("channelId", channelId);
+		m.put("flowFlag", flowFlag);
+		m.put("sortByClause", "sort");
+		List<ChannelAssetPo> chas = channelService.getChannelAssets(m);
+		List<Map<String, Object>> l = new ArrayList<>();
+		if(chas!=null&&chas.size()>0) {
+			for (ChannelAssetPo cha : chas) {
+				Map<String, Object> mm = new HashMap<>();
+				MediaAsset ma = mediaService.getMaInfoById(cha.getAssetId());
+				mm.put("ContentImg", ma.getMaImg());
+				mm.put("ContentURL", ma.getKeyWords());
+				mm.put("CTime", ma.getCTime());
+				mm.put("Sort", cha.getSort());
+				l.add(mm);
+			}
+			return l;
+		}
+		return null;
 	}
 }

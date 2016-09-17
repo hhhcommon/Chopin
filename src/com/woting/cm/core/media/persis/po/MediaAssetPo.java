@@ -1,7 +1,6 @@
 package com.woting.cm.core.media.persis.po;
 
 import java.sql.Timestamp;
-
 import com.spiritdata.framework.core.model.BaseObject;
 
 public class MediaAssetPo extends BaseObject {
@@ -23,7 +22,7 @@ public class MediaAssetPo extends BaseObject {
     private String descn; //说明
     private int pubCount; //发布状态：0未发布;>0被发布到多少个栏目中（系列节目的发布，这里的单曲也要被加1）
     private int maStatus; //资源状态：0草稿;1提交（包括发布和未发布）
-    private String fullText; //全文
+    private String allText; //全文
 
     public int getMaStatus() {
 		return maStatus;
@@ -129,10 +128,10 @@ public class MediaAssetPo extends BaseObject {
     public void setCTime(Timestamp cTime) {
         CTime=cTime;
     }
-    public String getFullText() {
-        return fullText;
-    }
-    public void setFullText(String fullText) {
-        this.fullText = fullText;
-    }
+	public String getAllText() {
+		return allText;
+	}
+	public void setAllText(String allText) {
+		this.allText = allText;
+	}
 }

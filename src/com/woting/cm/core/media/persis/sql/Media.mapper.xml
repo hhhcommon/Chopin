@@ -21,13 +21,13 @@
     <result  column="descn"          property="descn"          jdbcType="VARCHAR"/>
     <result  column="pubCount"       property="pubCount"       jdbcType="INTEGER"/>
     <result  column="maStatus"       property="maStatus"       jdbcType="INTEGER"/>
-    <result  column="fullText"       property="fullText"       jdbcType="VARCHAR"/>
+    <result  column="allText"        property="allText"        jdbcType="VARCHAR"/>
     <result  column="cTime"          property="CTime"          jdbcType="TIMESTAMP"/>
   </resultMap>
   
    <!-- 所有列 -->
   <sql id="Base_Media_List">
-    id, maTitle, maPubType, maPubId, maPublisher, maPublishTime, maImg, maURL, subjectWords, keyWords, langDid, language, timeLong, descn, pubCount, maStatus, fullText, cTime
+    id, maTitle, maPubType, maPubId, maPublisher, maPublishTime, maImg, maURL, subjectWords, keyWords, langDid, language, timeLong, descn, pubCount, maStatus, allText, cTime
   </sql>
   
 
@@ -106,7 +106,7 @@
       <if test="descn!=null">descn,</if>
       <if test="pubCount!=null and pubCount>0">pubCount,</if>
       <if test="maStatus!=null and maStatus>0">maStatus,</if>
-      <if test="fullText!=null">fullText,</if>
+      <if test="allText!=null">allText,</if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id!=null">#{id,jdbcType=VARCHAR},</if>
@@ -124,7 +124,7 @@
       <if test="descn!=null">#{descn,jdbcType=VARCHAR},</if>
       <if test="pubCount!=null and pubCount>0">#{pubCount,jdbcType=VARCHAR},</if>
       <if test="maStatus!=null and maStatus>0">#{maStatus,jdbcType=INTEGER},</if>
-      <if test="fullText!=null">#{fullText,jdbcType=VARCHAR},</if>
+      <if test="allText!=null">#{allText,jdbcType=VARCHAR},</if>
     </trim>
   </insert>
 
@@ -224,7 +224,7 @@
   </select>
   
   <select id="getMaListByIds" parameterType="java.util.Map" resultMap="mediaAssetMap">
-    select <include refid="Base_Media_List"/>from wt_MediaAsset where id in (${ids}) <if test="sortByClause!=null">order by ${sortByClause}</if>
+    select <include refid="Base_Media_List"/> from wt_MediaAsset where id in (${ids}) <if test="sortByClause!=null">order by ${sortByClause}</if>
   </select>
   
   <!-- 根据主播id获取 -->

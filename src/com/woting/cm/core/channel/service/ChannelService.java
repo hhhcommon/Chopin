@@ -311,23 +311,33 @@ public class ChannelService {
 		return false;
     }
     
+    public List<ChannelAssetPo> getListByWhere(Map<String, Object> m) {
+		return channelAssetDao.queryForList("getListByWhere", m);
+    }
+    
     public List<ChannelAssetPo> getChannelAssetsByAssetId(String assetId) {
 		return channelAssetDao.queryForList("getInfoByAssetId", assetId);
     }
     
-    public List<ChannelAssetPo> getChannelAssetsByChannelId(String channelId, int page, int pageSize) {
+    public List<ChannelAssetPo> getChannelAssets(Map<String, Object> m) {
+		return channelAssetDao.queryForList("getList", m);
+    }
+    
+    public List<ChannelAssetPo> getChannelAssetsByChannelId(String channelId, int page, int pageSize, int flowFlag) {
     	Map<String, Object> m = new HashMap<>();
     	m.put("channelId", channelId);
     	m.put("assetType", "wt_MediaAsset");
+    	m.put("flowFlag", flowFlag);
     	m.put("sortByClause", "pubTime");
     	m.put("page", page);
     	m.put("pageSize", pageSize);
 		return channelAssetDao.queryForList("getListByLimit", m);
     }
     
-    public int getChannelAssetsNum(String channelId) {
+    public int getChannelAssetsNum(String channelId, int flowFlag) {
     	Map<String, Object> m = new HashMap<>();
     	m.put("channelId", channelId);
+    	m.put("flowFlag", "2");
 		return channelAssetDao.getCount("getListNumByChannelId", m);
     }
 
