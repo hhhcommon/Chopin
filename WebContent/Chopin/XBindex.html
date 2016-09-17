@@ -17,8 +17,14 @@
   <script type="text/javascript" src="js/lunbo.js"></script>
   <script type="text/javascript" src="js/ui.script.min.js" defer="defer"></script>
   <script type="text/javascript" src="js/XBindex.js"></script>
+  <script src="js/jquery-2.1.1.min.js"></script>
+  <script src="../resources/js/mainPage.js"></script>
+  <script src="../resources/js/context.utils.js"></script>
+  <script src="js/lunbo.js"></script>
+  <script src="js/ui.script.min.js"></script>
+  <script src="js/XBindex.js"></script>
 </head>
-<body style="height:3200px;">
+<body>
   <div class="bg">
     <header class="header">
       <!--顶部信息 开始  -->
@@ -33,20 +39,20 @@
           <div id="navbar" class="collapse navbar-collapse">
             <div id="main-nav" class="menu-header%e8%8f%9c%e5%8d%95-container">
               <ul id="menu-header%e8%8f%9c%e5%8d%95" class="nav navbar-nav">
-                <li class="current-menu-item">
+                <!--<li class="current-menu-item">
                   <a href="#">首页</a>  
                 </li>
                 <li class="service-list">
                   <a href="#">赛况报道 </a>
                   <ul class="sub-menu">
-                    <li class="cl-arrow"><a href="#">公告</a></li>
+                    <li><a href="#">公告</a></li>
                     <li><a href="#">动态</a></li>
                   </ul>
                 </li>
                 <li class="service-list">
                   <a href="#">周边活动</a>
                     <ul class="sub-menu">
-                      <li class="cl-arrow"><a href="#">组委会介绍</a></li>
+                      <li><a href="#">组委会介绍</a></li>
                       <li><a href="#">评委会介绍</a></li>
                       <li><a href="#">章程</a></li>
                     </ul>
@@ -54,26 +60,36 @@
                 <li class="service-list">
                   <a href="#">聆听大师</a>
                   <ul class="sub-menu">
-                    <li class="cl-arrow"><a href="#">日程安排</a></li>
+                    <li><a href="#">日程安排</a></li>
                     <li><a href="#">开幕式音乐会</a></li>
                     <li><a href="#">晋级赛</a></li>
                   </ul>
                 </li>
                 <li class="hidden-xs"><a href="#">关于比赛</a></li>
-                <li class="hidden-xs"><a href="#">关于肖邦</a></li>
+                <li class="hidden-xs"><a href="#">关于肖邦</a></li>-->
               </ul>
             </div>
             <div class="nav-left-login">
               <a class="login_btn" href="#" data-form="loginform" id="ui-login">登录</a>
               <a class="register" href="#">注册</a>
               <a class="search" href="#">搜索</a>
+              <a class="cancelSearch" href="#" style="width:39%;">取消搜索</a>
             </div>
           </div>
         </div>
         <div class="header-search-slide">
           <form method="get" id="searchform-slide" class="searchform" action="" role="search">
             <input class="field" name="s" value="" placeholder="输入关键词并回车" type="search">
-            <button class="search-btn" type="submit"><i class="uicon-search2"></i></button>
+            <button class="search-btn" type="submit"><a href="#">搜索</a></button>
+            <label>热门搜索：</label>
+            <ul>
+              <li><a href="#">肖邦音乐</a></li>
+              <li><a href="#">肖邦故乡</a></li>
+              <li><a href="#">肖邦生平</a></li>
+              <li><a href="#">肖邦作品集</a></li>
+              <li><a href="#">肖邦成就</a></li>
+              <li><a href="#">肖邦作曲</a></li>
+            </ul>
           </form>
         </div>
       </div>
@@ -478,7 +494,39 @@
   </div>
 </body>
 <script>  
+/*加载导航条*/
+getChannelNavList();
 /*轮播效果*/
 jQuery(".slideBox").slide({mainCell:".bd ul",effect:"fold",autoPlay:true,trigger:"click"});
+/*初始化操作*/
+$(function(){
+  //1-初始化按钮
+  //1.1-点击导航栏的搜索按钮
+  $(".nav-left-login .search").on("click",function(){
+    $(".header-search-slide").slideDown(100);
+    $(".nav-left-login .search").css({"display":"none"});
+    $(".nav-left-login .cancelSearch").css({"display":"block"});
+  });
+  //1.2-点击取消搜索
+  $(".nav-left-login .cancelSearch").on("click",function(){
+    $(".nav-left-login .search").css({"display":"block"});
+    $(".nav-left-login .cancelSearch").css({"display":"none"});
+    $(".header-search-slide").slideUp(100);
+  });
+  //1.3-点击搜索栏里的搜索按钮
+  $(".header-search-slide .search-btn").on("click",function(){
+    if($(".field").val()){
+      window.location.href='searchResult.html';
+      return false;
+    }else{
+      alert("请输入您要查询的内容!");
+    }
+  });
+  //1.4-点击登录按钮
+  $("#ui-login").on("click",function(){
+    $("#login").css({"display":"block"});
+  })
+  
+})
 </script>
 </html>

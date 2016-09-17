@@ -19,7 +19,7 @@ import com.spiritdata.framework.core.model.tree.TreeNodeBean;
 import com.spiritdata.framework.util.SequenceUUID;
 import com.spiritdata.framework.util.StringUtils;
 import com.spiritdata.framework.util.TreeUtils;
-import com.woting.WtContentMngConstants;
+import com.woting.ChopinConstants;
 import com.woting.cm.core.channel.mem._CacheChannel;
 import com.woting.cm.core.channel.model.Channel;
 import com.woting.cm.core.channel.model.ChannelAsset;
@@ -43,7 +43,7 @@ public class ChannelService {
     public void initParam() {
         channelDao.setNamespace("A_CHANNEL");
         channelAssetDao.setNamespace("A_CHANNELASSET");
-        _cc=(SystemCache.getCache(WtContentMngConstants.CACHE_CHANNEL)==null?null:((CacheEle<_CacheChannel>)SystemCache.getCache(WtContentMngConstants.CACHE_CHANNEL)).getContent());
+        _cc=(SystemCache.getCache(ChopinConstants.CACHE_CHANNEL)==null?null:((CacheEle<_CacheChannel>)SystemCache.getCache(ChopinConstants.CACHE_CHANNEL)).getContent());
     }
 
     /**
@@ -140,7 +140,7 @@ public class ChannelService {
         if (pubChannels==null||pubChannels.isEmpty()) return null;
 
         List<Map<String, Object>> ret=new ArrayList<Map<String, Object>>();
-        if (_cc==null) _cc=(SystemCache.getCache(WtContentMngConstants.CACHE_CHANNEL)==null?null:((CacheEle<_CacheChannel>)SystemCache.getCache(WtContentMngConstants.CACHE_CHANNEL)).getContent());
+        if (_cc==null) _cc=(SystemCache.getCache(ChopinConstants.CACHE_CHANNEL)==null?null:((CacheEle<_CacheChannel>)SystemCache.getCache(ChopinConstants.CACHE_CHANNEL)).getContent());
         for (ChannelAssetPo caPo: pubChannels) {
             Map<String, Object> one=caPo.toHashMap();
             if (_cc!=null) {
@@ -158,7 +158,7 @@ public class ChannelService {
      * @return 新增的栏目Id；2-未找到父亲结点；3-名称重复，同级重复;
      */
     public String insertChannel(Channel c) {
-        CacheEle<_CacheChannel> cache=((CacheEle<_CacheChannel>)SystemCache.getCache(WtContentMngConstants.CACHE_CHANNEL));
+        CacheEle<_CacheChannel> cache=((CacheEle<_CacheChannel>)SystemCache.getCache(ChopinConstants.CACHE_CHANNEL));
         _CacheChannel cc=cache.getContent();
         if (cc==null||cc.channelTree==null) return "2";
 
@@ -198,7 +198,7 @@ public class ChannelService {
      * @return 1-修改成功；2-对应的结点未找到；3-名称重复，同级重复；4-与原信息相同，不必修改
      */
     public int updateChannel(Channel c) {
-        CacheEle<_CacheChannel> cache=((CacheEle<_CacheChannel>)SystemCache.getCache(WtContentMngConstants.CACHE_CHANNEL));
+        CacheEle<_CacheChannel> cache=((CacheEle<_CacheChannel>)SystemCache.getCache(ChopinConstants.CACHE_CHANNEL));
         _CacheChannel cc=cache.getContent();
         synchronized (updateLock) {
             if (cc==null||cc.channelTree==null) return 2;
@@ -264,7 +264,7 @@ public class ChannelService {
      * @return "1"成功删除,"2"未找到相应的结点,"3::因为什么什么关联信息的存在而不能删除"
      */
     public String delChannel(Channel c, boolean force) {
-        CacheEle<_CacheChannel> cache=((CacheEle<_CacheChannel>)SystemCache.getCache(WtContentMngConstants.CACHE_CHANNEL));
+        CacheEle<_CacheChannel> cache=((CacheEle<_CacheChannel>)SystemCache.getCache(ChopinConstants.CACHE_CHANNEL));
         _CacheChannel cc=cache.getContent();
         synchronized (updateLock) {
             if (cc==null||cc.channelTree==null) return "2";
@@ -311,23 +311,33 @@ public class ChannelService {
 		return false;
     }
     
+    public List<ChannelAssetPo> getListByWhere(Map<String, Object> m) {
+		return channelAssetDao.queryForList("getListByWhere", m);
+    }
+    
     public List<ChannelAssetPo> getChannelAssetsByAssetId(String assetId) {
 		return channelAssetDao.queryForList("getInfoByAssetId", assetId);
     }
     
-    public List<ChannelAssetPo> getChannelAssetsByChannelId(String channelId, int page, int pageSize) {
+    public List<ChannelAssetPo> getChannelAssets(Map<String, Object> m) {
+		return channelAssetDao.queryForList("getList", m);
+    }
+    
+    public List<ChannelAssetPo> getChannelAssetsByChannelId(String channelId, int page, int pageSize, int flowFlag) {
     	Map<String, Object> m = new HashMap<>();
     	m.put("channelId", channelId);
     	m.put("assetType", "wt_MediaAsset");
+    	m.put("flowFlag", flowFlag);
     	m.put("sortByClause", "pubTime");
     	m.put("page", page);
     	m.put("pageSize", pageSize);
 		return channelAssetDao.queryForList("getListByLimit", m);
     }
     
-    public int getChannelAssetsNum(String channelId) {
+    public int getChannelAssetsNum(String channelId, int flowFlag) {
     	Map<String, Object> m = new HashMap<>();
     	m.put("channelId", channelId);
+    	m.put("flowFlag", "2");
 		return channelAssetDao.getCount("getListNumByChannelId", m);
     }
 

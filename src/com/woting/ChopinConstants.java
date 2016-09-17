@@ -1,6 +1,6 @@
 package com.woting;
 
-public class WtContentMngConstants {
+public class ChopinConstants {
     //字典、分类信息缓存 
     public final static String CACHE_DICT="CacheDict";
     //版本配置信息

@@ -10,14 +10,14 @@
     <id      column="id"         property="id"         jdbcType="VARCHAR"/>
     <result  column="imei"       property="imei"       jdbcType="VARCHAR"/>
     <result  column="userId"     property="userId"     jdbcType="VARCHAR"/>
-    <result  column="articalId"  property="articalId"  jdbcType="VARCHAR"/>
+    <result  column="articleId"  property="articleId"  jdbcType="VARCHAR"/>
     <result  column="opinion"    property="opinion"    jdbcType="VARCHAR"/>
     <result  column="cTime"      property="CTime"      jdbcType="TIMESTAMP"/>
   </resultMap>
 
   <!-- 所有列 -->
   <sql id="Base_Column_List">
-    id, imei, userId, articalId, opinion, cTime
+    id, imei, userId, articleId, opinion, cTime
   </sql>
 
   <!-- 条件子句 -->
@@ -27,7 +27,7 @@
         <if test="id!=null"> and id=#{id,jdbcType=VARCHAR}</if>
         <if test="imei!=null"> and imei=#{imei,jdbcType=VARCHAR}</if>
         <if test="userId!=null"> and userId=#{userId,jdbcType=VARCHAR}</if>
-        <if test="articalId!=null"> and articalId=#{articalId,jdbcType=VARCHAR}</if>
+        <if test="articleId!=null"> and articleId=#{articleId,jdbcType=VARCHAR}</if>
         <if test="opinion!=null"> and opinion=#{opinion,jdbcType=VARCHAR}</if>
         <if test="CTime!=null"> and cTime=#{CTime,jdbcType=TIMESTAMP}</if>
       </trim>
@@ -46,11 +46,11 @@
     <if test="sortByClause!=null">order by ${sortByClause}</if>
   </select>
   <!-- 获得列表，根据文章Id(提意见的人) -->
-  <select id="getListByArticalId" resultMap="discussMap" parameterType="java.util.Map">
+  <select id="getListByArticleId" resultMap="discussMap" parameterType="java.util.Map">
     select <include refid="Base_Column_List"/> from wt_Discuss
     <where>
       <trim prefixOverrides="and">
-        <if test="articalId!=null"> and articalId=#{articalId,jdbcType=VARCHAR}</if>
+        <if test="articleId!=null"> and articleId=#{articleId,jdbcType=VARCHAR}</if>
       </trim>
     </where>
     order by cTime desc
@@ -63,7 +63,7 @@
         <if test="imei!=null"> and imei=#{imei,jdbcType=VARCHAR}</if>
         <if test="userId!=null"> and userId=#{userId,jdbcType=VARCHAR}</if>
         <if test="userId==null"> and (userId is null or userId='')</if>
-        <if test="articalId!=null"> and articalId=#{articalId,jdbcType=VARCHAR}</if>
+        <if test="articleId!=null"> and articleId=#{articleId,jdbcType=VARCHAR}</if>
         <if test="opinion!=null"> and opinion=#{opinion,jdbcType=VARCHAR}</if>
       </trim>
     </where>
@@ -84,14 +84,14 @@
       <if test="id!=null">id,</if>
       <if test="imei!=null">imei,</if>
       <if test="userId!=null">userId,</if>
-      <if test="articalId!=null">articalId,</if>
+      <if test="articleId!=null">articleId,</if>
       <if test="opinion!=null">opinion,</if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id!=null">#{id,jdbcType=VARCHAR},</if>
       <if test="imei!=null">#{imei,jdbcType=VARCHAR},</if>
       <if test="userId!=null">#{userId,jdbcType=VARCHAR},</if>
-      <if test="articalId!=null">#{articalId,jdbcType=VARCHAR},</if>
+      <if test="articleId!=null">#{articleId,jdbcType=VARCHAR},</if>
       <if test="opinion!=null">#{opinion,jdbcType=VARCHAR},</if>
     </trim>
   </insert>
@@ -102,7 +102,7 @@
     <set>
       <if test="imei!=null">imei=#{imei,jdbcType=VARCHAR},</if>
       <if test="userId!=null">userId=#{userId,jdbcType=VARCHAR},</if>
-      <if test="articalId!=null">articalId=#{articalId,jdbcType=VARCHAR},</if>
+      <if test="articleId!=null">articleId=#{articleId,jdbcType=VARCHAR},</if>
       <if test="opinion!=null">opinion=#{opinion,jdbcType=VARCHAR},</if>
       <if test="CTime=null">cTime=#{CTime,jdbcType=TIMESTAMP},</if>
     </set>

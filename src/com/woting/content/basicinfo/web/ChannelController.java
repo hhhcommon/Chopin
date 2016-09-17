@@ -18,7 +18,7 @@ import com.spiritdata.framework.ui.tree.UiTree;
 import com.spiritdata.framework.ui.tree.ZTree;
 import com.spiritdata.framework.util.RequestUtils;
 import com.spiritdata.framework.util.StringUtils;
-import com.woting.WtContentMngConstants;
+import com.woting.ChopinConstants;
 import com.woting.cm.core.channel.mem._CacheChannel;
 import com.woting.cm.core.channel.model.Channel;
 import com.woting.cm.core.channel.service.ChannelService;
@@ -60,7 +60,7 @@ public class ChannelController {
                 return map;
             }
 
-            _CacheChannel _cc=((CacheEle<_CacheChannel>)SystemCache.getCache(WtContentMngConstants.CACHE_CHANNEL)).getContent();
+            _CacheChannel _cc=((CacheEle<_CacheChannel>)SystemCache.getCache(ChopinConstants.CACHE_CHANNEL)).getContent();
             try {
                 TreeNode<Channel> root=_cc.channelTree;
                 if (!StringUtils.isNullOrEmptyOrSpace(channelId)) {

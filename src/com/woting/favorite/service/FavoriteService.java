@@ -12,10 +12,15 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.spiritdata.framework.core.dao.mybatis.MybatisDAO;
+import com.spiritdata.framework.core.model.Page;
 import com.spiritdata.framework.util.SequenceUUID;
+import com.spiritdata.framework.util.StringUtils;
 import com.woting.cm.core.utils.ContentUtils;
+import com.woting.content.manage.channel.service.ChannelContentService;
+import com.woting.cm.core.channel.persis.po.ChannelAssetPo;
 import com.woting.cm.core.channel.service.ChannelService;
 import com.woting.cm.core.media.model.MediaAsset;
+import com.woting.cm.core.media.persis.po.MediaAssetPo;
 import com.woting.cm.core.media.service.MediaService;
 import com.woting.favorite.persis.po.UserFavoritePo;
 import com.woting.passport.mobile.MobileUDKey;
@@ -27,12 +32,20 @@ public class FavoriteService {
     private ChannelService channelService;
     @Resource(name="defaultDAO")
     private MybatisDAO<UserFavoritePo> userFavoriteDao;
+    @Resource(name="defaultDAO")
+    private MybatisDAO<MediaAssetPo> mediaAssetDao;
+    @Resource(name="defaultDAO")
+    private MybatisDAO<ChannelAssetPo> channelAssetDao;
     @Resource
     private MediaService mediaService;
+    @Resource
+    private ChannelContentService channelContentService;
 
     @PostConstruct
     public void initParam() {
         userFavoriteDao.setNamespace("DA_USERFAVORITE");
+        mediaAssetDao.setNamespace("A_MEDIA");
+        channelAssetDao.setNamespace("A_CHANNELASSET");
     }
 
     /**
@@ -85,7 +98,7 @@ public class FavoriteService {
 
     /**
      * 点赞或举报某个内容
-     * @param articalId 内容Id
+     * @param articleId 内容Id
      * @param flag 是点赞还是举报
      * @param dealType 操作类型:=1增加；=0删除，默认=1
      * @param mUdk 用户标识，可以是登录用户，也可以是手机设备
@@ -100,9 +113,9 @@ public class FavoriteService {
      *    60——已对参赛选手投票
      *    61——已点赞
      */
-    public int favorite(String articalId, int flag, int dealType, MobileUDKey mUdk) {
+    public int favorite(String articleId, int flag, int dealType, MobileUDKey mUdk) {
         //获得文章信息
-        MediaAsset ma=mediaService.getMaInfoById(articalId);
+        MediaAsset ma=mediaService.getMaInfoById(articleId);
         if (ma==null) return 0;//无内容
         //参数整理
         boolean isPlayer=(ma.getMaStatus()==1);
@@ -118,7 +131,7 @@ public class FavoriteService {
         param.put("ownerId", mUdk.getUserId());
         param.put("ownerType", "201");
         param.put("resTableName", flag+"");
-        param.put("resId", articalId);
+        param.put("resId", articleId);
 
         UserFavoritePo ufPo=userFavoriteDao.getInfoObject(param);
         if (flag==1) { //点赞(投票)
@@ -208,5 +221,76 @@ public class FavoriteService {
             if ((Integer)o.get("RepoSum")!=-1) o.put("RepoSum", (Integer)o.get("RepoSum")+1);
         }
         return ret;
+    }
+
+    /**
+     * 获得某用户：喜欢、举报、投票的文章列表
+     * @param userId 用户ID
+     * @param flag 喜欢、举报、投票的标识；1=喜欢；2=举报；3=投票，默认是喜欢
+     * @param page 页数
+     * @param pageSize 每页条数
+     * @return
+     */
+    public List<Map<String, Object>> getFavoriteList(String userId, int flag, int page, int pageSize) {
+        if (StringUtils.isNullOrEmptyOrSpace(userId)) return null;
+        if (flag!=1&&flag!=2&&flag!=3) flag=1;
+
+        try {
+            //获得列表
+            Map<String, String> param=new HashMap<String, String>();
+            param.put("sortByClause", "d.cTime desc");
+
+            List<MediaAssetPo> mas=null;
+            String sqlStatement="getFavoriteContents";
+            param.put("whereByClause", "e.resTableName='"+flag+"' and e.ownerId='"+userId+"'");
+            if (flag==3) {
+                sqlStatement="getVoteContents";
+                param.put("whereByClause", "a.maStatus='1' and e.ownerId='"+userId+"'");
+            }
+
+            if (page==-1) {
+                mas=mediaAssetDao.queryForList(sqlStatement, param);
+            } else {
+                if (page==0) page=1;
+                if (pageSize<0) pageSize=10;
+                Page<MediaAssetPo> p=mediaAssetDao.pageQuery(sqlStatement, param, page, pageSize);//查询内容列表
+                if (!p.getResult().isEmpty()) {
+                    mas=new ArrayList<MediaAssetPo>();
+                    mas.addAll(p.getResult());
+                }
+            }
+
+            if (!mas.isEmpty()) {
+                //获得相关栏目信息
+                String whereStr="";
+                String[] articlaIds=new String[mas.size()];
+                int i=0;
+                for (MediaAssetPo maPo:mas) {
+                    whereStr+=" or assetId='"+maPo.getId()+"'";
+                    articlaIds[i++]=maPo.getId();
+                }
+                param.clear();
+                param.put("whereByClause", whereStr.substring(4));
+                List<ChannelAssetPo> chas=channelAssetDao.queryForList("getListByWhere", param);
+                List<Map<String, Object>> chasm=channelContentService.getChannelAssetList(chas);
+
+                //获得喜欢列表
+                List<Map<String, Object>> fsm=getContentFavoriteInfo(articlaIds, userId);
+
+                //组织返回值
+                List<Map<String, Object>> rl=new ArrayList<>();
+                for (MediaAssetPo maPo : mas) {
+                    MediaAsset mediaAsset = new MediaAsset();
+                    mediaAsset.buildFromPo(maPo);
+                    Map<String, Object> mam=ContentUtils.convert2Ma(mediaAsset.toHashMap(), null, null, chasm, fsm);
+                    rl.add(mam);
+                }
+                return rl;
+            }
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
