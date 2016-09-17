@@ -113,10 +113,18 @@ public class MediaContentController {
 	public Map<String, Object> getPlaySumCount(HttpServletRequest request) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
-			Map<String, Object> contents = mediaContentService.getContentInfo("", "");
-			if (contents != null) {
-				map.put("ResultInfo", contents);
-				map.put("AllCount", contents.size());
+			Map<String, Object> m = RequestUtils.getDataFromRequest(request);
+			String userId = null;
+			if (m != null && m.size() >= 0) {
+                userId = m.get("UserId") + "";
+			    if (userId.equals("null"))
+				    userId = null;
+			}
+			
+			List<Map<String, Object>> l = mediaContentService.getPlaySumList(userId);
+			if (l!=null) {
+				map.put("ResultInfo", l);
+				map.put("AllCount", l.size());
 				map.put("ReturnType", "1001");
 			} else {
 				map.put("ReturnType", "1011");

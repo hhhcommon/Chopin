@@ -227,6 +227,10 @@
     select <include refid="Base_Media_List"/> from wt_MediaAsset where id in (${ids}) <if test="sortByClause!=null">order by ${sortByClause}</if>
   </select>
   
+  <select id="getPlayMaListByIds" parameterType="java.util.Map" resultMap="mediaAssetMap">
+    select <include refid="Base_Media_List"/> from wt_MediaAsset where maStatus=#{maStatus,jdbcType=INTEGER} <if test="sortByClause!=null">order by ${sortByClause}</if>
+  </select>
+  
   <!-- 根据主播id获取 -->
   <select id="getMaListByMaPubId" parameterType="java.lang.String" resultMap="mediaAssetMap">
     select <include refid="Base_Media_List"/>from wt_MediaAsset where maPubId=#{maPubId,jdbcType=VARCHAR} order by cTime desc

@@ -23,6 +23,8 @@ import com.woting.cm.core.media.service.MediaService;
 import com.woting.cm.core.utils.ContentUtils;
 import com.woting.content.manage.channel.service.ChannelContentService;
 import com.woting.favorite.service.FavoriteService;
+import com.woting.passport.UGA.persistence.pojo.UserPo;
+import com.woting.passport.UGA.service.UserService;
 import com.woting.passport.mobile.MobileUDKey;
 
 @Service
@@ -35,9 +37,11 @@ public class MediaContentService {
 	private ChannelContentService channelContentService;
 	@Resource
 	private ChannelService channelService;
-    private _CacheChannel _cc=null;
+    @Resource
+    private UserService userService;
     @Resource(name="defaultDAO")
     private MybatisDAO<MediaAssetPo> mediaAssetDao;
+    private _CacheChannel _cc=null;
 
     @PostConstruct
 	public void initParam() {
@@ -225,6 +229,40 @@ public class MediaContentService {
 			}
 			return l;
 		}
+		return null;
+	}
+	
+	public List<Map<String, Object>> getPlaySumList(String userId) {
+		List<Map<String, Object>> l = new ArrayList<>();
+		Map<String, Object> m = new HashMap<>();
+		m.put("maStatus", 1);
+		m.put("sortByClause", "pubCount desc");
+		List<MediaAssetPo> mas = mediaAssetDao.queryForList("getPlayMaListByIds", m);
+		if(mas!=null && mas.size()>0) {
+			String[] ids = new String[mas.size()];
+			for (int i = 0; i < ids.length; i++) {
+				ids[i] = mas.get(i).getId();
+			}
+			List<Map<String, Object>> favs = favoriteService.getContentFavoriteInfo(ids, userId);
+			for (MediaAssetPo ma : mas) {
+				for (Map<String, Object> mp : favs) {
+					if (mp.get("ContentId").equals(ma.getId())) {
+						UserPo user = userService.getUserById(ma.getMaPubId());
+						Map<String, Object> map = new HashMap<>();
+						map.put("UserId", user.getUserId());
+						map.put("UserName", user.getUserName());
+						map.put("UserBigImg", user.getPortraitBig());
+						map.put("UserSmallImg", user.getPortraitMini());
+						map.put("FavoSum", mp.get("FavoSum"));
+						map.put("IsFavorate", mp.get("IsFavorate"));
+						map.put("IsPlaying", ma.getPubCount());
+						map.put("ContentId", ma.getId());
+						l.add(map);
+					}
+				}
+			}
+		}
+		if (l!=null && l.size()>0) return l;
 		return null;
 	}
 }
