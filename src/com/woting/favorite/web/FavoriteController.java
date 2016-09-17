@@ -1,6 +1,7 @@
 package com.woting.favorite.web;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -67,8 +68,8 @@ public class FavoriteController {
             if (map.get("ReturnType")!=null) return map;
 
             //3-获取文章Id
-            String articalId=(m.get("ContentId")==null?null:m.get("ContentId")+"");
-            if (StringUtils.isNullOrEmptyOrSpace(articalId)) {
+            String articleId=(m.get("ContentId")==null?null:m.get("ContentId")+"");
+            if (StringUtils.isNullOrEmptyOrSpace(articleId)) {
                 map.put("ReturnType", "1003");
                 map.put("Message", "无法获取文章Id");
                 return map;
@@ -96,7 +97,7 @@ public class FavoriteController {
                 map.put("Message", "举报无法删除");
                 return map;
             }
-            flag=favoriteService.favorite(articalId, flag, dealType, mUdk);
+            flag=favoriteService.favorite(articleId, flag, dealType, mUdk);
             if (flag==-2) {
                 map.put("ReturnType", "1006");
                 map.put("Message", "举报无法删除");
@@ -143,6 +144,83 @@ public class FavoriteController {
                 return map;
             }
             map.put("ReturnType", "1001");
+            return map;
+        } catch(Exception e) {
+            e.printStackTrace();
+            map.put("ReturnType", "T");
+            map.put("TClass", e.getClass().getName());
+            map.put("Message", e.getMessage());
+            return map;
+        }
+    }
+
+    /**
+     * 得到某人的点赞或举报过的文章列表
+     * @param request
+     * @return
+     */
+    @RequestMapping(value="/user/getFavoriteList.do")
+    @ResponseBody
+    public Map<String,Object> getFavoriteList(HttpServletRequest request) {
+        Map<String,Object> map=new HashMap<String, Object>();
+        try {
+            //获取参数
+            String userId="";
+            MobileUDKey mUdk=null;
+            Map<String, Object> m=RequestUtils.getDataFromRequest(request);
+            if (m==null||m.size()==0) {
+                map.put("ReturnType", "0000");
+                map.put("Message", "无法获取需要的参数");
+            } else {
+                mUdk=MobileParam.build(m).getUserDeviceKey();
+                if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
+                    mUdk.setDeviceId(request.getSession().getId());
+                }
+                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "user/getFavoriteList.do");
+                if ((retM.get("ReturnType")+"").equals("2001")) {
+                    map.put("ReturnType", "0000");
+                    map.put("Message", "无法获取设备Id(IMEI)");
+                } else if ((retM.get("ReturnType")+"").equals("2003")) {
+                    map.put("ReturnType", "200");
+                    map.put("Message", "需要登录");
+                } else {
+                    if (mUdk.isUser()) userId=mUdk.getUserId();
+                }
+                if (map.get("ReturnType")==null&&StringUtils.isNullOrEmptyOrSpace(userId)) {
+                    map.put("ReturnType", "1002");
+                    map.put("Message", "无法获取用户Id");
+                }
+            }
+            if (map.get("ReturnType")!=null) return map;
+
+            //获取分页信息
+            int page=-1;
+            try {
+                page=Integer.parseInt(m.get("Page")==null?null:m.get("Page")+"");
+            } catch(Exception e) {
+            }
+            int pageSize=10;
+            try {
+                page=Integer.parseInt(m.get("PageSize")==null?null:m.get("PageSize")+"");
+            } catch(Exception e) {
+            }
+
+            //获取分类信息
+            int flag=1;
+            try {
+                flag=Integer.parseInt(m.get("Flag")==null?null:m.get("Flag")+"");
+            } catch(Exception e) {
+            }
+
+            List<Map<String, Object>> fl=favoriteService.getFavoriteList(mUdk.getUserId(), flag, page, pageSize);
+
+            if (fl!=null&&fl.size()>0) {
+                map.put("ReturnType", "1001");
+                map.put("ContentList", fl);
+            } else {
+                map.put("ReturnType", "1011");
+                map.put("Message", "无用户喜欢列表");
+            }
             return map;
         } catch(Exception e) {
             e.printStackTrace();

@@ -250,11 +250,37 @@
 
   <!-- 根据全文获得内容 -->
   <select id="getListBySearchText" parameterType="java.util.Map" resultMap="mediaAssetMap">
-    select d.id, d.maTitle, d.maPubType, d.maPubId, d.maPublisher, d.maPublishTime, d.maImg, d.maURL, d.subjectWords, d.keyWords, d.langDid, d.language, d.timeLong, d.descn, d.pubCount, d.maStatus, d.fullText, d.cTime
+    select d.id, d.maTitle, d.maPubType, d.maPubId, d.maPublisher, d.maPublishTime, d.maImg, d.maURL, d.subjectWords, d.keyWords, d.langDid, d.language, d.timeLong, d.descn, d.pubCount, d.maStatus, d.allText, d.cTime
     from wt_MediaAsset d, (
     select distinct a.id
     from wt_MediaAsset a, wt_ChannelAsset b
     where a.id=b.assetId and b.isValidate=1
+    <if test="whereByClause!=null">and ${whereByClause}</if>
+    ) c
+    where d.id=c.id
+    <if test="sortByClause!=null">order by ${sortByClause}</if>
+  </select>
+
+  <!-- 根据用户Id获得评论的文章 -->
+  <select id="getUserDiscussContents" parameterType="java.util.Map" resultMap="mediaAssetMap">
+    select d.id, d.maTitle, d.maPubType, d.maPubId, d.maPublisher, d.maPublishTime, d.maImg, d.maURL, d.subjectWords, d.keyWords, d.langDid, d.language, d.timeLong, d.descn, d.pubCount, d.maStatus, d.allText, d.cTime
+    from wt_MediaAsset d, (
+    select distinct a.id
+    from wt_MediaAsset a, wt_ChannelAsset b, wt_Discuss e
+    where a.id=b.assetId and b.isValidate=1 and e.articleId=a.id
+    <if test="whereByClause!=null">and ${whereByClause}</if>
+    ) c
+    where d.id=c.id
+    <if test="sortByClause!=null">order by ${sortByClause}</if>
+  </select>
+
+  <!-- 根据用户Id获得投票或举报的文章数 -->
+  <select id="getFavoriteContents" parameterType="java.util.Map" resultMap="mediaAssetMap">
+    select d.id, d.maTitle, d.maPubType, d.maPubId, d.maPublisher, d.maPublishTime, d.maImg, d.maURL, d.subjectWords, d.keyWords, d.langDid, d.language, d.timeLong, d.descn, d.pubCount, d.maStatus, d.allText, d.cTime
+    from wt_MediaAsset d, (
+    select distinct a.id
+    from wt_MediaAsset a, wt_ChannelAsset b, da_UserFavorite e
+    where a.id=b.assetId and b.isValidate=1 and e.resId=a.id
     <if test="whereByClause!=null">and ${whereByClause}</if>
     ) c
     where d.id=c.id
@@ -280,7 +306,7 @@
       <if test="descn!=null">descn=#{descn,jdbcType=VARCHAR},</if>
       <if test="pubCount!=null and pubCount>0">pubCount=#{pubCount,jdbcType=VARCHAR},</if>
       <if test="maStatus!=null and maStatus>0">maStatus=#{maStatus,jdbcType=INTEGER},</if>
-      <if test="fullText!=null">maStatus=#{fullText,jdbcType=VARCHAR},</if>
+      <if test="allText!=null">maStatus=#{allText,jdbcType=VARCHAR},</if>
     </set>
     where id=#{id,jdbcType=VARCHAR}
   </update>

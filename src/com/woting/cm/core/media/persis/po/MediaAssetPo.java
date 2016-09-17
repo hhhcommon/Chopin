@@ -128,10 +128,10 @@ public class MediaAssetPo extends BaseObject {
     public void setCTime(Timestamp cTime) {
         CTime=cTime;
     }
-	public String getAllText() {
-		return allText;
-	}
-	public void setAllText(String allText) {
-		this.allText = allText;
-	}
+    public String getAllText() {
+        return allText;
+    }
+    public void setAllText(String allText) {
+        this.allText = allText;
+    }
 }

@@ -1,5 +1,9 @@
 eclipse.preferences.version=1
+<<<<<<< HEAD
 encoding//doc/MySqlDll.sql=UTF-8
+=======
+encoding//WebContent/Chopin/css/XBindex.css=UTF-8
+>>>>>>> refs/remotes/origin/master
 encoding//src/com/woting/content/manage/media/web/MediaContentController.java=UTF-8
 encoding/<project>=UTF-8
 encoding/src=UTF-8
