@@ -16,7 +16,7 @@ import com.spiritdata.framework.core.cache.CacheEle;
 import com.spiritdata.framework.core.cache.SystemCache;
 import com.spiritdata.framework.ui.tree.ZTree;
 import com.spiritdata.framework.util.StringUtils;
-import com.woting.WtContentMngConstants;
+import com.woting.ChopinConstants;
 import com.woting.cm.core.channel.mem._CacheChannel;
 import com.woting.cm.core.channel.model.Channel;
 import com.woting.cm.core.channel.service.ChannelService;
@@ -349,7 +349,7 @@ public class CommonController {
         String cataId=(String)m.get("cataId");
         if (!StringUtils.isNullOrEmptyOrSpace(cataId)&&!cataId.equals("null")) {
             @SuppressWarnings("unchecked")
-			_CacheDictionary _cd=( (CacheEle<_CacheDictionary>)SystemCache.getCache(WtContentMngConstants.CACHE_DICT)).getContent();
+			_CacheDictionary _cd=( (CacheEle<_CacheDictionary>)SystemCache.getCache(ChopinConstants.CACHE_DICT)).getContent();
             try {
                 DictModel dm=_cd.getDictModelById(cataId);
                 ZTree<DictDetail> eu1=new ZTree<DictDetail>(dm.dictTree);

@@ -18,7 +18,7 @@ import com.spiritdata.framework.core.model.tree.TreeNodeBean;
 import com.spiritdata.framework.util.SequenceUUID;
 import com.spiritdata.framework.util.StringUtils;
 import com.spiritdata.framework.util.TreeUtils;
-import com.woting.WtContentMngConstants;
+import com.woting.ChopinConstants;
 import com.woting.cm.core.dict.mem._CacheDictionary;
 import com.woting.cm.core.dict.model.DictDetail;
 import com.woting.cm.core.dict.model.DictMaster;
@@ -179,7 +179,7 @@ public class DictService {
      * @return 新增的字典项Id；2-未找到字典组；3-未找到父亲结点；4-名称重复，同级重复；5-bCode重复，某分类下重复
      */
     public String insertDictDetail(DictDetail dd) {
-        CacheEle<_CacheDictionary> cache=((CacheEle<_CacheDictionary>)SystemCache.getCache(WtContentMngConstants.CACHE_DICT));
+        CacheEle<_CacheDictionary> cache=((CacheEle<_CacheDictionary>)SystemCache.getCache(ChopinConstants.CACHE_DICT));
         _CacheDictionary cd=cache.getContent();
         DictModel dm=cd.dictModelMap.get(dd.getMId());
         if (dm==null||dm.dictTree==null) return "2";
@@ -219,7 +219,7 @@ public class DictService {
      * @return 1-修改成功；2-未找到字典组；3-对应的结点未找到；4-名称重复，同级重复；5-bCode重复，某分类下重复；6-与原信息相同，不必修改
      */
     public int updateDictDetail(DictDetail dd) {
-        CacheEle<_CacheDictionary> cache=((CacheEle<_CacheDictionary>)SystemCache.getCache(WtContentMngConstants.CACHE_DICT));
+        CacheEle<_CacheDictionary> cache=((CacheEle<_CacheDictionary>)SystemCache.getCache(ChopinConstants.CACHE_DICT));
         _CacheDictionary cd=cache.getContent();
         synchronized (updateLock) {
             DictModel dm=cd.dictModelMap.get(dd.getMId());
@@ -287,7 +287,7 @@ public class DictService {
      * @return "1"成功删除,"2"未找到相应的结点,"3::因为什么什么关联信息的存在而不能删除"
      */
     public String delDictDetail(DictDetail dd, boolean force) {
-        CacheEle<_CacheDictionary> cache=((CacheEle<_CacheDictionary>)SystemCache.getCache(WtContentMngConstants.CACHE_DICT));
+        CacheEle<_CacheDictionary> cache=((CacheEle<_CacheDictionary>)SystemCache.getCache(ChopinConstants.CACHE_DICT));
         _CacheDictionary cd=cache.getContent();
         synchronized (updateLock) {
             DictModel dm=cd.dictModelMap.get(dd.getMId());

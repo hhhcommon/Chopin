@@ -12,7 +12,7 @@ import com.spiritdata.framework.core.cache.SystemCache;
 import com.spiritdata.framework.core.dao.mybatis.MybatisDAO;
 import com.spiritdata.framework.core.model.Page;
 import com.spiritdata.framework.util.StringUtils;
-import com.woting.WtContentMngConstants;
+import com.woting.ChopinConstants;
 import com.woting.cm.core.channel.mem._CacheChannel;
 import com.woting.cm.core.channel.persis.po.ChannelAssetPo;
 import com.woting.cm.core.channel.persis.po.ChannelPo;
@@ -42,7 +42,7 @@ public class MediaContentService {
     @PostConstruct
 	public void initParam() {
     	mediaAssetDao.setNamespace("A_MEDIA");
-		_cc = (SystemCache.getCache(WtContentMngConstants.CACHE_CHANNEL) == null ? null : ((CacheEle<_CacheChannel>) SystemCache.getCache(WtContentMngConstants.CACHE_CHANNEL)).getContent());
+		_cc = (SystemCache.getCache(ChopinConstants.CACHE_CHANNEL) == null ? null : ((CacheEle<_CacheChannel>) SystemCache.getCache(ChopinConstants.CACHE_CHANNEL)).getContent());
 	}
 
 	public List<Map<String, Object>> getContents(String userId, String channelId, int perSize, int page, int pageSize, String beginCatalogId) {
