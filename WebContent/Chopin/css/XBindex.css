@@ -46,13 +46,19 @@
   line-height: 80px;
 }
 .wtE{
-  width: 73%;
+  width: 77%;
   position: absolute;
   left: 30.01%;
   top: 6%;
   color: white;
   font-size: 15px;
   line-height: 80px;
+}
+#main-nav .nav .current-menu-item a{
+  color: rgb(255,166,52);
+}
+#main-nav .nav li>a:hover{
+  color: rgb(255,166,52);
 }
 #main-nav .nav li .sub-menu{
   position: absolute;
@@ -120,6 +126,18 @@
   color: white;
   float: left;
   margin-left:3px;
+}
+#navbar .cancelSearch{
+  width: 23%;
+  text-align: center;
+  display: block;
+  top: 3%;
+  border: 1px solid white;
+  border-radius: 2px;
+  color: white;
+  float: left;
+  margin-left:3px;
+  display: none;
 }
 .header-search-slide{
   position: absolute;
@@ -444,7 +462,7 @@
 /*底部样式*/
 .footer{
   float:left;
-  height:455px;
+  height:auto;
   width: 100%;
   position: relative;
   padding-top: 3%;
