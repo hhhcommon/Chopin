@@ -14,10 +14,10 @@
   <link rel="stylesheet" id="ui_style-css" href="css/lunbo.css" type="text/css" media="all">
   <link rel="stylesheet" id="ui_style-css" href="css/font-awesome.css" type="text/css" media="all">
   <script src="js/jquery-2.1.1.min.js"></script>
-  <script src="js/lunbo.js"></script>
-  <script src="js/ui.script.min.js"></script>
   <script src="../resources/js/mainPage.js"></script>
   <script src="../resources/js/context.utils.js"></script>
+  <script src="js/lunbo.js"></script>
+  <script src="js/ui.script.min.js"></script>
   <script src="js/XBindex.js"></script>
 </head>
 <body>
@@ -490,6 +490,8 @@
   </div>
 </body>
 <script>  
+/*加载导航条*/
+getChannelNavList();
 /*轮播效果*/
 jQuery(".slideBox").slide({mainCell:".bd ul",effect:"fold",autoPlay:true,trigger:"click"});
 /*初始化操作*/

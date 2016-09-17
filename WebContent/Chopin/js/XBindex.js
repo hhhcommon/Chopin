@@ -1,6 +1,5 @@
 var rootPath=getRootPath();
 //得到栏目导航条信息
-getChannelNavList();
 function getChannelNavList(){
   var _data={"ChannelId":""};
   $.ajax({
@@ -26,19 +25,26 @@ function loadChannelNavListLoad(ChannelNavList){
     if(ChannelNavList.Data.children[i].children){//如果导航有二级栏目
       pLia=$("<li class='service-list'></li>");
       liA=$("<a href='#'>"+ChannelNavList.Data.children[i].name+"</a>");
-      liUl=$("<ul class='sub-menu'><ul>");
+      liUl=$("<ul class='sub-menu'></ul>");
       for(var j=0;j<ChannelNavList.Data.children[i].children.length;j++){
         liUlLiA=$("<li><a href='#'>"+ChannelNavList.Data.children[i].children[j].name+"</a></li>");
-        liUlLi=$(liUl).append(liUlLiA);
+        liUlLi=liUl.append(liUlLiA);
       }
-      $(pLia).append(liA).append(liUl);
+      pLia.append(liA).append(liUlLi);
     }else{//如果导航没有二级栏目
       pLia=$("<li class='hidden-xs'><a href='#'>"+ChannelNavList.Data.children[i].name+"</a></li>");
     }
     $('#navbar #main-nav .nav').append(pLia);
   }
   /*设置相关的样式*/
-  $('#navbar #main-nav .nav li:first').attr("class","current-menu-item");
+  $('#navbar #main-nav .nav li:first').addClass("current-menu-item");
+  $("#navbar #main-nav .nav li").hover(function(){
+    $(this).children(".sub-menu").css({"display":"block"});
+    $(this).addClass("on");
+  },function(){
+    $(this).children(".sub-menu").css({"display":"none"});
+    $(this).removeClass("on");
+  })
 }
 
 //点击搜索栏里的搜索按钮出现相关内容
