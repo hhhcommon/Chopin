@@ -21,13 +21,13 @@
     <result  column="descn"          property="descn"          jdbcType="VARCHAR"/>
     <result  column="pubCount"       property="pubCount"       jdbcType="INTEGER"/>
     <result  column="maStatus"       property="maStatus"       jdbcType="INTEGER"/>
-    <result  column="fullText"       property="fullText"       jdbcType="VARCHAR"/>
+    <result  column="allText"        property="allText"        jdbcType="VARCHAR"/>
     <result  column="cTime"          property="CTime"          jdbcType="TIMESTAMP"/>
   </resultMap>
   
    <!-- 所有列 -->
   <sql id="Base_Media_List">
-    id, maTitle, maPubType, maPubId, maPublisher, maPublishTime, maImg, maURL, subjectWords, keyWords, langDid, language, timeLong, descn, pubCount, maStatus, fullText, cTime
+    id, maTitle, maPubType, maPubId, maPublisher, maPublishTime, maImg, maURL, subjectWords, keyWords, langDid, language, timeLong, descn, pubCount, maStatus, allText, cTime
   </sql>
   
 
@@ -106,7 +106,7 @@
       <if test="descn!=null">descn,</if>
       <if test="pubCount!=null and pubCount>0">pubCount,</if>
       <if test="maStatus!=null and maStatus>0">maStatus,</if>
-      <if test="fullText!=null">fullText,</if>
+      <if test="allText!=null">allText,</if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id!=null">#{id,jdbcType=VARCHAR},</if>
@@ -124,7 +124,7 @@
       <if test="descn!=null">#{descn,jdbcType=VARCHAR},</if>
       <if test="pubCount!=null and pubCount>0">#{pubCount,jdbcType=VARCHAR},</if>
       <if test="maStatus!=null and maStatus>0">#{maStatus,jdbcType=INTEGER},</if>
-      <if test="fullText!=null">#{fullText,jdbcType=VARCHAR},</if>
+      <if test="allText!=null">#{allText,jdbcType=VARCHAR},</if>
     </trim>
   </insert>
 
@@ -224,7 +224,11 @@
   </select>
   
   <select id="getMaListByIds" parameterType="java.util.Map" resultMap="mediaAssetMap">
-    select <include refid="Base_Media_List"/>from wt_MediaAsset where id in (${ids}) <if test="sortByClause!=null">order by ${sortByClause}</if>
+    select <include refid="Base_Media_List"/> from wt_MediaAsset where id in (${ids}) <if test="sortByClause!=null">order by ${sortByClause}</if>
+  </select>
+  
+  <select id="getPlayMaListByIds" parameterType="java.util.Map" resultMap="mediaAssetMap">
+    select <include refid="Base_Media_List"/> from wt_MediaAsset where maStatus=#{maStatus,jdbcType=INTEGER} <if test="sortByClause!=null">order by ${sortByClause}</if>
   </select>
   
   <!-- 根据主播id获取 -->
@@ -250,11 +254,37 @@
 
   <!-- 根据全文获得内容 -->
   <select id="getListBySearchText" parameterType="java.util.Map" resultMap="mediaAssetMap">
-    select d.id, d.maTitle, d.maPubType, d.maPubId, d.maPublisher, d.maPublishTime, d.maImg, d.maURL, d.subjectWords, d.keyWords, d.langDid, d.language, d.timeLong, d.descn, d.pubCount, d.maStatus, d.fullText, d.cTime
+    select d.id, d.maTitle, d.maPubType, d.maPubId, d.maPublisher, d.maPublishTime, d.maImg, d.maURL, d.subjectWords, d.keyWords, d.langDid, d.language, d.timeLong, d.descn, d.pubCount, d.maStatus, d.allText, d.cTime
     from wt_MediaAsset d, (
     select distinct a.id
     from wt_MediaAsset a, wt_ChannelAsset b
     where a.id=b.assetId and b.isValidate=1
+    <if test="whereByClause!=null">and ${whereByClause}</if>
+    ) c
+    where d.id=c.id
+    <if test="sortByClause!=null">order by ${sortByClause}</if>
+  </select>
+
+  <!-- 根据用户Id获得评论的文章 -->
+  <select id="getUserDiscussContents" parameterType="java.util.Map" resultMap="mediaAssetMap">
+    select d.id, d.maTitle, d.maPubType, d.maPubId, d.maPublisher, d.maPublishTime, d.maImg, d.maURL, d.subjectWords, d.keyWords, d.langDid, d.language, d.timeLong, d.descn, d.pubCount, d.maStatus, d.allText, d.cTime
+    from wt_MediaAsset d, (
+    select distinct a.id
+    from wt_MediaAsset a, wt_ChannelAsset b, wt_Discuss e
+    where a.id=b.assetId and b.isValidate=1 and e.articleId=a.id
+    <if test="whereByClause!=null">and ${whereByClause}</if>
+    ) c
+    where d.id=c.id
+    <if test="sortByClause!=null">order by ${sortByClause}</if>
+  </select>
+
+  <!-- 根据用户Id获得投票或举报的文章数 -->
+  <select id="getFavoriteContents" parameterType="java.util.Map" resultMap="mediaAssetMap">
+    select d.id, d.maTitle, d.maPubType, d.maPubId, d.maPublisher, d.maPublishTime, d.maImg, d.maURL, d.subjectWords, d.keyWords, d.langDid, d.language, d.timeLong, d.descn, d.pubCount, d.maStatus, d.allText, d.cTime
+    from wt_MediaAsset d, (
+    select distinct a.id
+    from wt_MediaAsset a, wt_ChannelAsset b, da_UserFavorite e
+    where a.id=b.assetId and b.isValidate=1 and e.resId=a.id
     <if test="whereByClause!=null">and ${whereByClause}</if>
     ) c
     where d.id=c.id
@@ -280,7 +310,7 @@
       <if test="descn!=null">descn=#{descn,jdbcType=VARCHAR},</if>
       <if test="pubCount!=null and pubCount>0">pubCount=#{pubCount,jdbcType=VARCHAR},</if>
       <if test="maStatus!=null and maStatus>0">maStatus=#{maStatus,jdbcType=INTEGER},</if>
-      <if test="fullText!=null">maStatus=#{fullText,jdbcType=VARCHAR},</if>
+      <if test="allText!=null">maStatus=#{allText,jdbcType=VARCHAR},</if>
     </set>
     where id=#{id,jdbcType=VARCHAR}
   </update>

@@ -8,7 +8,7 @@ import com.spiritdata.framework.component.UGA.cache.FrameworkUgaCLU;
 import com.spiritdata.framework.core.cache.AbstractCacheLifecycleUnit;
 import com.spiritdata.framework.core.cache.CacheEle;
 import com.spiritdata.framework.core.cache.SystemCache;
-import com.woting.WtContentMngConstants;
+import com.woting.ChopinConstants;
 import com.woting.cm.core.channel.mem._CacheChannel;
 import com.woting.cm.core.channel.service.ChannelService;
 import com.woting.cm.core.dict.mem._CacheDictionary;
@@ -47,8 +47,8 @@ public class ContentCLU extends AbstractCacheLifecycleUnit {
         try {
             System.out.println("开始装载[系统字典]缓存");
             _CacheDictionary _cd=dictService.loadCache();
-            SystemCache.remove(WtContentMngConstants.CACHE_DICT);
-            SystemCache.setCache(new CacheEle<_CacheDictionary>(WtContentMngConstants.CACHE_DICT, "系统字典", _cd));
+            SystemCache.remove(ChopinConstants.CACHE_DICT);
+            SystemCache.setCache(new CacheEle<_CacheDictionary>(ChopinConstants.CACHE_DICT, "系统字典", _cd));
         } catch(Exception e) {
             throw new Wtcm1000CException("缓存[系统字典]失败", e);
         }
@@ -58,8 +58,8 @@ public class ContentCLU extends AbstractCacheLifecycleUnit {
         try {
             System.out.println("开始装载[栏目结构]缓存");
             _CacheChannel _cc=channelService.loadCache();
-            SystemCache.remove(WtContentMngConstants.CACHE_CHANNEL);
-            SystemCache.setCache(new CacheEle<_CacheChannel>(WtContentMngConstants.CACHE_CHANNEL, "栏目结构", _cc));
+            SystemCache.remove(ChopinConstants.CACHE_CHANNEL);
+            SystemCache.setCache(new CacheEle<_CacheChannel>(ChopinConstants.CACHE_CHANNEL, "栏目结构", _cc));
         } catch(Exception e) {
             throw new Wtcm1000CException("缓存[栏目结构]失败", e);
         }

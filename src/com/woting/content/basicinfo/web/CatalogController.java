@@ -18,7 +18,7 @@ import com.spiritdata.framework.ui.tree.UiTree;
 import com.spiritdata.framework.ui.tree.ZTree;
 import com.spiritdata.framework.util.RequestUtils;
 import com.spiritdata.framework.util.StringUtils;
-import com.woting.WtContentMngConstants;
+import com.woting.ChopinConstants;
 import com.woting.cm.core.dict.mem._CacheDictionary;
 import com.woting.cm.core.dict.model.DictDetail;
 import com.woting.cm.core.dict.model.DictModel;
@@ -66,7 +66,7 @@ public class CatalogController {
                 return map;
             }
 
-            _CacheDictionary _cd=((CacheEle<_CacheDictionary>)SystemCache.getCache(WtContentMngConstants.CACHE_DICT)).getContent();
+            _CacheDictionary _cd=((CacheEle<_CacheDictionary>)SystemCache.getCache(ChopinConstants.CACHE_DICT)).getContent();
             try {
                 DictModel dm=_cd.getDictModelById(catalogType);
                 TreeNode<DictDetail> root=dm.dictTree;

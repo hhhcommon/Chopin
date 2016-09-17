@@ -82,8 +82,8 @@ public class DiscussController {
                 return map;
             }
             //3-获取文章Id
-            String articalId=(m.get("ContentId")==null?null:m.get("ContentId")+"");
-            if (StringUtils.isNullOrEmptyOrSpace(articalId)) {
+            String articleId=(m.get("ContentId")==null?null:m.get("ContentId")+"");
+            if (StringUtils.isNullOrEmptyOrSpace(articleId)) {
                 map.put("ReturnType", "1004");
                 map.put("Message", "无法获取文章Id");
                 return map;
@@ -93,7 +93,7 @@ public class DiscussController {
                 Discuss discuss=new Discuss();
                 discuss.setImei(mUdk.getDeviceId());
                 discuss.setUserId(userId);
-                discuss.setArticalId(articalId);
+                discuss.setArticleId(articleId);
                 discuss.setOpinion(opinion);
                 //是否重复提交意见
                 List<Discuss> duplicates=discussService.getDuplicates(discuss);
@@ -205,7 +205,7 @@ public class DiscussController {
 
     @RequestMapping(value="article/getList.do")
     @ResponseBody
-    public Map<String,Object> getList(HttpServletRequest request) {
+    public Map<String,Object> getArticleList(HttpServletRequest request) {
         Map<String,Object> map=new HashMap<String, Object>();
         com.spiritdata.framework.core.web.InitSysConfigListener cc;
         try {
@@ -224,8 +224,8 @@ public class DiscussController {
             }
 
             //1-获取文章Id
-            String articalId=(m.get("ContentId")==null?null:m.get("ContentId")+"");
-            if (StringUtils.isNullOrEmptyOrSpace(articalId)) {
+            String articleId=(m.get("ContentId")==null?null:m.get("ContentId")+"");
+            if (StringUtils.isNullOrEmptyOrSpace(articleId)) {
                 map.put("ReturnType", "1004");
                 map.put("Message", "无法获取文章Id");
                 return map;
@@ -242,13 +242,13 @@ public class DiscussController {
             } catch(Exception e) {
             }
 
-            List<Discuss> ol=discussService.getArticleDiscusses(articalId, page, pageSize);
+            List<Discuss> ol=discussService.getArticleDiscusses(articleId, page, pageSize);
             if (ol!=null&&ol.size()>0) {
                 map.put("ReturnType", "1001");
                 map.put("OpinionList", convertDiscissView(ol));
             } else {
                 map.put("ReturnType", "1011");
-                map.put("Message", "无意见及反馈信息");
+                map.put("Message", "无评论信息");
             }
             return map;
         } catch(Exception e) {
@@ -259,8 +259,7 @@ public class DiscussController {
             return map;
         }
     }
-
-    /**
+    /*
      * 获得返回的列表，包括用户的信息
      * @param ol
      * @return
@@ -299,5 +298,81 @@ public class DiscussController {
             }
         }
         return ret==null||ret.isEmpty()?null:ret;
+    }
+
+    @RequestMapping(value="user/getList.do")
+    @ResponseBody
+    public Map<String,Object> getUserList(HttpServletRequest request) {
+        Map<String,Object> map=new HashMap<String, Object>();
+        com.spiritdata.framework.core.web.InitSysConfigListener cc;
+        try {
+            //0-获取参数
+            MobileUDKey mUdk=null;
+            String userId="";
+            Map<String, Object> m=RequestUtils.getDataFromRequest(request);
+            if (m==null||m.size()==0) {
+                map.put("ReturnType", "0000");
+                map.put("Message", "无法获取需要的参数");
+            } else {
+                mUdk=MobileParam.build(m).getUserDeviceKey();
+                if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
+                    mUdk.setDeviceId(request.getSession().getId());
+                }
+                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "discuss/article/getList");
+                if (!mUdk.isUser()||"0".equals(mUdk.getUserId())) {
+                    map.put("ReturnType", "1002");
+                    map.put("Message", "无法获得用户Id");
+                } else {
+                    if (userService.getUserById(mUdk.getUserId())==null) {
+                        map.put("ReturnType", "1003");
+                        map.put("Message", "用户不存在");
+                    }
+                    if ((retM.get("ReturnType")+"").equals("2001")) {
+                        map.put("ReturnType", "0000");
+                        map.put("Message", "无法获取设备Id(IMEI)");
+                    } else if ((retM.get("ReturnType")+"").equals("2003")) {
+                        map.put("ReturnType", "200");
+                        map.put("Message", "需要登录");
+                    } else {
+                        if (mUdk.isUser()) userId=mUdk.getUserId();
+                    }
+                    if (map.get("ReturnType")==null&&StringUtils.isNullOrEmptyOrSpace(userId)) {
+                        map.put("ReturnType", "1002");
+                        map.put("Message", "无法获取用户Id");
+                    }
+
+                }
+            }
+            if (map.get("ReturnType")!=null) return map;
+
+            //1-获取分页信息
+            int page=-1;
+            try {
+                page=Integer.parseInt(m.get("Page")==null?null:m.get("Page")+"");
+            } catch(Exception e) {
+            }
+            int pageSize=10;
+            try {
+                page=Integer.parseInt(m.get("PageSize")==null?null:m.get("PageSize")+"");
+            } catch(Exception e) {
+            }
+
+            List<Map<String, Object>> al=discussService.getUserDiscusses(mUdk.getUserId(), page, pageSize);
+
+            if (al!=null&&al.size()>0) {
+                map.put("ReturnType", "1001");
+                map.put("ContentList", al);
+            } else {
+                map.put("ReturnType", "1011");
+                map.put("Message", "无用户评论列表");
+            }
+            return map;
+        } catch(Exception e) {
+            e.printStackTrace();
+            map.put("ReturnType", "T");
+            map.put("TClass", e.getClass().getName());
+            map.put("Message", e.getMessage());
+            return map;
+        }
     }
 }
