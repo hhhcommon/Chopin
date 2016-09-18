@@ -79,8 +79,8 @@
                   <td colspan="3">
                     <!--<select class="form-control" id="nodeParent" name="nodeParent" placeholder="父ID"></select>-->
                     <div style="width:450px;height:36px;">
-                      <input type="text" class="form-control" id="nodeParent" name="nodeParent" placeholder="父分类id" aria-required="true" style="width:330px;margin-bottom:0px;display:none;">
-                      <input type="text" class="form-control" id="nodeParents" name="nodeParents" placeholder="父分类名字" aria-required="true" style="width:330px;margin-bottom:0px;">
+                    	<input type="text" class="form-control" id="nodeParent" name="nodeParent" placeholder="父分类id" aria-required="true" style="width:330px;margin-bottom:0px;display:none;">
+                    	<input type="text" class="form-control" id="nodeParents" name="nodeParents" placeholder="父分类名字" aria-required="true" style="width:330px;margin-bottom:0px;">
                       <div id='chooseParent'>选择父分类</div>
                     </div>
                     <ul id="cataTrees" class="ztree"></ul>
@@ -191,8 +191,8 @@ $(function() {
     getRootNode();
     $("#addCata").find(".modal-header>h4").html("添加栏目");
     $("#addCata").find("tr:eq(2)").css({"display":"none"});
-//  $("#shade").css({"display":"block"});
-//  $("#addCata").modal("show");
+    $("#shade").css({"display":"block"});
+    $("#addCata").modal("show");
   });
   //2.2-点击修改按钮，修改已有的分类
   $("#mod").on("click",function(){
@@ -336,8 +336,6 @@ function getRootNode() {
       $("#addCata").find(".modal-header>span:eq(0)").hide();
       $("#addCata").find(".modal-header>span:eq(1)").hide();
     }
-    $("#shade").css({"display":"block"});
-    $("#addCata").modal("show");
   }
 }
 
@@ -434,7 +432,7 @@ function modChannel() {
             zTreeObj.moveNode(targetNode,treeNode,"inner");
           }
         }
-        if(modInfo.Data.Sort!=treeNode.attributes.order||parentChanged==1) {//顺序改变
+        if(modInfo.Data.Sort!=treeNode.attributes.order||parentChanged==1) {//顺序改变而且父分类也改变
           treeNode.attributes.order=$("#sort").val();
           var sortNode=treeNode.getParentNode();//获取当前选中分类的父分类
           var sLength=sortNode.children.length;//当前选中分类的父分类的所有子分类
@@ -442,9 +440,7 @@ function modChannel() {
             for(var j=i;j<sLength;j++){
               if(parseInt(sortNode.children[i].attributes.order)<parseInt(sortNode.children[j].attributes.order)){//降序排列（冒泡排序）
                 zTreeObj.moveNode(sortNode.children[i],sortNode.children[j],"prev");
-              } else{
-            alert("未进行交换"); 
-        }
+              } 
             }
           }
         }
