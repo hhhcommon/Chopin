@@ -26,7 +26,7 @@ function loadChannelNavListLoad(ChannelNavList){
     if(ChannelNavList.Data.children[i].children){//如果导航有二级栏目
       pLia=$("<li class='service-list'></li>");
       liA=$("<a href='#'>"+ChannelNavList.Data.children[i].name+"</a>");
-      liUl=$("<ul class='sub-menu'><ul>");
+      liUl=$("<ul class='sub-menu'></ul>");
       for(var j=0;j<ChannelNavList.Data.children[i].children.length;j++){
         liUlLiA=$("<li><a href='#'>"+ChannelNavList.Data.children[i].children[j].name+"</a></li>");
         liUlLi=$(liUl).append(liUlLiA);
