@@ -9,6 +9,7 @@ import javax.sql.DataSource;
 
 import org.springframework.stereotype.Service;
 
+import com.spiritdata.framework.util.JsonUtils;
 import com.spiritdata.framework.util.SequenceUUID;
 import com.woting.cm.core.channel.persis.po.ChannelAssetPo;
 import com.woting.cm.core.channel.service.ChannelService;
@@ -91,5 +92,14 @@ public class QueryService {
 	public void removeContentByApp(String userId, String contentId) {
 		mediaService.removeMa(contentId);
 		channelService.removeChannelAsset(contentId);
+	}
+	
+	public boolean makeContentHtml(String channelId, List<Map<String, Object>> list, List<Map<String, Object>> removelist){
+		
+		System.out.println(channelId);
+		System.out.println(JsonUtils.objToJson(list));
+		System.out.println(JsonUtils.objToJson(removelist));
+		
+		return false;
 	}
 }
