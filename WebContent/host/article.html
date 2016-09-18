@@ -71,6 +71,20 @@ li{list-style: none;}
   left: -50px;
   top: 4px;
 }
+.previewImg {
+  width: 100px;
+  height: 100px;
+  border: 1px solid #e5e6e7;
+  border-radius: 2px;
+  margin-bottom: 5px;
+}
+.previewImg img {
+  width: 100%;
+  height: 100%;
+}
+li, a, input {
+  outline: 0;
+}
   </style>
 </head>
 <body>
@@ -97,12 +111,24 @@ li{list-style: none;}
                 <div id="demo" class="demo" style="height:auto;width:100px;"></div>
               </div>
             </div>-->
+            <div class="form-group">
+              <label class="col-sm-3 control-label">添加图片：</label>
+              <div class="col-sm-8" style="margin-left: -117px;">
+                <div class="previewImg">
+                  <img class="defaultImg" src="../resources/plugins/uploadimg/images/add_img.png" alt="front cover" />
+                </div>
+                <input id="uploadImg" name="uploadImg" class="form-control" type="file" accept=".png,.jpg" />
+                <input id="ContentImg" name="ContentImg" type="hidden" value="" />
+                <span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大1M，支持JPG、PNG格式</span>
+              </div>
+            </div>
             <!--<div class="form-group">
               <label class="col-sm-3 control-label">编辑文字：</label>
               <div class="col-sm-9" style="margin-left: 61px;margin-top: -52px;width:680px;">
                 <div id="summernote" class="summernote"></div>
               </div>
             </div>-->
+            
             <div class="form-group" style="position:relative;bottom:10px;">
               <div class="col-sm-6 text-right">
                 <button class="btn btn-warning" id="submitBtn" type="submit">预览</button>
@@ -135,7 +161,7 @@ $(function(){
   //1.2-点击图片
   $(".picture").on("click",function(){
     alert(123)
-    loadPic();
+//  loadPic();
   });
   
   //1.3点击保存
