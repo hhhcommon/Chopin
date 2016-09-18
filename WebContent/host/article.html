@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文章管理</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <link href="../resources/plugins/hplus/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../resources/plugins/hplus/css/font-awesome.min.css" rel="stylesheet">
+  <link href="../resources/plugins/hplus/css/animate.min.css" rel="stylesheet">
+  <!--<link href="../resources/plugins/hplus/css/style.min.css" rel="stylesheet">-->
+  <!--<link href="../resources/css/article.css" rel="stylesheet">-->
+  <link href="../resources/plugins/summernote/summernote.css" rel="stylesheet">
+  <link href="../resources/plugins/uploadimg/css/zyUpload.css" rel="stylesheet">
+  <!-- 全局js -->
+  <script src="../resources/plugins/hplus/js/jquery-2.1.1.min.js"></script>
+  <script src="../resources/plugins/hplus/js/bootstrap.min.js"></script>
+  <!-- 自定义js -->
+  <script src="../resources/plugins/hplus/js/content.min(1).js"></script>
+  <!-- jQuery Validation plugin javascript-->
+  <script src="../resources/plugins/hplus/js/plugins/validate/jquery.validate.min.js"></script>
+  <!--编辑文字-->
+  <script src="../resources/plugins/summernote/summernote.min.js"></script>
+  <script src="../resources/plugins/summernote/lang/summernote-zh-CN.js"></script>
+  <!--上传图片-->
+  <script src="../resources/plugins/uploadimg/js/jq22.js"></script>
+  <script src="../resources/plugins/uploadimg/js/zyFile.js"></script>
+  <script src="../resources/plugins/uploadimg/js/zyUpload.js"></script>
+<style>
+*{margin:0;padding:0;}
+li{list-style: none;}
+.opeBox .col-sm-11{
+  border: 1px solid black;
+  border-radius: 7px;
+  margin-top: 70px;
+  margin-left:35px;
+}
+.ibox .addContent{
+  width: 240px;
+  height: 40px;
+  overflow: hidden;
+  padding: 8px 1px 1px 1px;
+}
+.ibox .addContent li{
+  width: 50px;
+  height: 30px;
+  border: 1px solid red;
+  float: left;
+  margin-left: 4px;
+  margin-top:1px;
+  cursor:pointer;
+  line-height:30px;
+  text-align:center;
+  border-radius: 1px;
+}
+.opeBox .form-group {
+  margin: 25px auto;
+}
+.opeBox label {
+  font-weight: 200;
+}
+.form-group .control-label{
+  position: relative;
+  font-size: 16px;
+  left: -84px;
+}
+.form-group #titleName{
+  position: relative;
+  left: -50px;
+  top: 4px;
+}
+.previewImg {
+  width: 100px;
+  height: 100px;
+  border: 1px solid #e5e6e7;
+  border-radius: 2px;
+  margin-bottom: 5px;
+}
+.previewImg img {
+  width: 100%;
+  height: 100%;
+}
+li, a, input {
+  outline: 0;
+}
+  </style>
+</head>
+<body>
+  <div class="row opeBox">
+    <div class="col-sm-11 ">
+      <div class="ibox float-e-margins">
+        <ul class="addContent">
+            <li class="word">文字</li>
+            <li class="picture">图片</li>
+            <li class="vedio">视频</li>
+            <li class="radio">音频</li>
+        </ul>
+        <div class="ibox-content">
+          <form class="form-horizontal m-t" id="articleForm" onsubmit="return false;">
+            <div class="form-group">
+              <label class="col-sm-3 control-label">文章标题：</label>
+              <div class="col-sm-9" style="width:675px;margin-left: 111px;margin-top: -32px;">
+                <input id="titleName" name="titleName" class="form-control" type="text" aria-required="true">
+              </div>
+            </div>
+            <!--<div class="form-group">
+              <label class="col-sm-3 control-label">添加图片：</label>
+              <div class="col-sm-9" style="margin-left: 61px;margin-top: -52px;">
+                <div id="demo" class="demo" style="height:auto;width:100px;"></div>
+              </div>
+            </div>-->
+            <div class="form-group">
+              <label class="col-sm-3 control-label">添加图片：</label>
+              <div class="col-sm-8" style="margin-left: -117px;">
+                <div class="previewImg">
+                  <img class="defaultImg" src="../resources/plugins/uploadimg/images/add_img.png" alt="front cover" />
+                </div>
+                <input id="uploadImg" name="uploadImg" class="form-control" type="file" accept=".png,.jpg" />
+                <input id="ContentImg" name="ContentImg" type="hidden" value="" />
+                <span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大1M，支持JPG、PNG格式</span>
+              </div>
+            </div>
+            <!--<div class="form-group">
+              <label class="col-sm-3 control-label">编辑文字：</label>
+              <div class="col-sm-9" style="margin-left: 61px;margin-top: -52px;width:680px;">
+                <div id="summernote" class="summernote"></div>
+              </div>
+            </div>-->
+            
+            <div class="form-group" style="position:relative;bottom:10px;">
+              <div class="col-sm-6 text-right">
+                <button class="btn btn-warning" id="submitBtn" type="submit">预览</button>
+              </div>
+              <div class="col-sm-6 text-left">
+                <button class="btn btn-warning commit" type="publish">提交</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body> 
+<script>
+$(function(){
+  //1初始化点击事件
+  //1.1-点击文章
+  $(".word").on("click",function(){
+    loadWord();
+    $("#summernote").summernote({
+      lang:'zh-CN',
+      height:80,
+      minHeight:80,
+      maxHeight:80,
+      focus:true
+    });
+  });
+  
+  //1.2-点击图片
+  $(".picture").on("click",function(){
+    alert(123)
+//  loadPic();
+  });
+  
+  //1.3点击保存
+  $(".commit").on("click",function(){
+    var aa=$('#summernote').summernote('code');
+    alert(aa);
+  })
+})
+//加载文字
+function loadWord(){
+  var divForm,divLable,divWord,divSummernote;
+  divForm=$("<div class='form-group'></div>");
+  divLable=$("<label class='col-sm-3 control-label'style='position: relative;top: 46px;'>编辑文字：</label>");
+  divWord=$("<div class='col-sm-9' style='margin-left: 61px;margin-top: -52px;width:680px;'></div>");
+  divSummernote=$("<div id='summernote' class='summernote'></div>");
+  divWord.append(divSummernote);
+  divForm.append(divWord).append(divLable);
+  $("#articleForm").append(divForm);
+}
+//加载图片
+function loadPic(){
+  var divForm,divLable,divPic,divUploadimg;
+  divForm=$("<div class='form-group'></div>");
+  divLable=$("<label class='col-sm-3 control-label'>添加图片：</label>");
+  divPic=$("<div class='col-sm-9' style='margin-left: 61px;margin-top: -52px;'></div>");
+  divUploadimg=$("<div id='demo' class='demo' style='height:auto;width:100px;'></div>");
+  divPic.append(divUploadimg);
+  divForm.append(divPic).append(divLable);
+  $("#articleForm").append(divForm);
+}
+
+
+
+
+
+
+
+
+
+
+$(function(){
+  //summernote自定义工具栏
+  $('#summernote').summernote({
+    lang:'zh-CN',
+    height:80,
+    minHeight:80,
+    maxHeight:80,
+    focus:true,
+    toolbar: [
+      // [groupName, [list of button]]
+      ['style', ['bold', 'italic', 'underline', 'clear']],
+      ['font', ['strikethrough', 'superscript', 'subscript']],
+      ['fontsize', ['fontsize']],
+      ['color', ['color']],
+      ['para', ['ul', 'ol', 'paragraph']],
+      ['height', ['height']]
+    ]
+  });
+});
+  
+
+    
+</script>
+</html>

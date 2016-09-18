@@ -12,6 +12,7 @@ public class ChannelPo extends BaseObject {
     private int ownerType;  //所有者类型(0-系统,1-主播)，目前为0
     private String ownerId;  //所有者Id，目前完全是系统维护的栏目，为1
     private String channelName;  //栏目名称
+    private String channelEName;  //栏目名称——英文
     private String NPy;  //名称拼音
     private int isValidate;  //是否生效(1-生效,2-无效)
     private int sort;  //栏目排序,从大到小排序，越大越靠前，根下同级别
@@ -49,6 +50,12 @@ public class ChannelPo extends BaseObject {
     }
     public void setChannelName(String channelName) {
         this.channelName=channelName;
+    }
+    public String getChannelEName() {
+        return channelEName;
+    }
+    public void setChannelEName(String channelEName) {
+        this.channelEName=channelEName;
     }
     public String getNPy() {
         return NPy;
