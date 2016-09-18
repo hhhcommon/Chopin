@@ -13725,14 +13725,14 @@ footer .copyrightInfo {
 
 .fancybox-overlay .login-fancybox .login-box #loginform .login-model,
 .fancybox-overlay .login-fancybox .login-box #signupform .login-model {
- margin: 15px 0 2px
+ margin: 25px 0 2px
 }
 
 .fancybox-overlay .login-fancybox .login-box #loginform .login-model .login-social-contact,
 .fancybox-overlay .login-fancybox .login-box #signupform .login-model .login-social-contact {
  display: inline-block;
  width: 100%;
- margin: 15px 0 2px
+ margin: 9px 0 20px
 }
 
 .fancybox-overlay .login-fancybox .login-box #loginform .login-model .login-social-contact div,

@@ -57,14 +57,17 @@ li{list-style: none;}
 }
 .opeBox .form-group {
   margin: 25px auto;
+  position: relative;
 }
 .opeBox label {
   font-weight: 200;
 }
 .form-group .control-label{
-  position: relative;
-  font-size: 16px;
-  left: -84px;
+    position: absolute;
+    top: 50%;
+    transform: translate(0,-59%);
+    font-size: 16px;
+    left: -25px;
 }
 .form-group #titleName{
   position: relative;
@@ -100,10 +103,13 @@ li, a, input {
         <div class="ibox-content">
           <form class="form-horizontal m-t" id="articleForm" onsubmit="return false;">
             <div class="form-group">
-              <label class="col-sm-3 control-label">文章标题：</label>
-              <div class="col-sm-9" style="width:675px;margin-left: 111px;margin-top: -32px;">
+              <label class="col-sm-2 control-label">文章标题：</label>
+              <div class="col-sm-9" style="width:675px;margin-left: 111px;">
                 <input id="titleName" name="titleName" class="form-control" type="text" aria-required="true">
               </div>
+            </div>
+            <div id="addform">
+              
             </div>
             <!--<div class="form-group">
               <label class="col-sm-3 control-label">添加图片：</label>
@@ -111,7 +117,7 @@ li, a, input {
                 <div id="demo" class="demo" style="height:auto;width:100px;"></div>
               </div>
             </div>-->
-            <div class="form-group">
+            <!--<div class="form-group">
               <label class="col-sm-3 control-label">添加图片：</label>
               <div class="col-sm-8" style="margin-left: -117px;">
                 <div class="previewImg">
@@ -121,7 +127,7 @@ li, a, input {
                 <input id="ContentImg" name="ContentImg" type="hidden" value="" />
                 <span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大1M，支持JPG、PNG格式</span>
               </div>
-            </div>
+            </div>-->
             <!--<div class="form-group">
               <label class="col-sm-3 control-label">编辑文字：</label>
               <div class="col-sm-9" style="margin-left: 61px;margin-top: -52px;width:680px;">
@@ -129,7 +135,7 @@ li, a, input {
               </div>
             </div>-->
             
-            <div class="form-group" style="position:relative;bottom:10px;">
+            <div class="form-group" style="margin-top: 20px;">
               <div class="col-sm-6 text-right">
                 <button class="btn btn-warning" id="submitBtn" type="submit">预览</button>
               </div>
@@ -149,7 +155,7 @@ $(function(){
   //1.1-点击文章
   $(".word").on("click",function(){
     loadWord();
-    $("#summernote").summernote({
+    $(".summernote").summernote({
       lang:'zh-CN',
       height:80,
       minHeight:80,
@@ -160,8 +166,7 @@ $(function(){
   
   //1.2-点击图片
   $(".picture").on("click",function(){
-    alert(123)
-//  loadPic();
+    loadPic();
   });
   
   //1.3点击保存
@@ -172,25 +177,40 @@ $(function(){
 })
 //加载文字
 function loadWord(){
-  var divForm,divLable,divWord,divSummernote;
-  divForm=$("<div class='form-group'></div>");
-  divLable=$("<label class='col-sm-3 control-label'style='position: relative;top: 46px;'>编辑文字：</label>");
-  divWord=$("<div class='col-sm-9' style='margin-left: 61px;margin-top: -52px;width:680px;'></div>");
-  divSummernote=$("<div id='summernote' class='summernote'></div>");
-  divWord.append(divSummernote);
-  divForm.append(divWord).append(divLable);
-  $("#articleForm").append(divForm);
+  var dom='<div class="form-group">'+
+              '<label class="col-sm-2 control-label">编辑文字：</label>'+
+              '<div class="col-sm-9" style="margin-left: 61px;width:680px;">'+
+                '<div id="summernote" class="summernote"></div>'+
+              '</div>'+
+            '</div>'
+  $(dom).appendTo($("#addform"));
+  
+
 }
 //加载图片
 function loadPic(){
-  var divForm,divLable,divPic,divUploadimg;
-  divForm=$("<div class='form-group'></div>");
-  divLable=$("<label class='col-sm-3 control-label'>添加图片：</label>");
-  divPic=$("<div class='col-sm-9' style='margin-left: 61px;margin-top: -52px;'></div>");
-  divUploadimg=$("<div id='demo' class='demo' style='height:auto;width:100px;'></div>");
-  divPic.append(divUploadimg);
-  divForm.append(divPic).append(divLable);
-  $("#articleForm").append(divForm);
+  var dom='<div class="form-group">'+
+              '<label class="col-sm-2 control-label">添加图片：</label>'+
+              '<div class="col-sm-9" style="margin-left: 61px;">'+
+                '<div id="demo" class="demo" style="height:auto;width:100px;"></div>'+
+              '</div>'+
+            '</div>'
+            
+  $(dom).appendTo($("#addform"));  
+  $(".demo").eq($(".demo").length-1).zyUpload({
+    width            :   "650px",                 // 宽度
+    height           :   "210px",                 // 宽度
+    itemWidth        :   "120px",                 // 文件项的宽度
+    itemHeight       :   "100px",                 // 文件项的高度
+    url              :   "/upload/UploadAction",  // 上传文件的路径
+    multiple         :   true,                    // 是否可以多个文件上传
+    dragDrop         :   true,                    // 是否可以拖动上传文件
+    del              :   true,                    // 是否可以删除文件
+    finishDel        :   false,           // 是否在上传文件完成后删除预览
+    /* 外部获得的回调接口 */
+    
+  });
+
 }
 
 
