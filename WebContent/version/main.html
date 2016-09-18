@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta name="keywords" content="Apk, 版本管理">
+  <meta name="description" content="实现我听Android平台的Apk文档发布和简单的版本说明功能">
+  <meta http-equiv="pragma" content="no-cache">        
+  <meta http-equiv="cache-control" content="no-cache">      
+  <meta http-equiv="expires" content="0">
+  <title>Apk版本管理</title>
+  <link href="../resources/plugins/hplus/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../resources/plugins/hplus/css/font-awesome.min.css" rel="stylesheet">
+
+  <link href="../resources/plugins/hplus/css/animate.min.css" rel="stylesheet">
+  <link href="../resources/plugins/hplus/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+
+  <link href="../resources/plugins/summernote/summernote.css" rel="stylesheet">
+
+  <link href="../resources/wtcm/css/CM_mainarea.css" rel="stylesheet">
+  <link href="../resources/wtcm/css/CM_toolbar.css" rel="stylesheet">
+  <link href="../resources/wtcm/css/CM_pagination.css" rel="stylesheet">
+  <link href="../resources/wtcm/css/CM_listoneline.css" rel="stylesheet">
+  <link href="../resources/wtcm/css/CM_detail.css" rel="stylesheet">
+
+  <script src="../resources/js/common.utils.js"></script>
+  <script src="../resources/plugins/hplus/js/jquery-2.1.1.min.js"></script>
+  <script src="../resources/plugins/hplus/js/plugins/form/jquery.form.js"></script>
+
+  <script src="../resources/plugins/hplus/js/bootstrap.min.js"></script>
+  <script src="../resources/plugins/hplus/js/plugins/jqpagination/jquery.jqpagination.js"></script><!-- 分页 -->
+  <script src="../resources/plugins/hplus/js/plugins/datapicker/bootstrap-datepicker.js"></script><!--日期-->
+  <script src="../resources/js/context.utils.js"></script>
+
+  <script src="../resources/plugins/summernote/summernote.min.js"></script>
+  <script src="../resources/plugins/summernote/lang/summernote-zh-CN.js"></script>
+
+  <script src="../resources/js/common.utils.js"></script>
+  <script src="../resources/wtcm/js/CM_pagination.js"></script>
+</head>
+<style>
+<!--
+/*模态窗口样式设置*/
+.my-mbody {
+  background-color: #F8FAFB;
+}
+h4 {
+  font-weight:bold;
+  padding-left:10px;
+  text-align:left;
+}
+
+/* 配置：表单区域 */
+.modal-body tr {
+  width:100%;
+}
+.modal-body tr .th {
+  margin-left:30px;
+  height:60px;
+  line-height:36px;
+  font-size:14px;
+  font-weight:bold;
+  font-family:"open sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+  width:200px;
+  text-width:190px;
+  padding-right:10px;
+  font-weight:nomal;
+  text-align:right;
+}
+.modal-body tr .add-th {
+  width:120px;
+}
+.modal-body tr td input {
+  width:380px;
+}
+.splittr {
+  border-top:1px dashed #e5e5e5;
+  height:10px;
+}
+/*操作按钮*/
+.my-btnOper {
+  margin-top:10px;
+  margin-left:450px;
+}
+.my-btnOper button {
+  height:30px;
+  line-height:28px;
+  padding:0px 12px;
+}
+.imgArea {
+  background-color:#fff;
+  background-image:none;
+  border: 1px solid #ccc;
+  border-radius:4px;
+  box-shadow:0 1px 1px rgba(0, 0, 0, 0.075) inset;
+  color:#333;
+  display:block;
+  padding:30px 15px;
+  font-size:14px;
+  height:150px;
+  width:150px;
+  line-height:1.42857;
+  transition:border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+}
+/*遮罩按钮*/
+#mask{
+  width: 100%;
+  height: 770px;
+  background:rgba(0,0,0,0.3);
+  text-align: center;
+  position:absolute;
+  z-index:2000;
+ display:none;
+}
+.mask img{
+  width: 13%;
+  height: 13%;
+  position: absolute;
+  top: 23%;
+  left: 23%;
+}
+.mask span{
+  position: absolute;
+  top: 27%;
+  left: 38%;
+  font-size: 26px;
+  display:inline-block;
+  color:white;
+}
+-->
+</style>
+<body style="overflow:hidden;"><div style="height:100%">
+<!-- 遮罩层 -->
+<div class="mask" id="mask">
+  <img src="../resources/images/waiting_circle.gif"/>
+  <span>请耐心等待...</span>
+</div>
+<!--菜单栏-->
+<div class="toobarArea">
+  <button type="button" opeType="verAdd" class="btn" style="margin-right:3px" >添加</button>
+  <button type="button" opeType="verMod" class="btn" style="margin-right:3px" >修改</button>
+  <button type="button" opeType="verDel" class="btn" style="margin-right:3px" disabled>删除</button>
+  <button type="button" opeType="verInvalid" class="btn" style="margin-right:50px" disabled>作废</button>
+  <div class="splite" style="left:300px"></div>
+  <button type="button" opeType="verconfig" class="btn" style="margin-right:60px" data-toggle="modal" data-target="#verCfg">配置信息</button>
+  <div class="splite" style="left:418px"></div>
+  <div class="form-group cDate" id="data_5">
+    <span>发布日期：</span>
+    <div class="input-daterange input-group" id="datepicker" style="display:inline-block;vertical-align:top;margin-top:2px;">
+      <input type="text" class="input-sm form-control" name="StartPubTime" value="" />
+      <input type="text" class="input-sm form-control" name="EndPubTime" value="" />
+    </div>
+  </div>
+  <button type="button" class="btn selectBtn" disabled>查 询</button>
+</div>
+
+<!--显示主区域-->
+<div class="mainArea">
+  <!--左侧列表 -->
+  <div id="verListArea" class="leftlistArea">
+    <!-- 动态节目列表cntList -->
+    <div class="cntList"></div>
+    <div class="page">
+      <div class="gigantic pagination">
+        <span class="first" data-action="first">&laquo;首页</span>
+        <span class="previous" data-action="previous">&lsaquo;上页</span>
+        <span class="next" data-action="next">下页&rsaquo;</span>
+        <span class="last" data-action="last">尾页&raquo;</span>
+        <span class="jump" data-action="toPage">跳至</span><span><input type="text" class="toPage" value=""/></span>
+        <i>共</i><i class="totalPage"></i><i>页</i>
+      </div>
+    </div>
+  </div>
+  <!--右侧详情-->
+  <div class="detailArea">
+    <div class="conBox" style="display:none;">
+      <div class="conTitle">
+        <div class="titleImg"><img alt="image"></div>
+        <div class="detail">
+          <h2 style="display:inline" id="d_title"></h2>
+          <span class="pubTag" id="d_isCur" style="background-color:#f9be36" title="当前版本"></span>
+          <span class="pubTag" id="d_pubflag" style="background-color:#61b0e8"></span>
+          <div>
+            <p class="d_p"><span class="dh">版本号:</span><span id="d_pubNum"></span></p>
+            <p class="d_p"><span class="dh">发布时间:</span><span id="d_pubTime" style="padding-right:10px"></span><span class="dh">发布包大小:</span><span id="d_apkSize"></span></p>
+            <p class="d_p"><span class="dh">发布地址:</span><span id="d_pubUrl"></span></p>
+            <p class="d_p"><span class="dh">简介:</span><span id="d_verDescn"></span></p>
+          </div>
+        </div>
+      </div>
+      <!-- Bug记录 -->
+      <div id="bugMemo">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--弹出内容：设置配置-->
+<div id="verCfg" class="modal inmodal" data-backdrop="static">
+  <div class="modal-dialog" style="margin:80px auto;">
+    <div class="modal-content">
+      <div class="modal-header" style="padding-bottom:5px;">
+        <button type="button" class="close" id="closeB_verCfg" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">版本配置信息</h4>
+        <div class="btn-group my-btnOper">
+          <button id="browserB" class="btn btn-primary" type="button">浏览</button>
+          <button id="updateB" class="btn btn-white" type="button">修改</button>
+        </div>
+      </div>
+      <div class="modal-body my-mbody">
+        <table>
+          <tr>
+            <td class="th">当前发布版本Apk名称</td>
+            <td><input type="text" class="form-control" id="pubFileName" placeholder="当前发布版本的名称" readonly></td>
+          </tr>
+          <tr>
+            <td class="th">当前发布版本下载地址</td>
+            <td><input type="text" class="form-control" id="pubUrl" placeholder="当前发布版本的Url，下载地址就从此获得" readonly></td>
+          </tr>
+          <tr>
+            <td class="th">当前发布版本存储目录</td>
+            <td><input type="text" class="form-control" id="pubStorePath" placeholder="服务器端目录设置，默认为/opt/version/cur" readonly></td>
+          </tr>
+          <tr class="splittr"></tr>
+          <tr>
+            <td class="th">历史版本发布存储目录</td>
+            <td><input type="text" class="form-control" id="verGoodsStorePath" placeholder="服务器端目录设置，默认为/opt/version/his/+{版本序号}" readonly></td>
+          </tr>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+        <button id="saveCfgB" type="button" class="btn btn-primary">保存</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--弹出内容：新增版本-->
+<div id="verAdd" class="modal inmodal" data-backdrop="static">
+  <div class="modal-dialog" style="width:1000px; margin:10px auto 0 auto">
+    <div class="modal-content">
+      <div class="modal-header" style="padding-bottom:5px;">
+        <button type="button" class="close" id="closeB_ver" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" style="margin-bottom:5px;">添加版本</h4>
+      </div>
+      <div class="modal-body my-mbody" style="padding-bottom:0px; 15px;">
+      <form id="verOperForm" enctype ="multipart/form-data">
+        <table>
+          <tr>
+            <td class="th add-th">版本名称</td>
+            <td colspan="3"><input type="text" class="form-control" id="verName" placeholder="版本名称" style="width:440px;"></td>
+            <td rowspan="3" style="width:400px;padding-left:20px;">
+              <div class="imgArea" id="imgArea">点击,选择图片文件<br/><br/>文件最大1M,支持JPG\PNG格式</div>
+              <input type="file" class="form-control" id="imgFile" style="display:none" accept="image/*">
+            </td>
+          </tr>
+          <tr>
+            <td class="th add-th">版本号</td>
+            <td><input type="text" class="form-control" id="verNum" placeholder="版本号" style="width:170px;"></td>
+            <td class="th add-th" style="width:100px;">版本状态</td>
+            <td><select class="form-control" id="verFlag" placeholder="状态" style="width:170px;">
+              <option value=1>发布</option>
+              <option value=0>草稿</option>
+            </select></td>
+          </tr>
+          <tr>
+            <td class="th add-th">上传版本文件</td>
+            <td colspan="3">
+              <input type="text" class="form-control" id="apkFileText" placeholder="点击，选择版本文件" style="width:440px; background-color:#fff;" readonly>
+              <input type="file" class="form-control" id="apkFile" style="display:none;">
+            </td>
+          </tr>
+          <tr>
+            <td class="th add-th">版本说明</td>
+            <td colspan="4"><textarea id="verMemo" placeholder="版本说明" autofocus></textarea></td>
+          </tr>
+          <tr>
+            <td class="th add-th">Bug修改记录</td>
+            <td colspan="4"><textarea id="verBug" placeholder="Bug(错误/问题)修改记录" autofocus></textarea></td>
+          </tr>
+        </table>
+      </form></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+        <button id="saveVerB" type="button" class="btn btn-primary">提交</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div></body>
+
+<script>
+var canBrowse_VerCfg=true;//是否允许浏览
+var oldVerCfgData=null;//从后台取到的配置数据
+var rootPath=getRootPath();
+var page={PageSize:"6", Page:"1", AllPage:null, GotoLast:"0"};
+var verMap={};
+var curDetailVerId="";
+var curVer=null; //当前发布版本
+var verWinType=1;//1新增;2修改
+
+//初始化页面
+$(function() {
+	/*清除浏览器缓存*/
+	$.ajaxSetup ({
+    cache: false //设置成false将不会从浏览器缓存读取信息
+  });
+  /*一、日期处理*/
+  $("#data_5 .input-daterange").datepicker({keyboardNavigation:!1,forceParse:!1,autoclose:!0});
+  //--设置当前月份
+  $("input[name='StartPubTime']").val(getCurMonthFirstDay_format("yyyy-MM-dd"));
+  $("input[name='EndPubTime']").val(getCurMonthLastDay_format("yyyy-MM-dd"));
+
+  /*二、工具条按钮控制*/
+  $("button[opeType='verconfig']").on("click", function() {
+    loadVerCfgAndFill();
+  });
+
+  //三、配置窗口处理
+  $("#browserB").on("click", function() {//浏览
+    if (!canBrowse_VerCfg) return;
+    $(".my-mbody").find("input").each(function() {
+      $(this).attr("readonly","true");
+    });
+  });
+  $("#updateB").on("click", function() {
+    $(".my-mbody").find("input").each(function() {
+      $(this).removeAttr("readonly");
+    });
+  });
+  
+  //四、新增修改版本处理
+  $("button[opeType='verAdd']").on("click", function() {//新增版本
+    //首先判断是可以新增版本
+    verWinType=1;
+    $("#verAdd").find(".modal-header>h4").html("添加版本");
+    $.ajax({type:"post", async:true, url:rootPath+"version/allowInsert.do", dataType:"json",
+      success: function(jsonData) {
+        if (jsonData.AllowInsert==1) {
+          if (curVer==null) {
+            $.ajax({type:"post", async:true, url:rootPath+"version/getVersionInfo.do", dataType:"json",
+              success: function(jsonData) {
+                curVer=jsonData.VersionInfo;
+                $("#verName").val(curVer.AppName);
+                $("#verMemo").summernote("code", curVer.Descn);
+                $('#verAdd').modal('show');
+              },
+              error: function(jqXHR) {
+                $('#verAdd').modal('show');
+              }
+            });
+          } else {
+            $("#verName").val(curVer.AppName);
+            $("#verMemo").summernote("code", curVer.Descn);
+            $('#verAdd').modal('show');
+          }
+        } else alert("上一个版本还未处理完，不能新增！");
+      },
+      error: function(jqXHR) {
+        alert("发生错误：" + jqXHR.status);
+        $("#closeB_verCfg").click();
+      }
+    });
+  });
+  $("button[opeType='verMod']").on("click", function() {//修改版本
+    //首先判断是可以修改版本
+    var selVer=verMap[curDetailVerId];
+    verWinType=2;
+    $("#verAdd").find(".modal-header>h4").html("修改版本");
+    $("#verName").val(selVer.AppName);
+    $("#verNum").val(selVer.Version);
+    var temp=selVer.StoreFile;
+    if (temp.lastIndexOf("\\")!=-1) temp=temp.substr(temp.lastIndexOf("\\")+1);
+    if (temp.lastIndexOf("/")!=-1) temp=temp.substr(temp.lastIndexOf("/")+1);
+    $("#apkFileText").val(temp);
+    $("#verMemo").summernote("code", selVer.Descn);
+    $("#verBug").summernote("code", selVer.BugPatch);
+    $('#verAdd').modal('show');
+  });
+  $("button[opeType='verDel']").on("click", function() {//删除版本
+    $.ajax({type:"post", async:true, url:rootPath+"version/delVer.do", dataType:"json",data:{"VerId":verId},
+     success:function(jsonData) {
+       if(jsonData) {
+          if(jsonData.ReturnType!="1001") {
+            alert("发生错误：\n\t"+jsonData.ReturnType+"-"+jsonData.Message);
+          } else {
+            $("button[opeType='verDel']").attr("disabled","true");
+            $("button[opeType='verInvalid']").attr("disabled","true");
+            page.Page="1";
+            listAjax(rootPath+"version/getVerList.do", page, $("#verListArea"), drawVerList);
+          }
+       }
+      },
+      error:function(jqXHR){
+        alert("发生错误" + jqXHR.status);
+      }
+    });
+  });
+  $("#saveVerB").on("click", function() {
+    saveVer();
+  });
+  $("#verAdd").on("hide.bs.modal", function () {
+    cleanVerWin();
+  });
+  //五、列表处理
+  $(".cntList").on("mouseenter",".lineBox",function(ev) {
+    $(this).find("#nbsp").css({"background-color":"#f8f2e4","color":"#f8f2e4"});
+    $(this).css("background-color", "#f8f2e4");
+    if ($(this).find(".selectLine").length==0) $(".hoverLine").css({"top":($(".cntList").scrollTop()+$(this).offset().top-40)});
+  });
+  $(".cntList").on("mouseleave",".lineBox",function(ev) {
+    $(this).find("#nbsp").css({"background-color":"#fff","color":"#fff"});
+    $(this).css("background-color", "#fff");
+    $(".hoverLine").css({"top":"-70px"});
+  });
+  //选中radio后的处理
+  $(".cntList").on("click", ".lineBox", function() {
+    $("button[opeType='verMod']").removeAttr("disabled");
+    var $radio = $(this).find("input[type='radio']");
+    var $flag= $radio.is(":checked");
+    if( !$flag){
+        $radio.prop("checked",true); 
+    }
+    verId=($("input[type='radio']:checked").parent().parent()).attr("verid");
+    $.ajax({type:"post", async:true, url:rootPath+"version/allowDel.do", dataType:"json",data:{"VerId":verId},
+      success:function(jsonData){
+        if(jsonData){
+          if (jsonData.AllowDel==1) {
+      	    $("button[opeType='verDel']").removeAttr("disabled");
+      	    $("button[opeType='verInvalid']").removeAttr("disabled");
+          }else {
+          	$("button[opeType='verDel']").attr("disabled","true");
+            $("button[opeType='verInvalid']").attr("disabled","true");
+          }
+        }
+      },
+      error: function(jqXHR){
+        alert("发生错误" + jqXHR.status);
+      }
+    })
+  });
+  
+  //六、翻页处理，先不进行包装
+  $(".pagination .first").on("click", function() {//第一页
+    if ($(this).hasClass("disabled")) return;
+    page.Page="1";
+    listAjax(rootPath+"version/getVerList.do", page, $("#verListArea"), drawVerList);
+  });
+  $(".pagination .previous").on("click", function() {//上一页
+    if ($(this).hasClass("disabled")) return;
+    var _p=Number(page.Page);
+    if (_p>1) page.Page=(_p-1)+"";
+    listAjax(rootPath+"version/getVerList.do", page, $("#verListArea"), drawVerList);
+  });
+  $(".pagination .next").on("click", function() {//下一页
+    if ($(this).hasClass("disabled")) return;
+    var _p=Number(page.Page);
+    page.Page=(_p+1)+"";
+    listAjax(rootPath+"version/getVerList.do", page, $("#verListArea"), drawVerList);
+  });
+  $(".pagination .last").on("click", function() {//尾页
+    if ($(this).hasClass("disabled")) return;
+    page.GotoLast="1";
+    listAjax(rootPath+"version/getVerList.do", page, $("#verListArea"), drawVerList);
+  });
+  $(".pagination .jump").on("click", function() {//跳至
+    if ($(this).hasClass("disabled")) return;
+    var _page=$(".pagination .toPage").val();
+    var reg=new RegExp("^[0-9]*$");
+    if(!reg.test(_page)) {
+      alert("请输入有效页码！");
+      return;
+    }
+    page.Page=_page;
+    listAjax(rootPath+"version/getVerList.do", page, $("#verListArea"), drawVerList);
+  });
+
+  //七、文件处理
+  $("#apkFileText").on("click", function() {
+	$("#apkFile").click();
+  });
+  $("#apkFile").change(function() {
+    $("#apkFileText").val($(this).val());
+  });
+  $("#imgArea").on("click", function() {
+    $("#imgFile").click();
+  });
+  $("#imgFile").change(function() {
+    var root=document.getElementById("imgFile").value;
+    if (root.indexOf(":")>0) {
+      
+    } else {
+      
+    }
+    $("#imgArea").html(root);
+  });
+  //八、版本说明和bug记录初始化
+  $("#verMemo").summernote({
+    lang:'zh-CN',
+    placeholder:'在此输入版本说明，介绍版本的情况，注意：可不包括bug的修改说明',
+    height:80,
+    minHeight:80,
+    maxHeight:80,
+    focus:true
+  });
+  $("#verBug").summernote({
+    lang: 'zh-CN',
+    placeholder:'在此输入Bug修改记录，记录和上一个版本相比，都修改了那些Bug',
+    height:120,
+    minHeight:120,
+    maxHeight:120,
+    focus: true
+  });
+  setPage(null);
+  listAjax(rootPath+"version/getVerList.do", page, $("#verListArea"), drawVerList);
+});
+
+//===================方法
+//一、有关版本配置的方法
+//装载配置数据，并进行填充显示
+function loadVerCfgAndFill() {
+  $.ajax({type:"post", async:true, url:rootPath+"version/getVerCfg.do", dataType:"json",
+    success: function(jsonData) {
+      if (jsonData) {
+        if (jsonData.ReturnType!='1001') alert("发生错误：\n\t"+jsonData.ReturnType+"-"+jsonData.Message);
+        else {
+          var retData=jsonData.VerCfgInfo;
+          $("#pubFileName").val(retData.PubFileName?retData.PubFileName:"");
+          $("#pubUrl").val(retData.PubUrl?retData.PubUrl:"");
+          $("#pubStorePath").val(retData.PubStorePath?retData.PubStorePath:"");
+          $("#verGoodsStorePath").val(retData.VerGoodsStorePath?retData.VerGoodsStorePath:"");
+          oldVerCfgData=retData;
+        }
+      }
+      canBrowse_VerCfg=true;
+      $("#browserB").click();
+    },
+    error: function(jqXHR){
+      alert("发生错误：" + jqXHR.status);
+      $("#closeB_verCfg").click();
+    }
+  });
+}
+//保存
+function saveCfg() {
+  //检查数据合法性：目前不进行检查
+  //获得新的数据
+  if (($.trim($("#pubFileName").val())+$.trim($("#pubUrl").val())+$.trim($("#pubStorePath").val())+$.trim($("#verGoodsStorePath").val()))=="") {
+    alert("没有任何内容，无法保存！");
+    return;
+  }
+  var cfgData={};
+  if ($.trim($("#pubFileName").val())!="") cfgData.PubFileName=$.trim($("#pubFileName").val());
+  if ($.trim($("#pubUrl").val())!="") cfgData.PubUrl=$.trim($("#pubUrl").val());
+  if ($.trim($("#pubStorePath").val())!="") cfgData.PubStorePath=$.trim($("#pubStorePath").val());
+  if ($.trim($("#verGoodsStorePath").val())!="") cfgData.VerGoodsStorePath=$.trim($("#verGoodsStorePath").val());
+
+  $.ajax({type:"post", async:true, url:rootPath+"version/saveVerCfg.do", dataType:"json", data: cfgData,
+    success: function(jsonData) {
+      if (jsonData) {
+        if (jsonData.ReturnType!='1001') alert("发生错误：\n\t"+jsonData.ReturnType+"-"+jsonData.Message);
+        else {
+          canBrowse_VerCfg=true;
+          $("#closeB_verCfg").click();
+        }
+      }
+    },
+    error: function(jqXHR){
+      alert("发生错误：" + jqXHR.status);
+    }
+  });
+}
+
+//二、有关版本的方法
+//清空版本界面
+function cleanVerWin() {
+  $("#verName").val("");
+  $("#verNum").val("");
+  $("#verFlag").val(1);
+  $("#apkFileText").val("");
+  $("#verMemo").summernote("code", "");
+  $("#verBug").summernote("code", "");
+}
+//保存
+function saveVer() {
+  $("#mask").css({
+    "top":$("#verAdd").find(".modal-content").position().top,
+    "left":$("#verAdd").find(".modal-content").position().left,
+  });
+  $("#mask").show();
+  $("#closeVerB").attr("disabled", "true");
+  $("#saveVerB").attr("disabled", "true");
+  //检查数据合法性：目前不进行检查
+  var checkErr="";
+  var focus=0;
+  if (!$.trim($("#verName").val())) checkErr+="\n请输入版本名称",(focus==0?focus=1:focus=focus);
+  if (!$.trim($("#verNum").val())) checkErr+="\n请输入版本状态",(focus==0?focus=2:focus=focus);
+  var memoHtml=$("#verMemo").summernote("code");
+  if (!$.trim(getPureStrFromHTML(memoHtml))) checkErr+="\n请输入版本说明",(focus==0?focus=3:focus=focus);
+  var bugHtml=$("#verBug").summernote("code");
+  if (!$.trim(getPureStrFromHTML(bugHtml))) checkErr+="\n请输入Bug修改记录",(focus==0?focus=4:focus=focus);
+  if (!$.trim($("#apkFileName").val())) checkErr+="\n请选择文件",(focus==0?focus=0:focus=focus);
+
+  if (checkErr&&focus!=0) {
+    alert(checkErr);
+    switch (focus) {
+      case 1:
+        $("#verName").focus();
+        break;
+      case 2:
+        $("#verNum").focus();
+        break;
+      case 3:
+        $("#verMemo").summernote("focus");
+        break;
+      case 4:
+        $("#verBug").summernote("focus");
+        break;
+      default: ;
+    }
+    $("#mask").hide();
+    $("#closeVerB").removeAttr("disabled");
+    $("#saveVerB").removeAttr("disabled");
+    return;
+  }
+
+  var verForm=new FormData();
+  verForm.append("ContentFile", $("#apkFile")[0].files[0]);
+  verForm.append("OperFlag", verWinType==1?"Add":"Mod");
+  if (verWinType!=1) {
+    verForm.append("VerId", curDetailVerId);
+    verForm.append("IsCur", verMap[curDetailVerId].IsCur=="true"?1:0);
+  }
+  if ($.trim($("#verName").val())!="") verForm.append("AppName", $.trim($("#verName").val()));
+  if ($.trim($("#verNum").val())!="") verForm.append("Version", $.trim($("#verNum").val()));
+  if ($.trim($("#verFlag").val())!="") verForm.append("PubFlag", $.trim($("#verFlag").val()));
+  if ($.trim(getPureStrFromHTML(memoHtml))) verForm.append("Descn", $("#verMemo").summernote("code"));
+  if ($.trim(getPureStrFromHTML(bugHtml))) verForm.append("BugPatch", $("#verBug").summernote("code"));
+
+  $.ajax({
+    url:rootPath+"/version/fileupload.do",
+    type:"POST",
+    data:verForm,
+    cache: false,
+    processData: false,
+    contentType: false,
+    dataType:"json",
+    //表单提交前进行验证
+    success: function (jsonData) {
+      if (jsonData) {
+      	$("#mask").hide();
+        $("#closeVerB").removeAttr("disabled");
+        $("#saveVerB").removeAttr("disabled");
+        if (jsonData.ReturnType!="1001") {
+          alert("发生错误：\n\t"+jsonData.ReturnType+"-"+jsonData.Message);
+          $("#verNum").focus();
+        } else {
+          if (verWinType==1) {
+            alert("添加新版本成功");
+            if (jsonData.NewVer.IsCur=="1") curVer=jsonData.NewVer;
+          } else {
+            alert("修改版本成功");
+            verMap[curDetailVerId]=jsonData.ModVer;
+          }
+          page.Page="1";
+          listAjax(rootPath+"version/getVerList.do", page, $("#verListArea"), drawVerList);
+          $("#closeB_ver").click();
+        }
+        $("#mask").hide();
+        $("#closeVerB").removeAttr("disabled");
+        $("#saveVerB").removeAttr("disabled");
+      }
+    },
+    error: function(jqXHR){
+      alert("发生错误" + jqXHR.status);
+    }     
+  });
+}
+
+//三、列表操作
+/**
+ * 处理列表的公共方法
+ * @param doUrl 请求列表数据的Url
+ * @param param 请求参数，可能包括页信息，过滤查询信息，页面模式信息等
+ * @param domObj list所处的html对象，以Jquery形式传入
+ * @param callback 回掉函数，注意：此函数包括三个参数，返回的数据值、list所处的html对象、请求参数
+ */
+function listAjax(doUrl, param, domObj, callback) {
+  $(".conBox").hide();
+  $.ajax({type:"POST", url:doUrl, dataType:"json", data:param,
+    beforeSend: function() {
+      domObj.find(".cntList").html("<div style='text-align:center;height:300px;line-height:200px;'>数据加载中...</div>");
+    },
+    success: function(returnData) {
+      page.GotoLast="0";
+      if (returnData.ReturnType!="1001") domObj.html("<div style='text-align:left;height:300px;padding:20px;padding-top:140px;'>"+returnData.Message+"</div>");
+      else {
+        domObj.find(".cntList").html(""); //再重新创建新的数据集时，先清空之前的
+        callback(returnData, domObj, param); //主要是填充列表区域
+      } 
+    },
+    error: function(jqXHR) {
+      domObj.find(".cntList").html("<div style='text-align:center;height:300px;line-height:200px;'>获取数据发生错误："+jqXHR.status+"</div>");
+      page.GotoLast="0";
+    }     
+  });
+}
+
+/**
+ * 画版本列表。
+ * @param listData 版本列表数据
+ * @param domObj 列表所在的html的dom对象，jquery形式
+ * @param param 其他参数
+ */
+function drawVerList(listData, domObj, param) {
+  if (!domObj) return;
+  if (!listData||!listData.ResultList) {
+    $(domObj).find(".cntList").html("<div style='text-align:center;height:500px;line-height:300px;'>版本列表无数据！</div>");
+    setPage(null);
+    return;
+  }
+  var result=listData.ResultList;
+  if (!result||!result.VerList) {
+    $(domObj).find(".cntList").html("<div style='text-align:center;height:500px;line-height:300px;'>版本列表无数据！</div>");
+    setPage(null);
+    return;
+  }
+  $(domObj).find(".cntList").html("");
+  //一、画列表
+  var verList=result.VerList;
+  var oneVer=null, temp=null;
+  var lineDiv=null, checkDiv=null, imgDiv=null, conDiv=null;
+
+  for(var i=0; i<verList.length ;i++) {
+    oneVer=verList[i];
+    if (!oneVer) continue;
+    temp=oneVer.VerId;
+    lineDiv=$("<div class='lineBox'></div>");
+    lineDiv.attr({VerId:(temp?temp:"")});
+    //1-选择框
+    checkDiv=$("<div class='l-check'><input type='radio' name='selVer' id='radios'/></div>");
+    lineDiv.append(checkDiv);
+    //2-版本图标
+    temp=oneVer.VerImgUrl;
+    imgDiv=$("<div class='l-img'><img alt='版本图标' src='"+(temp?temp:"")+"'/></div>");
+    lineDiv.append(imgDiv);
+    //3-内容区域
+    temp=oneVer.AppName;
+    temp=(temp?temp:"");
+    temp+=(oneVer.Version?("("+oneVer.Version+")"):"");
+    conDiv=$("<div class='l-con'><h3>"+temp+"</h3><p class='memo'></p><p class='other'></p></div>");
+    temp=getPureStrFromHTML(oneVer.Descn);
+    conDiv.find(".memo").html(temp?temp:"");
+    //内容标签：文件大小；发布时间
+    temp=oneVer.LastModifyTime;
+    conDiv.find(".other").append($("<span>"+(temp?temp:"")+"</span>"));
+    temp=oneVer.ApkSize;
+    conDiv.find(".other").append($("<span>|</span><span>"+(temp?temp:"")+"</span>"));
+    lineDiv.append(conDiv);
+    //4-分类信息
+    typeDiv=$("<div class='typemark'></div>");
+    switch (oneVer.PubFlag) {
+      case "0":
+        temp="未处理";
+        break;
+      case "1":
+        temp="已发布";
+        break;
+      case "2":
+        temp="已撤销";
+        break;
+      case "3":
+      case "-3":
+        temp="已作废";
+        break;
+      default:
+        temp="未知";
+    }
+    if (oneVer.IsCur=="true") typeDiv.append($("<span style='background-color:#f9be36' title='当前发布版本'>C</span>"));
+    else typeDiv.append($("<span id='nbsp' style='background-color:#fff;color:#fff;'>C</span>"));
+    typeDiv.append($("<span style='background-color:#61b0e8'>"+temp+"</span>"));
+    lineDiv.append(typeDiv);
+    verMap[oneVer.VerId]=oneVer;
+    $(lineDiv).attr("onClick", "clickLine('"+oneVer.VerId+"')");
+    //加入列表
+    $(domObj).find(".cntList").append(lineDiv);
+  }
+  $(domObj).find(".cntList").append($("<span class='hoverLine' style='top:-70px'></span>"));
+	//点击删除按钮，删除对应的版本
+	$("input[type='radio']").on("click",function(){
+		$("button[opeType='verDel']").removeAttr("disabled");
+	  $("button[opeType='verInvalid']").removeAttr("disabled");
+		var verId=($("input[type='radio']:checked").parent().parent()).attr("verid");
+		console.log(verId);
+		$.ajax({type:"post", async:true, url:rootPath+"version/allowDel.do", dataType:"json",data:{"VerId":verId},
+      success:function(jsonData){
+      	if(jsonData){
+      		if(jsonData.ReturnType!="1001"){
+      			alert("发生错误：\n\t"+jsonData.ReturnType+"-"+jsonData.Message);
+      		}else{
+      			  $("button[opeType='verDel']").on("click",function(){
+	      		    $.ajax({type:"post", async:true, url:rootPath+"version/delVer.do", dataType:"json",data:{"VerId":verId},
+	                success:function(jsonData){
+	              	  if(jsonData.ReturnType!="1001"){
+	              		  alert("发生错误：\n\t"+jsonData.ReturnType+"-"+jsonData.Message);
+	              	  }else{
+	              		  $("#radios:checked").parent().parent().remove();
+	              	  }
+	                },
+	                error:function(jqXHR){
+	          	      alert("发生错误" + jqXHR.status);
+	                }
+	              })
+	           })
+      		}
+      	}
+      },
+      error: function(jqXHR){
+        alert("发生错误" + jqXHR.status);
+      }
+    })
+	})
+
+  //二、设置翻页信息
+  page.PageSize=result.PageSize;
+  page.Page=result.CurPage;
+  if (page.PageSize>0) {
+    page.AllPage=parseInt(result.AllCount/page.PageSize);
+    page.AllPage=(result.AllCount%page.PageSize>0)?((page.AllPage+1)+""):(page.AllPage+"");
+  } else page.AllPage=null;
+  setPage(page);
+}
+
+function clickLine(verId) {
+  var selLine=$("div[verid='"+verId+"']");
+  $(".hoverLine").css({"top":"-70px"});
+  $("div").remove(".selectLine");
+  selLine.append("<div class='selectLine'></div>");
+  drawVerDetail(verId);
+}
+
+/**
+ * 画版本的详细区域
+ * @param verId 版本id
+ */
+function drawVerDetail(verId) {
+  if (curDetailVerId==verId) return;
+  curDetailVerId=verId;
+  var verData=verMap[verId];
+  $("#d_title").html(verData.AppName);
+  $("#d_pubNum").html(verData.Version);
+  $("#d_pubTime").html(verData.PubTime);
+  $("#d_verDescn").html(verData.Descn);
+  var temp="";
+  switch (verData.PubFlag) {
+    case "0":
+      temp="未处理";
+      break;
+    case "1":
+      temp="已发布";
+      break;
+    case "2":
+      temp="已撤销";
+      break;
+    case "3":
+    case "-3":
+      temp="已作废";
+      break;
+    default:
+      temp="未知";
+  }
+  $("#d_pubflag").html(temp);
+  if (verData.IsCur=="true") $("#d_isCur").html("C");
+  else $("#d_isCur").hide();
+  $("#d_apkSize").html(verData.ApkSize);
+  $("#d_pubUrl").html(verData.PubUrl);
+
+  if (verData.bugList) $("#bugMemo").html(verData.bugList);
+  else {
+    $.ajax({type:"post", async:true, url:rootPath+"version/getVerDescnHistory.do", dataType:"json", data: {"Version":verData.Version},
+      success: function(jsonData) {
+        if (jsonData) {
+          if (jsonData.ReturnType!="1001") {
+            $("#bugMemo").html("");
+          } else {
+            verData.bugList=getHtmlFromBugList(jsonData.VerDescnBugs.BugPatch);
+            $("#bugMemo").html(verData.bugList);
+          }
+        }
+      },
+      error: function(jqXHR) {
+        $("#bugMemo").html("");
+      }
+    });
+  }
+  if ($(".conBox").is(":hidden")) $(".conBox").show();
+}
+function getHtmlFromBugList(bugPath) {
+  if (bugPath.length==0) return "&nbsp";
+  var retHtml="";
+  for (var i=0; i<bugPath.length; i++) {
+    retHtml+="<h1><span>"+bugPath[i].Version+"</span><span class='verTimeMark'>"+bugPath[i].PubTime+"</span></h1>"+bugPath[i].Bug;
+  }
+  return retHtml;
+}
+</script>
+</html>

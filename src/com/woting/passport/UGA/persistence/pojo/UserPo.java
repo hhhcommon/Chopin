@@ -23,6 +23,8 @@ public class UserPo extends UgaUser {
     private String sex; //性别
     private String homepage; //个人主页
     private String descn; //用户描述
+    private String team;
+    private int grade;
     private Timestamp CTime; //记录创建时间
     private Timestamp lmTime; //最后修改时间:last modify time
 
@@ -104,7 +106,19 @@ public class UserPo extends UgaUser {
     public void setDescn(String descn) {
         this.descn = descn;
     }
-    public Timestamp getCTime() {
+    public String getTeam() {
+		return team;
+	}
+	public void setTeam(String team) {
+		this.team = team;
+	}
+	public int getGrade() {
+		return grade;
+	}
+	public void setGrade(int grade) {
+		this.grade = grade;
+	}
+	public Timestamp getCTime() {
         return CTime;
     }
     public void setCTime(Timestamp cTime) {

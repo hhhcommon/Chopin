@@ -19,6 +19,7 @@ public class Channel extends TreeNodeBean implements Serializable, ModelSwapPo {
     //private String pId; //上级栏目ID，根为null，在TreeNodeBean中对应parentId
     private Owner owner;
     //private String channelName;  //栏目名称，在TreeNodeBean中对应nodeName
+    private String channelEName;  //栏目名称——英文
     private String NPy;  //名称拼音
     private int isValidate;  //是否生效(1-生效,2-无效)
 //    private int sort;  //栏目排序,从大到小排序，越大越靠前，根下同级别 在TreeNodeBean中对应order
@@ -32,6 +33,12 @@ public class Channel extends TreeNodeBean implements Serializable, ModelSwapPo {
     }
     public void setOwner(Owner owner) {
         this.owner=owner;
+    }
+    public String getChannelEName() {
+        return channelEName;
+    }
+    public void setChannelEName(String channelEName) {
+        this.channelEName=channelEName;
     }
     public String getNPy() {
         if (StringUtils.isNullOrEmptyOrSpace(NPy)&&!StringUtils.isNullOrEmptyOrSpace(getNodeName())) {
@@ -100,6 +107,7 @@ public class Channel extends TreeNodeBean implements Serializable, ModelSwapPo {
         }
         ret.setSort(this.getOrder());
         ret.setChannelName(getNodeName());
+        ret.setChannelEName(getChannelEName());
         ret.setIsValidate(isValidate);
         ret.setNPy(getNPy());
         ret.setContentType(contentType);
@@ -122,6 +130,7 @@ public class Channel extends TreeNodeBean implements Serializable, ModelSwapPo {
         o.setOwnerId(_po.getOwnerId());
         owner=o;
         setNodeName(_po.getChannelName());
+        setChannelEName(_po.getChannelEName());
         setParentId(_po.getPcId());
         isValidate=_po.getIsValidate();
         this.setOrder(_po.getSort());

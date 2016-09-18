@@ -7,26 +7,27 @@
 <mapper namespace="A_CHANNEL">
   <!-- 对象定义:栏目 -->
   <resultMap id="channelMap" type="channel">
-    <id     column="id"           property="id"           jdbcType="VARCHAR"/>
-    <result column="pcId"         property="pcId"         jdbcType="VARCHAR"/>
-    <result column="ownerType"    property="ownerType"    jdbcType="INTEGER"/>
-    <result column="ownerId"      property="ownerId"      jdbcType="VARCHAR"/>
-    <result column="channelName"  property="channelName"  jdbcType="VARCHAR"/>
-    <result column="nPy"          property="NPy"          jdbcType="VARCHAR"/>
-    <result column="sort"         property="sort"         jdbcType="INTEGER"/>
-    <result column="isValidate"   property="isValidate"   jdbcType="INTEGER"/>
-    <result column="contentType"  property="contentType"  jdbcType="VARCHAR"/>
-    <result column="channelImg"   property="channelImg"   jdbcType="VARCHAR"/>
-    <result column="descn"        property="descn"        jdbcType="VARCHAR"/>
-    <result column="cTime"        property="CTime"        jdbcType="TIMESTAMP"/>
+    <id     column="id"            property="id"            jdbcType="VARCHAR"/>
+    <result column="pcId"          property="pcId"          jdbcType="VARCHAR"/>
+    <result column="ownerType"     property="ownerType"     jdbcType="INTEGER"/>
+    <result column="ownerId"       property="ownerId"       jdbcType="VARCHAR"/>
+    <result column="channelName"   property="channelName"   jdbcType="VARCHAR"/>
+    <result column="channelEName"  property="channelEName"  jdbcType="VARCHAR"/>
+    <result column="nPy"           property="NPy"           jdbcType="VARCHAR"/>
+    <result column="sort"          property="sort"          jdbcType="INTEGER"/>
+    <result column="isValidate"    property="isValidate"    jdbcType="INTEGER"/>
+    <result column="contentType"   property="contentType"   jdbcType="VARCHAR"/>
+    <result column="channelImg"    property="channelImg"    jdbcType="VARCHAR"/>
+    <result column="descn"         property="descn"         jdbcType="VARCHAR"/>
+    <result column="cTime"         property="CTime"         jdbcType="TIMESTAMP"/>
   </resultMap>
 
   <!-- 所有列 -->
   <sql id="Base_Column_List">
-    id, pcId, ownerId, ownerType, channelName, nPy, sort, isValidate, contentType, channelImg, descn, cTime
+    id, pcId, ownerId, ownerType, channelName, channelEName, nPy, sort, isValidate, contentType, channelImg, descn, cTime
   </sql>
   <sql id="Base_Column_List_A">
-    a.id, a.pcId, a.ownerId, a.ownerType, a.channelName, a.nPy, a.sort, a.isValidate, a.contentType, a.channelImg, a.descn, a.cTime
+    a.id, a.pcId, a.ownerId, a.ownerType, a.channelName, a.channelEName a.nPy, a.sort, a.isValidate, a.contentType, a.channelImg, a.descn, a.cTime
   </sql>
 
   <!-- 条件子句 -->
@@ -38,6 +39,7 @@
         <if test="ownerType!=null and ownerType!=0">and ownerType=#{ownerType,jdbcType=VARCHAR}</if>
         <if test="ownerId!=null">and ownerId=#{ownerId,jdbcType=VARCHAR}</if>
         <if test="channelName!=null">and channelName=#{channelName,jdbcType=VARCHAR}</if>
+        <if test="channelEName!=null">and channelEName=#{channelEName,jdbcType=VARCHAR}</if>
         <if test="NPy!=null">and nPy=#{NPy,jdbcType=VARCHAR}</if>
         <if test="sort!=null">and sort=#{sort,jdbcType=INTEGER}</if>
         <if test="isValidate!=null and isValidate!=0">and isValidate=#{isValidate,jdbcType=INTEGER}</if>
@@ -56,6 +58,7 @@
         <if test="ownerType!=null and ownerType!=0">and a.ownerType=#{ownerType,jdbcType=VARCHAR}</if>
         <if test="ownerId!=null">and a.ownerId=#{ownerId,jdbcType=VARCHAR}</if>
         <if test="channelName!=null">and a.channelName=#{channelName,jdbcType=VARCHAR}</if>
+        <if test="channelEName!=null">and a.channelEName=#{channelEName,jdbcType=VARCHAR}</if>
         <if test="NPy!=null">and a.nPy=#{NPy,jdbcType=VARCHAR}</if>
         <if test="sort!=null">and a.sort=#{sort,jdbcType=INTEGER}</if>
         <if test="isValidate!=null and isValidate!=0">and a.isValidate=#{isValidate,jdbcType=INTEGER}</if>
@@ -94,6 +97,7 @@
       <if test="ownerType!=null and ownerType!=0">ownerType,</if>
       <if test="ownerId!=null">ownerId,</if>
       <if test="channelName!=null">channelName,</if>
+      <if test="channelEName!=null">channelEName,</if>
       <if test="NPy!=null">nPy,</if>
       <if test="sort!=null">sort,</if>
       <if test="isValidate!=null and isValidate!=0">isValidate,</if>
@@ -107,6 +111,7 @@
       <if test="ownerType!=null and ownerType!=0">#{ownerType,jdbcType=INTEGER},</if>
       <if test="ownerId!=null">#{ownerId,jdbcType=VARCHAR},</if>
       <if test="channelName!=null">#{channelName,jdbcType=VARCHAR},</if>
+      <if test="channelEName!=null">#{channelEName,jdbcType=VARCHAR},</if>
       <if test="NPy!=null">#{NPy,jdbcType=VARCHAR},</if>
       <if test="sort!=null">#{sort,jdbcType=INTEGER},</if>
       <if test="isValidate!=null and isValidate!=0">#{isValidate,jdbcType=INTEGER},</if>
@@ -124,6 +129,7 @@
       <if test="ownerType!=null and ownerType!=0">ownerType=#{ownerType,jdbcType=INTEGER},</if>
       <if test="ownerId!=null">ownerId=#{ownerId,jdbcType=VARCHAR},</if>
       <if test="channelName!=null">channelName=#{channelName,jdbcType=VARCHAR},</if>
+      <if test="channelEName!=null">channelEName=#{channelEName,jdbcType=VARCHAR},</if>
       <if test="NPy!=null">nPy=#{NPy,jdbcType=VARCHAR},</if>
       <if test="sort!=null">sort=#{sort,jdbcType=INTEGER},</if>
       <if test="isValidate!=null and isValidate!=0">isValidate=#{isValidate,jdbcType=INTEGER},</if>
