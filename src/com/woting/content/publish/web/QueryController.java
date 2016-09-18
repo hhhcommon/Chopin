@@ -119,4 +119,37 @@ public class QueryController {
 		map.put("Message", "成功删除");
 		return map;
 	}
+	
+	/**
+	 * 移动端添加内容
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "addByWeb.do")
+	@ResponseBody
+	public Map<String, Object> addByWeb(HttpServletRequest request) {
+		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> m = RequestUtils.getDataFromRequest(request);
+		String channelid = m.get("ChannelId")+"";
+		if(channelid.equals("null")) {
+			map.put("ReturnType", "1002");
+			map.put("Message", "无法获得栏目Id");
+			return map;
+		}
+		List<Map<String, Object>> list = (List<Map<String, Object>>) m.get("List");
+		if(list==null || list.size()==0) {
+			map.put("ReturnType", "1003");
+			map.put("Message", "参数不全");
+			return map;
+		}
+		List<Map<String, Object>> removelist = (List<Map<String, Object>>) m.get("RemoveList");
+
+		boolean isok = queryService.makeContentHtml(channelid, list, removelist);
+		map.put("ReturnType", "1001");
+		map.put("Message", "添加成功");
+		return map;
+	}
+	
+	
 }
