@@ -13579,7 +13579,7 @@ footer .copyrightInfo {
 .fancybox-overlay .login-fancybox .login-box {
  position: relative;
  display: inline-block;
- width: 380px;
+ width: 450px;
  margin: 0 auto;
  border-bottom: 5px solid #e3e4e8;
  border-radius: 0;
@@ -13593,7 +13593,7 @@ footer .copyrightInfo {
 }
 
 .fancybox-overlay .login-fancybox .login-box .window_logo {
- height: 100px;
+ height: 60px;
  padding: 0;
  text-align: center
 }

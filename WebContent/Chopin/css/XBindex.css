@@ -106,6 +106,10 @@
   color: white;
   float: left;
 }
+.window_logo h1{
+  margin: 12px 10px 0px 4px;
+  font-size:34px;
+} 
 #navbar .register{
   width: 23%;
   text-align: center;

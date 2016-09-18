@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文章管理</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <link href="../resources/plugins/hplus/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../resources/plugins/hplus/css/font-awesome.min.css" rel="stylesheet">
+  <link href="../resources/plugins/hplus/css/animate.min.css" rel="stylesheet">
+  <!--<link href="../resources/plugins/hplus/css/style.min.css" rel="stylesheet">-->
+  <link href="../resources/css/article.css" rel="stylesheet">
+  <link href="../resources/plugins/summernote/summernote.css" rel="stylesheet">
+  <!-- 全局js -->
+  <script src="../resources/plugins/hplus/js/jquery-2.1.1.min.js"></script>
+  <script src="../resources/plugins/hplus/js/bootstrap.min.js"></script>
+  <!-- 自定义js -->
+  <script src="../resources/plugins/hplus/js/content.min(1).js"></script>
+  <!-- jQuery Validation plugin javascript-->
+  <script src="../resources/plugins/hplus/js/plugins/validate/jquery.validate.min.js"></script>
+  <!--编辑文字-->
+  <script src="../resources/plugins/summernote/summernote.min.js"></script>
+  <script src="../resources/plugins/summernote/lang/summernote-zh-CN.js"></script>
+<style>
+.opeBox .col-sm-11{
+  border: 1px solid black;
+  margin-top: 70px;
+  margin-left:35px;
+}
+.ibox-content tr .add-th {
+  width: 120px;
+}
+.ibox-content tr .th {
+  margin-left: 30px;
+  height: 60px;
+  line-height: 36px;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: "open sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+  width: 90px;
+  text-width: 190px;
+  padding-right: 10px;
+  font-weight: nomal;
+  text-align: left;
+}
+  </style>
+</head>
+<body>
+  <div class="row opeBox">
+    <div class="col-sm-11 ">
+      <div class="ibox float-e-margins">
+        <div class="ibox-content">
+          <form id="verOperForm" enctype ="multipart/form-data">
+          <table>
+          <tr>
+            <td class="th add-th">文章标题</td>
+            <td colspan="3"><input type="text" class="form-control" id="verName" placeholder="请输入文章的标题名" style="width:635px;margin-left:0px;"></td>
+            <!--<td rowspan="3" style="width:400px;padding-left:20px;">
+              <div class="imgArea" id="imgArea">点击,选择图片文件<br/><br/>文件最大1M,支持JPG\PNG格式</div>
+              <input type="file" class="form-control" id="imgFile" style="display:none" accept="image/*">
+            </td>-->
+          </tr>
+          
+          <!--<tr>
+            <td class="th add-th">上传版本文件</td>
+            <td colspan="3">
+              <input type="text" class="form-control" id="apkFileText" placeholder="点击，选择版本文件" style="width:440px; background-color:#fff;" readonly>
+              <input type="file" class="form-control" id="apkFile" style="display:none;">
+            </td>
+          </tr>-->
+          <tr>
+            <td class="th add-th">文本编辑</td>
+            <td colspan="4"><textarea id="summernote" placeholder="文本编辑" autofocus></textarea></td>
+          </tr>
+          <!--<tr>
+            <td class="th add-th">Bug修改记录</td>
+            <td colspan="4"><textarea id="verBug" placeholder="Bug(错误/问题)修改记录" autofocus></textarea></td>
+          </tr>-->
+        </table>
+      </form>
+       
+        <button type="button" class="btn btn-white" data-dismiss="modal">预览</button>
+        <button id="saveVerB" type="button" class="btn btn-primary">提交</button>
+      </div>
+      </div>
+    </div>
+  </div>
+</body> 
+<script>
+$.validator.setDefaults({
+  highlight:function(a){$(a).closest(".form-group").removeClass("has-success").addClass("has-error")},
+  success:function(a){a.closest(".form-group").removeClass("has-error")},
+  errorElement:"span",
+  errorPlacement:function(a,b){if(b.is(":radio")||b.is(":checkbox")){a.appendTo(b.parent().parent().parent())}else{a.appendTo(b.parent())}},
+  errorClass:"help-block m-b-none",
+  validClass:"help-block m-b-none"
+});
+  
+$(function(){
+  //初始化summernote
+  $("#summernote").summernote({
+    lang:'zh-CN',
+    height:80,
+    minHeight:80,
+    maxHeight:80,
+    focus:true
+  });
+  //summernote自定义工具栏
+  $('#summernote').summernote({
+    toolbar: [
+      ['style', ['bold', 'italic', 'underline', 'clear']],
+      ['font', ['strikethrough']],
+      ['fontsize', ['fontsize']],
+      ['color', ['color']],
+      ['para', ['ul', 'ol', 'paragraph']],
+      ['height', ['height']],
+    ]
+  });
+  
+})
+    $().ready(function(){
+      
+
+
+      //制定表单验证规则与提示
+      $("#addZjForm").validate({
+        rules:{
+          ContentName:{required:true},
+        },
+        messages:{
+          ContentName:{required:"<i class='fa fa-times-circle'></i> "+"请输入专辑名称"}
+        }
+      });
+      
+      //封面图片预览与上传
+      $("input[type='file']").change(function(){
+        var _this=$(this);
+        //图片预览
+        if($(".defaultImg").css("display")!="none"){
+          $(".defaultImg").css({"display":"none"});
+        }
+        var fileReader = new FileReader();
+        fileReader.onload = function(evt){
+          if(FileReader.DONE==fileReader.readyState){    
+            var newImg=$("<img alt='front cover' />");
+            newImg.attr({"src":this.result});//是Base64的data url数据
+            if($(".previewImg").children().length>1){
+              $(".previewImg img:last").replaceWith(newImg);
+            }else{
+              $(".previewImg").append(newImg);
+            }
+          }
+        }
+        fileReader.readAsDataURL($(this)[0].files[0]);
+               
+        //文件上传
+        var oMyForm = new FormData();
+        oMyForm.append("ContentFile", $(this)[0].files[0]);
+        $.ajax({
+          //url:"http://localhost:908/CM/common/uploadCM.do",
+          url:rootPath+"common/uploadCM.do",
+          type:"POST",
+          data:oMyForm,
+          cache: false,
+          processData: false,
+          contentType: false,
+          dataType:"json",
+          //表单提交前进行验证
+          success: function (opeResult){
+            if(opeResult.jsonType=="1"){
+              //alert("上传成功");
+               _this.siblings("input[type='hidden']").val(opeResult.data[0].storeFilename);
+            }else{
+               alert(opeResult.err);
+            }
+          },
+          error: function(jqXHR){
+            alert("发生错误" + jqXHR.status);
+          }     
+        });
+      });
+      
+      //form表单提交
+      $("#submitBtn").click(function () {
+        if($("#ContentImg").val()==""){
+          //如未设置封面，将使用平台默认图片
+          $("#ContentImg").val($(".defaultImg").attr("src"));
+        }
+        $.ajax({
+          // url:"http://localhost:908/CM/content/addSeqMediaInfo.do",
+          url:rootPath+"content/seq/addSeqMediaInfo.do",
+          type:"POST",
+          data:$("#addZjForm").serializeArray(),
+          dataType:"json",
+          success: function (opeResult) {
+            if(opeResult.ReturnType=="1001"){
+              alert("专辑创建成功");
+              $("#addZjForm")[0].reset();
+            }else{
+              alert(opeResult.Message);
+            }
+          },
+          error: function(jqXHR){
+            alert("发生错误" + jqXHR.status);
+          }
+        });
+      });
+        
+      //获取分类列表
+      getCatalogs();
+      function getCatalogs(){
+        $.ajax({
+          type: "POST",    
+          //url:"http://localhost:908/CM/common/getCataTreeWithSelf.do",
+          url:rootPath+"common/getCataTreeWithSelf.do",
+          dataType: "json",
+          data:{cataId: "3"},
+          success: function(catalogsList){
+            if(catalogsList.jsonType=="1"){
+              catalogsListLoad(catalogsList);
+            }else{
+              alert("获取数据出现问题:"+ConditionsList.Message);
+            }  
+          },
+          error: function(jqXHR){
+            alert("发生错误" + jqXHR.status);
+          }     
+        });
+      }
+      function catalogsListLoad(catalogsList){
+        var listLength=catalogsList.data.children.length;
+        var opt;
+        for(var i=0;i<listLength;i++){
+          opt=$("<option></option>");
+          opt.val(catalogsList.data.children[i].id);
+          opt.text(catalogsList.data.children[i].name);
+          $("#ContentCatalogs").append(opt);
+        }
+      }
+    });
+</script>
+
+</html>
