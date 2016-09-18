@@ -17,6 +17,7 @@
   <!-- 全局js -->
   <script src="../resources/plugins/hplus/js/jquery-2.1.1.min.js"></script>
   <script src="../resources/plugins/hplus/js/bootstrap.min.js"></script>
+  <script src="../resources/js/context.utils.js"></script>
   <!-- 自定义js -->
   <script src="../resources/plugins/hplus/js/content.min(1).js"></script>
   <!-- jQuery Validation plugin javascript-->
@@ -71,7 +72,6 @@ li{list-style: none;}
 }
 .form-group #titleName{
   position: relative;
-  left: -50px;
   top: 4px;
 }
 .previewImg {
@@ -102,9 +102,9 @@ li, a, input {
         </ul>
         <div class="ibox-content">
           <form class="form-horizontal m-t" id="articleForm" onsubmit="return false;">
-            <div class="form-group">
+            <div class="form-group" id="1">
               <label class="col-sm-2 control-label">文章标题：</label>
-              <div class="col-sm-9" style="width:675px;margin-left: 111px;">
+              <div class="col-sm-10" style="margin-left: 63px;">
                 <input id="titleName" name="titleName" class="form-control" type="text" aria-required="true">
               </div>
             </div>
@@ -125,75 +125,121 @@ li, a, input {
 </body> 
 <script>
 $(function(){
+  var i=1;
   //1初始化点击事件
-  //1.1-点击文章
+  //1.1-点击文字
   $(".word").on("click",function(){
-    loadWord();
-    
+    i++;
+    loadWord(i);
+    $('.summernote').summernote({
+      lang:'zh-CN',
+      height:80,
+      minHeight:80,
+      maxHeight:80,
+      focus:false,
+      toolbar: [
+        // [groupName, [list of button]]
+        ['style', ['bold', 'italic', 'underline', 'clear']],
+        ['font', ['strikethrough', 'superscript', 'subscript']],
+        ['fontsize', ['fontsize']],
+        ['color', ['color']],
+        ['para', ['ul', 'ol', 'paragraph']],
+        ['height', ['height']]
+      ]
+    });
   });
   
   //1.2-点击图片
   $(".picture").on("click",function(){
-    loadPic();
+    i++;
+    loadPic(i);
   });
   
   //1.3点击保存
   $(".commit").on("click",function(){
-//  var aa=$('#summernote').summernote('code');
-//  alert(aa);
-    createArticle();
+    var str;
+    for(var j=2;j<=i;j++){
+      if($('#summernote'+j).length>0) {
+        var mo = $('#summernote'+j).summernote('code');
+        alert(mo);
+        var s = {
+            "PartId":2,
+            "PartType":"WORD",
+            "PartInfo":mo
+        };
+        if(typeof(str) == "undefined") {
+          str = JSON.stringify(s);
+        } else {
+          str += ','+JSON.stringify(s);
+        }
+      } else {
+        alert(j+"不存在");
+      }
+    }
+    alert(JSON.stringify(str));
+
+
+    createArticle(str);
   })
 })
 
 //加载文字
-function loadWord(){
-  var dom='<div class="form-group">'+
+function loadWord(i){
+  var dom='<div class="form-group" id='+i+'>'+
               '<label class="col-sm-2 control-label">编辑文字：</label>'+
-              '<div class="col-sm-9" style="margin-left: 61px;width:680px;">'+
-                '<div id="summernote" class="summernote"></div>'+
+              '<div class="col-sm-10" style="margin-left: 61px;">'+
+                '<div id="summernote'+i+'" class="summernote"></div>'+
               '</div>'+
             '</div>'
   $(dom).appendTo($("#addform"));
-  $('#summernote').summernote({
-    lang:'zh-CN',
-    height:80,
-    minHeight:80,
-    maxHeight:80,
-    focus:true,
-    toolbar: [
-      // [groupName, [list of button]]
-      ['style', ['bold', 'italic', 'underline', 'clear']],
-      ['font', ['strikethrough', 'superscript', 'subscript']],
-      ['fontsize', ['fontsize']],
-      ['color', ['color']],
-      ['para', ['ul', 'ol', 'paragraph']],
-      ['height', ['height']]
-    ]
-  });
 }
 
 //加载图片
-function loadPic(){
-  var dom='<div class="form-group">'+
-              '<label class="col-sm-2 control-label">添加图片：</label>'+
-              '<div class="col-sm-9" style="margin-left: 61px;">'+
-                '<div id="demo" class="demo" style="height:auto;width:100px;"></div>'+
+function loadPic(i){
+  var dom='<div class="form-group" id='+i+'>'+
+              '<label class="col-sm-2 control-label">文章图片：</label>'+
+              '<div class="col-sm-10" style="margin-left:63px;">'+
+                '<input id="uploadImg" name="uploadImg" class="form-control" type="file" accept=".png,.jpg" />'+
+                '<input id="ContentImg" name="ContentImg" type="hidden" value="" />'+
+                '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大1M，支持JPG、PNG格式</span>'+
               '</div>'+
             '</div>'
-            
   $(dom).appendTo($("#addform"));  
-  $(".demo").eq($(".demo").length-1).zyUpload({
-    width            :   "650px",                 // 宽度
-    height           :   "210px",                 // 宽度
-    itemWidth        :   "120px",                 // 文件项的宽度
-    itemHeight       :   "100px",                 // 文件项的高度
-    url              :   "/upload/UploadAction",  // 上传文件的路径
-    multiple         :   true,                    // 是否可以多个文件上传
-    dragDrop         :   true,                    // 是否可以拖动上传文件
-    del              :   true,                    // 是否可以删除文件
-    finishDel        :   false,           // 是否在上传文件完成后删除预览
-    /* 外部获得的回调接口 */
+}
+
+//提交图片和文字
+function createArticle(str){
+  console.log($("#titleName").val());
+  for(var j=0;j<$('.summernote').length;j++){
+    console.log($('.summernote').eq(j).summernote('code'));
+  }
+//console.log($('.summernote').summernote('code'));
+//var aa=$("#uploadImg").val();//图片的路径
+//var bb=aa.substring(aa.lastIndexOf('\\')+1,aa.length);//图片的名字
+//console.log(bb);
+//console.log($("#uploadImg").val());
+
+  $.ajax({
+    //url:"http://localhost:908/CM/common/uploadCM.do",
+    url:"http://localhost:908/Chopin/content/addByWeb.do",
+    type:"POST",
+    data:JSON.stringify(str),
+    dataType:"json",
+    //表单提交前进行验证
+    success: function (returnData){
+      if(returnData.returnType=="1001"){
+        alert("成功添加");
+      }else{
+        alert(returnData.Message);
+      }
+    },
+    error: function(jqXHR){
+      alert("发生错误" + jqXHR.status);
+    }     
   });
+  
+  
+  
 }
 
 
@@ -204,26 +250,6 @@ function loadPic(){
 
 
 
-
-$(function(){
-  //summernote自定义工具栏
-  $('#summernote').summernote({
-    lang:'zh-CN',
-    height:80,
-    minHeight:80,
-    maxHeight:80,
-    focus:true,
-    toolbar: [
-      // [groupName, [list of button]]
-      ['style', ['bold', 'italic', 'underline', 'clear']],
-      ['font', ['strikethrough', 'superscript', 'subscript']],
-      ['fontsize', ['fontsize']],
-      ['color', ['color']],
-      ['para', ['ul', 'ol', 'paragraph']],
-      ['height', ['height']]
-    ]
-  });
-});
   
 
     
