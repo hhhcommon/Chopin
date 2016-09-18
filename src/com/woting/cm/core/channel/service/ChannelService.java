@@ -294,35 +294,35 @@ public class ChannelService {
             }
         }
     }
-    
+
     public ChannelPo getChannelById(String channelId) {
 		return channelDao.getInfoObject("getInfoById", channelId);
     }
-    
+
     public List<ChannelPo> getChannelsByPcId(String pcId) {
     	Map<String, Object> m = new HashMap<>();
     	m.put("pcId", pcId);
 		return channelDao.queryForList("getList", m);
     }
-    
+
     public boolean insertChannelAsset(ChannelAssetPo cha) {
     	if(channelAssetDao.insert(cha.toHashMap())>0)
     		return true;
 		return false;
     }
-    
+
     public List<ChannelAssetPo> getListByWhere(Map<String, Object> m) {
 		return channelAssetDao.queryForList("getListByWhere", m);
     }
-    
+
     public List<ChannelAssetPo> getChannelAssetsByAssetId(String assetId) {
 		return channelAssetDao.queryForList("getInfoByAssetId", assetId);
     }
-    
+
     public List<ChannelAssetPo> getChannelAssets(Map<String, Object> m) {
 		return channelAssetDao.queryForList("getList", m);
     }
-    
+
     public List<ChannelAssetPo> getChannelAssetsByChannelId(String channelId, int page, int pageSize, int flowFlag) {
     	Map<String, Object> m = new HashMap<>();
     	m.put("channelId", channelId);
@@ -333,7 +333,7 @@ public class ChannelService {
     	m.put("pageSize", pageSize);
 		return channelAssetDao.queryForList("getListByLimit", m);
     }
-    
+
     public int getChannelAssetsNum(String channelId, int flowFlag) {
     	Map<String, Object> m = new HashMap<>();
     	m.put("channelId", channelId);
