@@ -5,19 +5,19 @@ import java.io.IOException;
 import java.util.Map;
 import org.springframework.stereotype.Controller;
 
-import com.spiritdata.framework.core.cache.SystemCache;
 import com.spiritdata.framework.core.web.AbstractFileUploadController;
 import com.spiritdata.framework.util.FileNameUtils;
 import com.spiritdata.framework.util.FileUtils;
 import com.spiritdata.framework.util.SequenceUUID;
-import com.woting.ChopinConstants;
 import com.woting.content.common.utils.FileUploadUtils;
+
 import net.coobird.thumbnailator.Thumbnails;
 
 @Controller
 public class FileUploadController extends AbstractFileUploadController{
 //	private static final String rootpath = "/opt/tomcat_Chopin/webapps/Chopin/";
-	private static final String rootpath = "D:/workIDE/Chopin/WebContent/";
+//	private static final String rootpath = "D:/workIDE/Chopin/WebContent/"; //D:\XBwork\code_short.pcm\WebContent
+	private static final String rootpath = "D:/XBwork/code_short.pcm/WebContent/"; //D:\XBwork\code_short.pcm\WebContent
 	private static final String webpath = "http://182.92.175.134:1108/Chopin/";
 	private static final String[] MediaPath = {
 			"media/group01/",  //上传的音频文件路径
@@ -28,7 +28,6 @@ public class FileUploadController extends AbstractFileUploadController{
     public Map<String, Object> afterUploadOneFileOnSuccess(Map<String, Object> m, Map<String, Object> a, Map<String, Object> p) {
         String filepath = m.get("storeFilename")+"".trim();
         String filename = FileNameUtils.getFileName(filepath);
-        System.out.println(filename);
         int typenum = FileUploadUtils.getFileType(filename);
         if(typenum>0) {
             String newname = SequenceUUID.getPureUUID()+filename.substring(filename.lastIndexOf("."), filename.length());
