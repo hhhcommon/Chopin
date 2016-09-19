@@ -12,18 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.spiritdata.framework.core.cache.CacheEle;
-import com.spiritdata.framework.core.cache.SystemCache;
-import com.spiritdata.framework.ui.tree.ZTree;
 import com.spiritdata.framework.util.StringUtils;
-import com.woting.ChopinConstants;
-import com.woting.cm.core.channel.mem._CacheChannel;
-import com.woting.cm.core.channel.model.Channel;
 import com.woting.cm.core.channel.service.ChannelService;
 import com.woting.cm.core.common.model.Owner;
-import com.woting.cm.core.dict.mem._CacheDictionary;
-import com.woting.cm.core.dict.model.DictDetail;
-import com.woting.cm.core.dict.model.DictModel;
 import com.woting.content.manage.media.service.MediaContentService;
 import com.woting.passport.mobile.MobileParam;
 import com.woting.passport.mobile.MobileUDKey;

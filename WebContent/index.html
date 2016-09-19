@@ -124,7 +124,7 @@
   overflow:hidden;height:0;
 }
 ._menu {
-  display:yes;
+  display:none;
   width:110px;
   position:absolute;
   border:1px solid red;
@@ -221,7 +221,7 @@ function loadNavigateMenu() {
       	for (;i<jsonData.Data.children.length; i++) {
       	  var oneNav=jsonData.Data.children[i];
       	  if (oneNav.children&&oneNav.children.length>0) {
-      	    nav=$("<div id='"+oneNav.id+"' class='nav lineDiv'>"+oneNav.name+"<span class='selArrow'></span></div>");
+      	    nav=$("<div id='nav_"+oneNav.id+"' class='nav lineDiv'>"+oneNav.name+"<span class='selArrow'></span></div>");
       	    //创建新的divMenu
       	    var divMenu=$("<div id='menu_"+oneNav.id+"' class='_menu'></div>");
       	    var j=0;
@@ -229,8 +229,13 @@ function loadNavigateMenu() {
       	      var oneMenuItem=$("<div id='"+oneNav.children[j].id+"' class='_menuItem'>"+oneNav.children[j].name+"</div>");
       	      $(divMenu).append(oneMenuItem);
       	    }
+    	      $("#nav_"+oneNav.id).bind("onmouseover", function() {
+    	        //定位menue的位置
+    	        alert("#menu_"+oneNav.id);
+    	        $("#menu_"+oneNav.id).css("display","yes");
+    	      });
       	    $("body").append(divMenu);
-      	  } else nav=$("<div id='"+oneNav.id+"' class='nav lineDiv'>"+oneNav.name+"</div>");
+      	  } else nav=$("<div id='nav_"+oneNav.id+"' class='nav lineDiv'>"+oneNav.name+"</div>");
       	  $("#navi").append(nav);
       	}
       } else {
