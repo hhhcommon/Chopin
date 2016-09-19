@@ -9,7 +9,7 @@ var IS_MAINPAGE=true;
 var GLOBAL_DATA={
 //rootPath:"http://www.wotingfm.com:908/CM/"//"http://localhost:808/CM/"
 //rootPath:"http://123.56.254.75:908/CM/"//"http://localhost:808/CM/"
-rootPath:"http://localhost:908/Chopin/"//"http://localhost:808/CM/"
+rootPath:"http://localhost:1108/Chopin/"//"http://localhost:808/CM/"
 //rootPath:"http://123.56.254.75:908/CM/"//"http://localhost:808/CM/"
 
 };

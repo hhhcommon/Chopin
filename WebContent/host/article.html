@@ -88,6 +88,16 @@ li{list-style: none;}
 li, a, input {
   outline: 0;
 }
+.first{
+  width:100px;
+  height: 27px;
+  margin-left: 80px;
+}
+.second{
+  width:100px;
+  height: 27px;
+}
+
 </style>
 </head>
 <body>
@@ -102,6 +112,16 @@ li, a, input {
         </ul>
         <div class="ibox-content">
           <form class="form-horizontal m-t" id="articleForm" onsubmit="return false;">
+            <input id="orgPath" name="orgPath" class="form-control" type="hidden" value="" />
+            <input id="smallPath" name="smallPath" class="form-control" type="hidden" value="" />
+            <div class="form-group">
+              <label class="col-sm-2 control-label">选择栏目：</label>
+              <!--<div class="col-sm-10" style="margin-left: 63px;">
+                <input id="titleName" name="titleName" class="form-control" type="text" aria-required="true">
+              </div>-->
+              <select class="first"></select>
+              <select class="second"></select>
+            </div>
             <div class="form-group" id="1">
               <label class="col-sm-2 control-label">文章标题：</label>
               <div class="col-sm-10" style="margin-left: 63px;">
@@ -109,17 +129,6 @@ li, a, input {
               </div>
             </div>
             <div id="addform"></div>
-            <!--<div class="form-group">
-              <label class="col-sm-2 control-label">文章图片：</label>
-              <div class="col-sm-9">
-                <div class="previewImg">
-                  <img class="defaultImg" src="../resources/plugins/uploadimg/images/add_img.png" alt="front cover" />
-                </div>
-                <input id="uploadImg" name="uploadImg" class="form-control" type="file" accept=".png,.jpg" />
-                <input id="ContentImg" name="ContentImg" type="hidden" value="" />
-                <span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大1M，支持JPG、PNG格式</span>
-              </div>
-            </div>-->
             <div class="form-group" style="margin-top: 20px;">
               <div class="col-sm-6 text-right">
                 <button class="btn btn-warning" id="submitBtn" type="submit">预览</button>
@@ -135,9 +144,21 @@ li, a, input {
   </div>
 </body> 
 <script>
+var rootPath=getRootPath();
+var _jsonData,channelId;
+var i=1;
+//页面加载的时候请求获取栏目内容
+firstChannel();
+
 $(function(){
-  var i=1;
+  window.picstr;//图片字符串
   //1初始化点击事件
+  //1.0-一级栏目改变显示对应的二级栏目
+  $(".first").on("change",function(){
+    channelId=$(this).children('option:selected').val();
+    loadSecondChannel();
+  })
+  
   //1.1-点击文字
   $(".word").on("click",function(){
     i++;
@@ -172,9 +193,9 @@ $(function(){
     for(var j=2;j<=i;j++){
       if($('#summernote'+j).length>0) {
         var mo = $('#summernote'+j).summernote('code');
-        alert(mo);
+//      alert(mo);
         var s = {
-            "PartId":2,
+            "PartId":j,
             "PartType":"WORD",
             "PartInfo":mo
         };
@@ -187,12 +208,64 @@ $(function(){
         alert(j+"不存在");
       }
     }
-    alert(JSON.stringify(str));
-
-
-    createArticle(str);
-  })
+  createArticle(str);
+});
+  
 })
+
+/*
+ *方法集
+ * */
+
+//加载一级栏目
+function firstChannel(){
+  $.ajax({
+    url: rootPath+"baseinfo/getChannelTree4View.do",
+//  url: "http://localhost:1108/Chopin/baseinfo/getChannelTree4View.do",
+    type: "POST", 
+    dataType: "json",
+    success: function(jsonData){
+      if(jsonData.ReturnType=="1001") {
+        loadFirstChannel(jsonData);
+        _jsonData = jsonData;
+        loadSecondChannel();
+      }
+    },
+    error:function(jqXHR){
+      alert("发生错误" + jqXHR.status);
+    }
+  });
+}
+function loadFirstChannel(jsonData){
+  var listLength=jsonData.Data.children.length;
+  var opt;
+  for(var k=0;k<listLength;k++){
+    opt=$("<option></option>");
+    opt.val(jsonData.Data.children[k].id);
+    opt.text(jsonData.Data.children[k].name);
+    $(".first").append(opt);
+  }
+  channelId=$(".first").find("option:selected").val();
+}
+
+//当一级栏目改变加载对应的二级栏目
+function loadSecondChannel(){
+  $(".second").text("");//每次加载前先清空
+  for(var j=0;j<_jsonData.Data.children.length;j++){
+//  alert(channelId+"##"+_jsonData.Data.children[j].id);
+    if(channelId==_jsonData.Data.children[j].id){
+      var listLength=_jsonData.Data.children[j].children.length;
+      var opt;
+      for(var k=0;k<listLength;k++){
+        opt=$("<option></option>");
+        opt.val(_jsonData.Data.children[j].children[k].id);
+        opt.text(_jsonData.Data.children[j].children[k].name);
+        $(".second").append(opt);
+      }
+      return;
+    }
+  }
+}
 
 //加载文字
 function loadWord(i){
@@ -204,10 +277,78 @@ function loadWord(i){
             '</div>'
   $(dom).appendTo($("#addform"));
 }
+function loadWordDOM(){
+ 
+  for(var j=2;j<=i;j++){
+    if($('#summernote'+j).length>0) {
+      var mo = $('#summernote'+j).summernote('code');
+      var s = {
+               "PartId":j,
+               "PartType":"WORD",
+               "PartInfo":mo
+      };
+      if(typeof(str) == "undefined") {
+        str = JSON.stringify(s);
+      } else {
+        str += ','+JSON.stringify(s);
+      }
+    } else {
+      alert(j+"不存在");
+    }
+}
+//  alert(JSON.stringify(str));
+}
+
+//上传图片
+function loadPicDOM(){
+  $("input[type='file']").change(function(){
+    var _this=$(this);
+    var oMyForm = new FormData();
+    oMyForm.append("ContentFile", $(this)[0].files[0]);
+    $.ajax({
+      url:rootPath+"common/uploadCM.do",
+//    url:"http://localhost:1108/Chopin/common/uploadCM.do",
+      type:"POST",
+      data:oMyForm,
+      cache: false,
+      processData: false,
+      contentType: false,
+      dataType:"json",
+      //表单提交前进行验证
+      success: function (opeResult){
+        console.log(opeResult);
+        if(opeResult.ful[0].success=="TRUE"){
+          $("#orgPath").val(opeResult.ful[0].storeFilePath);
+          $("#smallPath").val(opeResult.ful[0].smallFilePath);
+          _this.siblings("input[type='hidden']").val(opeResult.ful[0].storeFilename);
+          var result = opeResult.ful[0];
+          var str = {
+                     "PartId":_this.attr("id"),
+                     "PartType":"PICTURE",
+                     "PartOrgName":result.orgFilename,
+                     "PartOrgPath":result.storeFilePath,
+                     "PartSmallName":result.smallFilename,
+                     "PartSmallPath":result.smallFilePath
+          };
+          if(typeof(window.picstr) == "undefined") {
+            window.picstr = str;
+          } else {
+            window.picstr += ','+str;
+          }
+        }else{
+          alert(opeResult.err);
+        }
+      },
+      error: function(jqXHR){
+        alert("发生错误" + jqXHR.status);
+      }     
+    });
+  });
+}
 
 //加载图片
 function loadPic(i){
-  var dom='<div class="form-group" id='+i+'>'+
+  var dom='<div class="form-group">'+
               '<label class="col-sm-2 control-label">文章图片：</label>'+
               '<div class="col-sm-10" style="margin-left:63px;">'+
                 '<input id="uploadImg" name="uploadImg" class="form-control" type="file" accept=".png,.jpg" />'+
@@ -215,26 +356,53 @@ function loadPic(i){
                 '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大1M，支持JPG、PNG格式</span>'+
               '</div>'+
             '</div>'
-  $(dom).appendTo($("#addform"));  
+  $(dom).appendTo($("#addform"));
+  loadPicDOM();
 }
+
+
 
 //提交图片和文字
 function createArticle(str){
-  console.log($("#titleName").val());
-  for(var j=0;j<$('.summernote').length;j++){
-    console.log($('.summernote').eq(j).summernote('code'));
-  }
+//console.log($("#titleName").val());
+//for(var j=0;j<$('.summernote').length;j++){
+//  console.log($('.summernote').eq(j).summernote('code'));
+//}
 //console.log($('.summernote').summernote('code'));
 //var aa=$("#uploadImg").val();//图片的路径
 //var bb=aa.substring(aa.lastIndexOf('\\')+1,aa.length);//图片的名字
 //console.log(bb);
 //console.log($("#uploadImg").val());
 
-  $.ajax({
+  var removeList={
+    "RemoveList":{
+      "FileOrgPath":$("#orgPath").val(),
+      "FileSmallPath":$("#smallPath").val()
+    }
+  };
+  var titlestr = {
+    "PartId":1,
+    "PartType":"TITLE",
+    "PartInfo":$("#titleName").val()
+  };
+  
+  var List =titlestr+','+window.picstr+','+str;
+  List = [List];
+  console.log(List);
+  console.log(JSON.stringify(removeList))
+//var removeList=JSON.stringify(removeList);
+  
+  var _data={
+    "ChannelId":$(".second").val(),
+    "List":List,
+    "RemoveList":removeList
+  }
+console.log(_data);
+$.ajax({
     //url:"http://localhost:908/CM/common/uploadCM.do",
-    url:"http://localhost:908/Chopin/content/addByWeb.do",
+    url:rootPath+"content/addByWeb.do",
     type:"POST",
-    data:JSON.stringify(str),
+    data:JSON.stringify(_data),
     dataType:"json",
     //表单提交前进行验证
     success: function (returnData){
@@ -247,16 +415,12 @@ function createArticle(str){
     error: function(jqXHR){
       alert("发生错误" + jqXHR.status);
     }     
-  });
+});
   
-  
+}
   
 
-function createArticle(){
-  console.log($("#titleName").val());
-  console.log($('#summernote').summernote('code'));
-  console.log();
-}
+
 
 
 
