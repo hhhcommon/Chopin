@@ -329,7 +329,7 @@ public class ChannelService {
     	m.put("assetType", "wt_MediaAsset");
     	m.put("flowFlag", flowFlag);
     	m.put("sortByClause", "pubTime");
-    	m.put("page", page);
+    	m.put("page", page-1);
     	m.put("pageSize", pageSize);
 		return channelAssetDao.queryForList("getListByLimit", m);
     }

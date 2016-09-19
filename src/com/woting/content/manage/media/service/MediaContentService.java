@@ -88,8 +88,8 @@ public class MediaContentService {
 						if (pageSize < 1)
 							return l;
 						List<ChannelAssetPo> chas = channelService.getChannelAssetsByChannelId(cho.getId(), page, perSize, 2);
-						pageSize = pageSize - perSize;
 						if (chas != null && chas.size() > 0) {
+							pageSize = pageSize - chas.size();
 							List<Map<String, Object>> ll = new ArrayList<>();
 							List<Map<String, Object>> chasm = channelContentService.getChannelAssetList(chas);
 							String resids = "";
@@ -110,7 +110,7 @@ public class MediaContentService {
 							if (ll.size() > 0) {
 								Map<String, Object> m = new HashMap<>();
 								m.put("List", ll);
-								m.put("AllCount", channelService.getChannelAssetsNum(cho.getId(), 2));
+								m.put("AllCount", ll.size());
 								m.put("CatalogType", "1");
 								m.put("CatalogName", cho.getChannelName());
 								l.add(m);
