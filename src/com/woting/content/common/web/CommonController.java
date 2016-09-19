@@ -336,59 +336,6 @@ public class CommonController {
         }
     }
 
-    /**
-	 * 获取内容分类树
-	 * @param request
-	 * @return
-	 */
-    @RequestMapping(value="/common/getCataTreeWithSelf.do")
-    @ResponseBody
-    public Map<String,Object> getCataTreeWithSelf(HttpServletRequest request) {
-        Map<String,Object> map=new HashMap<String, Object>();
-        Map<String, Object> m=RequestUtils.getDataFromRequest(request);
-        String cataId=(String)m.get("cataId");
-        if (!StringUtils.isNullOrEmptyOrSpace(cataId)&&!cataId.equals("null")) {
-            @SuppressWarnings("unchecked")
-			_CacheDictionary _cd=( (CacheEle<_CacheDictionary>)SystemCache.getCache(ChopinConstants.CACHE_DICT)).getContent();
-            try {
-                DictModel dm=_cd.getDictModelById(cataId);
-                ZTree<DictDetail> eu1=new ZTree<DictDetail>(dm.dictTree);
-                map.put("jsonType", "1");
-                map.put("data", eu1.toTreeMap());
-            } catch (Exception e) {
-                map.put("jsonType", "2");
-                map.put("err", e.getMessage());
-                e.printStackTrace();
-            }
-        } else {
-            map.put("jsonType", "2");
-            map.put("err", "无法得到正确的分类Id");
-        }
-        return map;
-    }
-
-    /**
-     * 获取栏目列表
-     * @param request
-     * @return
-     */
-    @RequestMapping(value="/common/getChannelTreeWithSelf.do")
-    @ResponseBody
-    public Map<String,Object> getChannelTreeWithSelf(HttpServletRequest request) {
-        Map<String,Object> map=new HashMap<String, Object>();
-         _CacheChannel _cd=channelService.loadCache();
-         try {
-			ZTree<Channel> zc = new ZTree<>(_cd.channelTree);
-			map.put("jsonType", "1");
-            map.put("data", zc.toTreeMap());
-		} catch (Exception e) {
-			map.put("jsonType", "2");
-            map.put("err", e.getMessage());
-			e.printStackTrace();
-		}
-        return map;
-    }
-
     @RequestMapping(value="/common/jsonp.do")
     @ResponseBody
     /**
