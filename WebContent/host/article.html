@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文章管理</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <link href="../resources/plugins/hplus/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../resources/plugins/hplus/css/font-awesome.min.css" rel="stylesheet">
+  <link href="../resources/plugins/hplus/css/animate.min.css" rel="stylesheet">
+  <!--<link href="../resources/plugins/hplus/css/style.min.css" rel="stylesheet">-->
+  <!--<link href="../resources/css/article.css" rel="stylesheet">-->
+  <link href="../resources/plugins/summernote/summernote.css" rel="stylesheet">
+  <link href="../resources/plugins/uploadimg/css/zyUpload.css" rel="stylesheet">
+  <!-- 全局js -->
+  <script src="../resources/plugins/hplus/js/jquery-2.1.1.min.js"></script>
+  <script src="../resources/plugins/hplus/js/bootstrap.min.js"></script>
+  <script src="../resources/js/context.utils.js"></script>
+  <!-- 自定义js -->
+  <script src="../resources/plugins/hplus/js/content.min(1).js"></script>
+  <!-- jQuery Validation plugin javascript-->
+  <script src="../resources/plugins/hplus/js/plugins/validate/jquery.validate.min.js"></script>
+  <!--编辑文字-->
+  <script src="../resources/plugins/summernote/summernote.min.js"></script>
+  <script src="../resources/plugins/summernote/lang/summernote-zh-CN.js"></script>
+  <!--上传图片-->
+  <script src="../resources/plugins/uploadimg/js/jq22.js"></script>
+  <script src="../resources/plugins/uploadimg/js/zyFile.js"></script>
+  <script src="../resources/plugins/uploadimg/js/zyUpload.js"></script>
+<style>
+*{margin:0;padding:0;}
+li{list-style: none;}
+.opeBox .col-sm-11{
+  border: 1px solid black;
+  border-radius: 7px;
+  margin-top: 70px;
+  margin-left:35px;
+}
+.ibox .addContent{
+  width: 240px;
+  height: 40px;
+  overflow: hidden;
+  padding: 8px 1px 1px 1px;
+}
+.ibox .addContent li{
+  width: 50px;
+  height: 30px;
+  border: 1px solid red;
+  float: left;
+  margin-left: 4px;
+  margin-top:1px;
+  cursor:pointer;
+  line-height:30px;
+  text-align:center;
+  border-radius: 1px;
+}
+.opeBox .form-group {
+  margin: 25px auto;
+  position: relative;
+}
+.opeBox label {
+  font-weight: 200;
+}
+.form-group .control-label{
+  position: absolute;
+  top: 50%;
+  transform: translate(0,-59%);
+  font-size: 16px;
+  left: -25px;
+}
+.form-group #titleName{
+  position: relative;
+  top: 4px;
+}
+.previewImg {
+  width: 100px;
+  height: 100px;
+  border: 1px solid #e5e6e7;
+  border-radius: 2px;
+  margin-bottom: 5px;
+}
+.previewImg img {
+  width: 100%;
+  height: 100%;
+}
+li, a, input {
+  outline: 0;
+}
+.first{
+  width:100px;
+  height: 27px;
+  margin-left: 80px;
+}
+.second{
+  width:100px;
+  height: 27px;
+}
+
+</style>
+</head>
+<body>
+  <div class="row opeBox">
+    <div class="col-sm-11 ">
+      <div class="ibox float-e-margins">
+        <ul class="addContent">
+            <li class="word">文字</li>
+            <li class="picture">图片</li>
+            <li class="vedio">视频</li>
+            <li class="radio">音频</li>
+        </ul>
+        <div class="ibox-content">
+          <form class="form-horizontal m-t" id="articleForm" onsubmit="return false;">
+            <input id="orgPath" name="orgPath" class="form-control" type="hidden" value="" />
+            <input id="smallPath" name="smallPath" class="form-control" type="hidden" value="" />
+            <div class="form-group">
+              <label class="col-sm-2 control-label">选择栏目：</label>
+              <!--<div class="col-sm-10" style="margin-left: 63px;">
+                <input id="titleName" name="titleName" class="form-control" type="text" aria-required="true">
+              </div>-->
+              <select class="first"></select>
+              <select class="second"></select>
+            </div>
+            <div class="form-group" id="1">
+              <label class="col-sm-2 control-label">文章标题：</label>
+              <div class="col-sm-10" style="margin-left: 63px;">
+                <input id="titleName" name="titleName" class="form-control" type="text" aria-required="true">
+              </div>
+            </div>
+            <div id="addform"></div>
+            <div class="form-group" style="margin-top: 20px;">
+              <div class="col-sm-6 text-right">
+                <button class="btn btn-warning" id="submitBtn" type="submit">预览</button>
+              </div>
+              <div class="col-sm-6 text-left">
+                <button class="btn btn-warning commit" type="publish">提交</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body> 
+<script>
+var rootPath=getRootPath();
+var _jsonData,channelId;
+var i=1;
+//页面加载的时候请求获取栏目内容
+firstChannel();
+
+$(function(){
+  window.picstr;//图片字符串
+  //1初始化点击事件
+  //1.0-一级栏目改变显示对应的二级栏目
+  $(".first").on("change",function(){
+    channelId=$(this).children('option:selected').val();
+    loadSecondChannel();
+  })
+  
+  //1.1-点击文字
+  $(".word").on("click",function(){
+    i++;
+    loadWord(i);
+    $('.summernote').summernote({
+      lang:'zh-CN',
+      height:80,
+      minHeight:80,
+      maxHeight:80,
+      focus:false,
+      toolbar: [
+        // [groupName, [list of button]]
+        ['style', ['bold', 'italic', 'underline', 'clear']],
+        ['font', ['strikethrough', 'superscript', 'subscript']],
+        ['fontsize', ['fontsize']],
+        ['color', ['color']],
+        ['para', ['ul', 'ol', 'paragraph']],
+        ['height', ['height']]
+      ]
+    });
+  });
+  
+  //1.2-点击图片
+  $(".picture").on("click",function(){
+    i++;
+    loadPic(i);
+  });
+  
+  //1.3点击保存
+  $(".commit").on("click",function(){
+    var str;
+    for(var j=2;j<=i;j++){
+      if($('#summernote'+j).length>0) {
+        var mo = $('#summernote'+j).summernote('code');
+//      alert(mo);
+        var s = {
+            "PartId":j,
+            "PartType":"WORD",
+            "PartInfo":mo
+        };
+        if(typeof(str) == "undefined") {
+          str = JSON.stringify(s);
+        } else {
+          str += ','+JSON.stringify(s);
+        }
+      } else {
+        alert(j+"不存在");
+      }
+    }
+  createArticle(str);
+});
+  
+})
+
+/*
+ *方法集
+ * */
+
+//加载一级栏目
+function firstChannel(){
+  $.ajax({
+    url: rootPath+"baseinfo/getChannelTree4View.do",
+//  url: "http://localhost:1108/Chopin/baseinfo/getChannelTree4View.do",
+    type: "POST", 
+    dataType: "json",
+    success: function(jsonData){
+      if(jsonData.ReturnType=="1001") {
+        loadFirstChannel(jsonData);
+        _jsonData = jsonData;
+        loadSecondChannel();
+      }
+    },
+    error:function(jqXHR){
+      alert("发生错误" + jqXHR.status);
+    }
+  });
+}
+function loadFirstChannel(jsonData){
+  var listLength=jsonData.Data.children.length;
+  var opt;
+  for(var k=0;k<listLength;k++){
+    opt=$("<option></option>");
+    opt.val(jsonData.Data.children[k].id);
+    opt.text(jsonData.Data.children[k].name);
+    $(".first").append(opt);
+  }
+  channelId=$(".first").find("option:selected").val();
+}
+
+//当一级栏目改变加载对应的二级栏目
+function loadSecondChannel(){
+  $(".second").text("");//每次加载前先清空
+  for(var j=0;j<_jsonData.Data.children.length;j++){
+//  alert(channelId+"##"+_jsonData.Data.children[j].id);
+    if(channelId==_jsonData.Data.children[j].id){
+      var listLength=_jsonData.Data.children[j].children.length;
+      var opt;
+      for(var k=0;k<listLength;k++){
+        opt=$("<option></option>");
+        opt.val(_jsonData.Data.children[j].children[k].id);
+        opt.text(_jsonData.Data.children[j].children[k].name);
+        $(".second").append(opt);
+      }
+      return;
+    }
+  }
+}
+
+//加载文字
+function loadWord(i){
+  var dom='<div class="form-group" id='+i+'>'+
+              '<label class="col-sm-2 control-label">编辑文字：</label>'+
+              '<div class="col-sm-10" style="margin-left: 61px;">'+
+                '<div id="summernote'+i+'" class="summernote"></div>'+
+              '</div>'+
+            '</div>'
+  $(dom).appendTo($("#addform"));
+}
+function loadWordDOM(){
+ 
+  for(var j=2;j<=i;j++){
+    if($('#summernote'+j).length>0) {
+      var mo = $('#summernote'+j).summernote('code');
+      var s = {
+               "PartId":j,
+               "PartType":"WORD",
+               "PartInfo":mo
+      };
+      if(typeof(str) == "undefined") {
+        str = JSON.stringify(s);
+      } else {
+        str += ','+JSON.stringify(s);
+      }
+    } else {
+      alert(j+"不存在");
+    }
+}
+//  alert(JSON.stringify(str));
+}
+
+//上传图片
+function loadPicDOM(){
+  $("input[type='file']").change(function(){
+    var _this=$(this);
+    var oMyForm = new FormData();
+    oMyForm.append("ContentFile", $(this)[0].files[0]);
+    $.ajax({
+      url:rootPath+"common/uploadCM.do",
+//    url:"http://localhost:1108/Chopin/common/uploadCM.do",
+      type:"POST",
+      data:oMyForm,
+      cache: false,
+      processData: false,
+      contentType: false,
+      dataType:"json",
+      //表单提交前进行验证
+      success: function (opeResult){
+        console.log(opeResult);
+        if(opeResult.ful[0].success=="TRUE"){
+          $("#orgPath").val(opeResult.ful[0].storeFilePath);
+          $("#smallPath").val(opeResult.ful[0].smallFilePath);
+          _this.siblings("input[type='hidden']").val(opeResult.ful[0].storeFilename);
+          var result = opeResult.ful[0];
+          var str = {
+                     "PartId":_this.attr("id"),
+                     "PartType":"PICTURE",
+                     "PartOrgName":result.orgFilename,
+                     "PartOrgPath":result.storeFilePath,
+                     "PartSmallName":result.smallFilename,
+                     "PartSmallPath":result.smallFilePath
+          };
+          if(typeof(window.picstr) == "undefined") {
+            window.picstr = str;
+          } else {
+            window.picstr += ','+str;
+          }
+        }else{
+          alert(opeResult.err);
+        }
+      },
+      error: function(jqXHR){
+        alert("发生错误" + jqXHR.status);
+      }     
+    });
+  });
+}
+
+//加载图片
+function loadPic(i){
+  var dom='<div class="form-group">'+
+              '<label class="col-sm-2 control-label">文章图片：</label>'+
+              '<div class="col-sm-10" style="margin-left:63px;">'+
+                '<input id="uploadImg" name="uploadImg" class="form-control" type="file" accept=".png,.jpg" />'+
+                '<input id="ContentImg" name="ContentImg" type="hidden" value="" />'+
+                '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大1M，支持JPG、PNG格式</span>'+
+              '</div>'+
+            '</div>'
+  $(dom).appendTo($("#addform"));
+  loadPicDOM();
+}
+
+
+
+//提交图片和文字
+function createArticle(str){
+//console.log($("#titleName").val());
+//for(var j=0;j<$('.summernote').length;j++){
+//  console.log($('.summernote').eq(j).summernote('code'));
+//}
+//console.log($('.summernote').summernote('code'));
+//var aa=$("#uploadImg").val();//图片的路径
+//var bb=aa.substring(aa.lastIndexOf('\\')+1,aa.length);//图片的名字
+//console.log(bb);
+//console.log($("#uploadImg").val());
+
+  var removeList={
+    "RemoveList":{
+      "FileOrgPath":$("#orgPath").val(),
+      "FileSmallPath":$("#smallPath").val()
+    }
+  };
+  var titlestr = {
+    "PartId":1,
+    "PartType":"TITLE",
+    "PartInfo":$("#titleName").val()
+  };
+  
+  var List =titlestr+','+window.picstr+','+str;
+  List = [List];
+  console.log(List);
+  console.log(JSON.stringify(removeList))
+//var removeList=JSON.stringify(removeList);
+  
+  var _data={
+    "ChannelId":$(".second").val(),
+    "List":List,
+    "RemoveList":removeList
+  }
+console.log(_data);
+$.ajax({
+    //url:"http://localhost:908/CM/common/uploadCM.do",
+    url:rootPath+"content/addByWeb.do",
+    type:"POST",
+    data:JSON.stringify(_data),
+    dataType:"json",
+    //表单提交前进行验证
+    success: function (returnData){
+      if(returnData.returnType=="1001"){
+        alert("成功添加");
+      }else{
+        alert(returnData.Message);
+      }
+    },
+    error: function(jqXHR){
+      alert("发生错误" + jqXHR.status);
+    }     
+});
+  
+}
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+    
+</script>
+</html>

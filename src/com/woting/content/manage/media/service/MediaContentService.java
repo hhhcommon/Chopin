@@ -78,7 +78,7 @@ public class MediaContentService {
 				List<ChannelPo> cs = new ArrayList<>();
 				for (ChannelPo cho : chs) {
 					cs.add(cho);
-					if (beginCatalogId.equals(cho.getId())) {
+					if (beginCatalogId!=null && beginCatalogId.equals(cho.getId())) {
 						chs.removeAll(cs);
 						break;
 					}

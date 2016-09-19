@@ -338,7 +338,7 @@ public class ChannelService {
     	Map<String, Object> m = new HashMap<>();
     	m.put("channelId", channelId);
     	m.put("flowFlag", "2");
-		return channelAssetDao.getCount("getListNumByChannelId", m);
+		return channelAssetDao.queryForList("getListByWhere", m).size();
     }
 
     public void removeChannelAsset(String contentId) {
