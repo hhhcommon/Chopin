@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="cache-control" content="no-cache"/>
+<meta http-equiv="pragma" content="no-cache"/>
+<meta http-equiv="expires" content="0"/>
+<!--[if lt IE 8]>
+<script>
+  alert('本系统已不支持IE6-8，请使用谷歌、火狐等浏览器\n或360、QQ等国产浏览器的极速模式浏览本页面！');
+</script>
+<![endif]-->
+
+<script src="./resources/plugins/hplus/js/jquery-2.1.1.min.js"></script>
+<script src="./resources/plugins/easyui-1.3.4/jquery.easyui.min.js"></script>
+<script src="./resources/js/mainPage.js"></script>
+<script src="./resources/js/common.utils.js"></script>
+<script src="./resources/js/context.utils.js"></script>
+<script src="./resources/js/framework.utils.js"></script>
+<script src="./resources/plugins/spiritui/jq.spirit.utils.js"></script>
+<script src="./resources/plugins/spiritui/jq.spirit.pageFrame.js"></script>
+
+<link rel="stylesheet" type="text/css" href="./resources/plugins/easyui-1.3.4/themes/default/easyui.css"/>
+<link rel="stylesheet" type="text/css" href="./resources/plugins/easyui-1.3.4/themes/icon.css"/>
+<link rel="stylesheet" type="text/css" href="./resources/plugins/easyui-1.3.4/demo.css"/>
+
+<link rel="stylesheet" type="text/css" href="./resources/chopin/css/font.css"/>
+<link rel="stylesheet" type="text/css" href="./resources/css/common.css"/>
+<link rel="stylesheet" type="text/css" href="./resources/css/mainPage.css"/>
+<link rel="stylesheet" type="text/css" href="./resources/plugins/spiritui/themes/default/all.css"/>
+
+<title>我听肖邦</title>
+
+<style>
+.lineDiv {
+  float:left;
+}
+
+#topSegment {
+  padding-left:113px;
+  padding-right:110px;
+}
+.topBlock {
+  margin-top:20px;
+  height:45px;
+  width:100px;
+  float:left;
+  color:red;  
+}
+
+.logoImg {
+  width:43px;
+  height:43px;
+  background-color:#FFA634;
+  border-radius:21px;
+  float:left;
+}
+.logoWord {
+  width:110px;
+  height:60px;
+  margin-top:-7px;
+  margin-left:8px;
+  float:left;
+  background:url(./resources/chopin/imgs/main_LogoText.png) top left no-repeat;
+  background-size:105%;
+}
+
+.operButton {
+  border-radius:4px;
+  padding-top:1px;
+  border:1px solid #fff;
+  height:30px;
+  width:60px;
+  font-family: vista_MS;
+  font-weight:bold;
+  background-color:#0E0E0E;
+  color:#fff;
+  font-size:15px;
+}
+.searchBtn {
+  position:absolute;
+  top:41px;
+  right:275px;
+  border:0;
+  margin-top:-10px;
+  height:33px;
+  width:33px;
+  background:url(./resources/chopin/imgs/searchIcon.png) top left no-repeat;
+  margin-left:5px;
+}
+.nav {
+  width:90px;
+  margin-left:20px;
+  height:42px;
+  font-family: vista_MS;
+  font-weight:bold;
+  color:#fff;
+  padding-top:3px;
+  font-size:16px;
+}
+.nav:hover {
+	cursor:pointer;
+  color:#FFA634;
+}
+.nav:hover .selArrow {
+  margin-left:6px;
+  display:inline-block;
+  border:0 solid #0E0E0E;
+  border-width:7px 6px 0;
+  border-color:#FFA634 #0E0E0E ;
+  width:0;
+  overflow:hidden;height:0;
+}
+
+.selArrow {
+  margin-left:6px;
+  display:inline-block;
+  border:0 solid #0E0E0E;
+  border-width:7px 6px 0;
+  border-color:#fff #0E0E0E ;
+  width:0;
+  overflow:hidden;height:0;
+}
+._menu {
+  display:none;
+  width:110px;
+  position:absolute;
+  border:1px solid red;
+  background-color:#0E0E0E ;
+}
+._menuItem {
+  padding-left:15px;
+  width:110px;
+  height:30px;
+  font-family: vista_MS;
+  color:#fff;
+  font-size:14px;
+}
+._menuItem:hover  {
+  cursor:pointer;
+  color:#FFA634;
+  font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+<!-- 遮罩层 -->
+<div id="mask" style="display:none; position:absolute;vertical-align:middle;text-align:center; align:center;">
+  <div id="maskTitle">正在加载，请稍候...</div>
+</div>
+
+<!-- 头部:悬浮 -->
+<div id="topSegment">
+  <div id="logo" class="topBlock" style="width:172px; float:left;">
+    <div id="logo-img" class="logoImg"></div>
+    <div id="logo-word" class="logoWord"></div>
+  </div>
+  <div id="navi" class="topBlock" style="width:755px;padding-top:15px;"></div>
+  <div id="oper" class="topBlock" style="width:198px;padding-top:12px;">
+    <button class="searchBtn"></button>
+    <button class="operButton" style="margin-left:65px">登录</button>
+    <button class="operButton" style="margin-left:5px">注册</button>
+  </div>
+</div>
+
+<!-- 中间主框架 -->
+<div id="mainSegment">
+</div>
+</body>
+
+<script>
+var rootPath=getRootPath();
+//主窗口参数
+var INIT_PARAM={
+  pageObjs: {
+    topId: "topSegment",
+    footId: "footSegment",
+    mainId: "mainSegment"
+  },
+  page_width: 1366,
+  page_height: 1000,
+  top_shadow_color:"#FFA735",
+  top_height: 82,
+  top_peg: false,
+  win_min_width: 1366, //页面最小的高度。当窗口高度小于这个值，不对界面位置及尺寸进行调整。主体部分宽度也照此设置
+  win_min_height: 480, //页面最小的高度。当窗口高度小于这个值，不对界面位置及尺寸进行调整。主体部分高度也照此设置
+  myInit: initPosition,
+  myResize: myResize
+};
+
+//主函数
+$(function() {
+  //设置主界面
+  var initStr=$.spiritPageFrame(INIT_PARAM);
+  if (initStr) {
+    $.messager.alert("错误", "页面初始化失败<br/>"+initStr, "error");
+    return ;
+  };
+  //加载导航菜单
+  loadNavigateMenu();
+});
+
+//初始化界面
+function initPosition() {
+}
+//当界面尺寸改变
+function myResize() {
+}
+//加载导航菜单
+function loadNavigateMenu() {
+  $.ajax({type:"post", async:true, url:rootPath+"/baseinfo/getChannelTree4View.do", dataType:"json",
+    success: function(jsonData) {
+      if (jsonData.ReturnType=='1001') {
+      	var i=0;
+      	var nav=$("<div id='0' class='nav lineDiv' style='width:60px'>首页</div>");
+      	$("#navi").append(nav);
+      	for (;i<jsonData.Data.children.length; i++) {
+      	  var oneNav=jsonData.Data.children[i];
+      	  if (oneNav.children&&oneNav.children.length>0) {
+      	    nav=$("<div id='nav_"+oneNav.id+"' class='nav lineDiv'>"+oneNav.name+"<span class='selArrow'></span></div>");
+      	    //创建新的divMenu
+      	    var divMenu=$("<div id='menu_"+oneNav.id+"' class='_menu'></div>");
+      	    var j=0;
+      	    for (;j<oneNav.children.length;j++) {
+      	      var oneMenuItem=$("<div id='"+oneNav.children[j].id+"' class='_menuItem'>"+oneNav.children[j].name+"</div>");
+      	      $(divMenu).append(oneMenuItem);
+      	    }
+    	      $("#nav_"+oneNav.id).bind("onmouseover", function() {
+    	        //定位menue的位置
+    	        alert("#menu_"+oneNav.id);
+    	        $("#menu_"+oneNav.id).css("display","yes");
+    	      });
+      	    $("body").append(divMenu);
+      	  } else nav=$("<div id='nav_"+oneNav.id+"' class='nav lineDiv'>"+oneNav.name+"</div>");
+      	  $("#navi").append(nav);
+      	}
+      } else {
+      	$.messager.alert("错误", "加载导航菜单：<br/>"+jsonData.message, "error");
+      }
+    },
+    error: function(jqXHR) {
+      $.messager.alert("错误", "加载导航菜单：<br/>"+jqXHR.status, "error");
+    }
+  });
+}
+</script>
+</html>
