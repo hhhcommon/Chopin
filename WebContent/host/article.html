@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>文章管理</title>
@@ -47,14 +47,16 @@ li{list-style: none;}
 .ibox .addContent li{
   width: 50px;
   height: 30px;
-  border: 1px solid red;
   float: left;
   margin-left: 4px;
-  margin-top:1px;
-  cursor:pointer;
-  line-height:30px;
-  text-align:center;
-  border-radius: 1px;
+  font-weight: border;
+  margin-top: 1px;
+  cursor: pointer;
+  line-height: 30px;
+  text-align: center;
+  border-radius: 3px;
+  background: #f0ad4e;
+  color: white;
 }
 .opeBox .form-group {
   margin: 25px auto;
@@ -68,11 +70,12 @@ li{list-style: none;}
   top: 50%;
   transform: translate(0,-59%);
   font-size: 16px;
-  left: -25px;
+  left: 14px;
 }
 .form-group #titleName{
   position: relative;
   top: 4px;
+  left:35px;
 }
 .previewImg {
   width: 100px;
@@ -88,6 +91,29 @@ li{list-style: none;}
 li, a, input {
   outline: 0;
 }
+.first{
+  width:100px;
+  height: 27px;
+  margin-left: 225px;
+}
+.second{
+  width:100px;
+  height: 27px;
+}
+.red{
+  display: inline-block;
+  font-weight:bolder;
+  color:red;
+}
+#checkStatus{
+  width: 20px;
+  height: 16px;
+  position: absolute;
+  top: 49%;
+  transform: translate(0,-59%);
+  font-size: 16px;
+  left: 14px;
+}
 </style>
 </head>
 <body>
@@ -102,24 +128,22 @@ li, a, input {
         </ul>
         <div class="ibox-content">
           <form class="form-horizontal m-t" id="articleForm" onsubmit="return false;">
+            <input id="orgName" name="orgName" class="form-control" type="hidden" value="" />
+            <input id="orgPath" name="orgPath" class="form-control" type="hidden" value="" />
+            <input id="smallName" name="smallName" class="form-control" type="hidden" value="" />
+            <input id="smallPath" name="smallPath" class="form-control" type="hidden" value="" />
+            <div class="form-group" style="width:430px;margin-top:-40px;margin-left:255px;">
+              <label class="col-sm-6 control-label">选择栏目(<span class="red">必选</span>)：</label>
+              <select class="first"></select>
+              <select class="second"></select>
+            </div>
             <div class="form-group" id="1">
               <label class="col-sm-2 control-label">文章标题：</label>
               <div class="col-sm-10" style="margin-left: 63px;">
                 <input id="titleName" name="titleName" class="form-control" type="text" aria-required="true">
               </div>
             </div>
-            <div id="addform"></div>
-            <!--<div class="form-group">
-              <label class="col-sm-2 control-label">文章图片：</label>
-              <div class="col-sm-9">
-                <div class="previewImg">
-                  <img class="defaultImg" src="../resources/plugins/uploadimg/images/add_img.png" alt="front cover" />
-                </div>
-                <input id="uploadImg" name="uploadImg" class="form-control" type="file" accept=".png,.jpg" />
-                <input id="ContentImg" name="ContentImg" type="hidden" value="" />
-                <span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大1M，支持JPG、PNG格式</span>
-              </div>
-            </div>-->
+            <div class="addForm"></div>
             <div class="form-group" style="margin-top: 20px;">
               <div class="col-sm-6 text-right">
                 <button class="btn btn-warning" id="submitBtn" type="submit">预览</button>
@@ -135,9 +159,22 @@ li, a, input {
   </div>
 </body> 
 <script>
+var rootPath=getRootPath();
+var _jsonData,channelId;
+var i=1;
+var segmentIndex=2;
+//页面加载的时候请求获取栏目内容
+firstChannel();
+
 $(function(){
-  var i=1;
+  window.picstr;//图片字符串
   //1初始化点击事件
+  //1.0-一级栏目改变显示对应的二级栏目
+  $(".first").on("change",function(){
+    channelId=$(this).children('option:selected').val();
+    loadSecondChannel();
+  })
+  
   //1.1-点击文字
   $(".word").on("click",function(){
     i++;
@@ -167,74 +204,177 @@ $(function(){
   });
   
   //1.3点击保存
-  $(".commit").on("click",function(){
-    var str;
-    for(var j=2;j<=i;j++){
-      if($('#summernote'+j).length>0) {
-        var mo = $('#summernote'+j).summernote('code');
-        alert(mo);
-        var s = {
-            "PartId":2,
-            "PartType":"WORD",
-            "PartInfo":mo
-        };
-        if(typeof(str) == "undefined") {
-          str = JSON.stringify(s);
-        } else {
-          str += ','+JSON.stringify(s);
-        }
-      } else {
-        alert(j+"不存在");
-      }
-    }
-    alert(JSON.stringify(str));
-
-
-    createArticle(str);
-  })
+  $(".commit").on("click",function() {
+    createArticle();
+  });
+  
 })
+
+/*
+ *方法集
+ * */
+
+//加载一级栏目
+function firstChannel(){
+  $.ajax({
+    url: rootPath+"baseinfo/getChannelTree4View.do",
+//  url: "http://localhost:1108/Chopin/baseinfo/getChannelTree4View.do",
+    type: "POST", 
+    dataType: "json",
+    success: function(jsonData){
+      if(jsonData.ReturnType=="1001") {
+        loadFirstChannel(jsonData);
+        _jsonData = jsonData;
+        loadSecondChannel();
+      }
+    },
+    error:function(jqXHR){
+      alert("发生错误" + jqXHR.status);
+    }
+  });
+}
+function loadFirstChannel(jsonData){
+  var listLength=jsonData.Data.children.length;
+  var opt;
+  for(var k=0;k<listLength;k++){
+    opt=$("<option></option>");
+    opt.val(jsonData.Data.children[k].id);
+    opt.text(jsonData.Data.children[k].name);
+    $(".first").append(opt);
+  }
+  channelId=$(".first").find("option:selected").val();
+}
+
+//当一级栏目改变加载对应的二级栏目
+function loadSecondChannel(){
+  $(".second").text("");//每次加载前先清空
+  for(var j=0;j<_jsonData.Data.children.length;j++){
+//  alert(channelId+"##"+_jsonData.Data.children[j].id);
+    if(channelId==_jsonData.Data.children[j].id){
+      var listLength=_jsonData.Data.children[j].children.length;
+      var opt;
+      for(var k=0;k<listLength;k++){
+        opt=$("<option></option>");
+        opt.val(_jsonData.Data.children[j].children[k].id);
+        opt.text(_jsonData.Data.children[j].children[k].name);
+        $(".second").append(opt);
+      }
+      return;
+    }
+  }
+}
 
 //加载文字
 function loadWord(i){
-  var dom='<div class="form-group" id='+i+'>'+
+  var dom='<div class="form-group segment" id='+i+' type="WORD">'+
+              '<input id="checkStatus" name="checkStatus" type="checkbox"/>'+
               '<label class="col-sm-2 control-label">编辑文字：</label>'+
-              '<div class="col-sm-10" style="margin-left: 61px;">'+
+              '<div class="col-sm-10" style="margin-left: 100px;">'+
                 '<div id="summernote'+i+'" class="summernote"></div>'+
               '</div>'+
             '</div>'
-  $(dom).appendTo($("#addform"));
+  $(dom).appendTo($(".addForm"));
+}
+
+
+//上传图片
+function loadPicDOM(){
+  $("input[type='file']").change(function(){
+    var _this=$(this);
+    var oMyForm = new FormData();
+    oMyForm.append("ContentFile", $(this)[0].files[0]);
+    $.ajax({
+      url:rootPath+"common/uploadCM.do",
+//    url:"http://localhost:1108/Chopin/common/uploadCM.do",
+      type:"POST",
+      data:oMyForm,
+      cache: false,
+      processData: false,
+      contentType: false,
+      dataType:"json",
+      //表单提交前进行验证
+      success: function (opeResult){
+        console.log(opeResult);
+        if(opeResult.ful[0].success=="TRUE"){
+          $("#orgName").val(opeResult.ful[0].orgFilename);
+          $("#orgPath").val(opeResult.ful[0].storeFilePath);
+          $("#smallName").val(opeResult.ful[0].smallFilename);
+          $("#smallPath").val(opeResult.ful[0].smallFilePath);
+          _this.siblings("input[type='hidden']").val(opeResult.ful[0].storeFilename);
+          var result = opeResult.ful[0];
+          var str = {
+                     "PartId":_this.attr("id"),
+                     "PartType":"PICTURE",
+                     "PartOrgName":result.orgFilename,
+                     "PartOrgPath":result.storeFilePath,
+                     "PartSmallName":result.smallFilename,
+                     "PartSmallPath":result.smallFilePath
+          };
+          if(typeof(window.picstr) == "undefined") {
+            window.picstr = str;
+          } else {
+            window.picstr += ','+str;
+          }
+        }else{
+          alert(opeResult.err);
+        }
+      },
+      error: function(jqXHR){
+        alert("发生错误" + jqXHR.status);
+      }     
+    });
+  });
 }
 
 //加载图片
 function loadPic(i){
-  var dom='<div class="form-group" id='+i+'>'+
+  var dom='<div class="form-group segment" id='+i+' type="PICTURE">'+
+              '<input id="checkStatus" name="checkStatus" type="checkbox"/>'+
               '<label class="col-sm-2 control-label">文章图片：</label>'+
-              '<div class="col-sm-10" style="margin-left:63px;">'+
+              '<div class="col-sm-10" style="margin-left:100px;">'+
                 '<input id="uploadImg" name="uploadImg" class="form-control" type="file" accept=".png,.jpg" />'+
                 '<input id="ContentImg" name="ContentImg" type="hidden" value="" />'+
                 '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大1M，支持JPG、PNG格式</span>'+
               '</div>'+
             '</div>'
-  $(dom).appendTo($("#addform"));  
+  $(dom).appendTo($(".addForm"));
+  loadPicDOM();
 }
 
 //提交图片和文字
-function createArticle(str){
-  console.log($("#titleName").val());
-  for(var j=0;j<$('.summernote').length;j++){
-    console.log($('.summernote').eq(j).summernote('code'));
-  }
-//console.log($('.summernote').summernote('code'));
-//var aa=$("#uploadImg").val();//图片的路径
-//var bb=aa.substring(aa.lastIndexOf('\\')+1,aa.length);//图片的名字
-//console.log(bb);
-//console.log($("#uploadImg").val());
-
+function createArticle() {
+  var list=[];
+  var title={};//标题
+  title.PartId=1;
+  title.PartType="TITLE";
+  title.PartInfo=$("#titleName").val();
+  list.push(title);
+  $(".addForm").find("div.segment").each(function() {//文字或图片或视频或音频
+    var onePart={};
+    onePart.PartId=$(this).attr("id");
+    onePart.PartType=$(this).attr("type");
+    if (onePart.PartType=="WORD") {
+      onePart.PartInfo=$('#summernote'+$(this).attr("id")).summernote('code');
+    }
+    if (onePart.PartType=="PICTURE") {
+      onePart.PartOrgName=$("#orgName").val;
+      onePart.PartOrgPath=$("#orgPath").val;
+      onePart.PartSmallName=$("#smallName").val;
+      onePart.PartSmallPath=$("#smallPath").val;
+    }
+    list.push(onePart);
+  });
+  
+  var postData={};
+  postData.ChannelId=$(".second").val();
+  postData.List=list;
+  console.log(postData);
+  return;
   $.ajax({
     //url:"http://localhost:908/CM/common/uploadCM.do",
-    url:"http://localhost:908/Chopin/content/addByWeb.do",
+    url:rootPath+"content/addByWeb.do",
     type:"POST",
-    data:JSON.stringify(str),
+    data:JSON.stringify(_data),
     dataType:"json",
     //表单提交前进行验证
     success: function (returnData){
@@ -249,25 +389,6 @@ function createArticle(str){
     }     
   });
   
-  
-  
-
-function createArticle(){
-  console.log($("#titleName").val());
-  console.log($('#summernote').summernote('code'));
-  console.log();
-}
-
-
-
-
-
-
-
-
-
-  
-
-    
+}    
 </script>
 </html>

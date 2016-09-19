@@ -1,6 +1,6 @@
 package com.woting.content.common.utils;
 
-public class FileUploadUtils {
+public abstract class FileUploadUtils {
 	
 	/**
 	 * 判断文件上传的类型

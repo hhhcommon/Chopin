@@ -318,11 +318,11 @@ function getRootNode() {
   treeNode=nodes[0]; //当前选中的节点
   if(!treeNode){
     alert("请先选中分类在进行操作");
-    $("#shade").css({"display":"none"});
-    $("#addCata").modal("hide");
+//  $("#shade").css({"display":"none"});
+//  $("#addCata").modal("hide");
 //  $("#addCata").find(".modal-header>span:eq(1)").html("栏目");
   }else{
-    alert("当前选中节点的id："+treeNode.id+"当前选中节点的名字:"+treeNode.name);
+//  alert("当前选中节点的id："+treeNode.id+"当前选中节点的名字:"+treeNode.name);
     nodePathStr=treeNode.attributes.pathName+"";
     if(nodePathStr.indexOf("/")>=0){
       rootNode=nodePathStr.split("/")[0];
@@ -387,7 +387,7 @@ function onClick(event, treeId, treeNode) {
   var node=zTreeObjs.getSelectedNodes();//获取 模态框里zTree当前被选中的节点数据集合
   modalNode=node[0]; //当前选中的节点
   var sortNode=modalNode.getParentNode();//获取当前选中分类的父分类
-  alert("修改后"+"\n目前父分类的名字："+sortNode.name+"\n修改后父分类的id："+modalNode.id+"\n修改后父分类的名字："+modalNode.name);
+//alert("修改后"+"\n目前父分类的名字："+sortNode.name+"\n修改后父分类的id："+modalNode.id+"\n修改后父分类的名字："+modalNode.name);
   $("#nodeParent").val(modalNode.id);
   $("#nodeParents").val(modalNode.name);
   $("#cataTrees").slideUp("slow");
