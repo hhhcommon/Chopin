@@ -5,13 +5,12 @@ import java.io.IOException;
 import java.util.Map;
 import org.springframework.stereotype.Controller;
 
-import com.spiritdata.framework.core.cache.SystemCache;
 import com.spiritdata.framework.core.web.AbstractFileUploadController;
 import com.spiritdata.framework.util.FileNameUtils;
 import com.spiritdata.framework.util.FileUtils;
 import com.spiritdata.framework.util.SequenceUUID;
-import com.woting.ChopinConstants;
 import com.woting.content.common.utils.FileUploadUtils;
+
 import net.coobird.thumbnailator.Thumbnails;
 
 @Controller
