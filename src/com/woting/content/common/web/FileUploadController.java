@@ -35,7 +35,7 @@ public class FileUploadController extends AbstractFileUploadController{
             	String smallImgName = SequenceUUID.getPureUUID()+filename.substring(filename.lastIndexOf("."), filename.length());
                 String smallImgPath = rootpath+MediaPath[typenum]+smallImgName.trim();
                 try {
-			        Thumbnails.of(new File(filepath)).size(100, 100).toFile(smallImgPath);
+			        Thumbnails.of(new File(filepath)).size(144, 108).toFile(smallImgPath);
 			        m.put("smallFilename", smallImgName);
 			        m.put("smallFilepath", webpath+MediaPath[typenum]+smallImgName);
 		        } catch (IOException e) {e.printStackTrace();}
