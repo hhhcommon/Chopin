@@ -297,7 +297,7 @@ li, a, input {
                 <select class="second"></select>
               </div>
             </div>
-            <div class="form-group channel">
+            <div class="form-group channel" id="0">
               <label class="col-sm-2 control-label">栏目：</label>
               <div class="col-sm-10" style="margin-left: 19px;">
                 <input id="channelId" name="channelId" class="form-control" placeholder="栏目id" type="hidden" aria-required="true" value="">
@@ -305,8 +305,8 @@ li, a, input {
                 <div class='chooseChannel'>选择栏目</div>
                 <ul id="cataTrees" class="ztree"></ul>
               </div>
-              <div class="actions" onclick="showOrHide(this)">
-                <div class="toggle"><img src="../resources/images/off.png" alt="" /></div>
+              <div class="actions">
+                <div class="toggle"><img src="../resources/images/off.png" alt="" onclick="show(this)"/></div>
                 <ul class="addContent" style="display: none;">
                   <li class="word" onclick="newSummernote(this)">文</li>
                   <li class="picture" onclick="newPicture(this)">图</li>
@@ -363,16 +363,9 @@ li, a, input {
     </div>
   </div>
   </div>
-  
-  
-  
-  
-  
-  
 </body> 
 <script>
-alert(122)
-var zTreeObj,zTreeObjs;
+var zTreeObj,zTreeObjs,des;
 var rootPath=getRootPath();
 var segmentIndex=1;
 window.picstr;//图片字符串
@@ -447,7 +440,7 @@ $(function(){
    createArticle();
   })
   //2.5-点击遮罩层,确定,取消按钮，遮罩层和弹出层消失
-  $(".commit,.close-link,#shade").on("click",function(){
+  $(".commit,.close-link").on("click",function(){
     $(".row").hide();
     $("#shade").css({"display":"none"});
   });
@@ -455,9 +448,9 @@ $(function(){
   //3初始弹出框点击事件
   //3.1-点击选择栏目,弹出界面出现树
   $(".chooseChannel").on("click",function(){
+    hiden();
     $("#cataTrees").slideDown("slow");
   })
-  
 });
 
 /**
@@ -498,12 +491,22 @@ function onClick(event, treeId, treeNode) {
 };
 
 //点击栏目边上的“加号”
-function showOrHide(jiahao){
-  $(jiahao).children(".addContent").css({"display":"block"});
+function show(plus){
+  hiden();
+  $(plus).parent().parent().find(".addContent").css({"display":"block"});
 }
 
 //生成summernote编辑框
-function newSummernote(){
+function newSummernote(news) {
+  var nowId=$(news).parents(".form-group").prop("id");
+  alert(nowId);
+  if(nowId==0){
+    $(des).appendTo($("#addForm"));
+  }else{
+    var nextId=$(news).parents(".form-group").next().prop("id");
+    alert(nextId);
+  }
+  return;
   segmentIndex++;
   description(segmentIndex);
   //初始summernote
@@ -523,34 +526,34 @@ function newSummernote(){
       ['height', ['height']]
     ]
   });
-  hide();
+  hiden();
 }
 /*设置描述样式*/
 function description(segmentIndex){
   alert("des"+segmentIndex)
-  var des='<div class="form-group segment words" id='+segmentIndex+' type="WORD">'+
-            '<label class="col-sm-2 control-label">描述：</label>'+
-            '<div class="col-sm-10" style="margin-left: 19px;">'+
-              '<div id="summernote'+segmentIndex+'" class="summernote"></div>'+
-            '</div>'+
-            '<div class="actions" onclick="showOrHide(this)">'+
-              '<div class="toggle"><img src="../resources/images/off.png" alt="" /></div>'+
-              '<ul class="addContent" style="display: none;">'+
-                '<li class="word" onclick="newSummernote(this)">文</li>'+
-                '<li class="picture" onclick="newPicture(this)">图</li>'+
-                '<li class="vedio">视</li>'+
-                '<li class="radios">音</li>'+
-              '</ul>'+
-            '</div>'+
-          '</div>'
-  $(des).appendTo($("#addForm"));
+  des='<div class="form-group segment words" id='+segmentIndex+' type="WORD">'+
+        '<label class="col-sm-2 control-label">描述：</label>'+
+        '<div class="col-sm-10" style="margin-left: 19px;">'+
+          '<div id="summernote'+segmentIndex+'" class="summernote"></div>'+
+        '</div>'+
+        '<div class="actions">'+
+          '<div class="toggle"><img src="../resources/images/off.png" alt=""  onclick="show(this)"/></div>'+
+          '<ul class="addContent" style="display: none;">'+
+            '<li class="word" onclick="newSummernote(this)">文</li>'+
+            '<li class="picture" onclick="newPicture(this)">图</li>'+
+            '<li class="vedio">视</li>'+
+            '<li class="radios">音</li>'+
+          '</ul>'+
+        '</div>'+
+      '</div>'
+//$(des).appendTo($("#addForm"));
 }
 
 //生成图片编辑框
 function newPicture(){
   segmentIndex++;
   picture(segmentIndex);
-  hide();
+  hiden();
   upLoadPicture();
 }
 
@@ -558,22 +561,22 @@ function newPicture(){
 function picture(segmentIndex){
   alert("pic"+segmentIndex);
   var pict='<div class="form-group segment pic" id='+segmentIndex+' type="PICTURE">'+
-            '<label class="col-sm-2 control-label">图片：</label>'+
-            '<div class="col-sm-10"style="margin-left: 19px;">'+
-              '<input id="uploadImg" name="uploadImg" class="form-control" type="file" accept=".png,.jpg" />'+
-              '<input id="ContentImg" name="ContentImg" type="hidden" value="" />'+
-              '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大1M，支持JPG、PNG格式</span>'+
-            '</div>'+
-            '<div class="actions" onclick="showOrHide(this)">'+
-              '<div class="toggle"><img src="../resources/images/off.png" alt="" /></div>'+
-              '<ul class="addContent" style="display: none;">'+
-                '<li class="word" onclick="newSummernote(this)">文</li>'+
-                '<li class="picture" onclick="newPicture(this)">图</li>'+
-                '<li class="vedio">视</li>'+
-                '<li class="radios">音</li>'+
-              '</ul>'+
-            '</div>'+
-          '</div>'
+              '<label class="col-sm-2 control-label">图片：</label>'+
+              '<div class="col-sm-10"style="margin-left: 19px;">'+
+                '<input id="uploadImg" name="uploadImg" class="form-control" type="file" accept=".png,.jpg" />'+
+                '<input id="ContentImg" name="ContentImg" type="hidden" value="" />'+
+                '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大1M，支持JPG、PNG格式</span>'+
+              '</div>'+
+              '<div class="actions">'+
+                '<div class="toggle"><img src="../resources/images/off.png" alt=""  onclick="show(this)"/></div>'+
+                '<ul class="addContent" style="display: none;">'+
+                  '<li class="word" onclick="newSummernote(this)">文</li>'+
+                  '<li class="picture" onclick="newPicture(this)">图</li>'+
+                  '<li class="vedio">视</li>'+
+                  '<li class="radios">音</li>'+
+                '</ul>'+
+              '</div>'+
+            '</div>'
   $(pict).appendTo($("#addForm"));
 }
 
@@ -674,11 +677,8 @@ function createArticle(){
 }
 
 //隐藏所有的addContent  但是现在仍然还有一个存在
-function hide(){
-  alert("hide")
-  $("#articleForm").find(".addContent").each(function(){
-    $(this).hide();
-  })
+function hiden(){
+  $(".addContent").css("display", "none");
 }
 
 
