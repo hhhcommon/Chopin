@@ -16,10 +16,14 @@
   <link href="../resources/plugins/hplus/css/plugins/jqpagination/fy.css" rel="stylesheet"/>
   <link href="../resources/plugins/summernote/summernote.css" rel="stylesheet">
   <link href="../resources/plugins/uploadimg/css/zyUpload.css" rel="stylesheet">
-  <!-- 全局js -->
   <script src="../resources/plugins/hplus/js/jquery-2.1.1.min.js"></script>
+  <script src="../resources/plugins/zTree/js/jquery.ztree.core-3.5.js"></script>
+  <script src="../resources/plugins/zTree/js/jquery.ztree.excheck-3.5.js"></script>
+  <script src="../resources/plugins/zTree/js/jquery.ztree.exedit-3.5.js"></script>
   <script src="../resources/plugins/hplus/js/bootstrap.min.js"></script>
+  <script src="../resources/plugins/hplus/js/content.min.js"></script>
   <script src="../resources/js/context.utils.js"></script>
+  <script src="../resources/js/common.utils.js"></script>
   <!-- 自定义js -->
   <script src="../resources/plugins/hplus/js/content.min(1).js"></script>
   <!-- jQuery Validation plugin javascript-->
@@ -27,36 +31,90 @@
   <!--编辑文字-->
   <script src="../resources/plugins/summernote/summernote.min.js"></script>
   <script src="../resources/plugins/summernote/lang/summernote-zh-CN.js"></script>
-  <!--上传图片-->
-  <script src="../resources/plugins/uploadimg/js/jq22.js"></script>
-  <script src="../resources/plugins/uploadimg/js/zyFile.js"></script>
-  <script src="../resources/plugins/uploadimg/js/zyUpload.js"></script>
+  
 <style>
 *{margin:0;padding:0;}
 li{list-style: none;}
+/*工具条区域样式*/
+.toobarArea{
+  height:40px;
+  width:100%;
+  line-height:30px;
+  background:#eff3f6;
+  border-top:1px solid #ccc;
+  border-bottom:1px solid #ccc;
+  padding-left:15px;
+  padding-top:5px;
+  overflow:hidden;
+}
+/*按钮*/
+.toobarArea button{
+  width:60px;
+  height:24px;
+  margin-top:-4px;
+  background:#0077c7;
+  color:white;
+  text-align:center;
+  padding:2px;
+  font-size:12px;
+  border-radius: 0px;
+}
+/*主区域*/
+.mainArea{
+  height: calc(100% - 40px);
+  width: 100%;
+  position: absolute;
+  overflow: auto;
+}
+/*分类列表*/
+.catListArea{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 420px;
+  height: 100%;
+  border-right: 1px solid #ccc;
+  overflow: hidden;
+  padding-bottom: 30px;
+}
+.ztree{
+  width:290px;
+  height:430px;
+  margin-left:35px;
+  margin-top:35px;
+  border: 1px solid #3370b7;
+  overflow:auto;
+}
+/*内容详情*/
+.catDetailArea{
+  position:absolute;
+  right:0;
+  top:0;
+  height:100%;
+  width:calc(100% - 420px);
+  background:white;
+}
+.detail{
+  height:240px;
+  border:1px solid black;
+}
+/*弹出框的样式*/
+.opeBox{
+  height: 545px;
+  position: absolute;
+  top: 10%;
+  left: 20%;
+  width: 560px;
+  background: white;
+  border-radius: 4px;
+  font-size: 14px;
+  z-index: 10000;
+}
 .opeBox .col-sm-11{
   border: 1px solid black;
   border-radius: 7px;
-  margin-top: 70px;
-  margin-left:35px;
-}
-.ibox .addContent{
-  width: 240px;
-  height: 40px;
-  overflow: hidden;
-  padding: 8px 1px 1px 1px;
-}
-.ibox .addContent li{
-  width: 50px;
-  height: 30px;
-  border: 1px solid red;
-  float: left;
-  margin-left: 4px;
-  margin-top:1px;
-  cursor:pointer;
-  line-height:30px;
-  text-align:center;
-  border-radius: 1px;
+  margin-top: 25px;
+  margin-left:22px;
 }
 .opeBox .form-group {
   margin: 25px auto;
@@ -67,19 +125,63 @@ li{list-style: none;}
 }
 .form-group .control-label{
   position: absolute;
-  top: 50%;
+  top: 56%;
   transform: translate(0,-59%);
-  font-size: 16px;
+  font-size: 14px;
   left: -25px;
 }
 .form-group #titleName{
   position: relative;
   top: 4px;
 }
+#channelId,#channelName{
+  width:200px;
+  position: absolute;
+  margin-top: -3%;
+}
+#chooseChannel{
+  width: 100px;
+  height: 32px;
+  position: absolute;
+  left:69%;
+  margin-top: -3%;
+  font-size: 15px;
+  line-height: 32px;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid #ccc;
+}
+.action{
+  position: absolute;
+  margin-left: 80%;
+  margin-top: -5%;
+  cursor: pointer;
+}
+.ibox .addContent{
+  border: 1px solid red;
+  width: 120px;
+  height: 30px;
+  overflow: hidden;
+  margin-top: 4px;
+  margin-left: -55px;
+}
+.ibox .addContent li{
+  width: 25px;
+  height: 25px;
+  border: 1px solid red;
+  float: left;
+  margin-left: 4px;
+  margin-top:1px;
+  cursor:pointer;
+  line-height:25px;
+  text-align:center;
+  border-radius: 14px;
+}
+
 .previewImg {
   width: 100px;
   height: 100px;
-  border: 1px solid #e5e6e7;
+  border: 1px solid #ccc;
   border-radius: 2px;
   margin-bottom: 5px;
 }
@@ -90,213 +192,225 @@ li{list-style: none;}
 li, a, input {
   outline: 0;
 }
+
 </style>
 </head>
 <body style="overflow:hidden">
-  <div style="height:100%">
+  <div style="height:100%;overflow: auto;">
     <!--显示主区域-->
     <div class="mainArea">
       <!--左侧列表-->
       <div id="catListArea" class="catListArea">
-        <!--动态加载分类列表-->
+        <!--动态加载栏目列表-->
         <ul id="cataTree" class="ztree"></ul>
       </div>
       <!--右侧详情-->
       <div id="catDetailArea" class="catDetailArea">
-        <!--动态加载电台分类详情-->
+        <!--动态加载栏目详情-->
         <div class="col-sm-12">
           <div class="ibox float-e-margins">
-            <h5>分类详情</h5>
+            <!--菜单栏-->
+            <div class="toobarArea">
+              <button type="button" id="add" opeType="claAdd" class="btn" style="margin-right:3px;">添加</button>
+              <button type="button" id="mod" opeType="claMod" class="btn" style="margin-right:3px;">修改</button>
+              <button type="button" id="del" opeType="claDel" class="btn" style="margin-right:3px;">删除</button>
+            </div>
             <div class="ibox-content">
-              <ul class="detail"></ul>
+              <ul class="detail">这里面放栏目里的文章</ul>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  
-  
-  
-  
-  
-  <div class="row opeBox" style="display:none;">
+    <!-- 遮罩 -->
+    <div id="shade"></div>
+    <!--弹出内容:添加分类-->
+    <div class="row opeBox" style="display:none;">
     <div class="col-sm-11 ">
       <div class="ibox float-e-margins">
-        <ul class="addContent">
-            <li class="word">文字</li>
-            <li class="picture">图片</li>
-            <li class="vedio">视频</li>
-            <li class="radio">音频</li>
-        </ul>
+        <div class="ibox-tools">
+            <a class="close-link">
+              <i class="fa fa-times"></i>
+            </a>
+        </div>
         <div class="ibox-content">
           <form class="form-horizontal m-t" id="articleForm" onsubmit="return false;">
             <div class="form-group" id="1">
-              <label class="col-sm-2 control-label">文章标题：</label>
-              <div class="col-sm-10" style="margin-left: 63px;">
+              <label class="col-sm-2 control-label">标题：</label>
+              <div class="col-sm-10" style="margin-left: 19px;">
                 <input id="titleName" name="titleName" class="form-control" type="text" aria-required="true">
               </div>
             </div>
-            <div id="addform"></div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">栏目：</label>
+              <div class="col-sm-10" style="margin-left: 19px;">
+                <input id="channelId" name="channelId" class="form-control" placeholder="栏目id" type="hidden" aria-required="true" value="">
+                <input id="channelName" name="channelName" class="form-control" placeholder="栏目名城" type="text" aria-required="true">
+                <div id='chooseChannel'>选择栏目</div>
+                <ul id="cataTrees" class="ztree"></ul>
+              </div>
+            </div>
+            <div class="action">
+              <div class="do"><img src="../resources/images/off.png" alt="" /></div>
+              <ul class="addContent" style="display: none;">
+                <li class="word">文</li>
+                <li class="picture">图</li>
+                <li class="vedio">视</li>
+                <li class="radio">音</li>
+              </ul>
+            </div>
+             
+            <!--<div id="addform"></div>-->
             <!--<div class="form-group">
-              <label class="col-sm-2 control-label">文章图片：</label>
+              <label class="col-sm-2 control-label">图片：</label>
               <div class="col-sm-9">
-                <div class="previewImg">
-                  <img class="defaultImg" src="../resources/plugins/uploadimg/images/add_img.png" alt="front cover" />
-                </div>
                 <input id="uploadImg" name="uploadImg" class="form-control" type="file" accept=".png,.jpg" />
                 <input id="ContentImg" name="ContentImg" type="hidden" value="" />
                 <span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大1M，支持JPG、PNG格式</span>
               </div>
             </div>-->
-            <div class="form-group" style="margin-top: 20px;">
+            <!--<div class="form-group" style="margin-top: 20px;">
               <div class="col-sm-6 text-right">
                 <button class="btn btn-warning" id="submitBtn" type="submit">预览</button>
               </div>
               <div class="col-sm-6 text-left">
                 <button class="btn btn-warning commit" type="publish">提交</button>
               </div>
-            </div>
+            </div>-->
           </form>
         </div>
       </div>
     </div>
   </div>
+  </div>
+  
+  
+  
+  
+  
+  
 </body> 
 <script>
+alert(1234)
+var zTreeObj;
+var rootPath=getRootPath();
+//需要加载的分类树的数据，以list方式给出
+var loadTreeData=[{ChannelId:"",TreeViewType:"zTree"}];
+//初始化方法：页面加载完成后执行
 $(function(){
-  var i=1;
-  //1初始化点击事件
-  //1.1-点击文字
-  $(".word").on("click",function(){
-    i++;
-    loadWord(i);
-    $('.summernote').summernote({
-      lang:'zh-CN',
-      height:80,
-      minHeight:80,
-      maxHeight:80,
-      focus:false,
-      toolbar: [
-        // [groupName, [list of button]]
-        ['style', ['bold', 'italic', 'underline', 'clear']],
-        ['font', ['strikethrough', 'superscript', 'subscript']],
-        ['fontsize', ['fontsize']],
-        ['color', ['color']],
-        ['para', ['ul', 'ol', 'paragraph']],
-        ['height', ['height']]
-      ]
-    });
-  });
-  
-  //1.2-点击图片
-  $(".picture").on("click",function(){
-    i++;
-    loadPic(i);
-  });
-  
-  //1.3点击保存
-  $(".commit").on("click",function(){
-    var str;
-    for(var j=2;j<=i;j++){
-      if($('#summernote'+j).length>0) {
-        var mo = $('#summernote'+j).summernote('code');
-        alert(mo);
-        var s = {
-            "PartId":2,
-            "PartType":"WORD",
-            "PartInfo":mo
-        };
-        if(typeof(str) == "undefined") {
-          str = JSON.stringify(s);
-        } else {
-          str += ','+JSON.stringify(s);
-        }
-      } else {
-        alert(j+"不存在");
+  //0-初始化页面
+  //0.1-初始化页面树样式
+  zTreeObj=$.fn.zTree.init($("#cataTree"), {
+    view:{
+      selectedMulti: false//是否允许同时选中多个节点
+    },
+    edit:{
+      enable: true,//是否开启异步模式
+      showRemoveBtn: false,//是否显示删除按钮
+      showRenameBtn: false//是否显示编辑名称按钮
+    },
+    check:{
+      enable: false//设置 zTree的节点上是否显示 checkbox / radio
+    },
+    data:{
+      simpleData:{
+        enable: true
       }
     }
-    alert(JSON.stringify(str));
-
-
-    createArticle(str);
-  })
-})
-
-//加载文字
-function loadWord(i){
-  var dom='<div class="form-group" id='+i+'>'+
-              '<label class="col-sm-2 control-label">编辑文字：</label>'+
-              '<div class="col-sm-10" style="margin-left: 61px;">'+
-                '<div id="summernote'+i+'" class="summernote"></div>'+
-              '</div>'+
-            '</div>'
-  $(dom).appendTo($("#addform"));
-}
-
-//加载图片
-function loadPic(i){
-  var dom='<div class="form-group" id='+i+'>'+
-              '<label class="col-sm-2 control-label">文章图片：</label>'+
-              '<div class="col-sm-10" style="margin-left:63px;">'+
-                '<input id="uploadImg" name="uploadImg" class="form-control" type="file" accept=".png,.jpg" />'+
-                '<input id="ContentImg" name="ContentImg" type="hidden" value="" />'+
-                '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大1M，支持JPG、PNG格式</span>'+
-              '</div>'+
-            '</div>'
-  $(dom).appendTo($("#addform"));  
-}
-
-//提交图片和文字
-function createArticle(str){
-  console.log($("#titleName").val());
-  for(var j=0;j<$('.summernote').length;j++){
-    console.log($('.summernote').eq(j).summernote('code'));
-  }
-//console.log($('.summernote').summernote('code'));
-//var aa=$("#uploadImg").val();//图片的路径
-//var bb=aa.substring(aa.lastIndexOf('\\')+1,aa.length);//图片的名字
-//console.log(bb);
-//console.log($("#uploadImg").val());
-
-  $.ajax({
-    //url:"http://localhost:908/CM/common/uploadCM.do",
-    url:"http://localhost:908/Chopin/content/addByWeb.do",
-    type:"POST",
-    data:JSON.stringify(str),
-    dataType:"json",
-    //表单提交前进行验证
-    success: function (returnData){
-      if(returnData.returnType=="1001"){
-        alert("成功添加");
-      }else{
-        alert(returnData.Message);
-      }
-    },
-    error: function(jqXHR){
-      alert("发生错误" + jqXHR.status);
-    }     
   });
+  //0.2--初始化弹出框的树
+//zTreeObjs=$.fn.zTree.init($("#cataTrees"), {
+//  view:{
+//    selectedMulti: false//是否允许同时选中多个节点
+//  },
+//  edit:{
+//    enable: true,//是否开启异步模式
+//    showRemoveBtn: false,//是否显示删除按钮
+//    showRenameBtn: false//是否显示编辑名称按钮
+//  },
+//  check:{
+//    enable: false//设置 zTree的节点上是否显示 checkbox / radio
+//  },
+//  data:{
+//    simpleData:{
+//      enable: true
+//    }
+//  },
+//  callback:{
+//    onClick:onClick
+//  }
+//});
   
+  //1-加载数据
+  //1.1-加载树
+  loadTree(loadTreeData);
   
-  
+  //2-初始化按钮
+  //2.1-点击添加按钮，增加新的分类
+  $("#add").on("click",function(){
+    $("#shade").css({"display":"block"});
+    $(".row").show();
+  });
+  //2.2-点击修改按钮，修改已有的分类
+  $("#mod").on("click",function(){
+    $("#shade").css({"display":"block"});
+    $(".row").show();
+  });
+  //2.3-点击删除按钮，删除已有的分类
+  $("#del").on("click",function(){
+    
+  });
+  //2.4-点击提交按钮，提交表单
+  $(".commit").on("click",function(){
+   
+  })
+  //2.5-点击遮罩层,确定,取消按钮，遮罩层和弹出层消失
+  $(".commit,.close-link,#shade").on("click",function(){
+    $(".row").hide();
+    $("#shade").css({"display":"none"});
+  });
+  //2.6-鼠标点击“加号”，显示对应的内容
+  $(".do").on("click",function(){
+    $(this).siblings(".addContent").show();
+    $(this).children("img").attr("src","../resources/images/on.png");
+    $(this).addClass("on");
+  });
+  //2.7-鼠标点击“减号”，显示对应的内容
+   $(".on").on("click",function(){
+    $(this).siblings(".addContent").hide();
+    $(this).children("img").attr("src","../resources/images/off.png");
+    $(this).removeClass("on");
+   })
+});
 
-function createArticle(){
-  console.log($("#titleName").val());
-  console.log($('#summernote').summernote('code'));
-  console.log();
+/**
+ * 加载树
+ */
+function loadTree(loadData) {
+  var _url=rootPath+"baseinfo/getChannelTree4View.do";
+  var i=0;
+  loadRecursion(0);
+  function loadRecursion(index) {
+    if (index==loadTreeData.length) return;
+    $.ajax({
+      type: "POST",    
+      url: _url,
+      dataType: "json",
+      data: loadData[index++],
+      success: function(jsonData){
+        if(jsonData.ReturnType=="1001") {
+          zTreeObj.addNodes(null,jsonData.Data,false);
+//        zTreeObjs.addNodes(null,jsonData.Data,false);
+        }
+        loadRecursion(index);
+      },
+      error:function(jqXHR){
+        alert("发生错误" + jqXHR.status);
+      }
+    });
+  }
 }
 
 
-
-
-
-
-
-
-
-  
-
-    
 </script>
 </html>
