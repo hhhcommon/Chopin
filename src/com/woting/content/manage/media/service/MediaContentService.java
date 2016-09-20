@@ -50,6 +50,9 @@ public class MediaContentService {
 	}
 
 	public List<Map<String, Object>> getContents(String userId, String channelId, int perSize, int page, int pageSize, String beginCatalogId) {
+		if (channelId==null) {
+			return getContentsByNoChannelId(userId, perSize, page, pageSize, beginCatalogId);
+		}
 		List<Map<String, Object>> l = new ArrayList<>();
 		ChannelPo chPo = channelService.getChannelById(channelId);
 		if (chPo != null) {
@@ -138,6 +141,58 @@ public class MediaContentService {
 		return l;
 	}
 	
+	private List<Map<String, Object>> getContentsByNoChannelId(String userId, int perSize, int page, int pageSize, String beginCatalogId) {
+		List<Map<String, Object>> l = new ArrayList<>();
+		List<ChannelPo> chs = mediaService.getChannleByPcId("0");
+		List<ChannelPo> cs = new ArrayList<>();
+		for (ChannelPo cho : chs) {
+			cs.add(cho);
+			if (beginCatalogId!=null && beginCatalogId.equals(cho.getId())) {
+				chs.removeAll(cs);
+				break;
+			}
+		}
+		if(chs!=null && chs.size()>0) {
+			for (ChannelPo ch : chs) {
+				if (pageSize < 1)
+					return l;
+				List<ChannelAssetPo> chas = channelService.getChannelAssetsByPcId(ch.getId(), 2, page, perSize);
+				if(chas!=null && chas.size()>0) {
+					pageSize = pageSize - chas.size();
+					List<Map<String, Object>> ll = new ArrayList<>();
+					List<Map<String, Object>> chasm = channelContentService.getChannelAssetList(chas);
+					String[] ids = new String[chas.size()];
+					List<MediaAsset> mas = new ArrayList<>();
+					for (int i = 0; i < chas.size(); i++) {
+						ids[i] = chas.get(i).getAssetId();
+						MediaAsset ma = mediaService.getMaInfoById(chas.get(i).getAssetId());
+						if (ma!=null) {
+							mas.add(ma);
+						}
+					}
+					List<Map<String, Object>> fm = favoriteService.getContentFavoriteInfo(ids, userId);
+					for (MediaAsset ma : mas) {
+						Map<String, Object> mam = ContentUtils.convert2Ma(ma.toHashMap(), null, null, chasm, fm);
+						for (ChannelAssetPo css : chas) {
+							if(css.getAssetId().equals(mam.get("ContentId")))
+								mam.put("ContentSort", css.getSort());
+						}
+						ll.add(mam);
+					}
+					if (ll.size() > 0) {
+						Map<String, Object> m = new HashMap<>();
+						m.put("List", ll);
+						m.put("AllCount", ll.size());
+						m.put("CatalogId", ch.getId());
+						m.put("CatalogName", ch.getChannelName());
+						l.add(m);
+					}
+				}
+			}
+		}
+		return l;
+	}
+	
     public Map<String, Object> searchByText(String searchStr, int page, int pageSize, MobileUDKey mUdk) {
         if (StringUtils.isNullOrEmptyOrSpace(searchStr)) {
             Map<String, Object> m=new HashMap<>();
@@ -218,11 +273,6 @@ public class MediaContentService {
 			mam = ContentUtils.convert2Ma(ma.toHashMap(), null, null, chasm, fm);
 		}
 		return mam;
-	}
-	
-	public List<Map<String, Object>> getPlaySumCounts() {
-		
-		return null;
 	}
 
 	public List<Map<String, Object>> getDirectContent(String channelId, String flowFlag) {

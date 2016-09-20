@@ -141,6 +141,13 @@
     where assetType=#{assetType,jdbcType=VARCHAR} and assetId in (${assetIds})
     <if test="sortByClause!=null">order by ${sortByClause}</if> 
   </select>
+  
+  <select id="getListByPcId" parameterType="java.util.Map" resultMap="channelAssetMap">
+    select * from wt_ChannelAsset <if test="_parameter!=null"><include refid="WhereClauseByEntiey"/></if>
+    and channelId in (select id from wt_Channel where pcId=#{pcId,jdbcType=VARCHAR})
+    <if test="sortByClause!=null">order by ${sortByClause}</if> 
+    limit #{page,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+  </select>
 
   <!-- 获得一条数据 -->
   <select id="getInfo" parameterType="java.util.Map" resultMap="channelAssetMap">
