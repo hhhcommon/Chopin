@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.spiritdata.framework.util.JsonUtils;
 import com.spiritdata.framework.util.SequenceUUID;
+import com.woting.cm.core.channel.model.ChannelAsset;
 import com.woting.cm.core.channel.persis.po.ChannelAssetPo;
 import com.woting.cm.core.channel.service.ChannelService;
 import com.woting.cm.core.media.model.MediaAsset;
@@ -92,6 +93,37 @@ public class QueryService {
 	public void removeContentByApp(String userId, String contentId) {
 		mediaService.removeMa(contentId);
 		channelService.removeChannelAsset(contentId);
+	}
+	
+	//只用于发布已撤销的内容
+	public boolean addPubContentInfo(String channelId, String contentId) {
+		ChannelAsset cha = mediaService.getChannelAssetByChannelIdAndAssetId(channelId, contentId);
+		if(cha!=null) {
+			cha.setIsValidate(1);
+			mediaService.updateCha(cha);
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean modifyPubSortInfo(String channelId, int contentSort, String contentId) {
+		ChannelAsset cha = mediaService.getChannelAssetByChannelIdAndAssetId(channelId, contentId);
+		if(cha!=null) {
+			cha.setSort(contentSort);
+			mediaService.updateCha(cha);
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean removePubInfo(String channelId, String contentId) {
+		ChannelAsset cha = mediaService.getChannelAssetByChannelIdAndAssetId(channelId, contentId);
+		if(cha!=null) {
+			cha.setIsValidate(2);
+			mediaService.updateCha(cha);
+			return true;
+		}
+		return false;
 	}
 	
 	public boolean makeContentHtml(String channelId, List<Map<String, Object>> list, List<Map<String, Object>> removelist){

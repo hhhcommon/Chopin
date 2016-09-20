@@ -109,6 +109,19 @@ public class MediaService {
 		return channelAssetDao.queryForList("getListByAssetIds", m);
     }
     
+    public ChannelAsset getChannelAssetByChannelIdAndAssetId(String channelId, String assetId) {
+    	Map<String, Object> m = new HashMap<>();
+    	m.put("channelId", channelId);
+    	m.put("assetId", assetId);
+    	List<ChannelAssetPo> cha = channelAssetDao.queryForList("getList", m);
+    	if (cha!=null && cha.size()==1) {
+    		ChannelAsset chass = new ChannelAsset();
+    		chass.buildFromPo(cha.get(0));
+			return chass;
+		}
+		return null;
+    }
+    
     //根据栏目id得到栏目
     public Channel getChInfoById(String id){
     	Channel ch = new Channel();
@@ -185,9 +198,9 @@ public class MediaService {
     public void updateMa(MediaAsset ma) {
         mediaAssetDao.update("updateMa", ma.convert2Po());
     }
-      
+    
     public int  updateCha(ChannelAsset cha) {
-    	return channelAssetDao.update("update", cha.convert2Po());
+    	return channelAssetDao.update("update", cha.convert2Po().toHashMap());
     }
 
     public boolean removeMa(String id){

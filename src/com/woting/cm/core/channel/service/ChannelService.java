@@ -328,8 +328,9 @@ public class ChannelService {
     	m.put("channelId", channelId);
     	m.put("assetType", "wt_MediaAsset");
     	m.put("flowFlag", flowFlag);
-    	m.put("sortByClause", "pubTime");
-    	m.put("page", page);
+    	m.put("sortByClause", "sort desc ,pubTime desc");
+    	m.put("isValidate", 1);
+    	m.put("page", page-1);
     	m.put("pageSize", pageSize);
 		return channelAssetDao.queryForList("getListByLimit", m);
     }
