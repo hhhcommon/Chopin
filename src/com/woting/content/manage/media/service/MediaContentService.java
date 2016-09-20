@@ -289,7 +289,7 @@ public class MediaContentService {
 		}
 		channelIds += ",'"+channelId+"'";
 		channelIds = channelIds.substring(1);
-		m.put("whereByClause", "channelId not in ("+channelIds+")");
+		m.put("whereByClause", "channelId in ("+channelIds+")");
 		List<ChannelAssetPo> chas = channelService.getChannelAssets(m);
 		List<Map<String, Object>> l = new ArrayList<>();
 		if(chas!=null&&chas.size()>0) {
