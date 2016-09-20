@@ -212,9 +212,19 @@ public class MediaContentService {
 
 	public List<Map<String, Object>> getDirectContent(String channelId, String flowFlag) {
 		Map<String, Object> m = new HashMap<>();
-		m.put("channelId", channelId);
 		m.put("flowFlag", flowFlag);
+		m.put("isValidate", 1);
 		m.put("sortByClause", "sort");
+		String channelIds = "";
+		List<ChannelPo> chs = channelService.getChannelsByPcId(channelId);
+		if (chs!=null && chs.size()>0) {
+			for (ChannelPo chPo : chs) {
+				channelIds += ",'"+chPo.getId()+"'";
+			}
+		}
+		channelIds += ",'"+channelId+"'";
+		channelIds = channelIds.substring(1);
+		m.put("whereByClause", "channelId not in ("+channelIds+")");
 		List<ChannelAssetPo> chas = channelService.getChannelAssets(m);
 		List<Map<String, Object>> l = new ArrayList<>();
 		if(chas!=null&&chas.size()>0) {
@@ -225,6 +235,7 @@ public class MediaContentService {
 				mm.put("ContentURL", ma.getKeyWords());
 				mm.put("CTime", ma.getCTime());
 				mm.put("Sort", cha.getSort());
+				mm.put("ChannelId", cha.getChannelId());
 				l.add(mm);
 			}
 			return l;
