@@ -31,7 +31,6 @@ public class QueryService {
 	private MediaService mediaService;
 	@Resource
 	private UserService userService;
-	private String[] format = {};
 
 	public Map<String, Object> addContentByApp(String userId, String title, String filePath,String descn , String channelId) {
 		Map<String, Object> map = new HashMap<>();

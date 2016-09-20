@@ -32,9 +32,7 @@ public class MediaContentController {
 				userId = null;
 			String channelId = m.get("ChannelId") + "";
 			if (channelId.equals("null")) {
-				map.put("ReturnType", "1002");
-				map.put("Message", "无法获得Id");
-				return map;
+				channelId = null;
 			}
 			int perSize = 3;
 			String perSizestr = m.get("PerSize") + "";

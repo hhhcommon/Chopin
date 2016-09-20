@@ -75,6 +75,12 @@ public class MediaService {
     	return channelAssetDao.queryForList("getListByFlowFlag", m);
     }
     
+    public List<ChannelPo> getChannleByPcId(String pcId) {
+    	Map<String, Object> m = new HashMap<>();
+    	m.put("pcId", pcId);
+		return channelDao.queryForList("getList", m);
+    }
+    
     //根据主播id查询其所有单体资源
     public List<Map<String, Object>> getMaInfoByMaPubId(String userId) {
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();

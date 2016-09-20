@@ -322,6 +322,18 @@ public class ChannelService {
     public List<ChannelAssetPo> getChannelAssets(Map<String, Object> m) {
 		return channelAssetDao.queryForList("getList", m);
     }
+    
+    public List<ChannelAssetPo> getChannelAssetsByPcId(String channelId, int flowFlag, int page, int pageSize){
+    	Map<String, Object> m = new HashMap<>();
+		m.put("pcId", channelId);
+    	m.put("assetType", "wt_MediaAsset");
+    	m.put("flowFlag", 2);
+    	m.put("sortByClause", "sort desc ,pubTime desc");
+    	m.put("isValidate", 1);
+    	m.put("page", page-1);
+    	m.put("pageSize", pageSize);
+		return channelAssetDao.queryForList("getListByPcId", m);
+    }
 
     public List<ChannelAssetPo> getChannelAssetsByChannelId(String channelId, int page, int pageSize, int flowFlag) {
     	Map<String, Object> m = new HashMap<>();
