@@ -198,9 +198,9 @@ public class MediaService {
     public void updateMa(MediaAsset ma) {
         mediaAssetDao.update("updateMa", ma.convert2Po());
     }
-      
+    
     public int  updateCha(ChannelAsset cha) {
-    	return channelAssetDao.update("update", cha.convert2Po());
+    	return channelAssetDao.update("update", cha.convert2Po().toHashMap());
     }
 
     public boolean removeMa(String id){

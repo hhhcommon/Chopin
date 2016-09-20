@@ -119,7 +119,7 @@ public class QueryService {
 	public boolean removePubInfo(String channelId, String contentId) {
 		ChannelAsset cha = mediaService.getChannelAssetByChannelIdAndAssetId(channelId, contentId);
 		if(cha!=null) {
-			cha.setIsValidate(0);
+			cha.setIsValidate(2);
 			mediaService.updateCha(cha);
 			return true;
 		}
