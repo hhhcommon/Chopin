@@ -28,7 +28,6 @@ public class FileUploadController extends AbstractFileUploadController{
     public Map<String, Object> afterUploadOneFileOnSuccess(Map<String, Object> m, Map<String, Object> a, Map<String, Object> p) {
         String filepath = m.get("storeFilename")+"".trim();
         String filename = FileNameUtils.getFileName(filepath);
-        System.out.println(filename);
         int typenum = FileUploadUtils.getFileType(filename);
         if(typenum>0) {
             String newname = SequenceUUID.getPureUUID()+filename.substring(filename.lastIndexOf("."), filename.length());
