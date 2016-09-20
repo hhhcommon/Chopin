@@ -151,5 +151,68 @@ public class QueryController {
 		return map;
 	}
 	
+	/**
+	 * 发布已撤销内容
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "addPubContent.do")
+	@ResponseBody
+	public Map<String, Object> addPubContent(HttpServletRequest request) {
+		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> m = RequestUtils.getDataFromRequest(request);
+		String channelid = m.get("ChannelId")+"";
+		if(channelid.equals("null")) {
+			map.put("ReturnType", "1011");
+			map.put("Message", "缺少栏目Id");
+			return map;
+		}
+		String contentid = m.get("ContentId")+"";
+		if(contentid.equals("null")) {
+			map.put("ReturnType", "1012");
+			map.put("Message", "缺少内容Id");
+			return map;
+		}
+		
+		boolean isok = queryService.addPubContentInfo(channelid, contentid);
+		if(isok) {
+			map.put("ReturnType", "1001");
+		    map.put("Message", "添加成功");
+		    return map;
+		} 
+		
+		return map;
+	}
 	
+	/**
+	 * 移动端添加内容
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "modifyPubSort.do")
+	@ResponseBody
+	public Map<String, Object> modifyPubSort(HttpServletRequest request) {
+		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> m = RequestUtils.getDataFromRequest(request);
+		String channelid = m.get("ChannelId")+"";
+		if(channelid.equals("null")) {
+			map.put("ReturnType", "1002");
+			map.put("Message", "无法获得栏目Id");
+			return map;
+		}
+		List<Map<String, Object>> list = (List<Map<String, Object>>) m.get("List");
+		if(list==null || list.size()==0) {
+			map.put("ReturnType", "1003");
+			map.put("Message", "参数不全");
+			return map;
+		}
+		List<Map<String, Object>> removelist = (List<Map<String, Object>>) m.get("RemoveList");
+
+		boolean isok = queryService.makeContentHtml(channelid, list, removelist);
+		map.put("ReturnType", "1001");
+		map.put("Message", "添加成功");
+		return map;
+	}
 }

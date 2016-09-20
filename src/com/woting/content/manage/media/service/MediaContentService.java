@@ -55,6 +55,7 @@ public class MediaContentService {
 		if (chPo != null) {
 			List<ChannelPo> chs = channelService.getChannelsByPcId(chPo.getId());
 			if (chs == null || chs.size() == 0) {
+				List<Map<String, Object>> ll = new ArrayList<>();
 				List<ChannelAssetPo> chas = channelService.getChannelAssetsByChannelId(chPo.getId(), page, pageSize, 2);
 				if (chas != null && chas.size() > 0) {
 					List<Map<String, Object>> chsm = channelContentService.getChannelAssetList(chas);
@@ -71,8 +72,16 @@ public class MediaContentService {
 						MediaAsset mediaAsset = new MediaAsset();
 						mediaAsset.buildFromPo(maPo);
 						Map<String, Object> mam = ContentUtils.convert2Ma(mediaAsset.toHashMap(), null, null, chsm, fm);
-						l.add(mam);
+						ll.add(mam);
 					}
+				}
+				if (ll!=null && ll.size()>0) {
+					Map<String, Object> m = new HashMap<>();
+					m.put("List", ll);
+					m.put("AllCount", ll.size());
+					m.put("CatalogId", chPo.getId());
+					m.put("CatalogName", chPo.getChannelName());
+					l.add(m);
 				}
 			} else {
 				List<ChannelPo> cs = new ArrayList<>();
@@ -111,7 +120,7 @@ public class MediaContentService {
 								Map<String, Object> m = new HashMap<>();
 								m.put("List", ll);
 								m.put("AllCount", ll.size());
-								m.put("CatalogType", "1");
+								m.put("CatalogId", cho.getId());
 								m.put("CatalogName", cho.getChannelName());
 								l.add(m);
 							}
