@@ -37,7 +37,6 @@
 .lineDiv {
   float:left;
 }
-
 #topSegment {
   padding-left:113px;
   padding-right:110px;
@@ -49,7 +48,6 @@
   float:left;
   color:red;  
 }
-
 .logoImg {
   width:43px;
   height:43px;
@@ -66,7 +64,6 @@
   background:url(./resources/chopin/imgs/main_LogoText.png) top left no-repeat;
   background-size:105%;
 }
-
 .operButton {
   border-radius:4px;
   padding-top:1px;
@@ -93,7 +90,7 @@
 .nav {
   width:90px;
   margin-left:20px;
-  height:42px;
+  height:44px;
   font-family: vista_MS;
   font-weight:bold;
   color:#fff;
@@ -101,7 +98,7 @@
   font-size:16px;
 }
 .nav:hover {
-	cursor:pointer;
+  cursor:pointer;
   color:#FFA634;
 }
 .nav:hover .selArrow {
@@ -113,7 +110,6 @@
   width:0;
   overflow:hidden;height:0;
 }
-
 .selArrow {
   margin-left:6px;
   display:inline-block;
@@ -123,11 +119,21 @@
   width:0;
   overflow:hidden;height:0;
 }
+.selArrow_hover {
+  margin-left:6px;
+  display:inline-block;
+  border:0 solid #0E0E0E;
+  border-width:7px 6px 0;
+  border-color:#FFA634 #0E0E0E ;
+  width:0;
+  overflow:hidden;height:0;
+}
 ._menu {
+  padding-top:3px;
   display:none;
+  z-index:2000;
   width:110px;
   position:absolute;
-  border:1px solid red;
   background-color:#0E0E0E ;
 }
 ._menuItem {
@@ -136,14 +142,13 @@
   height:30px;
   font-family: vista_MS;
   color:#fff;
-  font-size:14px;
+  font-size:15px;
 }
 ._menuItem:hover  {
   cursor:pointer;
   color:#FFA634;
   font-weight:bold;
 }
-
 </style>
 </head>
 
@@ -169,11 +174,13 @@
 
 <!-- 中间主框架 -->
 <div id="mainSegment">
+  <iframe frameborder="no" style="display:none;width:1366px;" id="mainContent" _src="/channels.html"></iframe>
 </div>
 </body>
 
 <script>
 var rootPath=getRootPath();
+var curMenuId=0;
 //主窗口参数
 var INIT_PARAM={
   pageObjs: {
@@ -215,37 +222,122 @@ function loadNavigateMenu() {
   $.ajax({type:"post", async:true, url:rootPath+"/baseinfo/getChannelTree4View.do", dataType:"json",
     success: function(jsonData) {
       if (jsonData.ReturnType=='1001') {
-      	var i=0;
-      	var nav=$("<div id='0' class='nav lineDiv' style='width:60px'>首页</div>");
-      	$("#navi").append(nav);
-      	for (;i<jsonData.Data.children.length; i++) {
-      	  var oneNav=jsonData.Data.children[i];
-      	  if (oneNav.children&&oneNav.children.length>0) {
-      	    nav=$("<div id='nav_"+oneNav.id+"' class='nav lineDiv'>"+oneNav.name+"<span class='selArrow'></span></div>");
-      	    //创建新的divMenu
-      	    var divMenu=$("<div id='menu_"+oneNav.id+"' class='_menu'></div>");
-      	    var j=0;
-      	    for (;j<oneNav.children.length;j++) {
-      	      var oneMenuItem=$("<div id='"+oneNav.children[j].id+"' class='_menuItem'>"+oneNav.children[j].name+"</div>");
-      	      $(divMenu).append(oneMenuItem);
-      	    }
-    	      $("#nav_"+oneNav.id).bind("onmouseover", function() {
-    	        //定位menue的位置
-    	        alert("#menu_"+oneNav.id);
-    	        $("#menu_"+oneNav.id).css("display","yes");
-    	      });
-      	    $("body").append(divMenu);
-      	  } else nav=$("<div id='nav_"+oneNav.id+"' class='nav lineDiv'>"+oneNav.name+"</div>");
-      	  $("#navi").append(nav);
-      	}
+        var i=0;
+        var nav=$("<div id='0' class='nav lineDiv' style='width:60px'>首页</div>");
+        $("#navi").append(nav);
+        $(nav).click(function() {
+          showChannelPage($(this).attr("id"));
+        });
+        for (;i<jsonData.Data.children.length; i++) {
+          var oneNav=jsonData.Data.children[i];
+          if (oneNav.children&&oneNav.children.length>0) {
+            nav=$("<div id='nav_"+oneNav.id+"' class='nav lineDiv' cid='"+oneNav.id+"'>"+oneNav.name+"<span class='selArrow'></span></div>");
+            //创建新的divMenu
+            var divMenu=$("<div id='menu_"+oneNav.id+"' class='_menu' cid='"+oneNav.id+"'></div>");
+            var j=0;
+            for (;j<oneNav.children.length;j++) {
+              var oneMenuItem=$("<div id='"+oneNav.children[j].id+"' class='_menuItem' cid='"+oneNav.children[j].id+"'>"+oneNav.children[j].name+"</div>");
+              $(divMenu).append(oneMenuItem);
+              $(oneMenuItem).click(function() {
+                showChannelPage($(this).attr("cid"));
+              });
+            }
+            $("body").append(divMenu);
+            $(divMenu).bind("mouseover", function() {
+              var cid=$(this).attr("cid");
+              curMenuId=cid;
+              //菜单显示处理
+              $("#nav_"+cid).css("color", "#FFA634");
+              $("#nav_"+cid).find("span").removeClass("selArrow").addClass("selArrow_hover");
+            });
+            $(divMenu).find("div").each(function() {
+              $(this).bind("mouseover", function() {
+                var cid=$(this).parent().attr("cid");
+                curMenuId=cid;
+                //菜单显示处理
+                $("#nav_"+cid).css("color", "#FFA634");
+                $("#nav_"+cid).find("span").removeClass("selArrow").addClass("selArrow_hover");
+              });
+            });
+            $(divMenu).bind("mouseout", function() {
+              var cid=$(this).attr("cid");
+              curMenuId=0;
+              setTimeout(function(){
+                if (cid!=curMenuId) {
+                  $("#menu_"+cid).hide();
+                  //菜单显示处理
+                  $("#nav_"+cid).css("color", "#fff");
+                  $("#nav_"+cid).find("span").removeClass("selArrow_hover").addClass("selArrow");
+                }
+              }, 200);
+            });
+            $(divMenu).find("div").each(function() {
+              $(this).bind("mouseout", function() {
+                var cid=$(this).parent().attr("cid");
+                curMenuId=0;
+                setTimeout(function(){
+                  if (cid!=curMenuId) {
+                    $("#menu_"+cid).hide();
+                    //菜单显示处理
+                    $("#nav_"+cid).css("color", "#fff");
+                    $("#nav_"+cid).find("span").removeClass("selArrow_hover").addClass("selArrow");
+                  }
+                }, 200);
+              });
+            });
+          } else nav=$("<div id='nav_"+oneNav.id+"' class='nav lineDiv'>"+oneNav.name+"</div>");
+          $("#navi").append(nav);
+          $(nav).click(function() {
+            showChannelPage($(this).attr("cid"));
+          });
+          if (oneNav.children&&oneNav.children.length>0) {
+            $("#nav_"+oneNav.id).bind("mouseover", function() {
+              //定位menue的位置
+              var cid=$(this).attr("cid");
+              curMenuId=cid;
+              $("#menu_"+cid).css({
+                "left":$("#nav_"+cid).offset().left-15,
+                "top":$("#nav_"+cid).offset().top+47
+              });
+              //菜单显示处理
+              $("#nav_"+cid).css("color", "#FFA634");
+              $("#nav_"+cid).find("span").removeClass("selArrow").addClass("selArrow_hover");
+              $("#menu_"+cid).show();
+            });
+            $("#nav_"+oneNav.id).bind("mouseout", function() {
+              var cid=$(this).attr("cid");
+              curMenuId=0;
+              setTimeout(function(){
+                if (cid!=curMenuId) {
+                  $("#menu_"+cid).hide();
+                  $("#nav_"+cid).css("color", "#fff");
+                  $("#nav_"+cid).find("span").removeClass("selArrow_hover").addClass("selArrow");
+                }
+              }, 200);
+            });
+          }
+        }
       } else {
-      	$.messager.alert("错误", "加载导航菜单：<br/>"+jsonData.message, "error");
+        $.messager.alert("错误", "加载导航菜单：<br/>"+jsonData.message, "error");
       }
     },
     error: function(jqXHR) {
       $.messager.alert("错误", "加载导航菜单：<br/>"+jqXHR.status, "error");
     }
   });
+}
+
+function showChannelPage(channelId) {
+  var ifm=$("#mainContent");
+  var _url=ifm.attr("_src");
+  ifm.attr("src",rootPath+_url+"?channelId="+channelId);
+  if (ifm.attr("src")) ifm.css("display","block");
+}
+
+function showMask(message) {
+  alert("");
+}
+function cleanMask(message) {
 }
 </script>
 </html>
