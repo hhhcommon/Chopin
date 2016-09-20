@@ -6,9 +6,11 @@
   <typeAliases>
     <typeAlias alias="WtUser" type="com.woting.passport.UGA.persistence.pojo.UserPo"/>
     <typeAlias alias="WtThirdUser" type="com.woting.passport.thirdlogin.persis.po.ThirdUserPo"/>
+    <typeAlias alias="MobileUsed" type="com.woting.passport.login.persistence.pojo.MobileUsedPo"/>
   </typeAliases>
   <mappers>
     <mapper resource="com/woting/passport/UGA/persistence/sql/WotingUser.mapper.xml"/>
     <mapper resource="com/woting/passport/thirdlogin/persis/sql/ThirdUser.mapper.xml"/>
+    <mapper resource="com/woting/passport/login/persistence/sql/MobileUsed.mapper.xml"/>
   </mappers>
 </configuration>

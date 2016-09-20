@@ -75,6 +75,12 @@ public class MediaService {
     	return channelAssetDao.queryForList("getListByFlowFlag", m);
     }
     
+    public List<ChannelPo> getChannleByPcId(String pcId) {
+    	Map<String, Object> m = new HashMap<>();
+    	m.put("pcId", pcId);
+		return channelDao.queryForList("getList", m);
+    }
+    
     //根据主播id查询其所有单体资源
     public List<Map<String, Object>> getMaInfoByMaPubId(String userId) {
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
@@ -107,6 +113,19 @@ public class MediaService {
     	m.put("assetType", "wt_MediaAsset");
     	m.put("sortByClause", "cTime");
 		return channelAssetDao.queryForList("getListByAssetIds", m);
+    }
+    
+    public ChannelAsset getChannelAssetByChannelIdAndAssetId(String channelId, String assetId) {
+    	Map<String, Object> m = new HashMap<>();
+    	m.put("channelId", channelId);
+    	m.put("assetId", assetId);
+    	List<ChannelAssetPo> cha = channelAssetDao.queryForList("getList", m);
+    	if (cha!=null && cha.size()==1) {
+    		ChannelAsset chass = new ChannelAsset();
+    		chass.buildFromPo(cha.get(0));
+			return chass;
+		}
+		return null;
     }
     
     //根据栏目id得到栏目
@@ -185,9 +204,9 @@ public class MediaService {
     public void updateMa(MediaAsset ma) {
         mediaAssetDao.update("updateMa", ma.convert2Po());
     }
-      
+    
     public int  updateCha(ChannelAsset cha) {
-    	return channelAssetDao.update("update", cha.convert2Po());
+    	return channelAssetDao.update("update", cha.convert2Po().toHashMap());
     }
 
     public boolean removeMa(String id){

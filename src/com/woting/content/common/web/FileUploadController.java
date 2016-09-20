@@ -15,10 +15,9 @@ import net.coobird.thumbnailator.Thumbnails;
 
 @Controller
 public class FileUploadController extends AbstractFileUploadController{
-//	private static final String rootpath = "/opt/tomcat_Chopin/webapps/Chopin/";
-//	private static final String rootpath = "D:/workIDE/Chopin/WebContent/"; //D:\XBwork\code_short.pcm\WebContent
-	private static final String rootpath = "D:/XBwork/code_short.pcm/WebContent/"; //D:\XBwork\code_short.pcm\WebContent
-	private static final String webpath = "http://182.92.175.134:1108/Chopin/";
+	private static final String rootpath = "/opt/tomcat_Chopin/webapps/Chopin/";
+//	private static final String rootpath = "D:/workIDE/Chopin/WebContent/";
+	private static final String webpath = "http://www.wotingfm.com/Chopin/";
 	private static final String[] MediaPath = {
 			"media/group01/",  //上传的音频文件路径
 			"media/group02/",  //上传的视频文件路径
@@ -36,7 +35,7 @@ public class FileUploadController extends AbstractFileUploadController{
             	String smallImgName = SequenceUUID.getPureUUID()+filename.substring(filename.lastIndexOf("."), filename.length());
                 String smallImgPath = rootpath+MediaPath[typenum]+smallImgName.trim();
                 try {
-			        Thumbnails.of(new File(filepath)).size(100, 100).toFile(smallImgPath);
+			        Thumbnails.of(new File(filepath)).size(144, 108).toFile(smallImgPath);
 			        m.put("smallFilename", smallImgName);
 			        m.put("smallFilepath", webpath+MediaPath[typenum]+smallImgName);
 		        } catch (IOException e) {e.printStackTrace();}
