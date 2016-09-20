@@ -106,6 +106,26 @@ public class QueryService {
 		return false;
 	}
 	
+	public boolean modifyPubSortInfo(String channelId, int contentSort, String contentId) {
+		ChannelAsset cha = mediaService.getChannelAssetByChannelIdAndAssetId(channelId, contentId);
+		if(cha!=null) {
+			cha.setSort(contentSort);
+			mediaService.updateCha(cha);
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean removePubInfo(String channelId, String contentId) {
+		ChannelAsset cha = mediaService.getChannelAssetByChannelIdAndAssetId(channelId, contentId);
+		if(cha!=null) {
+			cha.setIsValidate(0);
+			mediaService.updateCha(cha);
+			return true;
+		}
+		return false;
+	}
+	
 	public boolean makeContentHtml(String channelId, List<Map<String, Object>> list, List<Map<String, Object>> removelist){
 		
 		System.out.println(channelId);

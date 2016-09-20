@@ -59,19 +59,22 @@ public class MediaContentService {
 				List<ChannelAssetPo> chas = channelService.getChannelAssetsByChannelId(chPo.getId(), page, pageSize, 2);
 				if (chas != null && chas.size() > 0) {
 					List<Map<String, Object>> chsm = channelContentService.getChannelAssetList(chas);
-					String resids = "";
 					String[] ids = new String[chas.size()];
+					List<MediaAsset> mas = new ArrayList<>();
 					for (int i = 0; i < chas.size(); i++) {
-						resids += ",'" + chas.get(i).getAssetId() + "'";
 						ids[i] = chas.get(i).getAssetId();
+						MediaAsset ma = mediaService.getMaInfoById(chas.get(i).getAssetId());
+						if (ma!=null) {
+							mas.add(ma);
+						}
 					}
-					resids = resids.substring(1);
 					List<Map<String, Object>> fm = favoriteService.getContentFavoriteInfo(ids, userId);
-					List<MediaAssetPo> mas = mediaService.getMaListByIds(resids);
-					for (MediaAssetPo maPo : mas) {
-						MediaAsset mediaAsset = new MediaAsset();
-						mediaAsset.buildFromPo(maPo);
-						Map<String, Object> mam = ContentUtils.convert2Ma(mediaAsset.toHashMap(), null, null, chsm, fm);
+					for (MediaAsset ma : mas) {
+						Map<String, Object> mam = ContentUtils.convert2Ma(ma.toHashMap(), null, null, chsm, fm);
+						for (ChannelAssetPo cs : chas) {
+							if(cs.getAssetId().equals(mam.get("ContentId")))
+								mam.put("ContentSort", cs.getSort());
+						}
 						ll.add(mam);
 					}
 				}
@@ -101,19 +104,22 @@ public class MediaContentService {
 							pageSize = pageSize - chas.size();
 							List<Map<String, Object>> ll = new ArrayList<>();
 							List<Map<String, Object>> chasm = channelContentService.getChannelAssetList(chas);
-							String resids = "";
 							String[] ids = new String[chas.size()];
+							List<MediaAsset> mas = new ArrayList<>();
 							for (int i = 0; i < chas.size(); i++) {
-								resids += ",'" + chas.get(i).getAssetId() + "'";
 								ids[i] = chas.get(i).getAssetId();
+								MediaAsset ma = mediaService.getMaInfoById(chas.get(i).getAssetId());
+								if (ma!=null) {
+									mas.add(ma);
+								}
 							}
-							resids = resids.substring(1);
 							List<Map<String, Object>> fm = favoriteService.getContentFavoriteInfo(ids, userId);
-							List<MediaAssetPo> mas = mediaService.getMaListByIds(resids);
-							for (MediaAssetPo maPo : mas) {
-								MediaAsset mediaAsset = new MediaAsset();
-								mediaAsset.buildFromPo(maPo);
-								Map<String, Object> mam = ContentUtils.convert2Ma(mediaAsset.toHashMap(), null, null, chasm, fm);
+							for (MediaAsset ma : mas) {
+								Map<String, Object> mam = ContentUtils.convert2Ma(ma.toHashMap(), null, null, chasm, fm);
+								for (ChannelAssetPo css : chas) {
+									if(css.getAssetId().equals(mam.get("ContentId")))
+										mam.put("ContentSort", css.getSort());
+								}
 								ll.add(mam);
 							}
 							if (ll.size() > 0) {
