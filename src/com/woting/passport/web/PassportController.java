@@ -99,6 +99,7 @@ public class PassportController {
             }
             UserPo nu=new UserPo();
             nu.setLoginName(ln);
+            nu.setMainPhoneNum(phonenum);
             nu.setPassword(pwd);
             //1-判断是否有重复的用户
             UserPo oldUser=userService.getUserByLoginName(ln);
