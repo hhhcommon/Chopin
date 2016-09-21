@@ -43,11 +43,27 @@ body { padding:0; width:100% }
   text-align:center;
   align:center;
   line-height:34px;
-  font-size:30px
+  font-size:30px;
   font-family: vista_MS;
+  font-weight:bold;
+  display:inline-block; 
 }
 #a_time {
-  height:30px;
+  height:38px;
+  text-align:center;
+  align:center;
+  line-height:38px;
+  font-size:18px;
+  font-family: vista_MS;  
+}
+#a_time span {
+  height:38px;
+  text-align:bottom;
+  align:center;
+  line-height:38px;
+  font-family: vista_MS;  
+  font-size:18px;
+  color:#000;
 }
 #a_img {
   height:30px;
@@ -62,24 +78,23 @@ body { padding:0; width:100% }
 </head>
 <body>
 <div id="a_content" style="display:none;">
-  <div id="a_title">1</div>
-  <div id="a_time">2</div>
-  <div id="a_img">3</div>
-  <div id="a_media">4</div>
-  <div id="a_html">5</div>
+  <div id="a_title"></div>
+  <div id="a_time"><span id="_time"></span><span><a target="_blank" href="http://www.baidu.com">来源：肖邦网</a></span></div>
+  <div id="a_img"></div>
+  <div id="a_media"></div>
+  <div id="a_html"></div>
 </div>
 </body>
 
 <script>
-var articleId=getUrlParam(window.location.href, "ContentId");
+var contentId=getUrlParam(window.location.href, "ContentId");
 var rootPath=getRootPath();
-
+alert("123");
 //主函数
 $(function() {
   if (rootPath.length==1) rootPath="http://localhost:708/chopin";
-  alert(articleId);
   var _data={};
-  _data.ContentId=articleId;
+  _data.ContentId=contentId;
   $.ajax({type:"post", async:true, url:rootPath+"/content/getContentInfo.do", dataType:"json", data:_data,
     success: function(jsonData) {
       if (jsonData.ReturnType=='1001') {
@@ -97,7 +112,7 @@ $(function() {
 function showArticle(artData) {
   $("#a_content").show();
   $("#a_title").html(artData.ContentName);
-  $("#a_time").html(artData.ContentPubTime);
+  $("#_time").html(artData.ContentPubTime);
   $("#a_title").html(artData.ContentName);
   $("#a_title").html(artData.ContentName);
 }
