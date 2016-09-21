@@ -6,10 +6,15 @@
     <typeAlias alias="discuss"    type="com.woting.discuss.persis.po.DiscussPo"/>
     <typeAlias alias="favorite"   type="com.woting.favorite.persis.po.UserFavoritePo"/>
     <typeAlias alias="DaUserWord" type="com.woting.searchword.persis.po.UserWordPo"/>
+    <!-- 版本管理 -->
+    <typeAlias alias="PVersion"     type="com.woting.version.core.model.Version"/>
+    <typeAlias alias="PVerConfig"   type="com.woting.version.core.model.VersionConfig"/>
   </typeAliases>
   <mappers>
     <mapper resource="com/woting/discuss/persis/sql/Discuss.mapper.xml"/>
     <mapper resource="com/woting/favorite/persis/sql/UserFavorite.mapper.xml"/>
     <mapper resource="com/woting/searchword/persis/sql/UserWord.mapper.xml"/>
+    <!-- 版本管理 -->
+    <mapper resource="com/woting/version/core/persis/sql/Version.mapper.xml"/>
   </mappers>
 </configuration>

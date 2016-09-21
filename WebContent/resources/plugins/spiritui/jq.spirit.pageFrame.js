@@ -10,16 +10,16 @@
  */
 (function($) {
   //本控件内的全局变量
-  var _hScrollbarWidth = 0; //纵向滚动条宽度
-  var _wScrollbarWidth = 0; //横向滚动条宽度
-  var _topFlag4foot = -1; //脚部，上标志
-  var _bottomFlag4foot = -1; //脚部，下标志
+  var _hScrollbarWidth=0; //纵向滚动条宽度
+  var _wScrollbarWidth=0; //横向滚动条宽度
+  var _topFlag4foot=-1; //脚部，上标志
+  var _bottomFlag4foot=-1; //脚部，下标志
   var _hasTop=false, _hasFoot=false;
   var INIT_PARAM={};//初始化参数
-  var _bv = getBrowserVersion();
+  var _bv=getBrowserVersion();
   var _ie8H1=1, _ie8H2=2, _ie8W1=1, _ie8W2=2;
   //默认属性
-  var defaults = {
+  var defaults={
     //页面中所用到的元素的id，只用到三个Div，另，这三个div应在body层
     pageObjs: {
       topId: "topSegment", //头部Id
@@ -52,7 +52,7 @@
       if ((rh+caculateHeightOffSet())>wHeight()) rw -= _hScrollbarWidth;//若出现纵向滚动条，则宽度为页面宽度减去滚动条宽度
       //ie兼容
       if (_bv.indexOf("msie")==0) {
-        var _v = parseFloat(_bv.substring(5));
+        var _v=parseFloat(_bv.substring(5));
         if (_v==8) {
           if (INIT_PARAM.page_height>0) rw -= _hScrollbarWidth;
         }
@@ -62,7 +62,7 @@
     if (INIT_PARAM.page_height<=0) {//若为自适应高
       if ((rw+caculateWidthOffSet())>wWidth()) rh -= _wScrollbarWidth;//若出现横向滚动条，则宽度为页面宽度减去滚动条宽度
       if (_bv.indexOf("msie")==0) {
-        var _v = parseFloat(_bv.substring(5));
+        var _v=parseFloat(_bv.substring(5));
         if (_v==8) rh -= _wScrollbarWidth;
       }
       if (rh>INIT_PARAM.win_min_height) $("#_main").css({"height": rh});
@@ -87,16 +87,16 @@
       });
     };
     //4-中间分体部分
-    var _topHeight = _hasTop?(getViewHeight("_top", INIT_PARAM.pageObjs.topId)-($("#_main").css("padding-top")==""?0:parseFloat($("#_main").css("padding-top")))
+    var _topHeight=_hasTop?(getViewHeight("_top", INIT_PARAM.pageObjs.topId)-($("#_main").css("padding-top")==""?0:parseFloat($("#_main").css("padding-top")))
       -(($("#_main").css("border-top-width")=="medium"||$("#_main").css("border-top-width")=="")?0:parseFloat($("#_main").css("border-top-width")))):0;
-    var _footHeight = _hasFoot?(getViewHeight("_foot", INIT_PARAM.pageObjs.footId)-($("#_main").css("padding-bottom")==""?0:parseFloat($("#_main").css("padding-bottom")))
+    var _footHeight=_hasFoot?(getViewHeight("_foot", INIT_PARAM.pageObjs.footId)-($("#_main").css("padding-bottom")==""?0:parseFloat($("#_main").css("padding-bottom")))
       -(($("#_main").css("border-bottom-width")=="medium"||$("#_main").css("border-bottom-width")=="")?0:parseFloat($("#_main").css("border-bottom-width")))):0;
     $("#_top").css({"width":$("#_main").css("width"), "height": _topHeight});
     if (!_hasTop) $("#_top").hide();
     $("#_foot").css({"width":$("#_main").css("width"), "height": _footHeight});
     if (!_hasFoot) $("#_foot").hide();
-    var _view = $("#"+INIT_PARAM.pageObjs.mainId);
-    var _ch = parseFloat($("#_main").css("height"))-parseFloat(_topHeight)-parseFloat(_footHeight)
+    var _view=$("#"+INIT_PARAM.pageObjs.mainId);
+    var _ch=parseFloat($("#_main").css("height"))-parseFloat(_topHeight)-parseFloat(_footHeight)
       -((_view.css("margin-top")==""?0:parseFloat(_view.css("margin-top")))+(_view.css("margin-bottom")==""?0:parseFloat(_view.css("margin-bottom")))
       +(_view.css("padding-top")==""?0:parseFloat(_view.css("padding-top")))+(_view.css("padding-bottom")==""?0:parseFloat(_view.css("padding-bottom")))
       +((_view.css("border-top-width")=="medium"||_view.css("border-top-width")=="")?0:parseFloat(_view.css("border-top-width")))+(_view.css("border-bottom-width")=="medium"?0:parseFloat(_view.css("border-bottom-width"))));
@@ -108,7 +108,7 @@
         +(($("#_main").css("border-top-width")=="medium"||$("#_main").css("border-top-width")=="")?0:parseFloat($("#_main").css("border-top-width")))
         -($("#"+INIT_PARAM.pageObjs.footId).css("margin-top")==""?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top")))});
       if (!INIT_PARAM.foot_peg) {//浮动脚部
-        var _offsetHeight = $(document).scrollTop()+$(window).height();//窗口绝对高度
+        var _offsetHeight=$(document).scrollTop()+$(window).height();//窗口绝对高度
         if (INIT_PARAM.page_height>0) {
           if (($("body").css("margin-top")==""?0:parseFloat($("body").css("margin-top"))
               +($("#_main").css("margin-top")==""?0:parseFloat($("#_main").css("margin-top")))
@@ -118,7 +118,7 @@
               +($("#_main").css("padding-bottom")==""?0:parseFloat($("#_main").css("padding-bottom")))
               +(($("#_main").css("border-bottom-width")=="medium"||$("#_main").css("border-bottom-width")=="")?0:parseFloat($("#_main").css("border-bottom-width"))))<_offsetHeight) return;
         }
-        if (_topFlag4foot==-1) _topFlag4foot = ($("body").css("margin-top")==""?0:parseFloat($("body").css("margin-top")))+parseFloat(INIT_PARAM.win_min_height)
+        if (_topFlag4foot==-1) _topFlag4foot=($("body").css("margin-top")==""?0:parseFloat($("body").css("margin-top")))+parseFloat(INIT_PARAM.win_min_height)
           +($("#_main").css("margin-top")==""?0:parseFloat($("#_main").css("margin-top")))
           +(($("#_main").css("border-top-width")=="medium"||$("#_main").css("border-top-width")=="")?0:parseFloat($("#_main").css("border-top-width")))
           +($("#_main").css("padding-top")==""?0:parseFloat($("#_main").css("padding-top")))
@@ -129,7 +129,7 @@
           -($("#"+INIT_PARAM.pageObjs.footId).css("margin-top")==""?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top")))
           -($("#"+INIT_PARAM.pageObjs.footId).css("padding-top")==""?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-top")))
           -(($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")=="medium"||$("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")=="")?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")));
-        if (_bottomFlag4foot==-1) _bottomFlag4foot = _topFlag4foot
+        if (_bottomFlag4foot==-1) _bottomFlag4foot=_topFlag4foot
           +($("#"+INIT_PARAM.pageObjs.footId).css("margin-top")==""?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top")))
           +(($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")=="medium"||$("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")=="")?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")))
           +($("#"+INIT_PARAM.pageObjs.footId).css("padding-top")==""?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-top")))
@@ -143,8 +143,8 @@
           -($("#"+INIT_PARAM.pageObjs.footId).css("padding-bottom")==""?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-bottom")))
           -(($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width")=="medium"||$("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width")=="")?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width")));
         var _newTop=0;
-        if (_offsetHeight<=_bottomFlag4foot) _newTop = _topFlag4foot; //小于尺度+//高度内
-        else _newTop = _staticTop4foot;//大于尺度
+        if (_offsetHeight<=_bottomFlag4foot) _newTop=_topFlag4foot; //小于尺度+//高度内
+        else _newTop=_staticTop4foot;//大于尺度
         $("#"+INIT_PARAM.pageObjs.footId).css({"top": _newTop});
       }
     }
@@ -154,7 +154,7 @@
   function resizePosition() {
     //ie兼容
     if (_bv.indexOf("msie")==0) {
-      var _v = parseFloat(_bv.substring(5));
+      var _v=parseFloat(_bv.substring(5));
       if (_v==8) {
         _ie8H1=$("#_main").css("height"), _ie8W1=$("#_main").css("width");
         if (_ie8H1==_ie8H2&&_ie8W1==_ie8W2) {
@@ -180,7 +180,7 @@
       if ((rw+caculateWidthOffSet())>wWidth()) rh -= _wScrollbarWidth;//若出现横向滚动条，则宽度为页面宽度减去滚动条宽度
       //ie8兼容
       if (_bv.indexOf("msie")==0) {
-        var _v = parseFloat(_bv.substring(5));
+        var _v=parseFloat(_bv.substring(5));
         if (_v==8) rh -= _wScrollbarWidth;
       }
       if (rh>INIT_PARAM.win_min_height) $("#_main").css({"height": rh});
@@ -203,8 +203,8 @@
     //4-中间分体部分
     if (_hasTop) $("#_top").css({"width":$("#_main").css("width")});
     if (_hasFoot) $("#_foot").css({"width":$("#_main").css("width")});
-    var _view = $("#"+INIT_PARAM.pageObjs.mainId);
-    var _ch = parseFloat($("#_main").css("height"))-parseFloat($("#_top").css("height"))-parseFloat($("#_foot").css("height"))
+    var _view=$("#"+INIT_PARAM.pageObjs.mainId);
+    var _ch=parseFloat($("#_main").css("height"))-parseFloat($("#_top").css("height"))-parseFloat($("#_foot").css("height"))
       -((_view.css("margin-top")==""?0:parseFloat(_view.css("margin-top")))+(_view.css("margin-bottom")==""?0:parseFloat(_view.css("margin-bottom")))
       +(_view.css("padding-top")==""?0:parseFloat(_view.css("padding-top")))+(_view.css("padding-bottom")==""?0:parseFloat(_view.css("padding-bottom")))
       +((_view.css("border-top-width")=="medium"||_view.css("border-top-width")=="")?0:parseFloat(_view.css("border-top-width")))
@@ -218,7 +218,7 @@
         +(($("#_main").css("border-top-width")=="medium"||$("#_main").css("border-top-width")=="")?0:parseFloat($("#_main").css("border-top-width")))
         -($("#"+INIT_PARAM.pageObjs.footId).css("margin-top")==""?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top")))});
       if (!INIT_PARAM.foot_peg) {//浮动脚部
-        var _offsetHeight = $(document).scrollTop()+$(window).height();//窗口绝对高度
+        var _offsetHeight=$(document).scrollTop()+$(window).height();//窗口绝对高度
         if (INIT_PARAM.page_height>0) {
           if ((("body").css("margin-top")==""?0:(parseFloat($("body").css("margin-top")))
               +($("#_main").css("margin-top")==""?0:parseFloat($("#_main").css("margin-top")))
@@ -228,7 +228,7 @@
               +($("#_main").css("padding-bottom")==""?0:parseFloat($("#_main").css("padding-bottom")))
               +(($("#_main").css("border-bottom-width")=="medium"||$("#_main").css("border-bottom-width")=="")?0:parseFloat($("#_main").css("border-bottom-width"))))<_offsetHeight) return;
         }
-        if (_topFlag4foot==-1) _topFlag4foot = ($("body").css("margin-top")==""?0:parseFloat($("body").css("margin-top")))+parseFloat(INIT_PARAM.win_min_height)
+        if (_topFlag4foot==-1) _topFlag4foot=($("body").css("margin-top")==""?0:parseFloat($("body").css("margin-top")))+parseFloat(INIT_PARAM.win_min_height)
           +($("#_main").css("margin-top")==""?0:parseFloat($("#_main").css("margin-top")))
           +(($("#_main").css("border-top-width")=="medium"||$("#_main").css("border-top-width")=="")?0:parseFloat($("#_main").css("border-top-width")))
           +($("#_main").css("padding-top")==""?0:parseFloat($("#_main").css("padding-top")))
@@ -240,7 +240,7 @@
           -($("#"+INIT_PARAM.pageObjs.footId).css("margin-top")==""?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top")))
           -($("#"+INIT_PARAM.pageObjs.footId).css("padding-top")==""?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-top")))
           -(($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")=="medium"||$("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")=="")?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")));
-        if (_bottomFlag4foot==-1) _bottomFlag4foot = _topFlag4foot
+        if (_bottomFlag4foot==-1) _bottomFlag4foot=_topFlag4foot
           +($("#"+INIT_PARAM.pageObjs.footId).css("margin-top")==""?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top")))
           +(($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")=="medium"||$("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")=="")?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")))
           +($("#"+INIT_PARAM.pageObjs.footId).css("padding-top")==""?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-top")))
@@ -254,9 +254,9 @@
           -($("#"+INIT_PARAM.pageObjs.footId).css("padding-bottom")==""?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-bottom")))
           -(($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width")=="medium"||$("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width")=="")?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width")));
         var _newTop=0;
-        if (_offsetHeight<=_topFlag4foot) _newTop = _topFlag4foot; //小于尺度
-        else if (_offsetHeight>_topFlag4foot&&_offsetHeight<=_bottomFlag4foot) _newTop = _topFlag4foot-$(document).scrollTop(); //高度内
-        else _newTop = _staticTop4foot;//大于尺度
+        if (_offsetHeight<=_topFlag4foot) _newTop=_topFlag4foot; //小于尺度
+        else if (_offsetHeight>_topFlag4foot&&_offsetHeight<=_bottomFlag4foot) _newTop=_topFlag4foot-$(document).scrollTop(); //高度内
+        else _newTop=_staticTop4foot;//大于尺度
         $("#"+INIT_PARAM.pageObjs.footId).css({"top": _newTop});
       }
     }
@@ -272,7 +272,7 @@
     pfOnScroll();    
     //ie兼容
     if (_bv.indexOf("msie")==0) {
-      var _v = parseFloat(_bv.substring(5));
+      var _v=parseFloat(_bv.substring(5));
       if (_v==8) _ie8H2=$("#_main").css("height"), _ie8W2=$("#_main").css("width");
     }
   }
@@ -281,7 +281,7 @@
     //1-调整顶部
     if (!INIT_PARAM.top_peg&&_hasTop) {
       //Y轴方向
-      var _top = parseFloat($("body").css("margin-top"))+($("#_main").css("margin-top")==""?0:parseFloat($("#_main").css("margin-top")))-$(document).scrollTop();
+      var _top=parseFloat($("body").css("margin-top"))+($("#_main").css("margin-top")==""?0:parseFloat($("#_main").css("margin-top")))-$(document).scrollTop();
       $("#"+INIT_PARAM.pageObjs.topId).css({"top": (_top>($("body").css("margin-top")==""?0:parseFloat($("body").css("margin-top"))))?_top:($("body").css("margin-top")==""?0:parseFloat($("body").css("margin-top")))});
       //X轴方向
       $("#"+INIT_PARAM.pageObjs.topId).css({"left": parseFloat($("#_main").css("left"))+($("#_main").css("margin-left")==""?0:parseFloat($("#_main").css("margin-left")))-$(document).scrollLeft()});
@@ -289,15 +289,15 @@
       if (_top<0&&_hasTop&&!INIT_PARAM.top_peg) {//出现头部下边的晕区域，使得更好看
         if ($("body>div#_topunder").length==0) {
           $("body").append("<div id='_topunder'></div>");
-          var topunder = $("body>div#_topunder");
-          var topSegment = $("#"+INIT_PARAM.pageObjs.topId);
+          var topunder=$("body>div#_topunder");
+          var topSegment=$("#"+INIT_PARAM.pageObjs.topId);
           //取晕效果颜色；先看是否有设定，若没有设定取头部的下边框，若下边框为0，取底色
-          var _topShadowColor = null;
+          var _topShadowColor=null;
           if (INIT_PARAM.top_shadow_color) _topShadowColor=INIT_PARAM.top_shadow_color;
           else {//下边框
             if (((topSegment.css("border-bottom-width")=="medium"||topSegment.css("border-bottom-width")=="")?0:parseFloat(topSegment.css("border-bottom-width")))>0) {
-              _topShadowColor = jqueryColor2HexColor(topSegment.css("border-bottom-color"));
-            } else _topShadowColor = jqueryColor2HexColor(topSegment.css("background-color"));
+              _topShadowColor=jqueryColor2HexColor(topSegment.css("border-bottom-color"));
+            } else _topShadowColor=jqueryColor2HexColor(topSegment.css("background-color"));
           }
           topunder.css({"border":"1px solid "+_topShadowColor, "padding":"0", "margin":"0",
             "margin-left": topSegment.css("margin-left"),
@@ -332,7 +332,7 @@
       //X轴方向
       $("#"+INIT_PARAM.pageObjs.footId).css({"left": parseFloat($("#_main").css("left"))+($("#_main").css("margin-left")==""?0:parseFloat($("#_main").css("margin-left")))-$(document).scrollLeft()});
       //Y轴方向
-      var _offsetHeight = $(document).scrollTop()+$(window).height();//窗口绝对高度
+      var _offsetHeight=$(document).scrollTop()+$(window).height();//窗口绝对高度
       if (INIT_PARAM.page_height>0) {
         if ((($("body").css("margin-top")==""?0:parseFloat($("body").css("margin-top")))+($("#_main").css("margin-top")==""?0:parseFloat($("#_main").css("margin-top")))
             +(($("#_main").css("border-top-width")=="medium"||$("#_main").css("border-top-width")=="")?0:parseFloat($("#_main").css("border-top-width")))
@@ -340,7 +340,7 @@
             +($("#_main").css("padding-bottom")==""?0:parseFloat($("#_main").css("padding-bottom")))
             +(($("#_main").css("border-bottom-width")=="medium"||$("#_main").css("border-bottom-width")=="")?0:parseFloat($("#_main").css("border-bottom-width"))))<_offsetHeight) return;
       }
-      if (_topFlag4foot==-1) _topFlag4foot = ($("body").css("margin-top")==""?0:parseFloat($("body").css("margin-top")))+parseFloat(INIT_PARAM.win_min_height)
+      if (_topFlag4foot==-1) _topFlag4foot=($("body").css("margin-top")==""?0:parseFloat($("body").css("margin-top")))+parseFloat(INIT_PARAM.win_min_height)
         +($("#_main").css("margin-top")==""?0:parseFloat($("#_main").css("margin-top")))
         +(($("#_main").css("border-top-width")=="medium"||$("#_main").css("border-top-width")=="")?0:parseFloat($("#_main").css("border-top-width")))
         +($("#_main").css("padding-top")==""?0:parseFloat($("#_main").css("padding-top")))
@@ -352,7 +352,7 @@
         -($("#"+INIT_PARAM.pageObjs.footId).css("margin-top")==""?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top")))
         -($("#"+INIT_PARAM.pageObjs.footId).css("padding-top")==""?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-top")))
         -(($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")=="medium"||$("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")=="")?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")));
-      if (_bottomFlag4foot==-1) _bottomFlag4foot = _topFlag4foot
+      if (_bottomFlag4foot==-1) _bottomFlag4foot=_topFlag4foot
         +($("#"+INIT_PARAM.pageObjs.footId).css("margin-top")==""?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top")))
         +(($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")=="medium"||$("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")=="")?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")))
         +($("#"+INIT_PARAM.pageObjs.footId).css("padding-top")==""?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-top")))
@@ -366,9 +366,9 @@
         -($("#"+INIT_PARAM.pageObjs.footId).css("padding-bottom")==""?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-bottom")))
         -(($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width")=="medium"||$("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width")=="")?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width")));
       var _newTop=0;
-      if (_offsetHeight<=_topFlag4foot) _newTop = _topFlag4foot; //小于尺度
-      else if (_offsetHeight>_topFlag4foot&&_offsetHeight<=_bottomFlag4foot) _newTop = _topFlag4foot-$(document).scrollTop(); //高度内
-      else _newTop = _staticTop4foot;//大于尺度
+      if (_offsetHeight<=_topFlag4foot) _newTop=_topFlag4foot; //小于尺度
+      else if (_offsetHeight>_topFlag4foot&&_offsetHeight<=_bottomFlag4foot) _newTop=_topFlag4foot-$(document).scrollTop(); //高度内
+      else _newTop=_staticTop4foot;//大于尺度
       $("#"+INIT_PARAM.pageObjs.footId).css({"top": _newTop});
     }
     if (INIT_PARAM.myScroll) INIT_PARAM.myScroll();
@@ -381,18 +381,18 @@
 
   function initPage(options) {
     //参数合并，传入的参数和默认参数
-    var _options = $.extend(true, {}, defaults, options);
+    var _options=$.extend(true, {}, defaults, options);
     if ($.trim(_options.pageObjs.mainId)=="") return "未指定主体部分Id，无法初始化页面！";
     if ($("#"+_options.pageObjs.mainId).length==0) return "无id为\""+_options.pageObjs.mainId+"\"的元素，无法初始化页面！";
-    INIT_PARAM = _options;//绑定参数
+    INIT_PARAM=_options;//绑定参数
     //处理中间的部分
     $("body").append("<div id='_main'><div id='_top'></div><div id='_foot'></div></div>");
     $("body>div#_main>div#_top").after($("#"+_options.pageObjs.mainId));
     //0-预处理
     _hScrollbarWidth=getHScrollbarWidth();//纵向滚动条
     _wScrollbarWidth=getWScrollbarWidth();//横向滚动条
-    _hasTop = $.trim(_options.pageObjs.topId)!=""&&$("#"+_options.pageObjs.topId).length==1;//是否有头部
-    _hasFoot = $.trim(_options.pageObjs.footId)!=""&&$("#"+_options.pageObjs.footId).length==1;//是否有尾部
+    _hasTop=$.trim(_options.pageObjs.topId)!=""&&$("#"+_options.pageObjs.topId).length==1;//是否有头部
+    _hasFoot=$.trim(_options.pageObjs.footId)!=""&&$("#"+_options.pageObjs.footId).length==1;//是否有尾部
     //样式处理
     if (_hasTop) $("#"+_options.pageObjs.topId).addClass("hoverArea").addClass("topSegment");
     if (_hasFoot) $("#"+_options.pageObjs.footId).addClass("hoverArea").addClass("footSegment");
@@ -432,7 +432,7 @@
    * 计算宽度偏移量
    */
   function caculateWidthOffSet() {
-    var ret = ($("body").css("margin-left")==""?0:parseFloat($("body").css("margin-left")))
+    var ret=($("body").css("margin-left")==""?0:parseFloat($("body").css("margin-left")))
       +($("#_main").css("margin-left")==""?0:parseFloat($("#_main").css("margin-left")))
       //+($("#_main").css("margin-right")==""?0:parseFloat($("#_main").css("margin-right")))
       +($("#_main").css("padding-left")==""?0:parseFloat($("#_main").css("padding-left")))
@@ -446,7 +446,7 @@
    * 计算高度偏移量
    */
   function caculateHeightOffSet() {
-    var ret = ($("body").css("margin-top")==""?0:parseFloat($("body").css("margin-top")))
+    var ret=($("body").css("margin-top")==""?0:parseFloat($("body").css("margin-top")))
       +($("#_main").css("margin-top")==""?0:parseFloat($("#_main").css("margin-top")))
       //+($("#_main").css("margin-bottom")==""?0:parseFloat($("#_main").css("margin-bottom")))
       +($("#_main").css("padding-top")==""?0:parseFloat($("#_main").css("padding-top")))
@@ -471,10 +471,10 @@
    * 计算左边距
    */
   function getLeft() {
-    var retLeft = parseFloat($("body").css("margin-left"));
+    var retLeft=parseFloat($("body").css("margin-left"));
     if (INIT_PARAM.page_width>0) {//若指定宽度
       if ((wWidth()-caculateWidthOffSet())>INIT_PARAM.page_width) {
-        retLeft = (wWidth()-caculateWidthOffSet()-INIT_PARAM.page_width)/2;
+        retLeft=(wWidth()-caculateWidthOffSet()-INIT_PARAM.page_width)/2;
       };
     };
     return retLeft;
@@ -484,9 +484,9 @@
    */
   function getWidth() {
     if (INIT_PARAM.page_width>0) return INIT_PARAM.page_width;//若指定宽度，返回定宽
-    var retWidth = $("#_main").width();//不控制
+    var retWidth=$("#_main").width();//不控制
     if (INIT_PARAM.page_width<=0) {//若为自适应
-      retWidth = wWidth()-caculateWidthOffSet();//主体宽度=窗口宽度-宽度偏移量
+      retWidth=wWidth()-caculateWidthOffSet();//主体宽度=窗口宽度-宽度偏移量
       if (retWidth<INIT_PARAM.win_min_width) retWidth=INIT_PARAM.win_min_width;
     };
     return retWidth;
@@ -496,9 +496,9 @@
    */
   function getHeight() {
     if (INIT_PARAM.page_height>0) return INIT_PARAM.page_height;//若指定宽度，返回定宽
-    var retHeight = $("#_main").height();//不控制
+    var retHeight=$("#_main").height();//不控制
     if (INIT_PARAM.page_height<=0) {//若为自适应
-      retHeight = wHeight()-caculateHeightOffSet();//主体宽度=窗口宽度-宽度偏移量
+      retHeight=wHeight()-caculateHeightOffSet();//主体宽度=窗口宽度-宽度偏移量
       if (retHeight<INIT_PARAM.win_min_height) retHeight=INIT_PARAM.win_min_height;
     };
     return retHeight;
@@ -510,8 +510,8 @@
    * return 显示对象的宽度
    */
   function getViewWidth(viewObjId, targetObjId) {
-    var _view = $("#"+viewObjId);
-    var _target = $("#"+targetObjId);
+    var _view=$("#"+viewObjId);
+    var _target=$("#"+targetObjId);
     return (parseFloat(_target.css("width"))+(_target.css("padding-left")==""?0:parseFloat(_target.css("padding-left")))
       +(_target.css("padding-right")==""?0:parseFloat(_target.css("padding-right")))
       +((_target.css("border-left-width")=="medium"||_target.css("border-left-width")=="")?0:parseFloat(_target.css("border-left-width")))
@@ -528,8 +528,8 @@
    * return 显示对象的高度
    */
   function getViewHeight(viewObjId, targetObjId) {
-    var _view = $("#"+viewObjId);
-    var _target = $("#"+targetObjId);
+    var _view=$("#"+viewObjId);
+    var _target=$("#"+targetObjId);
     return (parseFloat(_target.css("height"))+(_target.css("padding-top")==""?0:parseFloat(_target.css("padding-top")))
       +(_target.css("padding-bottom")==""?0:parseFloat(_target.css("padding-bottom")))
       +((_target.css("border-top-width")=="medium"||_target.css("border-top-width")=="")?0:parseFloat(_target.css("border-top-width")))
@@ -542,18 +542,18 @@
 
   //=spiritPageFrame 命名空间中的方法 ===========================================================
   //页面框架主函数
-  $.spiritPageFrame = function(options, param) {
+  $.spiritPageFrame=function(options, param) {
     //若参数一为字符串，则直接当作本插件的方法进行处理，这里的this是本插件对应的jquery选择器的选择结果
     if (typeof options=='string') return $.spiritPageFrame.methods[options](this, param);
     return initPage(options);
   };
   //插件方法，参考eaqyUi的写法
-  $.spiritPageFrame.methods = {
+  $.spiritPageFrame.methods={
   };
 })(jQuery);
 /*
   //默认属性
-  $.fn.spiritPageFrame.defaults = {
+  $.fn.spiritPageFrame.defaults={
     //页面中所用到的元素的id，只用到三个Div，另，这三个div应在body层
     pageObjs: {
       topId: "topSegment", //头部Id
