@@ -32,9 +32,7 @@ public class MediaContentController {
 				userId = null;
 			String channelId = m.get("ChannelId") + "";
 			if (channelId.equals("null")) {
-				map.put("ReturnType", "1002");
-				map.put("Message", "无法获得Id");
-				return map;
+				channelId = null;
 			}
 			int perSize = 3;
 			String perSizestr = m.get("PerSize") + "";
@@ -51,8 +49,7 @@ public class MediaContentController {
 			String beginCatalogId = m.get("BeginCatalogId") + "";
 			if (beginCatalogId.equals("null"))
 				beginCatalogId = null;
-			List<Map<String, Object>> contents = mediaContentService.getContents(userId, channelId, perSize, page,
-					pageSize, beginCatalogId);
+			List<Map<String, Object>> contents = mediaContentService.getContents(userId, channelId, perSize, page, pageSize, beginCatalogId);
 			if (contents != null && contents.size() > 0) {
 				map.put("ResultInfo", contents);
 				map.put("AllCount", contents.size());

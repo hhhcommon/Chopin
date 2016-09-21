@@ -75,12 +75,40 @@
                   <td colspan="3"><input type="text" class="form-control" id="sort" name="sort" placeholder="序号" aria-required="true" style="margin-bottom:0px;"></td>
                 </tr>
                 <tr>
-                  <td class="th add-th">分类父亲</td>
-                  <td colspan="3"><select class="form-control" id="nodeParent" placeholder="父ID" style="width:380px;margin-bottom:0px;"></select></td>
+                  <td class="th add-th" style="position:absolute;top:139px;left:2px;">父分类</td>
+                  <td colspan="3">
+                    <!--<select class="form-control" id="nodeParent" name="nodeParent" placeholder="父ID"></select>-->
+                    <div style="width:450px;height:36px;">
+                    	<input type="text" class="form-control" id="nodeParent" name="nodeParent" placeholder="父分类id" aria-required="true" style="width:330px;margin-bottom:0px;display:none;">
+                    	<input type="text" class="form-control" id="nodeParents" name="nodeParents" placeholder="父分类名字" aria-required="true" style="width:330px;margin-bottom:0px;">
+                      <div id='chooseParent'>选择父分类</div>
+                    </div>
+                    <ul id="cataTrees" class="ztree"></ul>
+                  </td>  
                 </tr>
                 <tr>
                   <td class="th add-th">资源类型</td>
-                  <td colspan="3"><input id="contentType" name="contentType" class="form-control" type="text" placeholder="资源类型" aria-required="true" style="margin-bottom:0px;"></td>
+                  <td colspan="3">
+                    <input type="text" class="form-control" id="contentType" name="contentType" placeholder="资源类型" aria-required="true" style="width:450px;margin-bottom:-34px;display:none;">
+                    <ul id="sourceType">
+                      <li>
+                        <input id="all" type="checkbox" class="form-control" name="checkbox" value="0">
+                        <span class="all">所有</span>
+                      </li>
+                      <li>
+                        <input id="radio" type="checkbox" class="form-control" name="checkbox" value="1">
+                        <span class="radio">电台</span>
+                      </li>
+                      <li>
+                        <input id="jm" type="checkbox" class="form-control" name="checkbox" value="2">
+                        <span class="jm">节目</span>
+                      </li>
+                      <li>
+                        <input id="zj" type="checkbox" class="form-control" name="checkbox" value="3">
+                        <span class="zj">专辑</span>
+                      </li>
+                    </ul>
+                  </td>
                 </tr>
                 <tr>
                   <td class="th add-th">详细信息</td>
@@ -99,7 +127,8 @@
   </div>
 </body>
 <script >
-var zTreeObj,treeNode,rootNode,nodePathStr;
+var zTreeObj,treeNode,rootNode,nodePathStr,modalNode;
+var values='';//checkbox选中后，资源类型contentType里面的值
 var rootPath=getRootPath();
 var oPeType=1;//1新增，2修改
 //需要加载的分类树的数据，以list方式给出
@@ -108,7 +137,7 @@ var loadTreeData=[{ChannelId:"",TreeViewType:"zTree"}];
 //初始化方法：页面加载完成后执行
 $(function() {
   //0-初始化页面
-  //0.1-初始化树样式
+  //0.1-初始化页面树样式
   zTreeObj=$.fn.zTree.init($("#cataTree"), {
     view:{
       selectedMulti: false//是否允许同时选中多个节点
@@ -127,7 +156,29 @@ $(function() {
       }
     }
   });
-
+  //0.2--初始化弹出框的树
+  zTreeObjs=$.fn.zTree.init($("#cataTrees"), {
+    view:{
+      selectedMulti: false//是否允许同时选中多个节点
+    },
+    edit:{
+      enable: true,//是否开启异步模式
+      showRemoveBtn: false,//是否显示删除按钮
+      showRenameBtn: false//是否显示编辑名称按钮
+    },
+    check:{
+      enable: false//设置 zTree的节点上是否显示 checkbox / radio
+    },
+    data:{
+      simpleData:{
+        enable: true
+      }
+    },
+    callback:{
+      onClick:onClick
+    }
+  });
+  
   //1-加载数据
   //1.1-加载树
   loadTree(loadTreeData);
@@ -151,8 +202,25 @@ $(function() {
     $("#addCata").find("tr:eq(2)").show();
     $("#nodeNames").val(treeNode.name);
     $("#sort").val((treeNode.attributes.order)?(treeNode.attributes.order):"");
-    $("#nodeParent").val((treeNode.attributes.parentId)?(treeNode.attributes.parentId):"");
-    $("#contentType").val((treeNode.attributes.contentType)?(treeNode.attributes.contentType):"");
+    $("#nodeParent").val((treeNode.attributes.parentId)?(treeNode.attributes.parentId):"");//父节点的Id
+    $("#nodeParents").val((treeNode.getParentNode().name)?(treeNode.getParentNode().name):"");//父节点的名字
+    $("#contentType").val((treeNode.attributes.contentType)?(treeNode.attributes.contentType):"");//资源类型value
+    //资源类型对应的checkbox的选中状态  
+    if(treeNode.attributes.contentType){
+      $("input[name='checkbox']").slice(0,4).prop("checked",false).prop("disabled",false);
+      $("input[name='checkbox']").each(function(){
+        if(treeNode.attributes.contentType.indexOf('0')>-1){
+          $("input[name='checkbox']").slice(0,4).prop("checked",true);
+          $("input[name='checkbox']").slice(1,4).prop("disabled",true);
+        }else{
+          for (var i=1;i<4;i++){
+            if(treeNode.attributes.contentType.indexOf(i)>-1){
+              $("input[name='checkbox']:eq("+i+")").prop("checked",true);
+            }
+          }
+        }
+      });
+    }
     $("#nodeDescn").val((treeNode.attributes.descn)?(treeNode.attributes.descn):"");
     $("#shade").css({"display":"block"});
     $("#addCata").modal("show");
@@ -160,14 +228,14 @@ $(function() {
   //2.3-点击删除按钮，删除已有的分类
   $("#del").on("click",function(){
     getRootNode();
-    delCatalog();
+    beforeRemove();
   });
   //2.4-点击提交按钮，提交表单
   $("#save").on("click",function(){
     if(oPeType==1){
-      addCatalog();
+      addChannel();
     }else{
-      modCatalog();
+      modChannel();
     }
   })
   //2.5-点击遮罩层,确定,取消按钮，遮罩层和弹出层消失
@@ -175,6 +243,44 @@ $(function() {
     $("#addCata").modal("hide");
     $("#shade").css({"display":"none"});
   });
+  //2.6-点击选择父分类，弹出的修改界面出现树形分类
+  $("#chooseParent").on("click",function(){
+    $("#cataTrees").slideDown("slow");
+  });
+  //2.8-点击all，checkbox实现全选、全不选
+  $("#all").on("click",function(){
+    if(this.checked){
+      $("input[name='checkbox']").each(function(){
+        this.checked=true;
+        for(var i=1;i<4;i++){
+          $("input[name='checkbox']:eq("+i+")").attr("disabled",true);
+        }
+      });
+      $("#contentType").val("0");
+    }else{
+      $("#contentType").val("");
+      $("input[name='checkbox']").each(function(){
+        this.checked=false;
+        for(var i=1;i<4;i++){
+          $("input[name='checkbox']:eq("+i+")").attr("disabled",false);
+        }
+      });
+    }
+  });
+  //2.9-点击其他checkbox实现选择
+  $("#radio,#jm,#zj").on("click",function(){
+    values = '';//点击之前清空values的值
+    var checked=$("input[name='checkbox']:checked");
+    for(var i=0;i<checked.length;i++){
+      if(i<checked.length-1){
+        values+=checked[i].value+',';
+      }else{
+        values+=checked[i].value;
+      }
+    }
+    $("#contentType").val(values);
+  });
+  
 });  
 
 /**
@@ -194,7 +300,8 @@ function loadTree(loadData) {
       data: loadData[index++],
       success: function(jsonData){
         if(jsonData.ReturnType=="1001") {
-          zTreeObj.addNodes(null,jsonData.Data.children,false);
+          zTreeObj.addNodes(null,jsonData.Data,false);
+          zTreeObjs.addNodes(null,jsonData.Data,false);
         }
         loadRecursion(index);
       },
@@ -209,36 +316,31 @@ function loadTree(loadData) {
 function getRootNode() {
   var nodes=zTreeObj.getSelectedNodes();//获取 zTree 当前被选中的节点数据集合
   treeNode=nodes[0]; //当前选中的节点
-  alert("当前选中节点的id："+treeNode.id+"当前选中节点的名字:"+treeNode.name);
-  if(!treeNode)alert("请先选中分类在进行操作");
-  nodePathStr=treeNode.attributes.pathName+"";
-  if(nodePathStr.indexOf("/")>=0){
-    rootNode=nodePathStr.split("/")[0];
+  if(!treeNode){
+    alert("请先选中分类在进行操作");
+//  $("#shade").css({"display":"none"});
+//  $("#addCata").modal("hide");
+//  $("#addCata").find(".modal-header>span:eq(1)").html("栏目");
   }else{
-    rootNode=treeNode.attributes.pathName;
-  }
-  var modPathNames=nodePathStr.substring(0,nodePathStr.lastIndexOf('\/'));
-  if(oPeType==1){
-    $("#addCata").find(".modal-header>span:eq(1)").html(treeNode.attributes.pathName);
-  }else{
-    $("#addCata").find(".modal-header>span:eq(1)").html(modPathNames);
-    channelParentIdListLoad();//加载父id的方法
-  }
-}
-
-/*加载所有节点的ID*/
-function channelParentIdListLoad(){
-  var allNodes=zTreeObj.transformToArray(zTreeObj.getNodes());//获取树的所有节点
-  var opt;
-  for(var i=0;i<allNodes.length;i++){
-    opt=$("<option></option>");
-    opt.text(allNodes[i].id);
-    $("#nodeParent").append(opt);
+//  alert("当前选中节点的id："+treeNode.id+"当前选中节点的名字:"+treeNode.name);
+    nodePathStr=treeNode.attributes.pathName+"";
+    if(nodePathStr.indexOf("/")>=0){
+      rootNode=nodePathStr.split("/")[0];
+    }else{
+      rootNode=treeNode.attributes.pathName;
+    }
+    var modPathNames=nodePathStr.substring(0,nodePathStr.lastIndexOf('\/'));
+    if(oPeType==1){
+      $("#addCata").find(".modal-header>span:eq(1)").html(treeNode.attributes.pathName);
+    }else{
+      $("#addCata").find(".modal-header>span:eq(0)").hide();
+      $("#addCata").find(".modal-header>span:eq(1)").hide();
+    }
   }
 }
 
 /*增加新分类的方法*/
-function addCatalog() {
+function addChannel() {
   var addInfo={
     "Data":{
       "Name":$("#nodeNames").val(),
@@ -269,6 +371,7 @@ function addCatalog() {
           }
         );
         cleanDialog();
+        alert("添加成功!");
       }else{
         alert("发生错误：\n\t"+resultData.ReturnType+"-"+resultData.Message);
       }
@@ -279,8 +382,19 @@ function addCatalog() {
   })
 }
 
+/*点击弹出窗里面的树上的节点*/
+function onClick(event, treeId, treeNode) {
+  var node=zTreeObjs.getSelectedNodes();//获取 模态框里zTree当前被选中的节点数据集合
+  modalNode=node[0]; //当前选中的节点
+  var sortNode=modalNode.getParentNode();//获取当前选中分类的父分类
+//alert("修改后"+"\n目前父分类的名字："+sortNode.name+"\n修改后父分类的id："+modalNode.id+"\n修改后父分类的名字："+modalNode.name);
+  $("#nodeParent").val(modalNode.id);
+  $("#nodeParents").val(modalNode.name);
+  $("#cataTrees").slideUp("slow");
+};
+
 /*修改已有分类的方法*/
-function modCatalog() {
+function modChannel() {
   var modInfo={
     "ChannelId":treeNode.id,
     "Data":{
@@ -304,7 +418,9 @@ function modCatalog() {
           treeNode.attributes.pathName=modPathName;
           treeNode.name=$("#nodeNames").val();
         }
+        var parentChanged=0;
         if(modInfo.Data.ParentId!=treeNode.attributes.parentId) {//父节点改变
+          parentChanged=1;
           treeNode.attributes.parentId=$("#nodeParent").val();
           var targetNode=zTreeObj.getNodeByParam("id", $("#nodeParent").val(), null);
           if(!treeNode.children){//选中的分类下面无其他分类
@@ -316,21 +432,22 @@ function modCatalog() {
             zTreeObj.moveNode(targetNode,treeNode,"inner");
           }
         }
-        if(modInfo.Data.Sort!=treeNode.attributes.order) {//顺序改变
+        if(modInfo.Data.Sort!=treeNode.attributes.order||parentChanged==1) {//顺序改变而且父分类也改变
           treeNode.attributes.order=$("#sort").val();
           var sortNode=treeNode.getParentNode();//获取当前选中分类的父分类
           var sLength=sortNode.children.length;//当前选中分类的父分类的所有子分类
           for(var i=0;i<sLength;i++){
             for(var j=i;j<sLength;j++){
-              if(sortNode.children[i].attributes.order<sortNode.children[j].attributes.order){//降序排列（冒泡排序）
+              if(parseInt(sortNode.children[i].attributes.order)<parseInt(sortNode.children[j].attributes.order)){//降序排列（冒泡排序）
                 zTreeObj.moveNode(sortNode.children[i],sortNode.children[j],"prev");
-              }
+              } 
             }
           }
         }
         if(modInfo.Data.ContentType!=treeNode.attributes.contentType) treeNode.attributes.contentType=$("#contentType").val();
         if(modInfo.Data.Descn!=treeNode.attributes.descn) treeNode.attributes.descn=$("#nodeDescn").val();
         zTreeObj.updateNode(treeNode);
+        alert("修改成功!");
       }else{
         alert("发生错误：\n\t"+resultData.ReturnType+"-"+resultData.Message);
       }
@@ -341,8 +458,17 @@ function modCatalog() {
   })
 };
 
+//删除节点的时候验证是否删除
+function beforeRemove(){
+  if(confirm("确认删除 节点 -- " + treeNode.name + " 吗？")){
+    delChannel();
+  }else{
+    alert("成功取消删除");
+  }
+}
+
 /*删除已有分类的方法*/
-function delCatalog() {
+function delChannel() {
   var delInfo={"ChannelId":treeNode.id,"Force":"1"};
   $.ajax({
     type: "POST",    
@@ -352,6 +478,7 @@ function delCatalog() {
     success: function(resultData){
       if(resultData.ReturnType=="1001"){
         zTreeObj.removeNode(treeNode);
+        alert("删除成功!");
       }else{
         alert("发生错误：\n\t"+resultData.ReturnType+"-"+resultData.Message);
       }

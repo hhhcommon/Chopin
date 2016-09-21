@@ -207,7 +207,6 @@ public class DiscussController {
     @ResponseBody
     public Map<String,Object> getArticleList(HttpServletRequest request) {
         Map<String,Object> map=new HashMap<String, Object>();
-        com.spiritdata.framework.core.web.InitSysConfigListener cc;
         try {
             //0-获取参数
             MobileUDKey mUdk=null;
@@ -304,7 +303,6 @@ public class DiscussController {
     @ResponseBody
     public Map<String,Object> getUserList(HttpServletRequest request) {
         Map<String,Object> map=new HashMap<String, Object>();
-        com.spiritdata.framework.core.web.InitSysConfigListener cc;
         try {
             //0-获取参数
             MobileUDKey mUdk=null;

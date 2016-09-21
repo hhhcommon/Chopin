@@ -1,0 +1,12 @@
+
+@charset "UTF-8";
+/*!
+ * 加入必要的字体，目前就是微软雅黑
+ */
+
+@font-face
+{
+  font-family: vista_MS;
+  src: url('../fonts/msyh.ttf'),
+       url('../fonts/yahei.eot'); /* IE9+ */
+}

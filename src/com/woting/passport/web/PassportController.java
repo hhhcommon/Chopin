@@ -21,7 +21,6 @@ import com.spiritdata.framework.util.StringUtils;
 import com.spiritdata.framework.ext.redis.ExpirableBlockKey;
 import com.spiritdata.framework.ext.redis.RedisBlockLock;
 import com.spiritdata.framework.util.RequestUtils;
-import com.woting.content.manage.utils.RedisUtils;
 import com.woting.passport.UGA.persistence.pojo.UserPo;
 import com.woting.passport.UGA.service.UserService;
 import com.woting.passport.login.persistence.pojo.MobileUsedPo;
@@ -56,12 +55,24 @@ public class PassportController {
         Map<String,Object> map=new HashMap<String, Object>();
         try {
             //0-获取参数
+            MobileUDKey mUdk=null;
             Map<String, Object> m=RequestUtils.getDataFromRequest(request);
             if (m==null||m.size()==0) {
                 map.put("ReturnType", "0000");
                 map.put("Message", "无法获取需要的参数");
-                return map;
+            } else {
+                mUdk=MobileParam.build(m).getUserDeviceKey();
+                if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
+                    mUdk.setDeviceId(request.getSession().getId());
+                }
+                if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) {
+                    map.put("ReturnType", "0000");
+                    map.put("Message", "无法获取设备Id(IMEI)");
+                } else {
+                    map.putAll(mUdk.toHashMapAsBean());
+                }
             }
+            if (map.get("ReturnType")!=null) return map;
 
             String ln=(m.get("UserName")==null?null:m.get("UserName")+"");
             String pwd=(m.get("Password")==null?null:m.get("Password")+"");
@@ -71,11 +82,15 @@ public class PassportController {
 
             String errMsg="";
             if (StringUtils.isNullOrEmptyOrSpace(ln)) errMsg+=",用户名为空";
-            char[] c=ln.toCharArray();
-            if (c[0]>='0' && c[0]<='9') errMsg+=",登录名第一个字符不能是数字";
+            if (ln!=null) {
+                char[] c=ln.toCharArray();
+                if (c[0]>='0' && c[0]<='9') errMsg+=",登录名第一个字符不能是数字";
+            }
             if (StringUtils.isNullOrEmptyOrSpace(pwd)) errMsg+=",密码为空";
-            if(phonenum.toLowerCase().equals("null")) errMsg+=",手机号为空";
-            if(checknum.toLowerCase().equals("null")) errMsg+=",验证码为空";
+            if (usePhone!=null&&usePhone.equals("1")) {
+                if(phonenum.toLowerCase().equals("null")) errMsg+=",手机号为空";
+                if(checknum.toLowerCase().equals("null")) errMsg+=",验证码为空";
+            }
             if (!StringUtils.isNullOrEmptyOrSpace(errMsg)) {
                 errMsg=errMsg.substring(1);
                 map.put("ReturnType", "1002");
@@ -92,23 +107,14 @@ public class PassportController {
                 map.put("Message", "登录名重复,无法注册.");
                 return map;
             }
-            if (usePhone.equals("1")) {
+            RedisConnection rConn=redisConn.getConnection();
+            RedisUserDeviceKey redisUdk=new RedisUserDeviceKey(mUdk);
+            if (usePhone!=null&&usePhone.equals("1")) {
                 //1.5-手机号码注册
-                errMsg="";
-                String checkinfo=RedisUtils.getPhoneCheckInfo(phonenum);
-                if(StringUtils.isNullOrEmptyOrSpace(checkinfo)) {
-                    map.put("ReturnType", "1004");
-                    map.put("Message", "验证信息为空");
-                    return map;
-                }
-                String[] check=checkinfo.split("::");
-                if((System.currentTimeMillis()-Long.valueOf(check[0]))>6000000) {
-                    map.put("ReturnType", "1004");
-                    map.put("Message", "验证信息超时");
-                    return map;
-                }
-                if(check[1].equals(checknum)) {
-                    nu.setMainPhoneNum(phonenum);
+                byte[] getValue=rConn.get(redisUdk.getKey_UserPhoneCheck().getBytes());
+                String info=getValue==null?"":new String(getValue);
+                if (info.startsWith("OK")) {
+                    nu.setMainPhoneNum(info.substring(4));
                 }
             }
             //2-保存用户
@@ -117,13 +123,27 @@ public class PassportController {
             nu.setUserId(SequenceUUID.getUUIDSubSegment(4));
             int rflag=userService.insertUser(nu);
             if (rflag!=1) {
-                map.put("ReturnType", "1005");
+                map.put("ReturnType", "1004");
                 map.put("Message", "注册失败，新增用户存储失败");
                 return map;
             }
-            //3-处理redis里验证信息
-            RedisUtils.multiPhoneCheckInfo(phonenum);
-           
+            //3-注册成功后，自动登陆，及后处理
+            mUdk.setUserId(nu.getUserId());
+            ExpirableBlockKey rLock=RedisBlockLock.lock(redisUdk.getKey_Lock(), rConn);
+            try {
+                sessionService.registUser(mUdk);
+                MobileUsedPo mu=new MobileUsedPo();
+                mu.setImei(mUdk.getDeviceId());
+                mu.setStatus(1);
+                mu.setPCDType(mUdk.getPCDType());
+                mu.setUserId(nu.getUserId());
+                muService.saveMobileUsed(mu);
+            } finally {
+                rLock.unlock();
+                rConn.close();
+                rConn=null;
+            }
+            //4-返回成功，若没有IMEI也返回成功
             map.put("ReturnType", "1001");
             map.put("UserId", nu.getUserId());
             return map;
@@ -702,7 +722,8 @@ public class PassportController {
             RedisConnection rConn=redisConn.getConnection();
             RedisUserDeviceKey redisUdk=new RedisUserDeviceKey(mUdk);
             try {
-                info=new String(rConn.get(redisUdk.getKey_UserPhoneCheck().getBytes()));
+                byte[] getValue=redisUdk.getKey_UserPhoneCheck().getBytes();
+                info=getValue==null?"":new String(getValue);
             } finally {
                 rConn.close();
                 rConn=null;
