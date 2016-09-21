@@ -3,13 +3,109 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>内容页</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="cache-control" content="no-cache"/>
+<meta http-equiv="pragma" content="no-cache"/>
+<meta http-equiv="expires" content="0"/>
+<!--[if lt IE 8]>
+<script>
+  alert('本系统已不支持IE6-8，请使用谷歌、火狐等浏览器\n或360、QQ等国产浏览器的极速模式浏览本页面！');
+</script>
+<![endif]-->
+
+<script src="./resources/plugins/hplus/js/jquery-2.1.1.min.js"></script>
+<script src="./resources/js/common.utils.js"></script>
+<script src="./resources/js/context.utils.js"></script>
+<script src="./resources/js/framework.utils.js"></script>
+<script src="./resources/plugins/spiritui/jq.spirit.utils.js"></script>
+<script src="./resources/plugins/spiritui/jq.spirit.pageFrame.js"></script>
+
+<link rel="stylesheet" type="text/css" href="./resources/chopin/css/font.css"/>
+<link rel="stylesheet" type="text/css" href="./resources/css/common.css"/>
+<link rel="stylesheet" type="text/css" href="./resources/css/mainPage.css"/>
+<link rel="stylesheet" type="text/css" href="./resources/plugins/spiritui/themes/default/all.css"/>
+
+<title></title>
+<style>
+html { color:#000; background:#fff; }
+body { padding:0; width:100% }
+
+#a_content {
+  padding: 50px 20px 50px 20px;
+}
+#a_content div {
+  border:1px solid red;
+  width:100%;
+}
+#a_title {
+  height:34px;
+  text-align:center;
+  align:center;
+  line-height:34px;
+  font-size:30px
+  font-family: vista_MS;
+}
+#a_time {
+  height:30px;
+}
+#a_img {
+  height:30px;
+}
+#a_media {
+  height:30px;
+}
+#a_html {
+  height:30px;
+}
+</style>
 </head>
 <body>
-
+<div id="a_content" style="display:none;">
+  <div id="a_title">1</div>
+  <div id="a_time">2</div>
+  <div id="a_img">3</div>
+  <div id="a_media">4</div>
+  <div id="a_html">5</div>
+</div>
 </body>
 
 <script>
+var articleId=getUrlParam(window.location.href, "ContentId");
+var rootPath=getRootPath();
 
+//主函数
+$(function() {
+  if (rootPath.length==1) rootPath="http://localhost:708/chopin";
+  alert(articleId);
+  var _data={};
+  _data.ContentId=articleId;
+  $.ajax({type:"post", async:true, url:rootPath+"/content/getContentInfo.do", dataType:"json", data:_data,
+    success: function(jsonData) {
+      if (jsonData.ReturnType=='1001') {
+        showArticle(jsonData.ResultInfo);
+      } else {
+        showErr(jsonData.message);
+      }
+    },
+    error: function(jqXHR) {
+      showErr(jqXHR.status);
+    }
+  });
+});
+
+function showArticle(artData) {
+  $("#a_content").show();
+  $("#a_title").html(artData.ContentName);
+  $("#a_time").html(artData.ContentPubTime);
+  $("#a_title").html(artData.ContentName);
+  $("#a_title").html(artData.ContentName);
+}
+
+function showErr(msg) {
+	$("#a_content").addClass("errPage");
+  $("#a_content").html(msg);
+  $("#a_content").show();
+}
 </script>
 </html>

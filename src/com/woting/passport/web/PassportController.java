@@ -76,8 +76,7 @@ public class PassportController {
 
             String ln=(m.get("UserName")==null?null:m.get("UserName")+"");
             String pwd=(m.get("Password")==null?null:m.get("Password")+"");
-            String phonenum=m.get("MainPhoneNum")+"";
-            String checknum=m.get("CheckNum")+"";
+            String phonenum=m.get("PhoneNum")+"";
             String usePhone=(m.get("UsePhone")==null?null:m.get("UsePhone")+"");
 
             String errMsg="";
@@ -89,7 +88,6 @@ public class PassportController {
             if (StringUtils.isNullOrEmptyOrSpace(pwd)) errMsg+=",密码为空";
             if (usePhone!=null&&usePhone.equals("1")) {
                 if(phonenum.toLowerCase().equals("null")) errMsg+=",手机号为空";
-                if(checknum.toLowerCase().equals("null")) errMsg+=",验证码为空";
             }
             if (!StringUtils.isNullOrEmptyOrSpace(errMsg)) {
                 errMsg=errMsg.substring(1);
