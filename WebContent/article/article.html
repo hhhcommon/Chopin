@@ -887,17 +887,18 @@ function requestUpload(_this,oMyForm,segmentIndex){
       if(opeResult.ful[0].success=="TRUE"){
         _this.siblings("input[type='hidden']").val(opeResult.ful[0].storeFilename);
         var ds = $('#OldOrgPath'+segmentIndex).html();
-        if($(_this).parent().parent().attr("TYPE")=="PICTURE"){
+        var pa = $(_this).parent().parent();
+        if(pa.attr("TYPE")=="PICTURE"){
           var jsonstr = {"FileOrgPath":opeResult.ful[0].storeFilepath,"FileSmallPath":opeResult.ful[0].smallFilepath};
-          $(_this).parent().parent().find(".uploadPrompt").html("图片上传成功");
+          pa.find(".uploadPrompt").html("图片上传成功");
         }
-        if($(_this).parent().parent().attr("TYPE")=="VIDEO"){
+        if(pa.attr("TYPE")=="VIDEO"){
           var jsonstr = {"FileOrgPath":opeResult.ful[0].storeFilepath};
-          $(_this).parent().parent().find(".uploadPrompt").html("视频上传成功");
+          pa.find(".uploadPrompt").html("视频上传成功");
         }
-        if($(_this).parent().parent().attr("TYPE")=="MEDIA"){
+        if(pa.attr("TYPE")=="MEDIA"){
           var jsonstr = {"FileOrgPath":opeResult.ful[0].storeFilepath};
-          $(_this).parent().parent().find(".uploadPrompt").html("音频上传成功");
+          pa.find(".uploadPrompt").html("音频上传成功");
         }
         var str = JSON.stringify(jsonstr);
         if(ds==null || ds.length==0){
@@ -963,8 +964,7 @@ function createArticle(){
   postData.List=list;
   console.log("发送的数据："+postData);
   $.ajax({
-    url:"http://localhost:1108/Chopin/content/addByWeb.do",
-//  url:rootPath+"content/addByWeb.do",
+    url:rootPath+"content/addByWeb.do",
     type:"POST",
     data:JSON.stringify(postData),
     dataType:"json",
@@ -978,7 +978,7 @@ function createArticle(){
     },
     error: function(jqXHR){
       alert("发生错误" + jqXHR.status);
-    }     
+    }
   });
 }
 
