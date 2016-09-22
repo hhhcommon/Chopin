@@ -126,6 +126,7 @@ public class QueryController {
 	 * @param request
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "addByWeb.do")
 	@ResponseBody
 	public Map<String, Object> addByWeb(HttpServletRequest request) {

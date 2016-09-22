@@ -24,13 +24,14 @@ public abstract class CacheUtils {
 	private static String zjpath = "mweb/zj/";
 	private static String jmpath = "mweb/jm/";
 	private static String templetpath = "mweb/templet/";
-	private static String jmurlrootpath = "http://123.56.254.75:908/CM/"; // 静态节目content.html路径头信息
+	private static String jmurlrootpath = "http://www.wotingfm.com:1108/Chopin/"; // 静态节目content.html路径头信息
 	private static String rootpath = SystemCache.getCache(FConstants.APPOSPATH).getContent()+""; // 静态文件根路径
 
 	/**
 	 * 专辑静态文件发布(info.json,P*.json和content.html)
 	 * @param map
 	 */
+	@SuppressWarnings("unchecked")
 	public static void publishZJ(Map<String, Object> map) {
 		Map<String, Object> mapsequ = (Map<String, Object>) map.get("ContentDetail");
 		List<Map<String, Object>> listaudio = (List<Map<String, Object>>) map.get("SubList");
