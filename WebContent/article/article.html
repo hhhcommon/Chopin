@@ -688,8 +688,14 @@ function show(plus){
 
 //点击"x",删除正在编辑的内容
 function cancelEdit(cane){
-  $(cane).parent().css("display", "none");
-  $(cane).parent().find(".form-isvalidate").val("");
+  alert($(cane).parent().attr("type"));
+  if($(cane).parent().attr("type")=="WORD"){
+    $(cane).parent().remove();//如果是文字，直接删除
+  }
+  if($(cane).parent().attr("type")=="PICTURE"){
+    $(cane).parent().css("display", "none");
+    $(cane).parent().find(".form-isvalidate").val("");
+  }
 }
 
 //生成summernote编辑框
