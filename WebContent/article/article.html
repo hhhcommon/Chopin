@@ -969,9 +969,12 @@ function createArticle(){
     success: function (returnData){
       if(returnData.returnType=="1001"){
         alert("成功添加");
-        $(".row,.shade").hide();
+        alert("test--1");
+        $(".row,.shade").css({"display":"none"});
+        alert("test--2");
       }else{
         alert(returnData.Message);
+        alert(123123);
       }
     },
     error: function(jqXHR){
