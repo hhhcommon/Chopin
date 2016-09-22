@@ -889,9 +889,9 @@ function newPicture(newp){
               '</div>'+
             '</div>'
   $(newp).parent().parent().parent().after(pict);
-  segmentIndex++;
   hiden();
-  upLoadPicture();
+  upLoadPicture(segmentIndex);
+  segmentIndex++;
 }
 
 //上传图片
@@ -915,9 +915,9 @@ function upLoadPicture(segmentIndex){
         if(opeResult.ful[0].success=="TRUE"){
           _this.siblings("input[type='hidden']").val(opeResult.ful[0].storeFilename);
           var ds = $('#OldOrgPath'+segmentIndex).html();
-		  var jsonstr = {"FileOrgPath":opeResult.ful[0].storeFilename,"FileSmallPath":opeResult.ful[0].storeFilename};
+		  var jsonstr = {"FileOrgPath":opeResult.ful[0].storeFilepath,"FileSmallPath":opeResult.ful[0].smallFilepath};
 		  var str = JSON.stringify(jsonstr);
-          if(ds.length==0 || ds==null){
+          if(ds==null || ds.length==0){
         	  $('#OldOrgPath'+segmentIndex).html(str);
           } else {
 		      $('#OldOrgPath'+segmentIndex).html(ds+","+str);
@@ -972,12 +972,6 @@ function createArticle(){
 	  console.log(obj);
       onePart.ResouceList = obj;
     }
-  };
-  var titlestr = {
-    "PartId":1,
-    "PartType":"TITLE",
-    "PartInfo":$("#titleName").val()
-  };
 	onePart.PartId=id;
     list.push(onePart);
   });

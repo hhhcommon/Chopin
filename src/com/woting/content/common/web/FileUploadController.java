@@ -44,7 +44,7 @@ public class FileUploadController extends AbstractFileUploadController{
             FileUtils.deleteFile(new File(filepath));
             m.remove("warn");
             m.put("storeFilename", newname);
-            m.put("storeFilePath", webpath+MediaPath[typenum-1]+newname);
+            m.put("storeFilepath", webpath+MediaPath[typenum-1]+newname);
             m.put("success", "TRUE");
         }
         return m;
