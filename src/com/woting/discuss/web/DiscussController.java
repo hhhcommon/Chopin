@@ -214,6 +214,7 @@ public class DiscussController {
             if (m==null||m.size()==0) {
                 map.put("ReturnType", "0000");
                 map.put("Message", "无法获取需要的参数");
+                return map;
             } else {
                 mUdk=MobileParam.build(m).getUserDeviceKey();
                 if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
