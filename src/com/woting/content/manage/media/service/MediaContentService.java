@@ -7,13 +7,10 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
-import com.spiritdata.framework.core.cache.CacheEle;
-import com.spiritdata.framework.core.cache.SystemCache;
 import com.spiritdata.framework.core.dao.mybatis.MybatisDAO;
 import com.spiritdata.framework.core.model.Page;
+import com.spiritdata.framework.util.JsonUtils;
 import com.spiritdata.framework.util.StringUtils;
-import com.woting.ChopinConstants;
-import com.woting.cm.core.channel.mem._CacheChannel;
 import com.woting.cm.core.channel.persis.po.ChannelAssetPo;
 import com.woting.cm.core.channel.persis.po.ChannelPo;
 import com.woting.cm.core.channel.service.ChannelService;
@@ -41,12 +38,10 @@ public class MediaContentService {
     private UserService userService;
     @Resource(name="defaultDAO")
     private MybatisDAO<MediaAssetPo> mediaAssetDao;
-    private _CacheChannel _cc=null;
 
     @PostConstruct
 	public void initParam() {
     	mediaAssetDao.setNamespace("A_MEDIA");
-		_cc = (SystemCache.getCache(ChopinConstants.CACHE_CHANNEL) == null ? null : ((CacheEle<_CacheChannel>) SystemCache.getCache(ChopinConstants.CACHE_CHANNEL)).getContent());
 	}
 
 	public List<Map<String, Object>> getContents(String userId, String channelId, int perSize, int page, int pageSize, String beginCatalogId) {
@@ -57,6 +52,7 @@ public class MediaContentService {
 		ChannelPo chPo = channelService.getChannelById(channelId);
 		if (chPo != null) {
 			List<ChannelPo> chs = channelService.getChannelsByPcId(chPo.getId());
+			System.out.println(JsonUtils.objToJson(chs));
 			if (chs == null || chs.size() == 0) {
 				List<Map<String, Object>> ll = new ArrayList<>();
 				List<ChannelAssetPo> chas = channelService.getChannelAssetsByChannelId(chPo.getId(), page, pageSize, 2);
@@ -73,7 +69,7 @@ public class MediaContentService {
 					}
 					List<Map<String, Object>> fm = favoriteService.getContentFavoriteInfo(ids, userId);
 					for (MediaAsset ma : mas) {
-						Map<String, Object> mam = ContentUtils.convert2Ma(ma.toHashMap(), null, null, chsm, fm);
+						Map<String, Object> mam = ContentUtils.convert2Ma(ma.convert2Po().toHashMap(), null, null, chsm, fm);
 						for (ChannelAssetPo cs : chas) {
 							if(cs.getAssetId().equals(mam.get("ContentId")))
 								mam.put("ContentSort", cs.getSort());
@@ -118,7 +114,7 @@ public class MediaContentService {
 							}
 							List<Map<String, Object>> fm = favoriteService.getContentFavoriteInfo(ids, userId);
 							for (MediaAsset ma : mas) {
-								Map<String, Object> mam = ContentUtils.convert2Ma(ma.toHashMap(), null, null, chasm, fm);
+								Map<String, Object> mam = ContentUtils.convert2Ma(ma.convert2Po().toHashMap(), null, null, chasm, fm);
 								for (ChannelAssetPo css : chas) {
 									if(css.getAssetId().equals(mam.get("ContentId")))
 										mam.put("ContentSort", css.getSort());
@@ -172,7 +168,7 @@ public class MediaContentService {
 					}
 					List<Map<String, Object>> fm = favoriteService.getContentFavoriteInfo(ids, userId);
 					for (MediaAsset ma : mas) {
-						Map<String, Object> mam = ContentUtils.convert2Ma(ma.toHashMap(), null, null, chasm, fm);
+						Map<String, Object> mam = ContentUtils.convert2Ma(ma.convert2Po().toHashMap(), null, null, chasm, fm);
 						for (ChannelAssetPo css : chas) {
 							if(css.getAssetId().equals(mam.get("ContentId")))
 								mam.put("ContentSort", css.getSort());
@@ -267,11 +263,14 @@ public class MediaContentService {
 		String[] ids = new String[1];
 		ids[0] = ma.getId();
 		List<ChannelAssetPo> chas = channelService.getChannelAssetsByAssetId(contentId);
+		long t1 = System.currentTimeMillis();
 		List<Map<String, Object>> fm = favoriteService.getContentFavoriteInfo(ids, userId);
+		long t2 = System.currentTimeMillis();
 		if (chas != null && chas.size() > 0) {
 			List<Map<String, Object>> chasm = channelContentService.getChannelAssetList(chas);
-			mam = ContentUtils.convert2Ma(ma.toHashMap(), null, null, chasm, fm);
+			mam = ContentUtils.convert2Ma(ma.convert2Po().toHashMap(), null, null, chasm, fm);
 		}
+		mam.put("FavDuration", t2-t1);
 		return mam;
 	}
 

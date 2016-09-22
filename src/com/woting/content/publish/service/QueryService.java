@@ -133,4 +133,16 @@ public class QueryService {
 		}
 		return false;
 	}
+	
+	public boolean modifyDirectContentInfo(String channelId, String contentId, int status){
+		ChannelAsset cha = mediaService.getChannelAssetByChannelIdAndAssetId(channelId, contentId);
+		if(cha!=null) {
+			cha.setFlowFlag(status);
+			mediaService.updateCha(cha);
+			return true;
+		}
+		return false;
+	}
+	
+	
 }
