@@ -21,7 +21,6 @@
 <script src="./resources/plugins/spiritui/jq.spirit.utils.js"></script>
 <script src="./resources/plugins/spiritui/jq.spirit.pageFrame.js"></script>
 
-<link rel="stylesheet" type="text/css" href="./resources/chopin/css/font.css"/>
 <link rel="stylesheet" type="text/css" href="./resources/css/common.css"/>
 <link rel="stylesheet" type="text/css" href="./resources/css/mainPage.css"/>
 <link rel="stylesheet" type="text/css" href="./resources/plugins/spiritui/themes/default/all.css"/>
@@ -32,38 +31,39 @@ html { color:#000; background:#fff; }
 body { padding:0; width:100% }
 
 #a_content {
-  padding: 50px 20px 50px 20px;
+  padding: 30px 20px 30px 20px;
 }
 #a_content div {
-  border:1px solid red;
+	border:1px solid red;
   width:100%;
 }
 #a_title {
-  height:34px;
+  height:23px;
   text-align:center;
   align:center;
   line-height:34px;
-  font-size:30px;
-  font-family: vista_MS;
+  font-size:23px;
+  font-family:"黑体";
   font-weight:bold;
   display:inline-block; 
 }
 #a_time {
-  height:38px;
+  padding-top:4px;
+  height:24px;
   text-align:center;
   align:center;
-  line-height:38px;
-  font-size:18px;
-  font-family: vista_MS;  
+  line-height:24px;
+  font-size:14px;
 }
 #a_time span {
-  height:38px;
+  height:20px;
   text-align:bottom;
   align:center;
-  line-height:38px;
-  font-family: vista_MS;  
-  font-size:18px;
-  color:#000;
+  line-height:20px;
+  font-size:14px;
+}
+#_source {
+	position:absolute;
 }
 #a_img {
   height:30px;
@@ -79,7 +79,7 @@ body { padding:0; width:100% }
 <body>
 <div id="a_content" style="display:none;">
   <div id="a_title"></div>
-  <div id="a_time"><span id="_time"></span><span><a target="_blank" href="http://www.baidu.com">来源：肖邦网</a></span></div>
+  <div id="a_time"><span id="_time"></span><span id="_source"><a target="_blank" href="http://www.baidu.com">来源：肖邦网</a></span></div>
   <div id="a_img"></div>
   <div id="a_media"></div>
   <div id="a_html"></div>
@@ -89,10 +89,10 @@ body { padding:0; width:100% }
 <script>
 var contentId=getUrlParam(window.location.href, "ContentId");
 var rootPath=getRootPath();
-alert("123");
+
 //主函数
 $(function() {
-  if (rootPath.length==1) rootPath="http://localhost:708/chopin";
+  if (rootPath.length==1) rootPath="http://www.wotingfm.com/Chopin";
   var _data={};
   _data.ContentId=contentId;
   $.ajax({type:"post", async:true, url:rootPath+"/content/getContentInfo.do", dataType:"json", data:_data,
@@ -110,15 +110,16 @@ $(function() {
 });
 
 function showArticle(artData) {
-  $("#a_content").show();
   $("#a_title").html(artData.ContentName);
-  $("#_time").html(artData.ContentPubTime);
+  $("#_time").html((new Date(artData.ContentPubTime)).format("yyyy-M-d"));
+  $("#a_content").show();
+
   $("#a_title").html(artData.ContentName);
   $("#a_title").html(artData.ContentName);
 }
 
 function showErr(msg) {
-	$("#a_content").addClass("errPage");
+  $("#a_content").addClass("errPage");
   $("#a_content").html(msg);
   $("#a_content").show();
 }

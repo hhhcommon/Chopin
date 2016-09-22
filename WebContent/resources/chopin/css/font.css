@@ -10,3 +10,15 @@
   src: url('../fonts/msyh.ttf'),
        url('../fonts/yahei.eot'); /* IE9+ */
 }
+
+@font-face
+{
+  font-family: vista_sy;
+  src: url('../fonts/SourceHanSansCN-Bold.otf'),
+       url('../fonts/SourceHanSansCN-ExtraLight.otf'),
+       url('../fonts/SourceHanSansCN-Heavy.otf'),
+       url('../fonts/SourceHanSansCN-Light.otf'),
+       url('../fonts/SourceHanSansCN-Medium.otf'),
+       url('../fonts/SourceHanSansCN-Normal.otf'),
+       url('../fonts/SourceHanSansCN-Regular.otf');
+}
