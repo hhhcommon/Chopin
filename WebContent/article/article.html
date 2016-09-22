@@ -757,12 +757,10 @@ function show(plus){
 //生成summernote编辑框
 function newSummernote(news) {
   var nowId=$(news).parents(".form-group").prop("id");
-  alert(nowId);
   if(nowId==0){
     $(des).appendTo($("#addForm"));
   }else{
     var nextId=$(news).parents(".form-group").next().prop("id");
-    alert(nextId);
   }
   //return;  
   segmentIndex++;
@@ -922,20 +920,6 @@ function upLoadPicture(segmentIndex){
           } else {
 		      $('#OldOrgPath'+segmentIndex).html(ds+","+str);
           };
-//           var result = opeResult.ful[0];
-//           var str = {
-//                      "PartId":_this.attr("id"),
-//                      "PartType":"PICTURE",
-//                      "PartOrgName":result.orgFilename,
-//                      "PartOrgPath":result.storeFilePath,
-//                      "PartSmallName":result.smallFilename,
-//                      "PartSmallPath":result.smallFilePath
-//           };
-//           if(typeof(window.picstr) == "undefined") {
-//             window.picstr = str;
-//           } else {
-//             window.picstr += ','+str;
-//           };
         }else{
           alert(opeResult.err);
         }
