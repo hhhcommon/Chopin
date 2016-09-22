@@ -474,7 +474,7 @@ li, a, input {
             </div>
             <div class="form-group" style="margin-top: 20px;">
               <div class="col-sm-6 text-right">
-                <button class="btn btn-warning" id="submitBtn">预览</button>
+                <button class="btn btn-warning" id="preview">预览</button>
               </div>
               <div class="col-sm-6 text-left">
                 <button class="btn btn-warning commit" type="submit">提交</button>
@@ -785,8 +785,8 @@ function upLoadPicture(segmentIndex){
           if(ds==null || ds.length==0){
         	  $('#OldOrgPath'+segmentIndex).html(str);
           } else {
-		        $('#OldOrgPath'+segmentIndex).html(ds+","+str);
-          };          
+		      $('#OldOrgPath'+segmentIndex).html(ds+","+str);
+          };
         }else{
           alert(opeResult.err);
         }
@@ -821,7 +821,7 @@ function createArticle(){
 	    console.log("图片："+obj);
       onePart.ResouceList = obj;
     }
-	  onePart.PartId=id;
+	onePart.PartId=id;
     list.push(onePart);
   });
   var postData={};

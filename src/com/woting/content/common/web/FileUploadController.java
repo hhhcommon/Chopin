@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.Map;
 import org.springframework.stereotype.Controller;
 
+import com.spiritdata.framework.FConstants;
+import com.spiritdata.framework.core.cache.SystemCache;
 import com.spiritdata.framework.core.web.AbstractFileUploadController;
 import com.spiritdata.framework.util.FileNameUtils;
 import com.spiritdata.framework.util.FileUtils;
@@ -16,7 +18,7 @@ import net.coobird.thumbnailator.Thumbnails;
 @Controller
 public class FileUploadController extends AbstractFileUploadController{
 //	private static final String rootpath = "/opt/tomcat_Chopin/webapps/Chopin/";
-	private static final String rootpath = "D:/workIDE/Chopin/WebContent/";
+//	private static final String rootpath = "D:/workIDE/Chopin/WebContent/";
 	private static final String webpath = "http://www.wotingfm.com/Chopin/";
 	private static final String[] MediaPath = {
 			"media/group01/",  //上传的音频文件路径
@@ -25,6 +27,7 @@ public class FileUploadController extends AbstractFileUploadController{
 			"media/group04/"}; //上传的略缩图文件路径
     @Override
     public Map<String, Object> afterUploadOneFileOnSuccess(Map<String, Object> m, Map<String, Object> a, Map<String, Object> p) {
+    	String rootpath = SystemCache.getCache(FConstants.APPOSPATH).getContent()+"";
         String filepath = m.get("storeFilename")+"".trim();
         String filename = FileNameUtils.getFileName(filepath);
         int typenum = FileUploadUtils.getFileType(filename);

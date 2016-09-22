@@ -342,7 +342,7 @@ public class ChannelService {
     	m.put("flowFlag", flowFlag);
     	m.put("sortByClause", "sort desc ,pubTime desc");
     	m.put("isValidate", 1);
-    	m.put("page", page-1);
+    	m.put("page", (page-1)*pageSize);
     	m.put("pageSize", pageSize);
 		return channelAssetDao.queryForList("getListByLimit", m);
     }
