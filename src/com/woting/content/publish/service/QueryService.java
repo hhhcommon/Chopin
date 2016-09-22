@@ -125,14 +125,11 @@ public class QueryService {
 		return false;
 	}
 	
-	public boolean makeContentHtml(String channelId, List<Map<String, Object>> list, List<Map<String, Object>> removelist){
+	public boolean makeContentHtml(String channelId, List<Map<String, Object>> list){
 		
 		System.out.println(channelId);
 		if (list!=null && list.size()>0) {
 			System.out.println(JsonUtils.objToJson(list));
-		}
-		if (removelist!=null && removelist.size()>0) {
-			System.out.println(JsonUtils.objToJson(removelist));
 		}
 		return false;
 	}

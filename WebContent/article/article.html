@@ -372,6 +372,7 @@ var zTreeObj,zTreeObjs,des;
 var rootPath=getRootPath();
 var segmentIndex=1;
 window.picstr;//图片字符串
+window.removestr;
 //需要加载的分类树的数据，以list方式给出
 var loadTreeData=[{ChannelId:"",TreeViewType:"zTree"}];
 //初始化方法：页面加载完成后执行
@@ -501,7 +502,8 @@ function show(plus){
 }
 //删除当前选中的编辑内容
 function cancelEdit(cane){
-  $(cane).parent().remove();
+  $(cane).parent().css("display", "none");
+  $(cane).parent().find(".form-isvalidate").val("");
 }
 //生成summernote编辑框
 function newSummernote(news) {
@@ -553,7 +555,8 @@ function newPicture(newp){
               '<label class="col-sm-2 control-label">图片：</label>'+
               '<div class="col-sm-10"style="margin-left: 19px;">'+
                 '<input id="uploadImg" name="uploadImg" class="form-control" type="file" accept=".png,.jpg" />'+
-                '<input id="ContentImg" name="ContentImg" type="hidden" value="" />'+
+                '<input id="ContentImg'+segmentIndex+'" class="form-isvalidate" name="ContentImg" type="hidden" value="" />'+
+                '<div id="OldOrgPath'+segmentIndex+'" style="display: none"></div>'+
                 '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大1M，支持JPG、PNG格式</span>'+
               '</div>'+
               '<div class="actions">'+
@@ -568,11 +571,11 @@ function newPicture(newp){
             '</div>'
   $(newp).parent().parent().parent().after(pict);
   hiden();
-  upLoadPicture();
+  upLoadPicture(segmentIndex);
 }
 
 //上传图片
-function upLoadPicture(){
+function upLoadPicture(segmentIndex){
   $("input[type='file']").change(function(){
     var _this=$(this);
     var oMyForm = new FormData();
@@ -589,11 +592,16 @@ function upLoadPicture(){
       success: function (opeResult){
         console.log(opeResult);
         if(opeResult.ful[0].success=="TRUE"){
-          $("#orgName").val(opeResult.ful[0].orgFilename);
-          $("#orgPath").val(opeResult.ful[0].storeFilePath);
-          $("#smallName").val(opeResult.ful[0].smallFilename);
-          $("#smallPath").val(opeResult.ful[0].smallFilePath);
           _this.siblings("input[type='hidden']").val(opeResult.ful[0].storeFilename);
+          var ds = $('#OldOrgPath'+segmentIndex).html();
+		  var jsonstr = {"FileOrgPath":opeResult.ful[0].storeFilename,"FileSmallPath":opeResult.ful[0].storeFilename};
+		  var str = JSON.stringify(jsonstr);
+          if(ds.length==0 || ds==null){
+        	  $('#OldOrgPath'+segmentIndex).html(str);
+          } else {
+		      $('#OldOrgPath'+segmentIndex).html(ds+","+str);
+          };
+		  
           var result = opeResult.ful[0];
           var str = {
                      "PartId":_this.attr("id"),
@@ -607,7 +615,7 @@ function upLoadPicture(){
             window.picstr = str;
           } else {
             window.picstr += ','+str;
-          }
+          };
         }else{
           alert(opeResult.err);
         }
@@ -627,7 +635,9 @@ function createArticle(){
   title.PartType="TITLE";
   title.PartInfo=$("#titleName").val();
   list.push(title);
-  $("#addForm").find("div.segment").each(function() {//文字或图片或视频或音频
+  var id = 1;
+  $("#articleForm").find("div.segment").each(function() {//文字或图片或视频或音频
+    id++;
     var onePart={};
     onePart.PartId=$(this).attr("id");
     onePart.PartType=$(this).attr("type");
@@ -635,12 +645,12 @@ function createArticle(){
       onePart.PartInfo=$('#summernote'+$(this).attr("id")).summernote('code');
     }
     if (onePart.PartType=="PICTURE") {
-      onePart.PartOrgName=$("#orgName").val;
-      onePart.PartOrgPath=$("#orgPath").val;
-      onePart.PartSmallName=$("#smallName").val;
-      onePart.PartSmallPath=$("#smallPath").val;
-      onePart.FileOrgPath=$().val;
+      onePart.PartName=$('#ContentImg'+onePart.PartId).val();
+	  var obj = JSON.parse('['+$('#OldOrgPath'+onePart.PartId).html()+']');
+	  console.log(obj);
+      onePart.ResouceList = obj;
     }
+	onePart.PartId=id;
     list.push(onePart);
   });
   var postData={};
@@ -651,7 +661,7 @@ function createArticle(){
     //url:"http://localhost:908/CM/common/uploadCM.do",
     url:rootPath+"content/addByWeb.do",
     type:"POST",
-    data:postData,
+    data:JSON.stringify(postData),
     dataType:"json",
     //表单提交前进行验证
     success: function (returnData){
