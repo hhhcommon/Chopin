@@ -345,11 +345,11 @@ public class MediaContentService {
 		if(mas!=null && mas.size()>0) {
 			for (MediaAssetPo ma : mas) {
 				if (m.containsKey("MaStatus"+ma.getMaStatus())) {
-					List<MediaAssetPo> ms = (List<MediaAssetPo>) m.get("MaStatus"+ma.getMaStatus());
-					ms.add(ma);
+					List<Map<String, Object>> ms = (List<Map<String, Object>>) m.get("MaStatus"+ma.getMaStatus());
+					ms.add(ContentUtils.convert2Ma(ma.toHashMap(), null, null, null, null));
 				} else {
-					List<MediaAssetPo> ms = new ArrayList<>();
-					ms.add(ma);
+					List<Map<String, Object>> ms = new ArrayList<>();
+					ms.add(ContentUtils.convert2Ma(ma.toHashMap(), null, null, null, null));
 					m.put("MaStatus"+ma.getMaStatus(), ms);
 				}
 			}

@@ -133,7 +133,7 @@ public class QueryController {
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> m = RequestUtils.getDataFromRequest(request);
 		String channelid = m.get("ChannelId")+"";
-		if(channelid.equals("null")) {
+		if(channelid.equals("null") || channelid.equals("")) {
 			map.put("ReturnType", "1012");
 			map.put("Message", "无法获得栏目Id");
 			return map;
