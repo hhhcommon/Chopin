@@ -159,7 +159,7 @@ public class FavoriteService {
                 userFavoriteDao.update("increment", ufPo.getId());
             }
         }
-        return -1;
+        return 1;
     }
 
     /**

@@ -146,8 +146,6 @@ public class MobileParam extends BaseObject implements GetUserDeviceKey {
             StringUtils.isNullOrEmptyOrSpace(mp.getSessionId())&&
             StringUtils.isNullOrEmptyOrSpace(mp.getUserId())) {
             return null;
-        } else {
-           
         }
         return mp;
     }
