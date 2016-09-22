@@ -275,7 +275,7 @@ li{list-style: none;}
 .segment .panel-default>.panel-heading{
   background-color: #f5f5f5;
 }
-.form-group #titleName{
+.form-group #titleName,.form-group #descnName{
   width: 510px;
   height: 27px;
   position: relative;
@@ -297,7 +297,7 @@ li{list-style: none;}
   height: 27px;
   position: absolute;
   left:69%;
-  margin-top: -2%;
+  margin-top: -1.99%;
   font-size: 15px;
   line-height: 27px;
   text-align: center;
@@ -312,7 +312,7 @@ li{list-style: none;}
   border:1px solid rgba(32, 27, 27, 0.08);
 }
 .ibox .channel .actions {
-  width: 143px;
+  width: 84px;
   /*height: 32px;*/
   position: absolute;
   left: 85%;
@@ -325,25 +325,26 @@ li{list-style: none;}
   margin-left: 0%;
 }
 .ibox .actions .toggle img{
-  margin-left: 11%;
+  margin-left: 9%;
   margin-top:46%;
 }
 .ibox .addContent{
   width:100%;
   display: none;
   margin-top: 2px;
-  margin-left: 13px;
+  margin-left: 10px;
 }
 .ibox .addContent li{
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   border: 1px solid #999;
   float: left;
-  margin-left: 4px;
-  margin-top:5px;
-  cursor:pointer;
-  line-height:20px;
-  text-align:center;
+  margin-left: 0px;
+  margin-top: 5px;
+  cursor: pointer;
+  line-height: 18px;
+  font-size: 12px;
+  text-align: center;
   border-radius: 14px;
 }
 .ibox .words .actions {
@@ -448,13 +449,19 @@ li, a, input {
                 <input id="titleName" name="titleName" class="form-control" type="text" aria-required="true">
               </div>
             </div>
+            <div class="form-group" id="2">
+              <label class="col-sm-2 control-label">摘要：</label>
+              <div class="col-sm-10" style="margin-left: 25px;">
+                <input id="descnName" name="descnName" class="form-control" type="text" aria-required="true">
+              </div>
+            </div>
             <div class="form-group">
               <label class="col-sm-2 control-label">类型：</label>
               <div class="col-sm-10" style="margin-left: 25px;">
                 <select class="first"><option value="">参赛选手</option><option value="">普通用户</option></select>
               </div>
             </div>
-            <div class="form-group channel" id="0">
+            <div class="form-group channel" id="0" style="top:11px;">
               <label class="col-sm-2 control-label">类别：</label>
               <div class="col-sm-10" style="margin-left: 25px;">
                 <input id="channelId" name="channelId" class="form-control" placeholder="栏目id" type="hidden" aria-required="true" value="">
@@ -467,8 +474,8 @@ li, a, input {
                 <ul class="addContent" style="display: none;">
                   <li class="word" onclick="newSummernote(this)">文</li>
                   <li class="picture" onclick="newPicture(this)">图</li>
-                  <li class="vedio">视</li>
-                  <li class="radios">音</li>
+                  <li class="vedio" onclick="newVedio(this)">视</li>
+                  <li class="radios" onclick="newRdios(this)">音</li>
                 </ul>
               </div>
             </div>
@@ -490,7 +497,7 @@ li, a, input {
 <script>
 var zTreeObj,zTreeObjs,des;
 var rootPath=getRootPath();
-var segmentIndex=2;
+var segmentIndex=3;
 var changeSum=1;//图片改变次数
 //需要加载的分类树的数据，以list方式给出
 var loadTreeData=[{ChannelId:"",TreeViewType:"zTree"}];
@@ -550,7 +557,7 @@ $(function(){
   //2.1-点击添加按钮
   $("#add").on("click",function(){
     $(".segment").remove();//清空数据
-    $("#titleName,#channelName").val("");//清空数据
+    $("#titleName,#channelName,#descnName").val("");//清空数据
     $(".row,.shade").show();
   });
   //2.2-点击修改按钮
@@ -688,7 +695,6 @@ function show(plus){
 
 //点击"x",删除正在编辑的内容
 function cancelEdit(cane){
-  alert($(cane).parent().attr("type"));
   if($(cane).parent().attr("type")=="WORD"){
     $(cane).parent().remove();//如果是文字，直接删除
   }
@@ -700,7 +706,7 @@ function cancelEdit(cane){
 
 //生成summernote编辑框
 function newSummernote(news) {
-  var des='<div class="form-group segment words" id='+segmentIndex+' type="WORD" style="border:1px solid rgba(32, 27, 27, 0.08);">'+
+  var des='<div class="form-group segment words" id='+segmentIndex+' type="WORD" style="border:1px solid rgba(32, 27, 27, 0.08);top:25px;">'+
             '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
             '<label class="col-sm-2 control-label">描述：</label>'+
               '<div class="col-sm-10" style="margin-left: 25px;">'+
@@ -711,8 +717,8 @@ function newSummernote(news) {
               '<ul class="addContent" style="display: none;">'+
                 '<li class="word" onclick="newSummernote(this)">文</li>'+
                 '<li class="picture" onclick="newPicture(this)">图</li>'+
-                '<li class="vedio">视</li>'+
-                '<li class="radios">音</li>'+
+                '<li class="vedio" onclick="newVedio(this)">视</li>'+
+                '<li class="radios" onclick="newRadios(this)">音</li>'+
               '</ul>'+
             '</div>'+
           '</div>'
@@ -740,7 +746,7 @@ function newSummernote(news) {
 
 //生成图片编辑框
 function newPicture(newp){
-  var pict='<div class="form-group segment pic" id='+segmentIndex+' type="PICTURE" style="border:1px solid rgba(32, 27, 27, 0.08);">'+
+  var pict='<div class="form-group segment pic" id='+segmentIndex+' type="PICTURE" style="border:1px solid rgba(32, 27, 27, 0.08);top:25px;">'+
               '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
               '<label class="col-sm-2 control-label">图片：</label>'+
               '<div class="col-sm-10"style="margin-left: 25px;">'+
@@ -754,8 +760,8 @@ function newPicture(newp){
                 '<ul class="addContent" style="display: none;">'+
                   '<li class="word" onclick="newSummernote(this)">文</li>'+
                   '<li class="picture" onclick="newPicture(this)">图</li>'+
-                  '<li class="vedio">视</li>'+
-                  '<li class="radios">音</li>'+
+                  '<li class="vedio" onclick="newVedio(this)">视</li>'+
+                  '<li class="radios" onclick="newRedios(this)">音</li>'+
                 '</ul>'+
               '</div>'+
             '</div>'
@@ -812,6 +818,11 @@ function createArticle(){
   title.PartType="TITLE";
   title.PartInfo=$("#titleName").val();
   list.push(title);
+  var descn={};//摘要
+  descn.PartId=2;
+  descn.PartType="DESCN";
+  descn.PartInfo=$("#descnName").val();
+  list.push(descn);
   var id = 1;
   $("#articleForm").find("div.segment").each(function() {//文字或图片或视频或音频
     id++;
