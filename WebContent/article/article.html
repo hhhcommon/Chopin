@@ -500,7 +500,6 @@ li, a, input {
   </div>
   </div>
 </body> 
-
 <script>
 var zTreeObj,zTreeObjs,des;
 var rootPath=getRootPath();
@@ -563,7 +562,7 @@ $(function(){
   //2.1-点击添加按钮
   $("#add").on("click",function(){
     $(".segment").remove();//清空数据
-    $("#titleName,#channelName,#descnName").val("");//清空数据
+    $("#titleName,#channelName,#descnName,#channelId").val("");//清空数据
     $(".row,.shade").show();
   });
   //2.2-点击修改按钮
@@ -588,6 +587,8 @@ $(function(){
   $(".close-link,.cancels").on("click",function(){
     $(".row,.shade").hide();
   });
+  //3.4-改变选手类型
+  $(".")
 });
 
 /**
@@ -967,14 +968,11 @@ function createArticle(){
     dataType:"json",
     //表单提交前进行验证
     success: function (returnData){
-      if(returnData.returnType=="1001"){
-        alert("成功添加");
-        alert("test--1");
-        $(".row,.shade").css({"display":"none"});
-        alert("test--2");
-      }else{
+      if(returnData.ReturnType=="1001"){
+        alert("添加成功");
+        $(".row,.shade").hide();
+        }else{
         alert(returnData.Message);
-        alert(123123);
       }
     },
     error: function(jqXHR){
