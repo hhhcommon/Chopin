@@ -266,7 +266,7 @@ public class MediaContentService {
 		long t2 = System.currentTimeMillis();
 		if (chas != null && chas.size() > 0) {
 			List<Map<String, Object>> chasm = channelContentService.getChannelAssetList(chas);
-			mam = ContentUtils.convert2Ma(ma.toHashMap(), null, null, chasm, fm);
+			mam = ContentUtils.convert2Ma(ma.convert2Po().toHashMap(), null, null, chasm, fm);
 		}
 		mam.put("FavDuration", t2-t1);
 		return mam;
