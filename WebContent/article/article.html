@@ -474,8 +474,8 @@ li, a, input {
                 <ul class="addContent" style="display: none;">
                   <li class="word" onclick="newSummernote(this)">文</li>
                   <li class="picture" onclick="newPicture(this)">图</li>
-                  <li class="vedio" onclick="newVedio(this)">视</li>
-                  <li class="radios" onclick="newRdios(this)">音</li>
+                  <li class="video" onclick="newVideo(this)">视</li>
+                  <li class="audio" onclick="newAudio(this)">音</li>
                 </ul>
               </div>
             </div>
@@ -717,8 +717,8 @@ function newSummernote(news) {
               '<ul class="addContent" style="display: none;">'+
                 '<li class="word" onclick="newSummernote(this)">文</li>'+
                 '<li class="picture" onclick="newPicture(this)">图</li>'+
-                '<li class="vedio" onclick="newVedio(this)">视</li>'+
-                '<li class="radios" onclick="newRadios(this)">音</li>'+
+                '<li class="video" onclick="newVideo(this)">视</li>'+
+                '<li class="audio" onclick="newAudio(this)">音</li>'+
               '</ul>'+
             '</div>'+
           '</div>'
@@ -760,12 +760,39 @@ function newPicture(newp){
                 '<ul class="addContent" style="display: none;">'+
                   '<li class="word" onclick="newSummernote(this)">文</li>'+
                   '<li class="picture" onclick="newPicture(this)">图</li>'+
-                  '<li class="vedio" onclick="newVedio(this)">视</li>'+
-                  '<li class="radios" onclick="newRedios(this)">音</li>'+
+                  '<li class="video" onclick="newVideo(this)">视</li>'+
+                  '<li class="audio" onclick="newAudio(this)">音</li>'+
                 '</ul>'+
               '</div>'+
             '</div>'
   $(newp).parent().parent().parent().after(pict);
+  hiden();
+  upLoadPicture(segmentIndex);
+  segmentIndex++;
+}
+
+//生成视频编辑框
+function newVideo(newv){
+  var vid='<div class="form-group segment video" id='+segmentIndex+' type="ViDEO" style="border:1px solid rgba(32, 27, 27, 0.08);top:25px;">'+
+            '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
+            '<label class="col-sm-2 control-label">视频：</label>'+
+            '<div class="col-sm-10"style="margin-left: 25px;">'+
+              '<input id="uploadVedio" name="uploadVedio" class="form-control" type="file" accept=".m4a,.mp3" />'+
+              '<input id="ContentVedio'+segmentIndex+'" class="form-isvalidate" name="ContentVedio" type="hidden" value="" />'+
+              '<div id="OldOrgPath'+segmentIndex+'" style="display: none"></div>'+
+              '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大1M，支持JPG、PNG格式</span>'+
+            '</div>'+
+            '<div class="actions">'+
+              '<div class="toggle"><img src="../resources/images/off.png" alt=""  onclick="show(this)"/></div>'+
+              '<ul class="addContent" style="display: none;">'+
+                '<li class="word" onclick="newSummernote(this)">文</li>'+
+                '<li class="picture" onclick="newPicture(this)">图</li>'+
+                '<li class="video" onclick="newVideo(this)">视</li>'+
+                '<li class="audio" onclick="newAudio(this)">音</li>'+
+              '</ul>'+
+            '</div>'+
+          '</div>'
+  $(newv).parent().parent().parent().after(pict);
   hiden();
   upLoadPicture(segmentIndex);
   segmentIndex++;
