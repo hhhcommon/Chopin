@@ -348,15 +348,15 @@ li{list-style: none;}
   border-radius: 14px;
 }
 .ibox .words .actions {
-  width: 143px;
+  width: 120px;
   height: 35px;
   position: absolute;
   left: 85%;
   margin-top: 17%;
   cursor: pointer;
 }
-.ibox .pic .actions {
-  width: 143px;
+.ibox .pic .actions ,.ibox .video .actions ,.ibox .audio .ations{
+  width: 120px;
   height: 35px;
   position: absolute;
   left: 85%;
@@ -372,7 +372,7 @@ li{list-style: none;}
   cursor:pointer;
   color:#333;
 }
-.pic .cancel{
+.pic .cancel,.video .cancel,.audio .cancel{
   width:22px;
   height:22px;
   line-height:22px;
@@ -777,10 +777,10 @@ function newVideo(newv){
             '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
             '<label class="col-sm-2 control-label">视频：</label>'+
             '<div class="col-sm-10"style="margin-left: 25px;">'+
-              '<input id="uploadVedio" name="uploadVedio" class="form-control" type="file" accept=".m4a,.mp3" />'+
+              '<input id="uploadVedio" name="uploadVedio" class="form-control" type="file" accept=".mp4" />'+
               '<input id="ContentVedio'+segmentIndex+'" class="form-isvalidate" name="ContentVedio" type="hidden" value="" />'+
               '<div id="OldOrgPath'+segmentIndex+'" style="display: none"></div>'+
-              '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大1M，支持JPG、PNG格式</span>'+
+              '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大5M，支持mp3、mp4格式</span>'+
             '</div>'+
             '<div class="actions">'+
               '<div class="toggle"><img src="../resources/images/off.png" alt=""  onclick="show(this)"/></div>'+
@@ -792,7 +792,34 @@ function newVideo(newv){
               '</ul>'+
             '</div>'+
           '</div>'
-  $(newv).parent().parent().parent().after(pict);
+  $(newv).parent().parent().parent().after(vid);
+  hiden();
+  upLoadPicture(segmentIndex);
+  segmentIndex++;
+}
+
+//生成音频编辑框
+function newAudio(newa){
+  var aud='<div class="form-group segment audio" id='+segmentIndex+' type="AUDIO" style="border:1px solid rgba(32, 27, 27, 0.08);top:25px;">'+
+            '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
+            '<label class="col-sm-2 control-label">音频：</label>'+
+            '<div class="col-sm-10"style="margin-left: 25px;">'+
+              '<input id="uploadAduio" name="uploadAduio" class="form-control" type="file" accept=".mp4,.mp3" />'+
+              '<input id="ContentAduio'+segmentIndex+'" class="form-isvalidate" name="ContentAduio" type="hidden" value="" />'+
+              '<div id="OldOrgPath'+segmentIndex+'" style="display: none"></div>'+
+              '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大5M，支持mp3、mp4格式</span>'+
+            '</div>'+
+            '<div class="actions">'+
+              '<div class="toggle"><img src="../resources/images/off.png" alt=""  onclick="show(this)"/></div>'+
+              '<ul class="addContent" style="display: none;">'+
+                '<li class="word" onclick="newSummernote(this)">文</li>'+
+                '<li class="picture" onclick="newPicture(this)">图</li>'+
+                '<li class="video" onclick="newVideo(this)">视</li>'+
+                '<li class="audio" onclick="newAudio(this)">音</li>'+
+              '</ul>'+
+            '</div>'+
+          '</div>'
+  $(newa).parent().parent().parent().after(aud);
   hiden();
   upLoadPicture(segmentIndex);
   segmentIndex++;
@@ -819,7 +846,16 @@ function upLoadPicture(segmentIndex){
         if(opeResult.ful[0].success=="TRUE"){
           _this.siblings("input[type='hidden']").val(opeResult.ful[0].storeFilename);
           var ds = $('#OldOrgPath'+segmentIndex).html();
-		      var jsonstr = {"FileOrgPath":opeResult.ful[0].storeFilepath,"FileSmallPath":opeResult.ful[0].smallFilepath};
+          alert($(_this).parent().attr("type"));
+          if($(_this).parent().attr("TYPE")=="PICTURE"){
+            var jsonstr = {"FileOrgPath":opeResult.ful[0].storeFilepath,"FileSmallPath":opeResult.ful[0].smallFilepath};
+          }
+          if($(_this).parent().attr("TYPE")=="VIDEO"){
+            var jsonstr = {"PartPath":opeResult.ful[0].storeFilepath};
+          }
+          if($(_this).parent().attr("TYPE")=="AUDIO"){
+            var jsonstr = {"PartPath":opeResult.ful[0].storeFilepath};
+          }
 		      var str = JSON.stringify(jsonstr);
           if(ds==null || ds.length==0){
         	  $('#OldOrgPath'+segmentIndex).html(str);
@@ -865,7 +901,7 @@ function createArticle(){
 	    console.log("图片："+obj);
       onePart.ResouceList = obj;
     }
-	onePart.PartId=id;
+	  onePart.PartId=id;
     list.push(onePart);
   });
   var postData={};
