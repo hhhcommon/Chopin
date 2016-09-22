@@ -348,15 +348,15 @@ li{list-style: none;}
   border-radius: 14px;
 }
 .ibox .words .actions {
-  width: 143px;
+  width: 120px;
   height: 35px;
   position: absolute;
   left: 85%;
   margin-top: 17%;
   cursor: pointer;
 }
-.ibox .pic .actions {
-  width: 143px;
+.ibox .pic .actions,.ibox .video .actions,.ibox .audios .ations{
+  width: 120px;
   height: 35px;
   position: absolute;
   left: 85%;
@@ -372,7 +372,7 @@ li{list-style: none;}
   cursor:pointer;
   color:#333;
 }
-.pic .cancel{
+.pic .cancel,.video .cancel,.audios .cancel{
   width:22px;
   height:22px;
   line-height:22px;
@@ -479,7 +479,7 @@ li, a, input {
                 </ul>
               </div>
             </div>
-            <div class="form-group" style="margin-top: 20px;">
+            <div class="form-group" style="top: 55px;">
               <div class="col-sm-6 text-right">
                 <button class="btn btn-warning" id="preview">预览</button>
               </div>
@@ -706,7 +706,7 @@ function cancelEdit(cane){
 
 //生成summernote编辑框
 function newSummernote(news) {
-  var des='<div class="form-group segment words" id='+segmentIndex+' type="WORD" style="border:1px solid rgba(32, 27, 27, 0.08);top:25px;">'+
+  var des='<div class="form-group segment words" id='+segmentIndex+' type="WORD" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;">'+
             '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
             '<label class="col-sm-2 control-label">描述：</label>'+
               '<div class="col-sm-10" style="margin-left: 25px;">'+
@@ -746,7 +746,7 @@ function newSummernote(news) {
 
 //生成图片编辑框
 function newPicture(newp){
-  var pict='<div class="form-group segment pic" id='+segmentIndex+' type="PICTURE" style="border:1px solid rgba(32, 27, 27, 0.08);top:25px;">'+
+  var pict='<div class="form-group segment pic" id='+segmentIndex+' type="PICTURE" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;">'+
               '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
               '<label class="col-sm-2 control-label">图片：</label>'+
               '<div class="col-sm-10"style="margin-left: 25px;">'+
@@ -766,6 +766,60 @@ function newPicture(newp){
               '</div>'+
             '</div>'
   $(newp).parent().parent().parent().after(pict);
+  hiden();
+  upLoadPicture(segmentIndex);
+  segmentIndex++;
+}
+
+//生成视频编辑框
+function newVideo(newv){
+  var vid='<div class="form-group segment video" id='+segmentIndex+' type="ViDEO" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;">'+
+            '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
+            '<label class="col-sm-2 control-label">视频：</label>'+
+            '<div class="col-sm-10"style="margin-left: 25px;">'+
+              '<input id="uploadVedio" name="uploadVedio" class="form-control" type="file" accept=".mp4" />'+
+              '<input id="ContentVedio'+segmentIndex+'" class="form-isvalidate" name="ContentVedio" type="hidden" value="" />'+
+              '<div id="OldOrgPath'+segmentIndex+'" style="display: none"></div>'+
+              '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大5M，支持mp3、mp4格式</span>'+
+            '</div>'+
+            '<div class="actions">'+
+              '<div class="toggle"><img src="../resources/images/off.png" alt=""  onclick="show(this)"/></div>'+
+              '<ul class="addContent" style="display: none;">'+
+                '<li class="word" onclick="newSummernote(this)">文</li>'+
+                '<li class="picture" onclick="newPicture(this)">图</li>'+
+                '<li class="video" onclick="newVideo(this)">视</li>'+
+                '<li class="audio" onclick="newAudio(this)">音</li>'+
+              '</ul>'+
+            '</div>'+
+          '</div>'
+  $(newv).parent().parent().parent().after(vid);
+  hiden();
+  upLoadPicture(segmentIndex);
+  segmentIndex++;
+}
+
+//生成音频编辑框
+function newAudio(newa){
+  var aud='<div class="form-group segment audios" id='+segmentIndex+' type="AUDIO" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;">'+
+            '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
+            '<label class="col-sm-2 control-label">音频：</label>'+
+            '<div class="col-sm-10" style="margin-left: 25px;">'+
+              '<input id="uploadAduio" name="uploadAduio" class="form-control" type="file" accept=".mp4,.mp3" />'+
+              '<input id="ContentAduio'+segmentIndex+'" class="form-isvalidate" name="ContentAduio" type="hidden" value="" />'+
+              '<div id="OldOrgPath'+segmentIndex+'" style="display: none"></div>'+
+              '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大5M，支持mp3、mp4格式</span>'+
+            '</div>'+
+            '<div class="actions">'+
+              '<div class="toggle"><img src="../resources/images/off.png" alt=""  onclick="show(this)"/></div>'+
+              '<ul class="addContent" style="display: none;">'+
+                '<li class="word" onclick="newSummernote(this)">文</li>'+
+                '<li class="picture" onclick="newPicture(this)">图</li>'+
+                '<li class="video" onclick="newVideo(this)">视</li>'+
+                '<li class="audio" onclick="newAudio(this)">音</li>'+
+              '</ul>'+
+            '</div>'+
+          '</div>'
+  $(newa).parent().parent().parent().after(aud);
   hiden();
   upLoadPicture(segmentIndex);
   segmentIndex++;
@@ -791,77 +845,22 @@ function upLoadPicture(segmentIndex){
         console.log(opeResult);
         if(opeResult.ful[0].success=="TRUE"){
           _this.siblings("input[type='hidden']").val(opeResult.ful[0].storeFilename);
-          var ds = $('#OldImgOrgPath'+segmentIndex).html();
-		      var jsonstr = {"FileOrgPath":opeResult.ful[0].storeFilepath,"FileSmallPath":opeResult.ful[0].smallFilepath};
-		      var str = JSON.stringify(jsonstr);
+          var ds = $('#OldOrgPath'+segmentIndex).html();
+          alert($(_this).parent().attr("type"));
+          if($(_this).parent().attr("TYPE")=="PICTURE"){
+            var jsonstr = {"FileOrgPath":opeResult.ful[0].storeFilepath,"FileSmallPath":opeResult.ful[0].smallFilepath};
+          }
+          if($(_this).parent().attr("TYPE")=="VIDEO"){
+            var jsonstr = {"PartPath":opeResult.ful[0].storeFilepath};
+          }
+          if($(_this).parent().attr("TYPE")=="AUDIO"){
+            var jsonstr = {"PartPath":opeResult.ful[0].storeFilepath};
+          }
+          var str = JSON.stringify(jsonstr);
           if(ds==null || ds.length==0){
         	  $('#OldImgOrgPath'+segmentIndex).html(str);
           } else {
 		      $('#OldImgOrgPath'+segmentIndex).html(ds+","+str);
-          };
-        }else{
-          alert(opeResult.err);
-        }
-      },
-      error: function(jqXHR){
-        alert("发生错误" + jqXHR.status);
-      }     
-    });
-  });
-}
-
-//生成视频编辑框
-function newVideo(newv){
-  var vid='<div class="form-group segment video" id='+segmentIndex+' type="VIDEO" style="border:1px solid rgba(32, 27, 27, 0.08);top:25px;">'+
-            '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
-            '<label class="col-sm-2 control-label">视频：</label>'+
-            '<div class="col-sm-10"style="margin-left: 25px;">'+
-              '<input id="uploadVedio" name="uploadVedio" class="form-control" type="file" accept=".m4a,.mp3" />'+
-              '<input id="ContentVedio'+segmentIndex+'" class="form-isvalidate" name="ContentVedio" type="hidden" value="" />'+
-              '<div id="OldVideoOrgPath'+segmentIndex+'" style="display: none"></div>'+
-              '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大1M，支持JPG、PNG格式</span>'+
-            '</div>'+
-            '<div class="actions">'+
-              '<div class="toggle"><img src="../resources/images/off.png" alt=""  onclick="show(this)"/></div>'+
-              '<ul class="addContent" style="display: none;">'+
-                '<li class="word" onclick="newSummernote(this)">文</li>'+
-                '<li class="picture" onclick="newPicture(this)">图</li>'+
-                '<li class="video" onclick="newVideo(this)">视</li>'+
-                '<li class="audio" onclick="newAudio(this)">音</li>'+
-              '</ul>'+
-            '</div>'+
-          '</div>'
-  $(newv).parent().parent().parent().after(vid);
-  hiden();
-  upLoadVideo(segmentIndex);
-  segmentIndex++;
-}
-
-//上传视频
-function upLoadVideo(segmentIndex){
-  $("input[type='file']").change(function(){
-    var _this=$(this);
-    var oMyForm = new FormData();
-    oMyForm.append("ContentFile", $(this)[0].files[0]);
-    $.ajax({
-      url:rootPath+"common/uploadCM.do",
-      type:"POST",
-      data:oMyForm,
-      cache: false,
-      processData: false,
-      contentType: false,
-      dataType:"json",
-      //表单提交前进行验证
-      success: function (opeResult){
-        if(opeResult.ful[0].success=="TRUE"){
-          _this.siblings("input[type='hidden']").val(opeResult.ful[0].storeFilename);
-          var ds = $('#OldVideoOrgPath'+segmentIndex).html();
-		      var jsonstr = {"FileOrgPath":opeResult.ful[0].storeFilepath};
-		      var str = JSON.stringify(jsonstr);
-          if(ds==null || ds.length==0){
-        	  $('#OldVideoOrgPath'+segmentIndex).html(str);
-          } else {
-		      $('#OldVideoOrgPath'+segmentIndex).html(ds+","+str);
           };
         }else{
           alert(opeResult.err);
@@ -902,7 +901,7 @@ function createArticle(){
 	    console.log("图片："+obj);
       onePart.ResouceList = obj;
     }
-	onePart.PartId=id;
+	  onePart.PartId=id;
     list.push(onePart);
   });
   var postData={};
