@@ -71,7 +71,7 @@ public class ChannelService {
             Map<String, Object> param=new HashMap<String, Object>();
             param.put("ownerType", "100");
             param.put("sortByClause", "sort");
-            List<ChannelPo> cpol=channelDao.queryForList(param);
+            List<ChannelPo> cpol=channelDao.queryForList("getListAll");
             if (cpol!=null&&!cpol.isEmpty()) {
                 List<Channel> cl=new ArrayList<Channel>();
                 for (ChannelPo cpo: cpol) {
@@ -327,7 +327,6 @@ public class ChannelService {
     	Map<String, Object> m = new HashMap<>();
 		m.put("pcId", channelId);
     	m.put("assetType", "wt_MediaAsset");
-    	m.put("flowFlag", 2);
     	m.put("sortByClause", "sort desc ,pubTime desc");
     	m.put("isValidate", 1);
     	m.put("page", page-1);
@@ -339,10 +338,9 @@ public class ChannelService {
     	Map<String, Object> m = new HashMap<>();
     	m.put("channelId", channelId);
     	m.put("assetType", "wt_MediaAsset");
-    	m.put("flowFlag", flowFlag);
     	m.put("sortByClause", "sort desc ,pubTime desc");
     	m.put("isValidate", 1);
-    	m.put("page", page-1);
+    	m.put("page", (page-1)*pageSize);
     	m.put("pageSize", pageSize);
 		return channelAssetDao.queryForList("getListByLimit", m);
     }
@@ -350,7 +348,7 @@ public class ChannelService {
     public int getChannelAssetsNum(String channelId, int flowFlag) {
     	Map<String, Object> m = new HashMap<>();
     	m.put("channelId", channelId);
-    	m.put("flowFlag", "2");
+    	m.put("isValidate", "1");
 		return channelAssetDao.queryForList("getListByWhere", m).size();
     }
 

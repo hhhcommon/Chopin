@@ -79,7 +79,7 @@ li{list-style: none;}
 }
 .ztree{
   width:290px;
-  height:430px;
+  height:90%;
   margin-left:35px;
   margin-top:35px;
   border: 1px solid #3370b7;
@@ -95,8 +95,140 @@ li{list-style: none;}
   background:white;
 }
 .detail{
-  height:240px;
+  height:340px;
   border:1px solid black;
+  overflow: auto;
+}
+.listBox{
+  width: 100%;
+  height: 70px;
+  padding: 6px;
+  border-bottom: 2px solid #f3f3f4;
+  background: white;
+  position: relative;
+  cursor: pointer;
+}
+.listBox .listCheck {
+  width: 6%;
+  text-align: center;
+  height: 58px;
+  line-height: 58px;
+}
+.listBox .listImg, .listBox .listCon, .listBox .listCheck {
+  float: left;
+}
+.listBox .listImg {
+  height: 100%;
+  width: 15%;
+  margin-right: 15px;
+  margin-left: 6px;
+}
+.listBox .listImg img {
+  height: 100%;
+  width: 100%;
+}
+.listBox .listCon{
+  width:50%;
+}
+.listBox .listCon h3 {
+  font-size: 12px;
+  margin-top: 0;
+  margin-bottom: 2px;
+  color: #636363;
+  position: relative;
+  display: inline-block;
+  max-width: 180px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.listBox .secTitle {
+  font-size: 12px;
+  color: #ccc;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.listBox p{
+  margin:0 0 2px;
+}
+
+.listBox .other {
+  font-size: 12px;
+  color: #3871a6;
+}
+.listBox .other span {
+  padding-right: 12px;
+}
+.listBox .sortUpdate {
+  width: 100px;
+  height: 20px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+.listBox .sortUpdate .sortNum {
+  width: 60px;
+  height: 20px;
+  background-color: #f3f3f4;
+  color: black;
+  text-align: center;
+  border: none;
+  border-radius: 4px;
+  outline: 0px;
+}
+.listBox .sortUpdate .sortUpdateBtn {
+  height: 20px;
+  line-heihgt: 20px;
+  width: 24px;
+  margin: 0;
+  padding: 0;
+  border-radius: 20px;
+  border: none;
+}
+/*遮罩层样式*/
+.shade{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0,0,0,0.65);
+  z-index: 100;
+  display: none;
+}
+/*栏目切换*/
+.tabNav{
+  width: 100%;
+  height: 30px;
+  border:1px solid red;
+  overflow: hidden;
+}
+.tabNav li{
+  width: 25%;
+  height: 30px;
+  border:1px solid black;
+  float: left;
+  text-align: center;
+  line-height:30px;
+}
+.tabContent{
+  width: 100%;
+  height:80%;
+  position: relative;
+  border:1px solid green;
+  overflow: auto;
+  margin-top: -10px;
+}
+.tabContent div{
+  width: 100%;
+  height:50%;
+}
+.tabContent .tabContentDiv:first-child{
+  display: block;
+}
+.tabContent .tabContentDiv:not(:first-child){
+  display: none;
 }
 /*遮罩层样式*/
 .shade{
@@ -146,15 +278,19 @@ li{list-style: none;}
   margin-bottom:8px;
 }
 .segment .btn-group-sm>.btn, .btn-sm {
-    padding: 3px 5px;
-    font-size: 12px;
-    line-height: 1.5;
-    border-radius: 3px;
+  padding: 3px 5px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
 }
 .segment .panel-default>.panel-heading{
   background-color: #f5f5f5;
 }
+<<<<<<< HEAD
 .form-group #titleName{
+=======
+.form-group #titleName,.form-group #descnName{
+>>>>>>> refs/remotes/origin/master
   width: 510px;
   height: 27px;
   position: relative;
@@ -176,7 +312,11 @@ li{list-style: none;}
   height: 27px;
   position: absolute;
   left:69%;
+<<<<<<< HEAD
   margin-top: -2%;
+=======
+  margin-top: -1.99%;
+>>>>>>> refs/remotes/origin/master
   font-size: 15px;
   line-height: 27px;
   text-align: center;
@@ -191,7 +331,11 @@ li{list-style: none;}
   border:1px solid rgba(32, 27, 27, 0.08);
 }
 .ibox .channel .actions {
+<<<<<<< HEAD
   width: 143px;
+=======
+  width: 84px;
+>>>>>>> refs/remotes/origin/master
   /*height: 32px;*/
   position: absolute;
   left: 85%;
@@ -204,42 +348,64 @@ li{list-style: none;}
   margin-left: 0%;
 }
 .ibox .actions .toggle img{
-  margin-left: 11%;
+  margin-left: 9%;
   margin-top:46%;
 }
 .ibox .addContent{
   width:100%;
   display: none;
   margin-top: 2px;
+<<<<<<< HEAD
   margin-left: 13px;
+=======
+  margin-left: 10px;
+>>>>>>> refs/remotes/origin/master
 }
 .ibox .addContent li{
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   border: 1px solid #999;
   float: left;
-  margin-left: 4px;
-  margin-top:5px;
-  cursor:pointer;
-  line-height:20px;
-  text-align:center;
+  margin-left: 0px;
+  margin-top: 5px;
+  cursor: pointer;
+  line-height: 18px;
+  font-size: 12px;
+  text-align: center;
   border-radius: 14px;
 }
 .ibox .words .actions {
-  width: 143px;
+  width: 120px;
   height: 35px;
   position: absolute;
   left: 85%;
   margin-top: 17%;
   cursor: pointer;
 }
-.ibox .pic .actions {
-  width: 143px;
+.ibox .pic .actions,.ibox .video .actions,.ibox .audios .ations{
+  width: 120px;
   height: 35px;
   position: absolute;
   left: 85%;
   margin-top: 1%;
   cursor: pointer;
+}
+.words .cancel{
+  width:22px;
+  height:22px;
+  line-height:22px;
+  text-align:center;
+  margin-left:96%;
+  cursor:pointer;
+  color:#333;
+}
+.pic .cancel,.video .cancel,.audios .cancel{
+  width:22px;
+  height:22px;
+  line-height:22px;
+  text-align:center;
+  margin-left:96%;
+  cursor:pointer;
 }
 .words .cancel{
   width:22px;
@@ -295,7 +461,10 @@ li, a, input {
               <button type="button" id="del" opeType="claDel" class="btn" style="margin-right:3px;">删除</button>
             </div>
             <div class="ibox-content">
-              <ul class="detail">这里面放栏目里的文章</ul>
+              <div class="detail">
+                <ul class="tabNav"></ul>
+                <div class="tabContent"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -318,21 +487,36 @@ li, a, input {
             <input id="orgPath" name="orgPath" class="form-control" type="hidden" value="" />
             <input id="smallName" name="smallName" class="form-control" type="hidden" value="" />
             <input id="smallPath" name="smallPath" class="form-control" type="hidden" value="" />
-            <input id="fileOrgPath" name="fileOrgPath" class="form-control" type="hidden" value="" />
-            <input id="fileSmallPath" name="fileSmallPath" class="form-control" type="hidden" value="" />
             <div class="form-group" id="1">
               <label class="col-sm-2 control-label">标题：</label>
               <div class="col-sm-10" style="margin-left: 25px;">
                 <input id="titleName" name="titleName" class="form-control" type="text" aria-required="true">
               </div>
             </div>
+<<<<<<< HEAD
+            <div class="form-group">
+              <label class="col-sm-2 control-label">类型：</label>
+              <div class="col-sm-10" style="margin-left: 25px;">
+                <select class="first"><option value="">参赛选手</option><option value="">普通用户</option></select>
+=======
+            <div class="form-group" id="2">
+              <label class="col-sm-2 control-label">摘要：</label>
+              <div class="col-sm-10" style="margin-left: 25px;">
+                <input id="descnName" name="descnName" class="form-control" type="text" aria-required="true">
+>>>>>>> refs/remotes/origin/master
+              </div>
+            </div>
+<<<<<<< HEAD
+            <div class="form-group channel" id="0">
+=======
             <div class="form-group">
               <label class="col-sm-2 control-label">类型：</label>
               <div class="col-sm-10" style="margin-left: 25px;">
                 <select class="first"><option value="">参赛选手</option><option value="">普通用户</option></select>
               </div>
             </div>
-            <div class="form-group channel" id="0">
+            <div class="form-group channel" id="0" style="top:11px;">
+>>>>>>> refs/remotes/origin/master
               <label class="col-sm-2 control-label">类别：</label>
               <div class="col-sm-10" style="margin-left: 25px;">
                 <input id="channelId" name="channelId" class="form-control" placeholder="栏目id" type="hidden" aria-required="true" value="">
@@ -345,11 +529,12 @@ li, a, input {
                 <ul class="addContent" style="display: none;">
                   <li class="word" onclick="newSummernote(this)">文</li>
                   <li class="picture" onclick="newPicture(this)">图</li>
-                  <li class="vedio">视</li>
-                  <li class="radios">音</li>
+                  <li class="video" onclick="newVideo(this)">视</li>
+                  <li class="audio" onclick="newAudio(this)">音</li>
                 </ul>
               </div>
             </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
             <!--<div id="addForm"></div>-->
@@ -410,11 +595,14 @@ li, a, input {
               </div>
             </div>-->
             <div class="form-group" style="margin-top: 20px;">
+=======
+            <div class="form-group" style="top: 55px;">
+>>>>>>> refs/remotes/origin/master
               <div class="col-sm-6 text-right">
-                <button class="btn btn-warning" id="submitBtn" type="submit">预览</button>
+                <button class="btn btn-warning" id="preview">预览</button>
               </div>
               <div class="col-sm-6 text-left">
-                <button class="btn btn-warning commit" type="publish">提交</button>
+                <button class="btn btn-warning commit" type="submit">提交</button>
               </div>
             </div>
           </form>
@@ -425,6 +613,7 @@ li, a, input {
   </div>
 </body> 
 <<<<<<< HEAD
+<<<<<<< HEAD
 <script>
 <<<<<<< HEAD
 alert(1234);
@@ -434,14 +623,22 @@ alert(123123123);
 =======
 <script>
 >>>>>>> refs/remotes/origin/master
+=======
+<script>
+>>>>>>> refs/remotes/origin/master
 var zTreeObj,zTreeObjs,des;
 >>>>>>> refs/remotes/origin/master
 var rootPath=getRootPath();
+<<<<<<< HEAD
 <<<<<<< HEAD
 var segmentIndex=2;
 window.picstr;//图片字符串
 =======
 var segmentIndex=1;
+>>>>>>> refs/remotes/origin/master
+=======
+var segmentIndex=3;
+var changeSum=1;//图片改变次数
 >>>>>>> refs/remotes/origin/master
 //需要加载的分类树的数据，以list方式给出
 var loadTreeData=[{ChannelId:"",TreeViewType:"zTree"}];
@@ -465,6 +662,9 @@ $(function(){
       simpleData:{
         enable: true
       }
+    },
+    callback:{
+      onClick:nodeSelected
     }
   });
   //0.2--初始化弹出框的树
@@ -497,10 +697,18 @@ $(function(){
   //2-初始化页面按钮
   //2.1-点击添加按钮
   $("#add").on("click",function(){
+<<<<<<< HEAD
     //$("").html("");//清空数据
+=======
+    $(".segment").remove();//清空数据
+    $("#titleName,#channelName,#descnName").val("");//清空数据
+>>>>>>> refs/remotes/origin/master
     $(".row,.shade").show();
   });
+<<<<<<< HEAD
 
+=======
+>>>>>>> refs/remotes/origin/master
   //2.2-点击修改按钮
   $("#mod").on("click",function(){
     
@@ -509,6 +717,7 @@ $(function(){
   $("#del").on("click",function(){
     
   });
+<<<<<<< HEAD
   
   //3初始弹出页面点击事件
   //3.1-点击选择栏目,弹出界面出现树
@@ -530,15 +739,25 @@ $(function(){
   });
 <<<<<<< HEAD
 =======
+=======
+>>>>>>> refs/remotes/origin/master
   
-  //3初始弹出框点击事件
+  //3初始弹出页面点击事件
   //3.1-点击选择栏目,弹出界面出现树
   $(".chooseChannel").on("click",function(){
-    hiden();
-    $("#cataTrees").slideDown("slow");
-
     $("#cataTrees").toggle();
   })
+<<<<<<< HEAD
+>>>>>>> refs/remotes/origin/master
+=======
+  //3.2-点击提交按钮，提交表单
+  $(".commit").on("click",function(){
+    createArticle();
+  })
+  //3.3-点击提交,取消按钮，遮罩层和弹出层消失
+  $(".close-link").on("click",function(){
+    $(".row,.shade").hide();
+  });
 >>>>>>> refs/remotes/origin/master
 });
 
@@ -547,6 +766,7 @@ $(function(){
  */
 function loadTree(loadData) {
   var _url=rootPath+"baseinfo/getChannelTree4View.do";
+//var _url="http://localhost:1108/Chopin/baseinfo/getChannelTree4View.do";
   var i=0;
   loadRecursion(0);
   function loadRecursion(index) {
@@ -570,103 +790,77 @@ function loadTree(loadData) {
   }
 }
 
+//选中页面上树的节点并ajax请求加载文章内容
+function nodeSelected(event, treeId, treeNode) {
+  var node=zTreeObj.getSelectedNodes();//获取 模态框里zTree当前被选中的节点数据集合
+  var selectedNode=node[0]; //当前选中的节点
+  alert("当前选中节点的id:"+selectedNode.id);
+  var _data={ChannelId:selectedNode.id,PerSize:"10000",PageSize:"10000",Page:"1"};
+  $.ajax({
+    url:rootPath+"content/getContents.do",
+    type:"POST",
+    data:JSON.stringify(_data),
+    dataType:"json",
+    //表单提交前进行验证
+    success: function (returnData){
+      if(returnData.ReturnType=="1001"){
+        loadCatalog(returnData);
+      }else{
+        alert("当前栏目无相关文章列表!");
+        $(".tabNav").text("");
+        $(".tabContent").text("");
+      }
+    },
+    error: function(jqXHR){
+      alert("发生错误" + jqXHR.status);
+    }     
+  });
+}
+
+//加载栏目类别
+function loadCatalog(returnData){
+  var nli,ndiv,loadArtList;
+  $(".tabNav,.tabContent").html("");//加载数据前清空导航栏和内容框
+  for(var i=0;i<returnData.AllCount;i++){
+    nli=$("<li id="+returnData.ResultInfo[i].CatalogId+" onclick='clickTab(this)'>"+returnData.ResultInfo[i].CatalogName+"</li>");
+    nli.css({"width":($(".tabNav").width())/(returnData.AllCount)});
+    $(".tabNav").append(nli);
+    ndiv=$("<div class='tabContentDiv'></div>");
+    for(var j=0;j<returnData.ResultInfo[i].AllCount;j++){
+      loadArtList='<div class="listBox" id='+returnData.ResultInfo[i].List[j].ContentId+'>'+
+                    '<div class="listCheck"><input type="checkBox" name=""></div>'+
+                    '<div class="listImg"><img alt="mage" src=""></div>'+
+                    '<div class="listCon">'+
+                      '<h3>'+returnData.ResultInfo[i].List[j].ContentId+'</h3>'+
+                      '<p class="secTitle">'+returnData.ResultInfo[i].List[j].ContentDesc+'</p>'+
+                      '<p class="other"><span>'+returnData.ResultInfo[i].List[j].ContentPubTime+'</span></p>'+
+                    '</div>'+
+                    '<div class="sortUpdate">'+
+                      '<input type="text" class="sortNum" value="'+returnData.ResultInfo[i].List[j].ContentSort+'">'+
+                      '<button class="sortUpdateBtn">OK</button>'+
+                    '</div>'+
+                    '<div class="clickBar"></div>'+
+                  '</div>'
+      ndiv.append(loadArtList);
+    }
+  $(".tabContent").append(ndiv);
+  }
+}
+
+//栏目的tab切换
+function clickTab(clickt){
+  $(clickt).css({background:"red"});
+  $(clickt).siblings().css({background:""});
+  $(".tabContent>div").hide();
+  $(".tabContent>div").eq($(".tabNav li").index(clickt)).show();
+}
+
 //选择弹出框上面树的栏目
 function onClick(event, treeId, treeNode) {
   var node=zTreeObjs.getSelectedNodes();//获取 模态框里zTree当前被选中的节点数据集合
   var modalNode=node[0]; //当前选中的节点
   $("#channelId").val(modalNode.id);
   $("#channelName").val(modalNode.name);
-  $("#cataTrees").slideUp("slow");
-};
-
-//点击栏目边上的“加号”
-function show(plus){
-  hiden();
-  $(plus).parent().parent().find(".addContent").css({"display":"block"});
-}
-
-//生成summernote编辑框
-function newSummernote(news) {
-  var nowId=$(news).parents(".form-group").prop("id");
-  alert(nowId);
-  if(nowId==0){
-    $(des).appendTo($("#addForm"));
-  }else{
-    var nextId=$(news).parents(".form-group").next().prop("id");
-    alert(nextId);
-  }
-  //return;  
-  segmentIndex++;
-  description(segmentIndex);
-  //初始summernote
-  $('.summernote').summernote({
-    lang:'zh-CN',
-    height:80,
-    minHeight:80,
-    maxHeight:80,
-    focus:false,
-    toolbar: [
-      // [groupName, [list of button]]
-      ['style', ['bold', 'italic', 'underline', 'clear']],
-      ['font', ['strikethrough', 'superscript', 'subscript']],
-      ['fontsize', ['fontsize']],
-      ['color', ['color']],
-      ['para', ['ul', 'ol', 'paragraph']],
-      ['height', ['height']]
-    ]
-  });
-  hiden();
-}
-/*设置描述样式*/
-function description(segmentIndex){
-  alert("des"+segmentIndex)
-  des='<div class="form-group segment words" id='+segmentIndex+' type="WORD">'+
-        '<label class="col-sm-2 control-label">描述：</label>'+
-        '<div class="col-sm-10" style="margin-left: 19px;">'+
-          '<div id="summernote'+segmentIndex+'" class="summernote"></div>'+
-        '</div>'+
-        '<div class="actions">'+
-          '<div class="toggle"><img src="../resources/images/off.png" alt=""  onclick="show(this)"/></div>'+
-          '<ul class="addContent" style="display: none;">'+
-            '<li class="word" onclick="newSummernote(this)">文</li>'+
-            '<li class="picture" onclick="newPicture(this)">图</li>'+
-            '<li class="vedio">视</li>'+
-            '<li class="radios">音</li>'+
-          '</ul>'+
-        '</div>'+
-      '</div>'
-//$(des).appendTo($("#addForm"));
-}
-
-//生成图片编辑框
-function newPicture(){
-  segmentIndex++;
-  picture(segmentIndex);
-  hiden();
-  upLoadPicture();
-}
-
-/*设置图片样式*/
-function picture(segmentIndex){
-  alert("pic"+segmentIndex);
-  var pict='<div class="form-group segment pic" id='+segmentIndex+' type="PICTURE">'+
-              '<label class="col-sm-2 control-label">图片：</label>'+
-              '<div class="col-sm-10"style="margin-left: 19px;">'+
-                '<input id="uploadImg" name="uploadImg" class="form-control" type="file" accept=".png,.jpg" />'+
-                '<input id="ContentImg" name="ContentImg" type="hidden" value="" />'+
-                '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大1M，支持JPG、PNG格式</span>'+
-              '</div>'+
-              '<div class="actions">'+
-                '<div class="toggle"><img src="../resources/images/off.png" alt=""  onclick="show(this)"/></div>'+
-                '<ul class="addContent" style="display: none;">'+
-                  '<li class="word" onclick="newSummernote(this)">文</li>'+
-                  '<li class="picture" onclick="newPicture(this)">图</li>'+
-                  '<li class="vedio">视</li>'+
-                  '<li class="radios">音</li>'+
-                '</ul>'+
-              '</div>'+
-            '</div>'
-  $(pict).appendTo($("#addForm"));
   $("#cataTrees").hide();
 };
 
@@ -678,8 +872,13 @@ function show(plus){
   alert("test123");
 }
 
+<<<<<<< HEAD
 //删除当前选中的编辑内容
+=======
+//点击"x",删除正在编辑的内容
+>>>>>>> refs/remotes/origin/master
 function cancelEdit(cane){
+<<<<<<< HEAD
 <<<<<<< HEAD
   alert($(cane).parent().html());
   $(cane).parent().remove();
@@ -687,10 +886,20 @@ function cancelEdit(cane){
   $(cane).parent().css("display", "none");
   $(cane).parent().find(".form-isvalidate").val("");
 >>>>>>> refs/remotes/origin/master
+=======
+  if($(cane).parent().attr("type")=="WORD"){
+    $(cane).parent().remove();//如果是文字，直接删除
+  }
+  if($(cane).parent().attr("type")=="PICTURE"){
+    $(cane).parent().css("display", "none");
+    $(cane).parent().find(".form-isvalidate").val("");
+  }
+>>>>>>> refs/remotes/origin/master
 }
 
 //生成summernote编辑框
 function newSummernote(news) {
+<<<<<<< HEAD
   var des='<div class="form-group segment words" id='+segmentIndex+' type="WORD" style="border:1px solid rgba(32, 27, 27, 0.08);">'+
             '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
             '<label class="col-sm-2 control-label">描述：</label>'+
@@ -704,6 +913,21 @@ function newSummernote(news) {
                 '<li class="picture" onclick="newPicture(this)">图</li>'+
                 '<li class="vedio">视</li>'+
                 '<li class="radios">音</li>'+
+=======
+  var des='<div class="form-group segment words" id='+segmentIndex+' type="WORD" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;">'+
+            '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
+            '<label class="col-sm-2 control-label">描述：</label>'+
+              '<div class="col-sm-10" style="margin-left: 25px;">'+
+              '<div id="summernote'+segmentIndex+'" class="summernote"></div>'+
+            '</div>'+
+            '<div class="actions">'+
+              '<div class="toggle"><img src="../resources/images/off.png" alt=""  onclick="show(this)"/></div>'+
+              '<ul class="addContent" style="display: none;">'+
+                '<li class="word" onclick="newSummernote(this)">文</li>'+
+                '<li class="picture" onclick="newPicture(this)">图</li>'+
+                '<li class="video" onclick="newVideo(this)">视</li>'+
+                '<li class="audio" onclick="newAudio(this)">音</li>'+
+>>>>>>> refs/remotes/origin/master
               '</ul>'+
             '</div>'+
           '</div>'
@@ -731,13 +955,13 @@ function newSummernote(news) {
 
 //生成图片编辑框
 function newPicture(newp){
-  var pict='<div class="form-group segment pic" id='+segmentIndex+' type="PICTURE" style="border:1px solid rgba(32, 27, 27, 0.08);">'+
+  var pict='<div class="form-group segment pic" id='+segmentIndex+' type="PICTURE" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;">'+
               '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
               '<label class="col-sm-2 control-label">图片：</label>'+
               '<div class="col-sm-10"style="margin-left: 25px;">'+
                 '<input id="uploadImg" name="uploadImg" class="form-control" type="file" accept=".png,.jpg" />'+
                 '<input id="ContentImg'+segmentIndex+'" class="form-isvalidate" name="ContentImg" type="hidden" value="" />'+
-                '<div id="OldOrgPath'+segmentIndex+'" style="display: none"></div>'+
+                '<div id="OldImgOrgPath'+segmentIndex+'" style="display: none"></div>'+
                 '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大1M，支持JPG、PNG格式</span>'+
               '</div>'+
               '<div class="actions">'+
@@ -745,19 +969,71 @@ function newPicture(newp){
                 '<ul class="addContent" style="display: none;">'+
                   '<li class="word" onclick="newSummernote(this)">文</li>'+
                   '<li class="picture" onclick="newPicture(this)">图</li>'+
-                  '<li class="vedio">视</li>'+
-                  '<li class="radios">音</li>'+
+                  '<li class="video" onclick="newVideo(this)">视</li>'+
+                  '<li class="audio" onclick="newAudio(this)">音</li>'+
                 '</ul>'+
               '</div>'+
             '</div>'
   $(newp).parent().parent().parent().after(pict);
-<<<<<<< HEAD
-  segmentIndex++;
-  hiden();
-  upLoadPicture();
-=======
   hiden();
   upLoadPicture(segmentIndex);
+  hiden();
+  upLoadPicture(segmentIndex);
+  segmentIndex++;
+}
+
+//生成视频编辑框
+function newVideo(newv){
+  var vid='<div class="form-group segment video" id='+segmentIndex+' type="ViDEO" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;">'+
+            '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
+            '<label class="col-sm-2 control-label">视频：</label>'+
+            '<div class="col-sm-10"style="margin-left: 25px;">'+
+              '<input id="uploadVedio" name="uploadVedio" class="form-control" type="file" accept=".mp4" />'+
+              '<input id="ContentVedio'+segmentIndex+'" class="form-isvalidate" name="ContentVedio" type="hidden" value="" />'+
+              '<div id="OldOrgPath'+segmentIndex+'" style="display: none"></div>'+
+              '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大5M，支持mp3、mp4格式</span>'+
+            '</div>'+
+            '<div class="actions">'+
+              '<div class="toggle"><img src="../resources/images/off.png" alt=""  onclick="show(this)"/></div>'+
+              '<ul class="addContent" style="display: none;">'+
+                '<li class="word" onclick="newSummernote(this)">文</li>'+
+                '<li class="picture" onclick="newPicture(this)">图</li>'+
+                '<li class="video" onclick="newVideo(this)">视</li>'+
+                '<li class="audio" onclick="newAudio(this)">音</li>'+
+              '</ul>'+
+            '</div>'+
+          '</div>'
+  $(newv).parent().parent().parent().after(vid);
+  hiden();
+  upLoadPicture(segmentIndex);
+  segmentIndex++;
+}
+
+//生成音频编辑框
+function newAudio(newa){
+  var aud='<div class="form-group segment audios" id='+segmentIndex+' type="AUDIO" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;">'+
+            '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
+            '<label class="col-sm-2 control-label">音频：</label>'+
+            '<div class="col-sm-10" style="margin-left: 25px;">'+
+              '<input id="uploadAduio" name="uploadAduio" class="form-control" type="file" accept=".mp4,.mp3" />'+
+              '<input id="ContentAduio'+segmentIndex+'" class="form-isvalidate" name="ContentAduio" type="hidden" value="" />'+
+              '<div id="OldOrgPath'+segmentIndex+'" style="display: none"></div>'+
+              '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大5M，支持mp3、mp4格式</span>'+
+            '</div>'+
+            '<div class="actions">'+
+              '<div class="toggle"><img src="../resources/images/off.png" alt=""  onclick="show(this)"/></div>'+
+              '<ul class="addContent" style="display: none;">'+
+                '<li class="word" onclick="newSummernote(this)">文</li>'+
+                '<li class="picture" onclick="newPicture(this)">图</li>'+
+                '<li class="video" onclick="newVideo(this)">视</li>'+
+                '<li class="audio" onclick="newAudio(this)">音</li>'+
+              '</ul>'+
+            '</div>'+
+          '</div>'
+  $(newa).parent().parent().parent().after(aud);
+  hiden();
+  upLoadPicture(segmentIndex);
+  segmentIndex++;
 >>>>>>> refs/remotes/origin/master
 }
 
@@ -769,6 +1045,7 @@ function upLoadPicture(segmentIndex){
     oMyForm.append("ContentFile", $(this)[0].files[0]);
     $.ajax({
       url:rootPath+"common/uploadCM.do",
+//    url:"http://localhost:1108/Chopin/common/uploadCM.do",
       type:"POST",
       data:oMyForm,
       cache: false,
@@ -781,27 +1058,21 @@ function upLoadPicture(segmentIndex){
         if(opeResult.ful[0].success=="TRUE"){
           _this.siblings("input[type='hidden']").val(opeResult.ful[0].storeFilename);
           var ds = $('#OldOrgPath'+segmentIndex).html();
-		  var jsonstr = {"FileOrgPath":opeResult.ful[0].storeFilename,"FileSmallPath":opeResult.ful[0].storeFilename};
-		  var str = JSON.stringify(jsonstr);
-          if(ds.length==0 || ds==null){
-        	  $('#OldOrgPath'+segmentIndex).html(str);
+          alert($(_this).parent().attr("type"));
+          if($(_this).parent().attr("TYPE")=="PICTURE"){
+            var jsonstr = {"FileOrgPath":opeResult.ful[0].storeFilepath,"FileSmallPath":opeResult.ful[0].smallFilepath};
+          }
+          if($(_this).parent().attr("TYPE")=="VIDEO"){
+            var jsonstr = {"PartPath":opeResult.ful[0].storeFilepath};
+          }
+          if($(_this).parent().attr("TYPE")=="AUDIO"){
+            var jsonstr = {"PartPath":opeResult.ful[0].storeFilepath};
+          }
+          var str = JSON.stringify(jsonstr);
+          if(ds==null || ds.length==0){
+        	  $('#OldImgOrgPath'+segmentIndex).html(str);
           } else {
-		      $('#OldOrgPath'+segmentIndex).html(ds+","+str);
-          };
-		  
-          var result = opeResult.ful[0];
-          var str = {
-                     "PartId":_this.attr("id"),
-                     "PartType":"PICTURE",
-                     "PartOrgName":result.orgFilename,
-                     "PartOrgPath":result.storeFilePath,
-                     "PartSmallName":result.smallFilename,
-                     "PartSmallPath":result.smallFilePath
-          };
-          if(typeof(window.picstr) == "undefined") {
-            window.picstr = str;
-          } else {
-            window.picstr += ','+str;
+		      $('#OldImgOrgPath'+segmentIndex).html(ds+","+str);
           };
         }else{
           alert(opeResult.err);
@@ -822,13 +1093,15 @@ function createArticle(){
   title.PartType="TITLE";
   title.PartInfo=$("#titleName").text();
   list.push(title);
-<<<<<<< HEAD
-  $("#articleForm").find("div.segment").each(function() {//文字或图片或视频或音频
-=======
+
+  var descn={};//摘要
+  descn.PartId=2;
+  descn.PartType="DESCN";
+  descn.PartInfo=$("#descnName").val();
+  list.push(descn);
   var id = 1;
   $("#articleForm").find("div.segment").each(function() {//文字或图片或视频或音频
     id++;
->>>>>>> refs/remotes/origin/master
     var onePart={};
     onePart.PartId=$(this).attr("id");
     onePart.PartType=$(this).attr("type");
@@ -837,20 +1110,20 @@ function createArticle(){
     }
     if (onePart.PartType=="PICTURE") {
       onePart.PartName=$('#ContentImg'+onePart.PartId).val();
-	  var obj = JSON.parse('['+$('#OldOrgPath'+onePart.PartId).html()+']');
-	  console.log(obj);
+	    var obj = JSON.parse('['+$('#OldImgOrgPath'+onePart.PartId).html()+']');
+	    console.log("图片："+obj);
       onePart.ResouceList = obj;
     }
-	onePart.PartId=id;
+	  onePart.PartId=id;
     list.push(onePart);
   });
   var postData={};
   postData.ChannelId=$("#channelId").val();
   postData.List=list;
-  console.log(postData);
+  console.log("发送的数据："+postData);
   $.ajax({
-    //url:"http://localhost:908/CM/common/uploadCM.do",
-    url:rootPath+"content/addByWeb.do",
+    url:"http://localhost:1108/Chopin/content/addByWeb.do",
+//  url:rootPath+"content/addByWeb.do",
     type:"POST",
     data:JSON.stringify(postData),
     dataType:"json",
@@ -872,7 +1145,5 @@ function createArticle(){
 function hiden(){
   $(".addContent").css("display", "none");
 }
-
-
 </script>
 </html>

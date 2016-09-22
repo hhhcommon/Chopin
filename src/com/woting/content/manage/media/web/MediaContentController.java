@@ -71,6 +71,7 @@ public class MediaContentController {
 	@RequestMapping(value = "/content/getContentInfo.do")
 	@ResponseBody
 	public Map<String, Object> getContentInfo(HttpServletRequest request) {
+		long t1 = System.currentTimeMillis();
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			Map<String, Object> m = RequestUtils.getDataFromRequest(request);
@@ -86,12 +87,17 @@ public class MediaContentController {
 				map.put("Message", "无法获取内容Id");
 				return map;
 			}
+			long t2 = System.currentTimeMillis();
 			Map<String, Object> contents = mediaContentService.getContentInfo(userId, contentId);
+			long t3 = System.currentTimeMillis();
 			if (contents != null) {
+				map.put("AllDuration", System.currentTimeMillis()-t1);
+				map.put("ServiceDuration", t3-t2);
 				map.put("ResultInfo", contents);
-				map.put("AllCount", contents.size());
 				map.put("ReturnType", "1001");
 			} else {
+				map.put("AllDuration", System.currentTimeMillis()-t1);
+				map.put("ServiceDuration", t3-t2);
 				map.put("ReturnType", "1011");
 				map.put("Message", "查询无内容");
 			}
