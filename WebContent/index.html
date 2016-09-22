@@ -330,7 +330,7 @@ function loadNavigateMenu() {
 function showChannelPage(channelId) {
   var ifm=$("#mainContent");
   var _url=ifm.attr("_src");
-  ifm.attr("src",rootPath+_url+"?channelId="+channelId);
+  ifm.attr("src",rootPath+_url+"?ChannelId="+channelId);
   if (ifm.attr("src")) ifm.css("display","block");
 }
 
@@ -338,6 +338,7 @@ function showMask(message) {
   alert("");
 }
 function cleanMask(message) {
+  
 }
 </script>
 </html>

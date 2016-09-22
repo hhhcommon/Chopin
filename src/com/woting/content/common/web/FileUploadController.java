@@ -31,6 +31,7 @@ public class FileUploadController extends AbstractFileUploadController{
         if(typenum>0) {
             String newname = SequenceUUID.getPureUUID()+filename.substring(filename.lastIndexOf("."), filename.length());
             String newpath = rootpath+MediaPath[typenum-1]+newname;
+            FileUtils.copyFile(filepath, newpath);
             if(typenum==3) {
             	String smallImgName = SequenceUUID.getPureUUID()+filename.substring(filename.lastIndexOf("."), filename.length());
                 String smallImgPath = rootpath+MediaPath[typenum]+smallImgName.trim();
@@ -40,12 +41,10 @@ public class FileUploadController extends AbstractFileUploadController{
 			        m.put("smallFilepath", webpath+MediaPath[typenum]+smallImgName);
 		        } catch (IOException e) {e.printStackTrace();}
             }
-            FileUtils.copyFile(filepath, newpath);
             FileUtils.deleteFile(new File(filepath));
             m.remove("warn");
-            m.put("orglFilename", newname);
+            m.put("storeFilename", newname);
             m.put("storeFilePath", webpath+MediaPath[typenum-1]+newname);
-            m.put("storeFilename", webpath+MediaPath[typenum-1]+newname);
             m.put("success", "TRUE");
         }
         return m;

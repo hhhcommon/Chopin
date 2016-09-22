@@ -34,28 +34,82 @@
 <title></title>
 
 <style>
-html {color:#000; background:red;}
+html {color:#000; background:#0E0E0E;}
 body {width: 1366px;}
+
+.hasPadding {
+  padding-left:100px;
+  padding-right:100px;
+}
+#aboutArea {
+  padding-top:50px;
+  width:100%;
+  height:160px;
+  text-align:center;
+  align:center;
+  line-height:150px;
+  font-size:14px
+  font-family:vista_MS;
+  font-weight:bold;
+  color:#fff;
+}
+#aboutArea p {
+  height:16px;
+  text-align:center;
+  align:center;
+  line-height:16px;
+}
 </style>
 </head>
 
 <body>
-这是测试:#0E0E0E;
+<div id="loopImgArea" style="display:none;">
+</div>
+<div id="channelArea" class="hasPadding">
+</div>
+<div id="linkedArea" class="hasPadding">
+</div>
+<div id="aboutArea" class="hasPadding">
+  <p>京公网安备11002340234234号 | 京ICP备142023423号</p>
+  <p>Copyright &copy; 2015-2016 Woting. All Rights Reserved.</p>
+  <p>北京我听科技有限公司版权所有</p>
+</div>
 </body>
 
 <script>
 var rootPath=getRootPath();
+var channelId=getUrlParam(window.location.href, "ChannelId");
+
 //主函数
 $(function() {
-	
+  if (channelId=="0") {
+    alert("DDD");
+    showChannelPage(0);
+    return;
+  }
+  var _data={};
+  _data.ChannelId=channelId;
+  $.ajax({type:"post", async:true, url:rootPath+"/baseinfo/getChannelTree4View.do", dataType:"json", data:_data,
+    success: function(jsonData) {
+      if (jsonData.ReturnType=='1001') {
+        var isLeaf=(jsonData.Data.children&&jsonData.Data.children.length>0);
+        if (isLeaf) showChannelPage(channelId);
+        else showListPage(channelId);
+      } else {
+        $.messager.alert("错误", "获得栏目信息：<br/>"+jsonData.message, "error");
+      }
+    },
+    error: function(jqXHR) {
+      $.messager.alert("错误", "获得栏目信息：<br/>"+jqXHR.status, "error");
+    }
+  });
 });
 
 function showChannelPage(channelId) {
   var _data={};
-  _data.ChannelId=channelId;
-  _data.PerSize=3;
-  _data.PageSize=100;
-  _data.Page=1;
+  if (channelId!="0") _data.ChannelId=channelId;
+  _data.PerSize=4;
+  _data.PageSize=8;
   $.ajax({type:"post", async:true, url:rootPath+"/content/getContents.do", dataType:"json", data:_data,
     success: function(jsonData) {
       if (jsonData.ReturnType=='1001') {
@@ -71,14 +125,61 @@ function showChannelPage(channelId) {
           }
           //加载轮播图
         }
+      } else if (jsonData.ReturnType=='1011') {
+        showNullPage();
       } else {
-        $.messager.alert("错误", "加载导航菜单：<br/>"+jsonData.message, "error");
+        showNullPage();
+        $.messager.alert("错误", "获得栏目内容：<br/>"+jsonData.message, "error");
       }
+      resizeParent();
     },
     error: function(jqXHR) {
-      $.messager.alert("错误", "加载导航菜单：<br/>"+jqXHR.status, "error");
+      showNullPage();
+      $.messager.alert("错误", "获得栏目内容：<br/>"+jqXHR.status, "error");
     }
   });
+}
+function showListPage(channelId) {
+  var _data={};
+  if (channelId!="0") _data.ChannelId=channelId;
+  _data.PerSize=4;
+  _data.PageSize=8;
+  $.ajax({type:"post", async:true, url:rootPath+"/content/getContents.do", dataType:"json", data:_data,
+    success: function(jsonData) {
+      if (jsonData.ReturnType=='1001') {
+        if (jsonData.ResultInfo.length>0) {
+          //删除已有的内容
+          //加入图片内容
+          var i=0;
+          for (; i<jsonData.ResultInfo.length; i++) {
+            //一排图片
+            
+            //头
+            //图片
+          }
+          //加载轮播图
+        }
+      } else if (jsonData.ReturnType=='1011') {
+        showNullPage();
+      } else {
+        showNullPage();
+        $.messager.alert("错误", "获得栏目内容：<br/>"+jsonData.message, "error");
+      }
+      resizeParent();
+    },
+    error: function(jqXHR) {
+      showNullPage();
+      $.messager.alert("错误", "获得栏目内容：<br/>"+jqXHR.status, "error");
+    }
+  });
+}
+function showNullPage() {
+  
+  resizeParent();
+}
+
+function resizeParent() {
+  alert($(document.body).height());
 }
 </script>
 </html>

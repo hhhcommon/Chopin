@@ -488,6 +488,56 @@ li, a, input {
                 </ul>
               </div>
             </div>
+<!--             <div id="addForm"></div> -->
+            <!--<div class="form-group segment" type="WORD">
+              <label class="col-sm-2 control-label">描述：</label>
+              <div class="col-sm-10" style="margin-left: 19px;">
+                <div id="summernote" class="summernote"></div>
+              </div>
+              <div class="action">
+                <div class="toggle"><img src="../resources/images/off.png" alt="" /></div>
+                <ul class="addContent" style="display: none;">
+                  <li class="word">文</li>
+                  <li class="picture">图</li>
+                  <li class="vedio">视</li>
+                  <li class="radios">音</li>
+                </ul>
+              </div>
+            </div>
+            <div id="addForm"></div>
+              <div class="cancel">X</div>
+              <label class="col-sm-2 control-label">描述：</label>
+              <div class="col-sm-10" style="margin-left: 19px;">
+                <div id="summernote" class="summernote"></div>
+              </div>
+              <div class="action">
+                <div class="toggle"><img src="../resources/images/off.png" alt="" /></div>
+                <ul class="addContent" style="display: none;">
+                  <li class="word">文</li>
+                  <li class="picture">图</li>
+                  <li class="vedio">视</li>
+                  <li class="radios">音</li>
+                </ul>
+              </div>
+            </div>-->
+            <!--<div id="addForm"></div>
+            <div class="form-group pic">
+              <label class="col-sm-2 control-label">图片：</label>
+              <div class="col-sm-10"style="margin-left: 19px;">
+                <input id="uploadImg" name="uploadImg" class="form-control" type="file" accept=".png,.jpg" />
+                <input id="ContentImg" name="ContentImg" type="hidden" value="" />
+                <span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大1M，支持JPG、PNG格式</span>
+              </div>
+              <div class="action">
+                <div class="toggle"><img src="../resources/images/off.png" alt="" /></div>
+                <ul class="addContent" style="display: none;">
+                  <li class="word">文</li>
+                  <li class="picture">图</li>
+                  <li class="vedio">视</li>
+                  <li class="radios">音</li>
+                </ul>
+              </div>
+            </div>-->
             <div class="form-group" style="margin-top: 20px;">
               <div class="col-sm-6 text-right">
                 <button class="btn btn-warning" id="submitBtn">预览</button>
@@ -504,11 +554,11 @@ li, a, input {
   </div>
 </body> 
 <script>
+
 var zTreeObj,zTreeObjs,des;
 var rootPath=getRootPath();
 var segmentIndex=2;
 var changeSum=1;//图片改变次数
-window.picstr;//图片字符串
 //需要加载的分类树的数据，以list方式给出
 var loadTreeData=[{ChannelId:"",TreeViewType:"zTree"}];
 //初始化方法：页面加载完成后执行
@@ -695,8 +745,75 @@ function onClick(event, treeId, treeNode) {
   var modalNode=node[0]; //当前选中的节点
   $("#channelId").val(modalNode.id);
   $("#channelName").val(modalNode.name);
-  $("#cataTrees").hide();
+  $("#cataTrees").slideUp("slow");
 };
+
+//点击栏目边上的“加号”
+function show(plus){
+  hiden();
+  $(plus).parent().parent().find(".addContent").css({"display":"block"});
+}
+
+//生成summernote编辑框
+function newSummernote(news) {
+  var nowId=$(news).parents(".form-group").prop("id");
+  alert(nowId);
+  if(nowId==0){
+    $(des).appendTo($("#addForm"));
+  }else{
+    var nextId=$(news).parents(".form-group").next().prop("id");
+    alert(nextId);
+  }
+  //return;  
+  segmentIndex++;
+  description(segmentIndex);
+  //初始summernote
+  $('.summernote').summernote({
+    lang:'zh-CN',
+    height:80,
+    minHeight:80,
+    maxHeight:80,
+    focus:false,
+    toolbar: [
+      // [groupName, [list of button]]
+      ['style', ['bold', 'italic', 'underline', 'clear']],
+      ['font', ['strikethrough', 'superscript', 'subscript']],
+      ['fontsize', ['fontsize']],
+      ['color', ['color']],
+      ['para', ['ul', 'ol', 'paragraph']],
+      ['height', ['height']]
+    ]
+  });
+  hiden();
+}
+/*设置描述样式*/
+function description(segmentIndex){
+  alert("des"+segmentIndex)
+  des='<div class="form-group segment words" id='+segmentIndex+' type="WORD">'+
+        '<label class="col-sm-2 control-label">描述：</label>'+
+        '<div class="col-sm-10" style="margin-left: 19px;">'+
+          '<div id="summernote'+segmentIndex+'" class="summernote"></div>'+
+        '</div>'+
+        '<div class="actions">'+
+          '<div class="toggle"><img src="../resources/images/off.png" alt=""  onclick="show(this)"/></div>'+
+          '<ul class="addContent" style="display: none;">'+
+            '<li class="word" onclick="newSummernote(this)">文</li>'+
+            '<li class="picture" onclick="newPicture(this)">图</li>'+
+            '<li class="vedio">视</li>'+
+            '<li class="radios">音</li>'+
+          '</ul>'+
+        '</div>'+
+      '</div>'
+//$(des).appendTo($("#addForm"));
+}
+
+//生成图片编辑框
+function newPicture(){
+  segmentIndex++;
+  picture(segmentIndex);
+  hiden();
+  upLoadPicture();
+}
 
 //点击栏目边上的“加号”
 function show(plus){
@@ -706,7 +823,8 @@ function show(plus){
 
 //点击"x",删除正在编辑的内容
 function cancelEdit(cane){
-  $(cane).parent().remove();
+  $(cane).parent().css("display", "none");
+  $(cane).parent().find(".form-isvalidate").val("");
 }
 
 //生成summernote编辑框
@@ -756,7 +874,8 @@ function newPicture(newp){
               '<label class="col-sm-2 control-label">图片：</label>'+
               '<div class="col-sm-10"style="margin-left: 25px;">'+
                 '<input id="uploadImg" name="uploadImg" class="form-control" type="file" accept=".png,.jpg" />'+
-                '<input id="ContentImg" name="ContentImg" type="hidden" value="" />'+
+                '<input id="ContentImg'+segmentIndex+'" class="form-isvalidate" name="ContentImg" type="hidden" value="" />'+
+                '<div id="OldOrgPath'+segmentIndex+'" style="display: none"></div>'+
                 '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大1M，支持JPG、PNG格式</span>'+
               '</div>'+
               '<div class="actions">'+
@@ -776,7 +895,7 @@ function newPicture(newp){
 }
 
 //上传图片
-function upLoadPicture(){
+function upLoadPicture(segmentIndex){
   $("input[type='file']").change(function(){
     var _this=$(this);
     var oMyForm = new FormData();
@@ -794,36 +913,29 @@ function upLoadPicture(){
       success: function (opeResult){
         console.log(opeResult);
         if(opeResult.ful[0].success=="TRUE"){
-          $("#orgName").val(opeResult.ful[0].orgFilename);
-          $("#orgPath").val(opeResult.ful[0].storeFilePath);
-          $("#smallName").val(opeResult.ful[0].smallFilename);
-          $("#smallPath").val(opeResult.ful[0].smallFilePath);
-          //start
-//        var fileOrgPath=$('<input id="fileOrgPath'+changeSum+'" name="fileOrgPath" class="form-control fileOrgPath"  value="" />');
-//        var fileSmallPath=$('<input id="fileSmallPath'+changeSum+'" name="fileSmallPath" class="form-control fileSmallPath" type="hidden" value="" />');
-//        fileOrgPath.val(opeResult.ful[0].storeFilePath);
-//        fileSmallPath.val(opeResult.ful[0].smallFilePath);
-//        $("#articleForm").append(fileOrgPath).append(fileSmallPath);
-//        alert("test123");
-//        alert(fileOrgPath.val());
-//        alert(changeSum);
-//        changeSum++;
-          //end
           _this.siblings("input[type='hidden']").val(opeResult.ful[0].storeFilename);
-          var result = opeResult.ful[0];
-          var str = {
-                     "PartId":_this.attr("id"),
-                     "PartType":"PICTURE",
-                     "PartOrgName":result.orgFilename,
-                     "PartOrgPath":result.storeFilePath,
-                     "PartSmallName":result.smallFilename,
-                     "PartSmallPath":result.smallFilePath
-          };
-          if(typeof(window.picstr) == "undefined") {
-            window.picstr = str;
+          var ds = $('#OldOrgPath'+segmentIndex).html();
+		  var jsonstr = {"FileOrgPath":opeResult.ful[0].storeFilename,"FileSmallPath":opeResult.ful[0].storeFilename};
+		  var str = JSON.stringify(jsonstr);
+          if(ds.length==0 || ds==null){
+        	  $('#OldOrgPath'+segmentIndex).html(str);
           } else {
-            window.picstr += ','+str;
-          }
+		      $('#OldOrgPath'+segmentIndex).html(ds+","+str);
+          };
+//           var result = opeResult.ful[0];
+//           var str = {
+//                      "PartId":_this.attr("id"),
+//                      "PartType":"PICTURE",
+//                      "PartOrgName":result.orgFilename,
+//                      "PartOrgPath":result.storeFilePath,
+//                      "PartSmallName":result.smallFilename,
+//                      "PartSmallPath":result.smallFilePath
+//           };
+//           if(typeof(window.picstr) == "undefined") {
+//             window.picstr = str;
+//           } else {
+//             window.picstr += ','+str;
+//           };
         }else{
           alert(opeResult.err);
         }
@@ -838,28 +950,27 @@ function upLoadPicture(){
 //生成文章内容
 function createArticle(){
   //test start
-  var str;
-  for(var j=2;j<=segmentIndex;j++){
-      if($('#summernote'+j).length>0) {
-        var mo = $('#summernote'+j).summernote('code');
-        var s = {
-            "PartId":j,
-            "PartType":"WORD",
-            "PartInfo":mo
-        };
-        if(typeof(str) == "undefined") {
-          str = JSON.stringify(s);
-        } else {
-          str += ','+JSON.stringify(s);
-        }
-      } else {
-        alert(j+"不存在");
-      }
+
+  var list=[];
+  var title={};//标题
+  title.PartId=1;
+  title.PartType="TITLE";
+  title.PartInfo=$("#titleName").val();
+  list.push(title);
+  var id = 1;
+  $("#articleForm").find("div.segment").each(function() {//文字或图片或视频或音频
+    id++;
+    var onePart={};
+    onePart.PartId=$(this).attr("id");
+    onePart.PartType=$(this).attr("type");
+    if (onePart.PartType=="WORD") {
+      onePart.PartInfo=$('#summernote'+$(this).attr("id")).summernote('code');
     }
-  var removeList={
-    "RemoveList":{
-      "FileOrgPath":$("#orgPath").val(),
-      "FileSmallPath":$("#smallPath").val()
+    if (onePart.PartType=="PICTURE") {
+      onePart.PartName=$('#ContentImg'+onePart.PartId).val();
+	  var obj = JSON.parse('['+$('#OldOrgPath'+onePart.PartId).html()+']');
+	  console.log(obj);
+      onePart.ResouceList = obj;
     }
   };
   var titlestr = {
@@ -867,16 +978,12 @@ function createArticle(){
     "PartType":"TITLE",
     "PartInfo":$("#titleName").val()
   };
-  var List =JSON.stringify(titlestr+','+window.picstr+','+str);
-  console.log(List);
-  List = [List];
-  console.log(List);
-  console.log(JSON.stringify(removeList))
-  var postData={
-    "ChannelId":$("#channelId").val(),
-    "List":List,
-    "RemoveList":removeList
-  }
+	onePart.PartId=id;
+    list.push(onePart);
+  });
+  var postData={};
+  postData.ChannelId=$("#channelId").val();
+  postData.List=list;
   console.log(postData);
   //test end
 //var list=[];

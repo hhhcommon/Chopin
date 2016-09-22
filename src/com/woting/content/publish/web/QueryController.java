@@ -143,9 +143,9 @@ public class QueryController {
 			map.put("Message", "参数不全");
 			return map;
 		}
-		List<Map<String, Object>> removelist = (List<Map<String, Object>>) m.get("RemoveList");
 
-		boolean isok = queryService.makeContentHtml(channelid, list, removelist);
+
+		boolean isok = queryService.makeContentHtml(channelid, list);
 		if(isok) {
 			map.put("ReturnType", "1001");
 		    map.put("Message", "添加成功");
