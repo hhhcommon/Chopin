@@ -355,7 +355,7 @@ li{list-style: none;}
   margin-top: 17%;
   cursor: pointer;
 }
-.ibox .pic .actions,.ibox .video .actions,.ibox .audios .ations{
+.ibox .pic .actions,.ibox .video .actions,.ibox .audio .ations{
   width: 120px;
   height: 35px;
   position: absolute;
@@ -372,7 +372,7 @@ li{list-style: none;}
   cursor:pointer;
   color:#333;
 }
-.pic .cancel,.video .cancel,.audios .cancel{
+.pic .cancel,.video .cancel,.audio .cancel{
   width:22px;
   height:22px;
   line-height:22px;
@@ -475,7 +475,7 @@ li, a, input {
                   <li class="word" onclick="newSummernote(this)">文</li>
                   <li class="picture" onclick="newPicture(this)">图</li>
                   <li class="video" onclick="newVideo(this)">视</li>
-                  <li class="audio" onclick="newAudio(this)">音</li>
+                  <li class="audios" onclick="newAudio(this)">音</li>
                 </ul>
               </div>
             </div>
@@ -697,8 +697,7 @@ function show(plus){
 function cancelEdit(cane){
   if($(cane).parent().attr("type")=="WORD"){
     $(cane).parent().remove();//如果是文字，直接删除
-  }
-  if($(cane).parent().attr("type")=="PICTURE"){
+  } else {
     $(cane).parent().css("display", "none");
     $(cane).parent().find(".form-isvalidate").val("");
   }
@@ -718,7 +717,7 @@ function newSummernote(news) {
                 '<li class="word" onclick="newSummernote(this)">文</li>'+
                 '<li class="picture" onclick="newPicture(this)">图</li>'+
                 '<li class="video" onclick="newVideo(this)">视</li>'+
-                '<li class="audio" onclick="newAudio(this)">音</li>'+
+                '<li class="audios" onclick="newAudio(this)">音</li>'+
               '</ul>'+
             '</div>'+
           '</div>'
@@ -752,7 +751,7 @@ function newPicture(newp){
               '<div class="col-sm-10"style="margin-left: 25px;">'+
                 '<input id="uploadImg" name="uploadImg" class="form-control" type="file" accept=".png,.jpg" />'+
                 '<input id="ContentImg'+segmentIndex+'" class="form-isvalidate" name="ContentImg" type="hidden" value="" />'+
-                '<div id="OldImgOrgPath'+segmentIndex+'" style="display: none"></div>'+
+                '<div id="OldOrgPath'+segmentIndex+'" style="display: none"></div>'+
                 '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大1M，支持JPG、PNG格式</span>'+
               '</div>'+
               '<div class="actions">'+
@@ -761,24 +760,24 @@ function newPicture(newp){
                   '<li class="word" onclick="newSummernote(this)">文</li>'+
                   '<li class="picture" onclick="newPicture(this)">图</li>'+
                   '<li class="video" onclick="newVideo(this)">视</li>'+
-                  '<li class="audio" onclick="newAudio(this)">音</li>'+
+                  '<li class="audios" onclick="newAudio(this)">音</li>'+
                 '</ul>'+
               '</div>'+
             '</div>'
   $(newp).parent().parent().parent().after(pict);
   hiden();
-  upLoadPicture(segmentIndex);
+  upLoadFile(segmentIndex);
   segmentIndex++;
 }
 
 //生成视频编辑框
 function newVideo(newv){
-  var vid='<div class="form-group segment video" id='+segmentIndex+' type="ViDEO" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;">'+
+  var vid='<div class="form-group segment video" id='+segmentIndex+' type="VIDEO" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;">'+
             '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
             '<label class="col-sm-2 control-label">视频：</label>'+
             '<div class="col-sm-10"style="margin-left: 25px;">'+
-              '<input id="uploadVedio" name="uploadVedio" class="form-control" type="file" accept=".mp4" />'+
-              '<input id="ContentVedio'+segmentIndex+'" class="form-isvalidate" name="ContentVedio" type="hidden" value="" />'+
+              '<input id="uploadVideo" name="uploadVideo" class="form-control" type="file" accept=".mp4" />'+
+              '<input id="ContentVideo'+segmentIndex+'" class="form-isvalidate" name="ContentVedio" type="hidden" value="" />'+
               '<div id="OldOrgPath'+segmentIndex+'" style="display: none"></div>'+
               '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大5M，支持mp3、mp4格式</span>'+
             '</div>'+
@@ -788,23 +787,23 @@ function newVideo(newv){
                 '<li class="word" onclick="newSummernote(this)">文</li>'+
                 '<li class="picture" onclick="newPicture(this)">图</li>'+
                 '<li class="video" onclick="newVideo(this)">视</li>'+
-                '<li class="audio" onclick="newAudio(this)">音</li>'+
+                '<li class="audios" onclick="newAudio(this)">音</li>'+
               '</ul>'+
             '</div>'+
           '</div>'
   $(newv).parent().parent().parent().after(vid);
   hiden();
-  upLoadPicture(segmentIndex);
+  upLoadFile(segmentIndex);
   segmentIndex++;
 }
 
 //生成音频编辑框
 function newAudio(newa){
-  var aud='<div class="form-group segment audios" id='+segmentIndex+' type="AUDIO" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;">'+
+  var aud='<div class="form-group segment audio" id='+segmentIndex+' type="AUDIO" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;">'+
             '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
             '<label class="col-sm-2 control-label">音频：</label>'+
             '<div class="col-sm-10" style="margin-left: 25px;">'+
-              '<input id="uploadAduio" name="uploadAduio" class="form-control" type="file" accept=".mp4,.mp3" />'+
+              '<input id="uploadAduio" name="uploadAduio" class="form-control" type="file" accept=".mp3" />'+
               '<input id="ContentAduio'+segmentIndex+'" class="form-isvalidate" name="ContentAduio" type="hidden" value="" />'+
               '<div id="OldOrgPath'+segmentIndex+'" style="display: none"></div>'+
               '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大5M，支持mp3、mp4格式</span>'+
@@ -815,25 +814,50 @@ function newAudio(newa){
                 '<li class="word" onclick="newSummernote(this)">文</li>'+
                 '<li class="picture" onclick="newPicture(this)">图</li>'+
                 '<li class="video" onclick="newVideo(this)">视</li>'+
-                '<li class="audio" onclick="newAudio(this)">音</li>'+
+                '<li class="audios" onclick="newAudio(this)">音</li>'+
               '</ul>'+
             '</div>'+
           '</div>'
   $(newa).parent().parent().parent().after(aud);
   hiden();
-  upLoadPicture(segmentIndex);
+  upLoadFile(segmentIndex);
   segmentIndex++;
 }
 
-//上传图片
-function upLoadPicture(segmentIndex){
+//上传文件
+function upLoadFile(segmentIndex){
   $("input[type='file']").change(function(){
     var _this=$(this);
     var oMyForm = new FormData();
     oMyForm.append("ContentFile", $(this)[0].files[0]);
-    $.ajax({
+    if(($(_this).parent().parent().attr("TYPE"))=="PICTURE"){
+      if(($(this)[0].files[0].size)/1048576>5){//图片大于5M
+        alert("图片过大，请换一张图片上传！");
+      }else{
+        requestUpload(_this,oMyForm,segmentIndex);
+      }
+    }
+    if($(_this).parent().parent().attr("TYPE")=="VIDEO"){
+       if(($(this)[0].files[0].size)/1048576>100){//视频大于100M
+         alert("视频过大，请换一个视频上传！");
+       }else{
+         requestUpload(_this,oMyForm,segmentIndex);
+       }
+    }
+    if($(_this).parent().parent().attr("TYPE")=="AUDIO"){
+       if(($(this)[0].files[0].size)/1048576>30){//音频大于30M
+         alert("音频过大，请换一个音频上传！");
+       }else{
+         requestUpload(_this,oMyForm,segmentIndex);
+       }
+    }
+  });
+}
+
+//请求上传文件
+function requestUpload(_this,oMyForm,segmentIndex){
+  $.ajax({
       url:rootPath+"common/uploadCM.do",
-//    url:"http://localhost:1108/Chopin/common/uploadCM.do",
       type:"POST",
       data:oMyForm,
       cache: false,
@@ -846,21 +870,21 @@ function upLoadPicture(segmentIndex){
         if(opeResult.ful[0].success=="TRUE"){
           _this.siblings("input[type='hidden']").val(opeResult.ful[0].storeFilename);
           var ds = $('#OldOrgPath'+segmentIndex).html();
-          alert($(_this).parent().attr("type"));
-          if($(_this).parent().attr("TYPE")=="PICTURE"){
+		  var divparent = $(_this).parent().parent();
+          if(divparent.attr("TYPE")=="PICTURE"){
             var jsonstr = {"FileOrgPath":opeResult.ful[0].storeFilepath,"FileSmallPath":opeResult.ful[0].smallFilepath};
           }
-          if($(_this).parent().attr("TYPE")=="VIDEO"){
-            var jsonstr = {"PartPath":opeResult.ful[0].storeFilepath};
+          if(divparent.attr("TYPE")=="VIDEO"){
+            var jsonstr = {"FileOrgPath":opeResult.ful[0].storeFilepath};
           }
-          if($(_this).parent().attr("TYPE")=="AUDIO"){
-            var jsonstr = {"PartPath":opeResult.ful[0].storeFilepath};
+          if(divparent.attr("TYPE")=="AUDIO"){
+            var jsonstr = {"FileOrgPath":opeResult.ful[0].storeFilepath};
           }
           var str = JSON.stringify(jsonstr);
           if(ds==null || ds.length==0){
-        	  $('#OldImgOrgPath'+segmentIndex).html(str);
+        	  $('#OldOrgPath'+segmentIndex).html(str);
           } else {
-		      $('#OldImgOrgPath'+segmentIndex).html(ds+","+str);
+		      $('#OldOrgPath'+segmentIndex).html(ds+","+str);
           };
         }else{
           alert(opeResult.err);
@@ -868,8 +892,7 @@ function upLoadPicture(segmentIndex){
       },
       error: function(jqXHR){
         alert("发生错误" + jqXHR.status);
-      }     
-    });
+      }
   });
 }
 
@@ -886,7 +909,7 @@ function createArticle(){
   descn.PartType="DESCN";
   descn.PartInfo=$("#descnName").val();
   list.push(descn);
-  var id = 1;
+  var id = 2;
   $("#articleForm").find("div.segment").each(function() {//文字或图片或视频或音频
     id++;
     var onePart={};
@@ -897,11 +920,23 @@ function createArticle(){
     }
     if (onePart.PartType=="PICTURE") {
       onePart.PartName=$('#ContentImg'+onePart.PartId).val();
-	    var obj = JSON.parse('['+$('#OldImgOrgPath'+onePart.PartId).html()+']');
+	    var obj = JSON.parse('['+$('#OldOrgPath'+onePart.PartId).html()+']');
 	    console.log("图片："+obj);
       onePart.ResouceList = obj;
     }
-	  onePart.PartId=id;
+	if (onePart.PartType=="VIDEO") {
+      onePart.PartName=$('#ContentVideo'+onePart.PartId).val();
+	    var obj = JSON.parse('['+$('#OldOrgPath'+onePart.PartId).html()+']');
+	    console.log("视频："+obj);
+      onePart.ResouceList = obj;
+    }
+	if (onePart.PartType=="AUDIO") {
+      onePart.PartName=$('#ContentAduio'+onePart.PartId).val();
+	    var obj = JSON.parse('['+$('#OldOrgPath'+onePart.PartId).html()+']');
+	    console.log("音频："+obj);
+      onePart.ResouceList = obj;
+    }
+	onePart.PartId=id;
     list.push(onePart);
   });
   var postData={};

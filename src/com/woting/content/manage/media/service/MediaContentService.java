@@ -9,7 +9,6 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.spiritdata.framework.core.dao.mybatis.MybatisDAO;
 import com.spiritdata.framework.core.model.Page;
-import com.spiritdata.framework.util.JsonUtils;
 import com.spiritdata.framework.util.StringUtils;
 import com.woting.cm.core.channel.persis.po.ChannelAssetPo;
 import com.woting.cm.core.channel.persis.po.ChannelPo;
@@ -52,7 +51,6 @@ public class MediaContentService {
 		ChannelPo chPo = channelService.getChannelById(channelId);
 		if (chPo != null) {
 			List<ChannelPo> chs = channelService.getChannelsByPcId(chPo.getId());
-			System.out.println(JsonUtils.objToJson(chs));
 			if (chs == null || chs.size() == 0) {
 				List<Map<String, Object>> ll = new ArrayList<>();
 				List<ChannelAssetPo> chas = channelService.getChannelAssetsByChannelId(chPo.getId(), page, pageSize, 2);
@@ -339,5 +337,24 @@ public class MediaContentService {
 		}
 		if (l!=null && l.size()>0) return l;
 		return null;
+	}
+
+	public Map<String, Object> getPlayerContents(String id) {
+		Map<String, Object> m = new HashMap<>();//MaStatus0  MaStatus1
+		List<MediaAssetPo> mas = mediaAssetDao.queryForList("getMaListByContentId", id);
+		if(mas!=null && mas.size()>0) {
+			for (MediaAssetPo ma : mas) {
+				if (m.containsKey("MaStatus"+ma.getMaStatus())) {
+					List<MediaAssetPo> ms = (List<MediaAssetPo>) m.get("MaStatus"+ma.getMaStatus());
+					ms.add(ma);
+				} else {
+					List<MediaAssetPo> ms = new ArrayList<>();
+					ms.add(ma);
+					m.put("MaStatus"+ma.getMaStatus(), ms);
+				}
+			}
+		}
+		m.put("AllCount", mas.size());
+		return m;
 	}
 }

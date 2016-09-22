@@ -179,4 +179,41 @@ public class MediaContentController {
 			return map;
 		}
 	}
+	
+	@RequestMapping(value = "/content/getPlayerContents.do")
+	@ResponseBody
+	public Map<String, Object> getPlayerContents(HttpServletRequest request) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			Map<String, Object> m = RequestUtils.getDataFromRequest(request);
+			if (m == null || m.size() == 0) {
+				map.put("ReturnType", "0000");
+				map.put("Message", "无法获取相关的参数");
+				return map;
+			}
+			String contentId = m.get("ContentId") + "";
+			if (contentId.equals("null")) {
+				map.put("ReturnType", "1011");
+				map.put("Message", "无法获取内容Id");
+				return map;
+			}
+			Map<String, Object> contents = mediaContentService.getPlayerContents(contentId);
+			if (contents != null) {
+				map.put("AllCount", contents.get("AllCount"));
+				contents.remove("AllCount");
+				map.put("ResultList", contents);
+				map.put("ReturnType", "1001");
+			} else {
+				map.put("ReturnType", "1011");
+				map.put("Message", "查询无内容");
+			}
+			return map;
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("ReturnType", "T");
+			map.put("TClass", e.getClass().getName());
+			map.put("Message", e.getMessage());
+			return map;
+		}
+	}
 }

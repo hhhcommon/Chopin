@@ -144,8 +144,6 @@ public class QueryController {
 			map.put("Message", "参数不全");
 			return map;
 		}
-
-
 		boolean isok = queryService.makeContentHtml(channelid, list);
 		if(isok) {
 			map.put("ReturnType", "1001");
