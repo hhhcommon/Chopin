@@ -327,7 +327,6 @@ public class ChannelService {
     	Map<String, Object> m = new HashMap<>();
 		m.put("pcId", channelId);
     	m.put("assetType", "wt_MediaAsset");
-    	m.put("flowFlag", 2);
     	m.put("sortByClause", "sort desc ,pubTime desc");
     	m.put("isValidate", 1);
     	m.put("page", page-1);
@@ -339,7 +338,6 @@ public class ChannelService {
     	Map<String, Object> m = new HashMap<>();
     	m.put("channelId", channelId);
     	m.put("assetType", "wt_MediaAsset");
-    	m.put("flowFlag", flowFlag);
     	m.put("sortByClause", "sort desc ,pubTime desc");
     	m.put("isValidate", 1);
     	m.put("page", (page-1)*pageSize);
@@ -350,7 +348,7 @@ public class ChannelService {
     public int getChannelAssetsNum(String channelId, int flowFlag) {
     	Map<String, Object> m = new HashMap<>();
     	m.put("channelId", channelId);
-    	m.put("flowFlag", "2");
+    	m.put("isValidate", "1");
 		return channelAssetDao.queryForList("getListByWhere", m).size();
     }
 

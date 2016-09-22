@@ -269,4 +269,46 @@ public class QueryController {
 			return map;
 		}
 	}
+	
+	/**
+	 * 撤销已发布内容
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "modifyDirectContent.do")
+	@ResponseBody
+	public Map<String, Object> addDirectContent(HttpServletRequest request) {
+		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> m = RequestUtils.getDataFromRequest(request);
+		String channelid = m.get("ChannelId")+"";
+		if(channelid.equals("null")) {
+			map.put("ReturnType", "1011");
+			map.put("Message", "缺少栏目Id");
+			return map;
+		}
+		String contentid = m.get("ContentId")+"";
+		if(contentid.equals("null")) {
+			map.put("ReturnType", "1012");
+			map.put("Message", "缺少内容Id");
+			return map;
+		}
+		String str = m.get("ContentStatus")+"";
+		if(str.equals("null")) {
+			map.put("ReturnType", "1013");
+			map.put("Message", "缺少状态信息");
+			return map;
+		}
+		int status = Integer.valueOf(str);
+		boolean isok = queryService.modifyDirectContentInfo(channelid, contentid, status);
+		if(isok) {
+			map.put("ReturnType", "1001");
+		    map.put("Message", "撤销成功");
+		    return map;
+		} else {
+			map.put("ReturnType", "1014");
+			map.put("Message", "撤销失败");
+			return map;
+		}
+	}
 }
