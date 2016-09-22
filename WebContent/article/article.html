@@ -972,6 +972,7 @@ function createArticle(){
     success: function (returnData){
       if(returnData.returnType=="1001"){
         alert("成功添加");
+        $(".row,.shade").hide();
       }else{
         alert(returnData.Message);
       }
