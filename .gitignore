@@ -8,6 +8,7 @@ fs-config
 /test
 /src/test
 
+/WebContent/resources/chopin
 /WebContent/log
 /WebContent/media
 /WebContent/article
