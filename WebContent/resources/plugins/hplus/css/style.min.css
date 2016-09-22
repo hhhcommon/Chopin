@@ -837,9 +837,9 @@ fieldset[disabled] .btn-info.active {
 }
 
 .btn-default {
- background-color: #c2c2c2;
+ background-color: #fff;
  border-color: #c2c2c2;
- color: #fff
+ color: #333
 }
 
 .btn-default:hover,
