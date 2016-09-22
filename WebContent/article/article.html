@@ -752,7 +752,7 @@ function newPicture(newp){
               '<div class="col-sm-10"style="margin-left: 25px;">'+
                 '<input id="uploadImg" name="uploadImg" class="form-control" type="file" accept=".png,.jpg" />'+
                 '<input id="ContentImg'+segmentIndex+'" class="form-isvalidate" name="ContentImg" type="hidden" value="" />'+
-                '<div id="OldOrgPath'+segmentIndex+'" style="display: none"></div>'+
+                '<div id="OldImgOrgPath'+segmentIndex+'" style="display: none"></div>'+
                 '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大1M，支持JPG、PNG格式</span>'+
               '</div>'+
               '<div class="actions">'+
@@ -856,11 +856,11 @@ function upLoadPicture(segmentIndex){
           if($(_this).parent().attr("TYPE")=="AUDIO"){
             var jsonstr = {"PartPath":opeResult.ful[0].storeFilepath};
           }
-		      var str = JSON.stringify(jsonstr);
+          var str = JSON.stringify(jsonstr);
           if(ds==null || ds.length==0){
-        	  $('#OldOrgPath'+segmentIndex).html(str);
+        	  $('#OldImgOrgPath'+segmentIndex).html(str);
           } else {
-		      $('#OldOrgPath'+segmentIndex).html(ds+","+str);
+		      $('#OldImgOrgPath'+segmentIndex).html(ds+","+str);
           };
         }else{
           alert(opeResult.err);
@@ -897,7 +897,7 @@ function createArticle(){
     }
     if (onePart.PartType=="PICTURE") {
       onePart.PartName=$('#ContentImg'+onePart.PartId).val();
-	    var obj = JSON.parse('['+$('#OldOrgPath'+onePart.PartId).html()+']');
+	    var obj = JSON.parse('['+$('#OldImgOrgPath'+onePart.PartId).html()+']');
 	    console.log("图片："+obj);
       onePart.ResouceList = obj;
     }

@@ -103,16 +103,13 @@ public abstract class ContentUtils {
 
         retM.put("ContentId", one.get("id"));//P01-公共：ID
         retM.put("ContentName", one.get("maTitle"));//P02-公共：名称
-        retM.put("ContentSubjectWord", one.get("subjectWord"));//P03-公共：主题词
-        retM.put("ContentKeyWord", one.get("keyWord"));//P04-公共：关键字
+        retM.put("ContentSubjectWord", one.get("subjectWords"));//P03-公共：主题词
         retM.put("ContentPub", one.get("maPublisher"));//P05-公共：发布者，集团名称
         retM.put("ContentPubTime", Timestamp.valueOf(one.get("maPublishTime")==null?null:one.get("maPublishTime")+""));//P06-公共：发布时间
         retM.put("ContentImg", one.get("maImg"));//P07-公共：相关图片
         retM.put("ContentPlay", one.get("maURL"));//P08-公共：主播放Url，这个应该从其他地方来，现在先这样//TODO
-        retM.put("ContentURI", "content/getContentInfo.do?MediaType=AUDIO&ContentId="+retM.get("ContentId"));//P08-公共：主播放Url，这个应该从其他地方来，现在先这样//TODO
-        retM.put("ContentShareURL", getShareUrl_JM(preAddr, one.get("id")+""));//分享地址
-//        retM.put("ContentSource", one.get("maSource"));//P09-公共：来源名称
-//        retM.put("ContentURIS", null);//P10-公共：其他播放地址列表，目前为空
+        retM.put("ContentURI", "http://www.wotingfm.com/Chopin/articleShell.html?ContentId="+retM.get("ContentId"));//P08-公共：主播放Url，这个应该从其他地方来，现在先这样//TODO
+        retM.put("ContentShareURL", one.get("keyWords"));//分享地址
         retM.put("ContentDesc", one.get("descn"));//P11-公共：说明
         retM.put("ContentStatus", one.get("maStatus"));
         retM.put("ContentSource",one.get("language"));
