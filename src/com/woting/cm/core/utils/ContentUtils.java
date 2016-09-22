@@ -98,8 +98,7 @@ public abstract class ContentUtils {
                                                   List<Map<String, Object>> cataList,
                                                   List<Map<String, Object>> pubChannelList,
                                                   List<Map<String, Object>> favoriteList) {
-        Map<String, Object> retM=new HashMap<String, Object>();
-
+        Map<String, Object> retM=new HashMap<String, Object>();;
         retM.put("MediaType", "AUDIO");
 
         retM.put("ContentId", one.get("id"));//P01-公共：ID
@@ -116,9 +115,8 @@ public abstract class ContentUtils {
 //        retM.put("ContentURIS", null);//P10-公共：其他播放地址列表，目前为空
         retM.put("ContentDesc", one.get("descn"));//P11-公共：说明
         retM.put("ContentStatus", one.get("maStatus"));
-
+        retM.put("ContentSource",one.get("language"));
         fillExtInfo(retM, "AUDIO", personList, cataList, pubChannelList, favoriteList);//填充扩展信息
-
 
         retM.put("ContentTimes", one.get("timeLong"));//S01-特有：播放时长
 
