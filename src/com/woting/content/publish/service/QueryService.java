@@ -130,6 +130,7 @@ public class QueryService {
 		System.out.println(channelId);
 		if (list!=null && list.size()>0) {
 			System.out.println(JsonUtils.objToJson(list));
+			return true;
 		}
 		return false;
 	}

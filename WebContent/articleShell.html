@@ -21,7 +21,6 @@
 <script src="./resources/plugins/spiritui/jq.spirit.utils.js"></script>
 <script src="./resources/plugins/spiritui/jq.spirit.pageFrame.js"></script>
 
-<link rel="stylesheet" type="text/css" href="./resources/chopin/css/font.css"/>
 <link rel="stylesheet" type="text/css" href="./resources/css/common.css"/>
 <link rel="stylesheet" type="text/css" href="./resources/css/mainPage.css"/>
 <link rel="stylesheet" type="text/css" href="./resources/plugins/spiritui/themes/default/all.css"/>
@@ -32,25 +31,43 @@ html { color:#000; background:#fff; }
 body { padding:0; width:100% }
 
 #a_content {
-  padding: 50px 20px 50px 20px;
+  padding: 30px 20px 30px 20px;
 }
 #a_content div {
-  border:1px solid red;
   width:100%;
 }
 #a_title {
-  height:34px;
+  height:23px;
   text-align:center;
   align:center;
   line-height:34px;
-  font-size:30px
-  font-family: vista_MS;
+  font-size:23px;
+  font-family:"黑体";
+  font-weight:bold;
+  display:inline-block; 
 }
 #a_time {
-  height:30px;
+  padding-top:4px;
+  height:24px;
+  text-align:center;
+  align:center;
+  line-height:24px;
+  font-size:14px;
 }
-#a_img {
-  height:30px;
+#a_time span {
+  height:20px;
+  text-align:bottom;
+  align:center;
+  line-height:20px;
+  font-size:16px;
+}
+#_source {
+  position:absolute;
+  right:30px;
+  font-size:12px;
+}
+#_img {
+  positiion:absolute;
 }
 #a_media {
   height:30px;
@@ -58,32 +75,37 @@ body { padding:0; width:100% }
 #a_html {
   height:30px;
 }
+#a_nullhtml {
+  display:none;
+}
 </style>
 </head>
 <body>
 <div id="a_content" style="display:none;">
-  <div id="a_title">1</div>
-  <div id="a_time">2</div>
-  <div id="a_img">3</div>
-  <div id="a_media">4</div>
-  <div id="a_html">5</div>
+  <div id="a_title"></div>
+  <div id="a_time"><span id="_time"></span><span id="_source" style="font-size:12px;margin-top:5px;"><a target="_blank" href="http://www.baidu.com">来源：肖邦网</a></span></div>
+  <div id="a_img"><img id="_img"></img></div>
+  <div id="a_media"></div>
+  <div id="a_html"><iframe frameborder="no" style="display:none;width:100%;" id="mainContent" scrolling="no"></iframe></div>
+  <div id="a_nullhtml"></div>
 </div>
 </body>
 
 <script>
-var articleId=getUrlParam(window.location.href, "ContentId");
+var contentId=getUrlParam(window.location.href, "ContentId");
 var rootPath=getRootPath();
+var contentData=null;
 
 //主函数
 $(function() {
-  if (rootPath.length==1) rootPath="http://localhost:708/chopin";
-  alert(articleId);
+  if (rootPath.length==1) rootPath="http://www.wotingfm.com/Chopin";
   var _data={};
-  _data.ContentId=articleId;
+  _data.ContentId=contentId;
   $.ajax({type:"post", async:true, url:rootPath+"/content/getContentInfo.do", dataType:"json", data:_data,
     success: function(jsonData) {
       if (jsonData.ReturnType=='1001') {
-        showArticle(jsonData.ResultInfo);
+        contentData=jsonData.ResultInfo;
+        showArticle(contentData);
       } else {
         showErr(jsonData.message);
       }
@@ -95,17 +117,94 @@ $(function() {
 });
 
 function showArticle(artData) {
+  $("#a_title").html(artData.ContentName);
+  $("#_time").html((new Date(artData.ContentPubTime)).format("yyyy-M-d"));
+  if (artData.ContentSource&&artData.ContentSource.length>0) $("#_source").html(artData.ContentSource);
+  else $("#_source").hide();
+  if (artData.ContentImg&&artData.ContentImg.length>0) showImg("a_img", artData.ContentImg);
+  else $("#a_img").hide();
   $("#a_content").show();
-  $("#a_title").html(artData.ContentName);
-  $("#a_time").html(artData.ContentPubTime);
-  $("#a_title").html(artData.ContentName);
-  $("#a_title").html(artData.ContentName);
+  //处理iframe内容
+  if (artData.ContentPlay&&artData.ContentPlay.length>0) {
+    showHtml("a_html", artData.ContentPlay);
+  } else showNullHtml();
 }
-
+function showImg(docEleId, imgSrc) {
+  //判断文件是否存在
+  var img=new Image();
+  img.onload=function() {
+    var parentWidth=$("#a_img").width();
+    var minWidth=500;
+    if (parentWidth>minWidth+10) {
+      h=(minWidth+10)*0.6;
+      $("#a_img").height(h);
+      $("#_img").width(minWidth);
+      $("#_img").height(h-10);
+      $("#_img").css({"margin-top":"5px"});
+      $("#_img").css({"margin-left":function(){return ((parentWidth-minWidth)/2);}});
+      $("#_img").attr("src",imgSrc);
+    } else {
+      var h=parentWidth*0.6;
+      $("#a_img").height(h);
+      $("#_img").width(parentWidth-10);
+      $("#_img").height($("#a_img").height()-10);
+      $("#_img").css({"margin-top":"5px", "margin-left":"5px"});
+      $("#_img").attr("src",imgSrc);
+    }
+  };
+  img.onerror=function() {
+    $("#a_img").hide();
+  };
+  img.src=imgSrc;
+}
+function showHtml(docEleId, htmlSrc) {
+  //判断文件是否存在
+  $.ajax({ype: "GET", cache: false, url: htmlSrc, data:null,
+    success:function() {
+      $("#a_content").show();
+      $("#mainContent").attr("src", htmlSrc);
+      $("#mainContent").css("display", "block");
+      var iframe=document.getElementById("mainContent");
+      var i=0;
+      var timer1=setInterval(function() {
+        var subWeb=iframe.contentWindow.document.body;
+        $("#mainContent").attr("height", subWeb.scrollHeight);
+      },200);
+      if (iframe.attachEvent){
+        iframe.attachEvent("onload", function(){
+          var subWeb=iframe.contentWindow.document.body;
+          $("#mainContent").attr("height", subWeb.scrollHeight);
+          window.clearInterval(timer1);
+        });
+      } else {
+        iframe.onload=function(){
+          var subWeb=iframe.contentWindow.document.body;
+          $("#mainContent").attr("height", subWeb.scrollHeight);
+          window.clearInterval(timer1);
+        };
+      }
+      setTimeout(function() {window.clearInterval(timer1);}, 3000);
+    },
+    error:function() {
+      showNullHtml();
+    }
+  });
+}
+function showNullHtml() {
+  if ((contentData.ContentImg&&contentData.ContentImg.length>1)
+    || (contentData.ContentSubjectWord&&contentData.ContentSubjectWord.length>1)) {
+    $("#a_html").hide();
+    $("#a_nullhtml").show();
+    if (contentData.ContentPub&&contentData.ContentPub.length>1) {
+      $("#a_nullhtml").html("感谢本内容的提供者："+contentData.ContentPub);
+    }
+    if (contentData.CTime&&contentData.CTime>1) {
+      $("#a_nullhtml").html($("#a_nullhtml").html()+"</br>提供时间："+(new Date(contentData.CTime)).format("yyyy-MM-dd hh:mm:ss.S"));
+    }
+  } else showErr();
+}
 function showErr(msg) {
-	$("#a_content").addClass("errPage");
-  $("#a_content").html(msg);
-  $("#a_content").show();
+  alert("全空页面");
 }
 </script>
 </html>

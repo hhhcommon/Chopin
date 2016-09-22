@@ -500,6 +500,7 @@ li, a, input {
   </div>
   </div>
 </body> 
+
 <script>
 var zTreeObj,zTreeObjs,des;
 var rootPath=getRootPath();
@@ -886,7 +887,7 @@ function requestUpload(_this,oMyForm,segmentIndex){
       if(opeResult.ful[0].success=="TRUE"){
         _this.siblings("input[type='hidden']").val(opeResult.ful[0].storeFilename);
         var ds = $('#OldOrgPath'+segmentIndex).html();
-        var pa= $(_this).parent().parent();
+        var pa = $(_this).parent().parent();
         if(pa.attr("TYPE")=="PICTURE"){
           var jsonstr = {"FileOrgPath":opeResult.ful[0].storeFilepath,"FileSmallPath":opeResult.ful[0].smallFilepath};
           pa.find(".uploadPrompt").html("图片上传成功");
@@ -940,19 +941,16 @@ function createArticle(){
     if(onePart.PartType=="PICTURE"){
       onePart.PartName=$('#ContentImg'+onePart.PartId).val();
 	    var obj = JSON.parse('['+$('#OldOrgPath'+onePart.PartId).html()+']');
-	    console.log("图片："+obj);
       onePart.ResouceList = obj;
     }
     if(onePart.PartType=="VIDEO"){
       onePart.PartName=$('#ContentVideo'+onePart.PartId).val();
       var obj = JSON.parse('['+$('#OldOrgPath'+onePart.PartId).html()+']');
-      console.log("视频："+obj);
       onePart.ResouceList = obj;
     }
     if(onePart.PartType=="MEDIA"){
       onePart.PartName=$('#ContentAduio'+onePart.PartId).val();
       var obj = JSON.parse('['+$('#OldOrgPath'+onePart.PartId).html()+']');
-      console.log("音频："+obj);
       onePart.ResouceList = obj;
     }
 	  onePart.PartId=id;
@@ -963,8 +961,7 @@ function createArticle(){
   postData.List=list;
   console.log("发送的数据："+postData);
   $.ajax({
-    url:"http://localhost:1108/Chopin/content/addByWeb.do",
-//  url:rootPath+"content/addByWeb.do",
+    url:rootPath+"content/addByWeb.do",
     type:"POST",
     data:JSON.stringify(postData),
     dataType:"json",
@@ -972,14 +969,14 @@ function createArticle(){
     success: function (returnData){
       if(returnData.returnType=="1001"){
         alert("成功添加");
+        $(".row,.shade").hide();
       }else{
         alert(returnData.Message);
-        $(".row,.shade").hide();
       }
     },
     error: function(jqXHR){
       alert("发生错误" + jqXHR.status);
-    }     
+    }
   });
 }
 
