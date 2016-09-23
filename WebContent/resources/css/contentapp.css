@@ -1,0 +1,84 @@
+/*全局样式*/
+*{margin:0;padding:0;}
+li{list-style: none;}
+html{font-size:62.5%;}
+.container{
+  width:90%;
+  height:auto;
+  margin:0px auto;
+  overflow: hidden;
+  border:1px solid red;   
+}
+/*选手类别样式*/
+.header{
+  width:100%;
+  height:30px;
+  margin-top: 20px;
+}
+.header .line{
+  width: 5px;
+  height: 20px;
+  border-radius: 6px;
+  margin-top: 4px;
+  margin-left: 10px;
+  display: block;
+  float: left;
+  background: gray;
+} 
+.header .category{
+  width: 10%;
+  height: 20px;
+  color: gray;
+  font-size: 1.7rem;
+  margin-top: 3px;
+  margin-left: 8px;
+  float: left;
+  display: block;
+} 
+/*标题内容样式*/
+.titleContent{
+  width:100%;
+  height:auto;
+}
+.titleContent h2{
+  width:100%;
+  font-size:3rem;
+  text-align:center;
+  color:black;
+}
+.webSource{
+  width:17%;
+  font-size:14px;
+  color: rgba(0, 0, 0, 0.39);
+  margin:10px auto;
+}
+.webSource .time{
+  width:50%;
+}
+.webSource .source{
+  width:50%;
+  margin-left:3%;
+}
+/*选手内容*/
+.conpetitorContent{
+  width:100%;
+  height:auto;
+  margin-top:10px;
+}
+.conpetitorContent .word{
+  width:84%;
+  height:97%;
+  margin:0px auto;
+  color:rgba(0,0,0,0.64);
+  line-height:31px;
+}
+.conpetitorContent .pic{
+  width:50%;
+  height:100%;
+  margin:0px auto;
+}
+.conpetitorContent .pic img{
+  width:100%;
+  height:100%;
+  background-size:100% 100%;
+}
