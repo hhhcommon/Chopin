@@ -1,4 +1,4 @@
-/*È«¾ÖÑùÊ½*/
+ï»¿/*å…¨å±€æ ·å¼*/
 *{margin:0;padding:0;}
 li{list-style: none;}
 html{font-size:62.5%;}
@@ -9,7 +9,7 @@ html{font-size:62.5%;}
   overflow: hidden;
   border:1px solid red;   
 }
-/*Ñ¡ÊÖÀà±ğÑùÊ½*/
+/*é€‰æ‰‹ç±»åˆ«æ ·å¼*/
 .header{
   width:100%;
   height:30px;
@@ -35,7 +35,7 @@ html{font-size:62.5%;}
   float: left;
   display: block;
 } 
-/*±êÌâÄÚÈİÑùÊ½*/
+/*æ ‡é¢˜å†…å®¹æ ·å¼*/
 .titleContent{
   width:100%;
   height:auto;
@@ -59,7 +59,7 @@ html{font-size:62.5%;}
   width:50%;
   margin-left:3%;
 }
-/*Ñ¡ÊÖÄÚÈİ*/
+/*é€‰æ‰‹å†…å®¹*/
 .conpetitorContent{
   width:100%;
   height:auto;
