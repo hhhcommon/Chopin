@@ -19,6 +19,7 @@ import com.woting.cm.core.channel.service.ChannelService;
 import com.woting.cm.core.media.model.MediaAsset;
 import com.woting.cm.core.media.persis.po.MediaAssetPo;
 import com.woting.cm.core.media.service.MediaService;
+import com.woting.content.publish.utils.CacheUtils;
 import com.woting.passport.UGA.persistence.pojo.UserPo;
 import com.woting.passport.UGA.service.UserService;
 
@@ -32,16 +33,16 @@ public class QueryService {
 	private MediaService mediaService;
 	@Resource
 	private UserService userService;
-	private String title = "<div class=\"titleContent\">"
+	private String title = "<div class=\"titleContent\">" //内容页标题
 			+ "<h2>#####TITLE#####</h2></div>";
-	private String src = " <div class=\"webSource\">"
+	private String src = " <div class=\"webSource\">" //内容页来源信息
 			+ "<span class=\"time\">#####PUBTIME#####</span>"
-			+ "<a href=\"#####SOURCEPATH#####\" class=\"source\">#####SOURCE#####</span>"
+			+ "<a href=\"#####SOURCEPATH#####\" class=\"source\">来源:#####SOURCE#####</a>"
 			+ "</div>";
-	private String word = "<div class=\"conpetitorContent\">"
+	private String word = "<div class=\"conpetitorContent\">" //内容页文本内容
 			+ "<div class=\"word\">#####WORD#####</div>"
 			+ "</div>";
-	private String pic = "<div class=\"conpetitorContent\"><div class=\"pic\">"
+	private String pic = "<div class=\"conpetitorContent\"><div class=\"pic\">" //内容页图片信息
 			+ "<img src=\"#####PICTURE#####\"/>"
 					+ "</div>"
 					+ "</div>";
@@ -252,8 +253,7 @@ public class QueryService {
 				}
 			}
 		}
-		ma.setAllText(allText);
-		System.out.println(htmlstr);
+		ma.setAllText(CacheUtils.cleanTag(allText));
 		ChannelAssetPo cha = new ChannelAssetPo();
 		cha.setId(SequenceUUID.getPureUUID());
 		cha.setAssetId(ma.getId());
@@ -268,6 +268,7 @@ public class QueryService {
 		cha.setPubImg(ma.getMaImg());
 		cha.setCTime(ma.getCTime());
 		cha.setPubTime(ma.getCTime());
+		System.out.println(htmlstr);
 		System.out.println(JsonUtils.objToJson(ma));
 		System.out.println(JsonUtils.objToJson(cha));
 		return true;
