@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+	<title>参赛选手</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="renderer" content="webkit">
+  <meta name="applicable-device" content="pc,mobile">
+  <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+<style>
+/*全局样式*/
+*{margin:0;padding:0;}
+li{list-style: none;}
+.container{
+  width:90%;
+  height:3200px;
+  margin:0px auto;
+  overflow: auto;
+  border:1px solid red;   
+}
+/*选手类别样式*/
+.header{
+  width:100%;
+  height:30px;
+  border:1px solid red; 
+}
+.header .line{
+  width: 3px;
+  height: 20px;
+  border-radius: 6px;
+  margin-top: 4px;
+  margin-left: 10px;
+  display: block;
+  float: left;
+  background: gray;
+} 
+.header .category{
+  width: 10%;
+  height: 20px;
+  color: #333;
+  font-size: 16px;
+  margin-top: 5px;
+  margin-left: 8px;
+  font-weight: bolder;
+  float: left;
+  display: block;
+} 
+/*标题内容样式*/
+.titleContent{
+  width:100%;
+  height:auto;
+  border:1px solid black;
+}
+.titleContent h2{
+  width:100%;
+  font-size:30px;
+  text-align:center;
+  color:black;
+}
+.titleContent div{
+  width:100%;
+  font-size:18px;
+  color: rgba(0, 0, 0, 0.39);
+  font-weight: bold;
+}
+.titleContent div .time{
+  width:50%;
+  margin-left:39%;
+}
+.titleContent div .source{
+  width:50%;
+  margin-left:1%;
+}
+/*选手内容*/
+.conpetitorContent{
+  width:100%;
+  height:auto;
+  border:1px solid orange;
+}
+.conpetitorContent .word{
+  width:71%;
+  height:100%;
+  margin:0px auto;
+  font-size:21px;
+  color:rgba(0,0,0,0.64);
+  border:1px solid green;
+}
+.conpetitorContent .word p:first-child{
+  text-indent:35px;
+}
+.conpetitorContent .pic{
+  width:71%;
+  height:100%;
+  margin:0px auto;
+  font-size:21px;
+  color:rgba(0,0,0,0.64);
+  border:1px solid red;
+}
+.conpetitorContent .pic img{
+  width:100%;
+  height:100%;
+  background-size:100% 100%;
+}
+.conpetitorContent .video{
+  width:71%;
+  height:100%;
+  margin:0px auto;
+  font-size:21px;
+  color:rgba(0,0,0,0.64);
+  border:1px solid black;
+}
+.conpetitorContent .video div{
+  width:100%;
+  height:100%;
+  background:pink;
+}
+.conpetitorContent .audio{
+  width:71%;
+  height:100%;
+  margin:0px auto;
+  font-size:21px;
+  color:rgba(0,0,0,0.64);
+  border:1px solid black;
+}
+.conpetitorContent .audio div{
+  width:100%;
+  height:100%;
+  background:pink;
+}
+/*内容切换*/
+.contentTab{
+  width:100%;
+  height:300px;
+  border:1px solid black;
+}
+.contentTab .navSwitch{
+  width: 71%;
+  height: 30px;
+  border:1px solid black;
+  margin:0px auto;
+  overflow: hidden;
+}
+.contentTab .navSwitch li{
+  width: 33.1%;
+  height: 30px;
+  border:1px solid black;
+  float: left;
+  line-height: 30px;
+  text-align: center;
+}
+.contentTab .conSwitch{
+  width: 71%;
+  height:306px;
+  margin:0px auto;
+  position:relative;
+  border:1px solid black;
+}
+.contentTab .conSwitch div img{
+  width:100%;
+  height:306px;
+  position:absolute;
+  background-size:100% 100%;
+  top:0px;
+  left:0px;
+}
+/*为选手投票*/
+.voteContent{
+  width:71%;
+  height:auto;
+  margin:0 auto;
+  border:1px solid orange;
+}
+.voteContent .vote{
+  width:100%;
+  height:100px;
+  overflow: hidden;
+  border:1px solid orange;
+}
+.voteContent .vote h2{
+  width:15%;
+  height:35px;
+  line-height:35px;
+}
+.voteContent .vote span{
+  width:50%;
+  height:25px;
+  line-height:25px;
+  margin-left:25px;
+}
+.voteContent .vote .voteNum{
+  width:8%;
+  height:25px;
+  line-height:25px;
+  float:right;
+ }
+.voteContent .shareFirends{
+  width:100%;
+  height:100px;
+  border:1px solid orange;
+} 
+.voteContent  .shareFirends ul{
+  width:90%;
+  height:42px;
+  overflow:hidden;
+  margin-top:15px;
+  margin-left:1%;
+}
+.voteContent .shareFirends ul li{
+  width:40px;
+  height:40px;
+  line-height:40px;
+  border:1px solid red;
+  border-radius:57%;
+  float:left;
+  margin-left: 15px;
+  text-align: center;
+}
+/*选手评论*/
+.comment{
+  width:71%;
+  height:400px;
+  margin:0 auto;
+  border:1px solid black;
+}
+</style>
+</head>
+	<body>
+	  <div class="container">
+	    <div class="header">
+	      <span class="line"></span>
+	      <span class="category">参赛选手</span>
+	    </div>
+	    <div class="titleContent">
+	      <h2>王思琪--青年组参赛选手</h2>
+	      <div><span class="time">2016.10.18</span><span class="source">来源：中国肖邦网</span></div>
+	    </div>
+	    <div class="conpetitorContent">
+	      <div class="word">
+	        <p>女，于1996年6月14日出生于中国沈阳，3岁由父亲启蒙开始学习钢琴，6岁从事朱雅芬</p>
+	        <p>教授。现在巴黎音乐学院学习。曾获得第六届青少年国际钢琴比赛第三名，第五届柴可夫斯</p>
+	        <p>基国际青年音乐家比赛第一名，初赛演奏的《c小调夜曲》令评委耳目一新，进入复赛后状</p>
+	        <p>太愈佳，其精彩的演奏俘获了一大批忠实粉丝。</p>
+	      </div>
+	    </div>
+	    <div class="conpetitorContent">
+        <div class="pic">
+          <img src="images/1.jpg" alt="pic1" />
+        </div>
+      </div>
+      <!--<div class="conpetitorContent">
+        <div class="video">
+          <div>这是一个视频</div>
+        </div>
+      </div>-->
+      <!--<div class="conpetitorContent">
+        <div class="audio">
+          <div>这是一个音频</div>
+        </div>
+      </div>-->
+      <!--<div class="contentTab">
+        <ul class="navSwitch" >
+          <li>照片</li>
+          <li>视频</li>
+          <li>音频</li>
+        </ul>
+        <div class="conSwitch">
+          <div class="conSwitch1"><img src="111.jpg" alt="照片"/></div>
+          <div class="conSwitch2"><img src="333.jpg" alt="视频"/></div>
+          <div class="conSwitch2"><img src="444.jpg" alt="音频"/></div>
+        </div>
+      </div>-->
+      <div class="voteContent">
+        <div class="vote">
+          <h2>为选手投票</h2>
+          <span>喜欢他（她）就支持他（她）吧！O(∩_∩)O~</span>
+          <div class="voteNum">1230票</div>
+        </div>
+        <div class="shareFirends">
+          <h2>分享给朋友</h2>
+          <ul>
+            <li>微信</li>
+            <li>浏览器</li>
+            <li>微博</li>
+            <li>qq</li>
+            <li>空间</li>
+          </ul>
+        </div>
+      </div>
+	    <div class="comment">
+	      
+	    </div>
+	  </div>
+	</body>
+</html>
