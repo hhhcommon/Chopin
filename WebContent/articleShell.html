@@ -95,10 +95,11 @@ body { padding:0; width:100% }
 var contentId=getUrlParam(window.location.href, "ContentId");
 var rootPath=getRootPath();
 var contentData=null;
+var voiceExtName="mp3;m4a;m3u8";
 
 //主函数
 $(function() {
-  if (rootPath.length==1) rootPath="http://www.wotingfm.com/Chopin";
+  if (rootPath.length==1) rootPath="http://localhost:1108/Chopin";
   var _data={};
   _data.ContentId=contentId;
   $.ajax({type:"post", async:true, url:rootPath+"/content/getContentInfo.do", dataType:"json", data:_data,
@@ -124,6 +125,9 @@ function showArticle(artData) {
   if (artData.ContentImg&&artData.ContentImg.length>0) showImg("a_img", artData.ContentImg);
   else $("#a_img").hide();
   $("#a_content").show();
+  //处理视音频
+  if (artData.ContentSubjectWord&&artData.ContentSubjectWord.length>0) playMedia("a_media", artData.ContentSubjectWord);
+  else $("#a_media").hide();
   //处理iframe内容
   if (artData.ContentPlay&&artData.ContentPlay.length>0) {
     showHtml("a_html", artData.ContentPlay);
@@ -156,6 +160,12 @@ function showImg(docEleId, imgSrc) {
     $("#a_img").hide();
   };
   img.src=imgSrc;
+}
+function playMedia(docEleId, mediaUrl) {
+  //判断是视频还是音频
+  var flag=1;//视频
+  var pos=mediaUrl.lastIndexOf("//");
+  alert(pos);
 }
 function showHtml(docEleId, htmlSrc) {
   //判断文件是否存在
@@ -204,7 +214,22 @@ function showNullHtml() {
   } else showErr();
 }
 function showErr(msg) {
-  alert("全空页面");
+	alert("DD");
+  $("body").css("background-color", "#A8A8A8");
+  $("#a_content").html("");
+  $("#a_content").css("align", "center");
+  var parentWidth=$("#a_content").width();
+  var nullImg=$("<img></img>");
+  $("#a_content").append(nullImg);
+  if (parentWidth>607) {
+    $(nullImg).css({"width":607, "height":411});
+    $(nullImg).css({"margin-top":"5px"});
+    $(nullImg).css({"margin-left":function(){return ((parentWidth-minWidth)/2);}});
+  } else {
+    $(nullImg).css({"width":parentWidth});
+    $(nullImg).css({"height":function(){return parentWidth*(411/608);}});
+  }
+  $(nullImg).attr("src","./resources/chopin/imgs/nullPage.png");
 }
 </script>
 </html>
