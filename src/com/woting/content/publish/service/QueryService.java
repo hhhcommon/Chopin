@@ -125,7 +125,10 @@ public class QueryService {
 		return false;
 	}
 	
-	public boolean makeContentHtml(String channelId, List<Map<String, Object>> list){
+	public boolean makeContentHtml(String channelId, String mastatus, String username, List<Map<String, Object>> list){
+		Map<String, Object> statustype = new HashMap<>();
+		statustype.put("一般文章", 0);
+		statustype.put("", 1);
 		MediaAssetPo ma = new MediaAssetPo();
 		if (list!=null && list.size()>0) {
 			for (Map<String, Object> m : list) {

@@ -138,13 +138,29 @@ public class QueryController {
 			map.put("Message", "无法获得栏目Id");
 			return map;
 		}
+		String mastatus = m.get("ContentStatus")+"";
+		if (mastatus.equals("null") || mastatus.equals("")) {
+			map.put("ReturnType", "1013");
+			map.put("Message", "无法获得类型信息");
+			return map;
+		}
+		String username = m.get("UserName")+"";
+		if (!mastatus.equals("一般文章")) {
+			if (username.equals("null") || username.equals("")) {
+				map.put("ReturnType", "1014");
+				map.put("Message", "无法获得选手姓名");
+				return map;
+			}
+		} else {
+			username = null;
+		}
 		List<Map<String, Object>> list = (List<Map<String, Object>>) m.get("List");
 		if(list==null || list.size()==0) {
 			map.put("ReturnType", "1013");
 			map.put("Message", "参数不全");
 			return map;
 		}
-		boolean isok = queryService.makeContentHtml(channelid, list);
+		boolean isok = queryService.makeContentHtml(channelid, mastatus, username, list);
 		if(isok) {
 			map.put("ReturnType", "1001");
 		    map.put("Message", "添加成功");

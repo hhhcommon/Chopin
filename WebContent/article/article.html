@@ -583,6 +583,12 @@ $(function(){
   $(".close-link,.cancels").on("click",function(){
     $(".row,.shade").hide();
   });
+  $('select').change(function(){ 
+    var op=$(this).find('option:selected').text();//selected的值 
+    if(op=="参赛选手") {
+	  alert("识别成功");
+	}
+}) 
 });
 
 /**
