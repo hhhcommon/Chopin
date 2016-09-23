@@ -445,10 +445,6 @@ li, a, input {
         </div>
         <div class="ibox-content">
           <form class="form-horizontal m-t" id="articleForm" onsubmit="return false;">
-            <input id="orgName" name="orgName" class="form-control" type="hidden" value="" />
-            <input id="orgPath" name="orgPath" class="form-control" type="hidden" value="" />
-            <input id="smallName" name="smallName" class="form-control" type="hidden" value="" />
-            <input id="smallPath" name="smallPath" class="form-control" type="hidden" value="" />
             <div class="form-group" id="1">
               <label class="col-sm-2 control-label">标题：</label>
               <div class="col-sm-10" style="margin-left: 25px;">
@@ -596,7 +592,6 @@ $(function(){
  */
 function loadTree(loadData) {
   var _url=rootPath+"baseinfo/getChannelTree4View.do";
-//var _url="http://localhost:1108/Chopin/baseinfo/getChannelTree4View.do";
   var i=0;
   loadRecursion(0);
   function loadRecursion(index) {
@@ -781,17 +776,9 @@ function newPicture(newp){
               '</div>'+
             '</div>'
   $(newp).parent().parent().parent().after(pict);
-<<<<<<< HEAD
-  hiden();
-  upLoadPicture(segmentIndex);
-  hiden();
-  upLoadPicture(segmentIndex);
-  segmentIndex++;
-=======
   hiden();
   upLoadFile(segmentIndex);
   segmentIndex++;
->>>>>>> refs/remotes/origin/master
 }
 
 //生成视频编辑框
@@ -933,20 +920,12 @@ function createArticle(){
   title.PartType="TITLE";
   title.PartInfo=$("#titleName").val();
   list.push(title);
-<<<<<<< HEAD
-
-=======
->>>>>>> refs/remotes/origin/master
   var descn={};//摘要
   descn.PartId=2;
   descn.PartType="DESCN";
   descn.PartInfo=$("#descnName").val();
   list.push(descn);
-<<<<<<< HEAD
-  var id = 1;
-=======
   var id = 3;
->>>>>>> refs/remotes/origin/master
   $("#articleForm").find("div.segment").each(function() {//文字或图片或视频或音频
     id++;
     var onePart={};
