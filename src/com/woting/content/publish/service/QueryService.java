@@ -8,10 +8,9 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
-
 import org.springframework.stereotype.Service;
-
-import com.spiritdata.framework.util.JsonUtils;
+import com.spiritdata.framework.FConstants;
+import com.spiritdata.framework.core.cache.SystemCache;
 import com.spiritdata.framework.util.SequenceUUID;
 import com.woting.cm.core.channel.model.ChannelAsset;
 import com.woting.cm.core.channel.persis.po.ChannelAssetPo;
@@ -19,6 +18,7 @@ import com.woting.cm.core.channel.service.ChannelService;
 import com.woting.cm.core.media.model.MediaAsset;
 import com.woting.cm.core.media.persis.po.MediaAssetPo;
 import com.woting.cm.core.media.service.MediaService;
+import com.woting.content.common.utils.FileUploadUtils;
 import com.woting.content.publish.utils.CacheUtils;
 import com.woting.passport.UGA.persistence.pojo.UserPo;
 import com.woting.passport.UGA.service.UserService;
@@ -33,6 +33,7 @@ public class QueryService {
 	private MediaService mediaService;
 	@Resource
 	private UserService userService;
+	private String html = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><title>Insert title here</title></head><body>#####CONTENT#####</body></html>";
 	private String title = "<div class=\"titleContent\">" //内容页标题
 			+ "<h2>#####TITLE#####</h2></div>";
 	private String src = " <div class=\"webSource\">" //内容页来源信息
@@ -158,6 +159,7 @@ public class QueryService {
 			ma.setMaStatus(0);
 		} else {
 			UserPo u = userService.getUserByUserName(username);
+			if (u==null) return false;
 			ma.setMaPubId(u.getUserId());
 			ma.setMaPubType(3);
 			ma.setMaPublisher(u.getUserName());
@@ -179,8 +181,8 @@ public class QueryService {
 					ma.setMaTitle(m.get("PartInfo")+"");
 					allText +="##"+ma.getMaTitle()+"##";
 					//合成html
-					htmlstr += title.replace("#####TITLE#####", ma.getMaTitle());
-					htmlstr += src.replace("#####PUBTIME#####", sdf.format(ma.getCTime())).replace("#####SOURCE#####", source).replace("#####SOURCEPATH#####", sourcepath);
+//					htmlstr += title.replace("#####TITLE#####", ma.getMaTitle());
+//					htmlstr += src.replace("#####PUBTIME#####", sdf.format(ma.getCTime())).replace("#####SOURCE#####", source).replace("#####SOURCEPATH#####", sourcepath);
 					break;
 				case "DESCN": //摘要
 					ma.setDescn(m.get("PartInfo")+"");
@@ -195,6 +197,7 @@ public class QueryService {
 					String partNameimg = m.get("PartName")+"";
 					if (partNameimg.equals("null") || partNameimg.equals("")) {
 						//删除文件
+//						FileUtils.deleteFile(new File())
 					} else {
 						List<Map<String, Object>> imgs = (List<Map<String, Object>>) m.get("ResouceList");
 						if(imgs!=null && imgs.size()>0) {
@@ -268,9 +271,15 @@ public class QueryService {
 		cha.setPubImg(ma.getMaImg());
 		cha.setCTime(ma.getCTime());
 		cha.setPubTime(ma.getCTime());
-		System.out.println(htmlstr);
-		System.out.println(JsonUtils.objToJson(ma));
-		System.out.println(JsonUtils.objToJson(cha));
+		htmlstr = html.replace("#####CONTENT#####", htmlstr);
+		String path = SystemCache.getCache(FConstants.APPOSPATH).getContent()+"mweb/"+ma.getId()+".html";
+		FileUploadUtils.writeFile(htmlstr, path);
+		ma.setMaURL("http://www.wotingfm.com/Chopin/mweb/"+ma.getId()+".html");
+		ma.setKeyWords("http://www.wotingfm.com/Chopin/mweb/"+ma.getId()+".html");
+		MediaAsset mas = new MediaAsset();
+		mas.buildFromPo(ma);
+		mediaService.saveMa(mas);
+		channelService.insertChannelAsset(cha);
 		return true;
 	}
 
