@@ -1,6 +1,8 @@
 package com.woting.content.publish.service;
 
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +32,19 @@ public class QueryService {
 	private MediaService mediaService;
 	@Resource
 	private UserService userService;
+	private String title = "<div class=\"titleContent\">"
+			+ "<h2>#####TITLE#####</h2></div>";
+	private String src = " <div class=\"webSource\">"
+			+ "<span class=\"time\">#####PUBTIME#####</span>"
+			+ "<a href=\"#####SOURCEPATH#####\" class=\"source\">#####SOURCE#####</span>"
+			+ "</div>";
+	private String word = "<div class=\"conpetitorContent\">"
+			+ "<div class=\"word\">#####WORD#####</div>"
+			+ "</div>";
+	private String pic = "<div class=\"conpetitorContent\"><div class=\"pic\">"
+			+ "<img src=\"#####PICTURE#####\"/>"
+					+ "</div>"
+					+ "</div>";
 
 	public Map<String, Object> addContentByApp(String userId, String title, String filePath, String descn,
 			String channelId) {
@@ -151,7 +166,11 @@ public class QueryService {
 			String sourceurl = "<a href='"+sourcepath+"'>"+source+"</a>";
 			ma.setLanguage(sourceurl);
 		}
+		ma.setCTime(new Timestamp(System.currentTimeMillis()));
+		ma.setMaPublishTime(ma.getCTime());
 		String allText = "";
+		String htmlstr = "";
+		DateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
 		if (list != null && list.size() > 0) {
 			for (Map<String, Object> m : list) {
 				switch (m.get("PartType") + "") {
@@ -159,6 +178,8 @@ public class QueryService {
 					ma.setMaTitle(m.get("PartInfo")+"");
 					allText +="##"+ma.getMaTitle()+"##";
 					//合成html
+					htmlstr += title.replace("#####TITLE#####", ma.getMaTitle());
+					htmlstr += src.replace("#####PUBTIME#####", sdf.format(ma.getCTime())).replace("#####SOURCE#####", source).replace("#####SOURCEPATH#####", sourcepath);
 					break;
 				case "DESCN": //摘要
 					ma.setDescn(m.get("PartInfo")+"");
@@ -167,6 +188,7 @@ public class QueryService {
 				case "WORD" : //文本内容
 					allText += "##"+m.get("PartInfo")+"##";
 					//合成html
+					htmlstr += word.replace("#####WORD#####", m.get("PartInfo")+"");
 					break;
 				case "PICTURE" : //图片信息
 					String partNameimg = m.get("PartName")+"";
@@ -182,6 +204,7 @@ public class QueryService {
 								} else {
 									ma.setMaImg(fileOrgPath);
 									//合成html
+									htmlstr += pic.replace("#####PICTURE#####", fileOrgPath);
 								}
 							}
 						}
@@ -230,8 +253,24 @@ public class QueryService {
 			}
 		}
 		ma.setAllText(allText);
-		ma.setCTime(new Timestamp(System.currentTimeMillis()));
-		return false;
+		System.out.println(htmlstr);
+		ChannelAssetPo cha = new ChannelAssetPo();
+		cha.setId(SequenceUUID.getPureUUID());
+		cha.setAssetId(ma.getId());
+		cha.setAssetType("wt_MediaAsset");
+		cha.setChannelId(channelId);
+		cha.setPublisherId(ma.getMaPubId());
+		cha.setCheckerId("0");
+		cha.setFlowFlag(2);
+		cha.setSort(0);
+		cha.setIsValidate(1);
+		cha.setPubName(ma.getMaTitle());
+		cha.setPubImg(ma.getMaImg());
+		cha.setCTime(ma.getCTime());
+		cha.setPubTime(ma.getCTime());
+		System.out.println(JsonUtils.objToJson(ma));
+		System.out.println(JsonUtils.objToJson(cha));
+		return true;
 	}
 
 	public boolean modifyDirectContentInfo(String channelId, String contentId, int status) {

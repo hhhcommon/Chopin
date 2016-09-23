@@ -47,7 +47,7 @@ public class UserService implements UgaUserService {
     public UserPo getUserByUserName(String username) {
     	try {
     		Map<String, Object> m = new HashMap<>();
-    		m.put("whereByClause", "userName="+username+" and team is not null limit 1");
+    		m.put("whereByClause", "userName='"+username+"' and team is not null limit 1");
 			return userDao.getInfoObject("getListByWhere",m);
 		} catch (Exception e) {
 			e.printStackTrace();
