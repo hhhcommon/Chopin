@@ -154,13 +154,19 @@ public class QueryController {
 		} else {
 			username = null;
 		}
+		String source = m.get("Source")+"";
+		if (source.equals("null") || source.equals("")) 
+			source = null;
+		String sourcepath = m.get("SourcePath")+"";
+		if(sourcepath.equals("null") || sourcepath.equals(""))
+			sourcepath = null;
 		List<Map<String, Object>> list = (List<Map<String, Object>>) m.get("List");
 		if(list==null || list.size()==0) {
 			map.put("ReturnType", "1013");
 			map.put("Message", "参数不全");
 			return map;
 		}
-		boolean isok = queryService.makeContentHtml(channelid, mastatus, username, list);
+		boolean isok = queryService.makeContentHtml(channelid, source, sourcepath, mastatus, username, list);
 		if(isok) {
 			map.put("ReturnType", "1001");
 		    map.put("Message", "添加成功");

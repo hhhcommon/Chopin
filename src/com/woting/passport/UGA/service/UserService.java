@@ -40,6 +40,22 @@ public class UserService implements UgaUserService {
     }
     
     /**
+     * 根据选手
+     * @param username
+     * @return
+     */
+    public UserPo getUserByUserName(String username) {
+    	try {
+    		Map<String, Object> m = new HashMap<>();
+    		m.put("whereByClause", "userName="+username+" and team is not null limit 1");
+			return userDao.getInfoObject("getListByWhere",m);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	return null;
+    }
+    
+    /**
      * 根据绑定手机号，获得用户信息
      * @param userNum 用户号码
      * @return 用户信息
