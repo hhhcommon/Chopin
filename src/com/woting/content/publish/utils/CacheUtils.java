@@ -13,6 +13,7 @@ import java.util.Map;
 import com.spiritdata.framework.FConstants;
 import com.spiritdata.framework.core.cache.SystemCache;
 import com.spiritdata.framework.util.JsonUtils;
+import com.spiritdata.framework.util.StringUtils;
 
 /**
  * 静态数据生成工具
@@ -179,5 +180,25 @@ public abstract class CacheUtils {
 			e.printStackTrace();
 		}
 		return sb.toString();
+	}
+	
+	/**
+	 * 清除搜索到页面文本里标签
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public static String cleanTag(String str) {
+		if (StringUtils.isNullOrEmptyOrSpace(str)) return "";
+		while (true) {
+			int tagbegin = str.indexOf("<");
+			int tagend = str.indexOf(">", tagbegin);
+			if (tagbegin != -1 && tagend != -1) {
+				String constr = str.substring(tagbegin, tagend + 1);
+				str = str.replace(constr, "");
+			} else {
+				return str.replace("\n", "").replace("　", "").replace("&nbsp;", " ").trim();
+			}
+		}
 	}
 }
