@@ -958,6 +958,7 @@ function createArticle(){
   });
   var postData={};
   postData.ChannelId=$("#channelId").val();
+  postData.ContentStatus=$("select").find("option:selected").text();
   postData.List=list;
   console.log("发送的数据："+postData);
   $.ajax({

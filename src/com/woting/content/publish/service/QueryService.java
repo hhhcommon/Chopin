@@ -126,9 +126,11 @@ public class QueryService {
 	}
 	
 	public boolean makeContentHtml(String channelId, List<Map<String, Object>> list){
-		
-		System.out.println(channelId);
+		MediaAssetPo ma = new MediaAssetPo();
 		if (list!=null && list.size()>0) {
+			for (Map<String, Object> m : list) {
+				
+			}
 			System.out.println(JsonUtils.objToJson(list));
 			return true;
 		}
