@@ -260,7 +260,7 @@ public class FavoriteService {
                 }
             }
 
-            if (!mas.isEmpty()) {
+            if (mas!=null&&!mas.isEmpty()) {
                 //获得相关栏目信息
                 String whereStr="";
                 String[] articlaIds=new String[mas.size()];

@@ -201,7 +201,7 @@ public class FavoriteController {
             }
             int pageSize=10;
             try {
-                page=Integer.parseInt(m.get("PageSize")==null?null:m.get("PageSize")+"");
+                pageSize=Integer.parseInt(m.get("PageSize")==null?null:m.get("PageSize")+"");
             } catch(Exception e) {
             }
 
