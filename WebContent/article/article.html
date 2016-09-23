@@ -500,7 +500,7 @@ li, a, input {
                   <option value="">选手音频</option>
                   <option value="">选手文章</option>
                 </select>
-                <div class="aboutCompetitor">
+                <div class="aboutCompetitor" style="display: none;">
                   <input id="competitorName" name="competitorName" class="form-control" type="text" aria-required="true" placeholder="请输入选手姓名">
                 </div>
               </div>
@@ -624,6 +624,16 @@ $(function(){
   //3.3-点击提交,取消按钮，遮罩层和弹出层消失
   $(".close-link,.cancels").on("click",function(){
     $(".row,.shade").hide();
+  });
+  //4.1-文章类型，改变状态，判断是否显示选手姓名输入框
+  $('select').change(function(){
+    var op=$(this).children('option:selected').text();//这就是selected的值 
+    if(op!="一般文章") {
+	  $(".aboutCompetitor").css("display","block");
+	} else {
+	  $(".aboutCompetitor").css("display","none");
+	  $("#competitorName").val("");
+	}
   });
 });
 
@@ -910,7 +920,6 @@ function upLoadFile(segmentIndex){
 function requestUpload(_this,oMyForm,segmentIndex){
   $.ajax({
     url:rootPath+"common/uploadCM.do",
-//  url:"http://localhost:1108/Chopin/common/uploadCM.do",
     type:"POST",
     data:oMyForm,
     cache: false,
@@ -994,7 +1003,10 @@ function createArticle(){
   });
   var postData={};
   postData.ChannelId=$("#channelId").val();
+  postData.Source=$("#source").val();
+  postData.SourcePath=$("#website").val();
   postData.ContentStatus=$("select").find("option:selected").text();
+  postData.UserName=$("#competitorName").val();
   postData.List=list;
   console.log("发送的数据："+postData);
   $.ajax({
