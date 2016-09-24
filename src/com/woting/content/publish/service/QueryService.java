@@ -150,7 +150,8 @@ public class QueryService {
 		return false;
 	}
 
-	public boolean makeContentHtml(String channelId, String source, String sourcepath, String mastatus, String username, List<Map<String, Object>> list) {
+	public Map<String, Object> makeContentHtml(String channelId, String source, String sourcepath, String mastatus, String username, List<Map<String, Object>> list) {
+		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> statustype = new HashMap<>();
 		statustype.put("一般文章", 0);
 		statustype.put("选手介绍", 1);
@@ -167,7 +168,11 @@ public class QueryService {
 			ma.setMaStatus(0);
 		} else {
 			UserPo u = userService.getUserByUserName(username);
-			if (u==null) return false;
+			if (u==null) {
+				map.put("ReturnType", "1014");
+				map.put("Message", "用户不存在");
+				return map;
+			}
 			ma.setMaPubId(u.getUserId());
 			ma.setMaPubType(3);
 			ma.setMaPublisher(u.getUserName());
@@ -185,6 +190,11 @@ public class QueryService {
 			for (Map<String, Object> m : list) {
 				switch (m.get("PartType") + "") {
 				case "TITLE": //标题
+					if(mediaService.getMaInfoByTitle(m.get("PartInfo")+"")==null) {
+						map.put("ReturnType", "1015");
+						map.put("Message", "内容重名");
+						return map;
+					}
 					ma.setMaTitle(m.get("PartInfo")+"");
 					allText +="##"+ma.getMaTitle()+"##";
 					break;
@@ -292,7 +302,9 @@ public class QueryService {
 		mas.buildFromPo(ma);
 		mediaService.saveMa(mas);
 		channelService.insertChannelAsset(cha);
-		return true;
+		map.put("ReturnType", "1001");
+		map.put("Message", "添加成功");
+		return map;
 	}
 
 	public boolean modifyDirectContentInfo(String channelId, String contentId, int status) {
