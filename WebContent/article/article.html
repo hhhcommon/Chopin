@@ -286,12 +286,9 @@ li{list-style: none;}
   position: relative;
   top: 4px;
 }
-.form-group #themeImg,.form-group #media{
-  width: 600px;
+.form-group #themeImg,.form-group #uploadThemeImg,.form-group #uploadMedia,.form-group #media{
+  width: 360px;
   height: 27px;
-  position: relative;
-  top: 4px;
-  border:1px solid red;
 }
 .first{
   width: 142px;
@@ -327,11 +324,19 @@ li{list-style: none;}
   top: 4px;
   left:-110px;
 }
+#only{
+  position: absolute;
+  left: 400px;
+  height: 27px;
+  width: 27px;
+  top: -5px;
+}
+
 .chooseChannel{
   width: 83px;
   height: 27px;
   position: absolute;
-  left:69%;
+  left:46%;
   margin-top: -1.99%;
   font-size: 15px;
   line-height: 27px;
@@ -349,7 +354,7 @@ li{list-style: none;}
 .ibox .channel .actions {
   width: 84px;
   position: absolute;
-  left: 85%;
+  left: 55%;
   margin-top: -2%;
   cursor: pointer;
 }
@@ -501,15 +506,17 @@ li, a, input {
             <div class="form-group" id="2">
               <label class="col-sm-2 control-label">题图：</label>
               <div class="col-sm-10" style="margin-left: 25px;">
-                <input id="uploadThemeImg" name="uploadThemeImg" class="form-control" type="file" accept=".png,.jpg" />
-                <input id="themeImg" class="form-control"s name="themeImg" type="hidden" value="" />
+                <input id="uploadThemeImg" name="uploadThemeImg" class="form-control" type="text"  placeholder="点击，选择图片上传" style="background-color:#fff;" readonly />
+                <input id="themeImg" class="form-control" name="themeImg" type="file" style="display:none;" value="" accept=".png,.jpg"/>
               </div>
             </div>
             <div class="form-group" id="2">
               <label class="col-sm-2 control-label">媒体：</label>
               <div class="col-sm-10" style="margin-left: 25px;">
-                <input id="uploadMedia" name="uploadMedia" class="form-control" type="file" accept=".mp3,.mp4" />
-                <input id="media" class="form-control"s name="media" type="hidden" value="" />
+                <input id="uploadMedia" name="uploadMedia" class="form-control" type="text"  placeholder="点击，选择音/视频上传" style="background-color:#fff;" readonly/>
+                <input id="media" class="form-control" name="media" type="file" style="display:none;" value="" accept=".mp3,.mp4"/>
+                <input type="checkBox" name="" id="only" value="" class="checkMedia" />
+                <span class="help-block m-b-none"style="width: 140px;height: 27px;position: absolute;top: -2px;left: 459px;"><i class="fa fa-info-circle"></i>题图和媒体只能提交一个</span>
               </div>
             </div>
             <div class="form-group">
@@ -536,6 +543,9 @@ li, a, input {
                 <div class='chooseChannel'>文章类别</div>
                 <ul id="cataTrees" class="ztree"></ul>
               </div>
+			  <span class="help-block m-b-none"style="width: 157px;height: 27px;position: absolute;top: 5px;left: 476px;">
+                <i class="fa fa-info-circle"></i>点击'加号'可以新增文图视音
+              </span>
               <div class="actions">
                 <div class="toggle"><img src="../resources/images/off.png" alt="" onclick="show(this)"/></div>
                 <ul class="addContent" style="display: none;">
@@ -658,43 +668,6 @@ $(function(){
 	  $(".aboutCompetitor").css("display","none");
 	  $("#competitorName").val("");
 	}
-  });
-  
-  //
-  $("input[type='file']").change(function(){
-    var _this=$(this);
-    var oMyForm = new FormData();
-    oMyForm.append("ContentFile", $(this)[0].files[0]);
-    $.ajax({
-    url:rootPath+"common/uploadCM.do",
-    type:"POST",
-    data:oMyForm,
-    cache: false,
-    processData: false,
-    contentType: false,
-    dataType:"json",
-    //表单提交前进行验证
-    success: function (opeResult){
-      console.log(opeResult);
-      _this.siblings("input[type='hidden']").val(opeResult.ful[0].storeFilename);
-	  console.log(_this[0].id);
-	  if(_this[0].id=="uploadThemeImg") {
-	    alert("提交题图");
-		$('#media').val("");
-		$('#uploadMedia').val("");
-		$('#themeImg').val(opeResult.ful[0].storeFilepath);
-	  }
-	  if(_this[0].id=="uploadMedia") {
-	    alert("提交媒体");
-		$('#uploadThemeImg').val("");
-		$('#themeImg').val("");
-		$('#media').val(opeResult.ful[0].storeFilepath);
-	  }
-    },
-    error: function(jqXHR){
-      alert("发生错误" + jqXHR.status);
-    }
-  });
   });
 });
 
@@ -1105,6 +1078,11 @@ function createArticle(){
   postData.ChannelId=$("#channelId").val();
   postData.ThemeImg=$("#themeImg").val();
   postData.MediaSrc=$("#media").val();
+  if($('#checkbox-id').is(':checked')) {
+    postData.IsShow="true";
+  } else {
+    postData.IsShow="false";
+  }
   postData.Source=$("#source").val();
   postData.SourcePath=$("#website").val();
   postData.ContentStatus=$("select").find("option:selected").text();
@@ -1135,6 +1113,70 @@ function createArticle(){
 function hiden(){
   $(".addContent").css("display", "none");
 }
+
+//start
+$("#uploadThemeImg").on("click", function() {
+  $("#themeImg").click();
+  });
+$("#themeImg").change(function() {
+  $("#uploadThemeImg").val($(this).val());
+  var _this=$(this);
+  var oMyForm = new FormData();
+  oMyForm.append("ContentFile", $(this)[0].files[0]);
+  $.ajax({
+    url:rootPath+"common/uploadCM.do",
+    type:"POST",
+    data:oMyForm,
+    cache: false,
+    processData: false,
+    contentType: false,
+    dataType:"json",
+    //表单提交前进行验证
+    success: function (opeResult){
+	  if(opeResult.ful[0].success=="TRUE"){
+	    alert("提交题图");
+        $('#media').val("");
+	    $('#uploadMedia').val("");
+		console.log(_this);
+	    _this.attr("value",opeResult.ful[0].storeFilepath);//val(opeResult.ful[0].storeFilepath);
+	  }
+    },
+    error: function(jqXHR){
+      alert("发生错误" + jqXHR.status);
+    }
+  });
+});
+$("#uploadMedia").on("click", function() {
+$("#media").click();
+});
+$("#media").change(function() {
+  $("#uploadMedia").val($(this).val());
+  var _this=$(this);
+  var oMyForm = new FormData();
+  oMyForm.append("ContentFile", $(this)[0].files[0]);
+  $.ajax({
+    url:rootPath+"common/uploadCM.do",
+    type:"POST",
+    data:oMyForm,
+    cache: false,
+    processData: false,
+    contentType: false,
+    dataType:"json",
+    //表单提交前进行验证
+    success: function (opeResult){
+	if(opeResult.ful[0].success=="TRUE"){
+	    alert("提交媒体");
+	    $('#uploadThemeImg').val("");
+	    $('#themeImg').val("");
+	    _this.attr("value",opeResult.ful[0].storeFilepath);
+	  }
+    },
+    error: function(jqXHR){
+      alert("发生错误" + jqXHR.status);
+    }
+  });
+});
+
 
 </script>
 </html>
