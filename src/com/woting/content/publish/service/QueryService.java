@@ -190,7 +190,7 @@ public class QueryService {
 			for (Map<String, Object> m : list) {
 				switch (m.get("PartType") + "") {
 				case "TITLE": //标题
-					if(mediaService.getMaInfoByTitle(m.get("PartInfo")+"")==null) {
+					if(mediaService.getMaInfoByTitle(m.get("PartInfo")+"")!=null) {
 						map.put("ReturnType", "1015");
 						map.put("Message", "内容重名");
 						return map;
