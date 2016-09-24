@@ -166,16 +166,8 @@ public class QueryController {
 			map.put("Message", "参数不全");
 			return map;
 		}
-		boolean isok = queryService.makeContentHtml(channelid, source, sourcepath, mastatus, username, list);
-		if(isok) {
-			map.put("ReturnType", "1001");
-		    map.put("Message", "添加成功");
-		    return map;
-		} else {
-			map.put("ReturnType", "1014");
-			map.put("Message", "添加失败");
-			return map;
-		}
+		map = queryService.makeContentHtml(channelid, source, sourcepath, mastatus, username, list);
+		return map;
 	}
 	
 	/**

@@ -69,8 +69,14 @@ public class MediaContentService {
 					for (MediaAsset ma : mas) {
 						Map<String, Object> mam = ContentUtils.convert2Ma(ma.convert2Po().toHashMap(), null, null, chsm, fm);
 						for (ChannelAssetPo cs : chas) {
-							if(cs.getAssetId().equals(mam.get("ContentId")))
+							if(cs.getAssetId().equals(mam.get("ContentId"))) {
 								mam.put("ContentSort", cs.getSort());
+								if (cs.getFlowFlag()==1) {
+									mam.put("IsDirect", true);
+								} else {
+									mam.put("IsDirect", false);
+								}
+							}
 						}
 						ll.add(mam);
 					}
@@ -114,8 +120,15 @@ public class MediaContentService {
 							for (MediaAsset ma : mas) {
 								Map<String, Object> mam = ContentUtils.convert2Ma(ma.convert2Po().toHashMap(), null, null, chasm, fm);
 								for (ChannelAssetPo css : chas) {
-									if(css.getAssetId().equals(mam.get("ContentId")))
+									if(css.getAssetId().equals(mam.get("ContentId"))) {
 										mam.put("ContentSort", css.getSort());
+										if (css.getFlowFlag()==1) {
+											mam.put("IsDirect", true);
+										} else {
+											mam.put("IsDirect", false);
+										}
+									}
+										
 								}
 								ll.add(mam);
 							}
@@ -168,8 +181,14 @@ public class MediaContentService {
 					for (MediaAsset ma : mas) {
 						Map<String, Object> mam = ContentUtils.convert2Ma(ma.convert2Po().toHashMap(), null, null, chasm, fm);
 						for (ChannelAssetPo css : chas) {
-							if(css.getAssetId().equals(mam.get("ContentId")))
+							if(css.getAssetId().equals(mam.get("ContentId"))) {
 								mam.put("ContentSort", css.getSort());
+								if (css.getFlowFlag()==1) {
+									mam.put("IsDirect", true);
+								} else {
+									mam.put("IsDirect", false);
+								}
+							}
 						}
 						ll.add(mam);
 					}
