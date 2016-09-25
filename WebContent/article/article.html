@@ -49,7 +49,7 @@ li{list-style: none;}
 }
 /*按钮*/
 .toobarArea button{
-  width:60px;
+  width:80px;
   height:24px;
   margin-top:-4px;
   background:#0077c7;
@@ -263,7 +263,8 @@ li{list-style: none;}
   top: 50%;
   transform: translate(-5%,-59%);
   font-size: 14px;
-  left: -99px;
+  left: -31px;
+  width:75px;
 }
 .col-sm-10,.col-sm-5{
   margin-bottom:8px;
@@ -312,17 +313,17 @@ li{list-style: none;}
   margin-top: -2%;
 }
 #source{
-  width: 160px;
+  width: 200px;
   height: 27px;
   position: relative;
   top: 4px;
+  left:25px;
 }
 #website{
-  width: 360px;
+  width: 314px;
   height: 27px;
   position: relative;
   top: 4px;
-  left:-110px;
 }
 #only{
   position: absolute;
@@ -398,8 +399,8 @@ li{list-style: none;}
   width: 120px;
   height: 35px;
   position: absolute;
-  left: 85%;
-  margin-top: 1%;
+  left: 98%;
+  margin-top: 3%;
   cursor: pointer;
 }
 .words .cancel{
@@ -407,7 +408,7 @@ li{list-style: none;}
   height:22px;
   line-height:22px;
   text-align:center;
-  margin-left:96%;
+  margin-left:97%;
   cursor:pointer;
   color:#333;
 }
@@ -416,7 +417,7 @@ li{list-style: none;}
   height:22px;
   line-height:22px;
   text-align:center;
-  margin-left:96%;
+  margin-left:97%;
   cursor:pointer;
 }
 .uploadPrompt{
@@ -450,6 +451,8 @@ li, a, input {
               <button type="button" id="add" opeType="claAdd" class="btn" style="margin-right:3px;">添加</button>
               <button type="button" id="mod" opeType="claMod" class="btn" style="margin-right:3px;">修改</button>
               <button type="button" id="del" opeType="claDel" class="btn" style="margin-right:3px;">删除</button>
+              <button type="button" id="setCarousel" opeType="setCarousel" class="btn" style="margin-left:177px;">设为轮播图</button>
+              <button type="button" id="canCarousel" opeType="canCarousel" class="btn" style="margin-left:3px;">撤销轮播图</button>
             </div>
             <div class="ibox-content">
               <div class="detail">
@@ -482,11 +485,11 @@ li, a, input {
             </div>
             <div class="form-group">
               <label class="col-sm-2 control-label">来源：</label>
-              <div class="col-sm-5" style="margin-left: 25px;">
+              <div class="col-sm-5" style="width:200px;">
                 <input id="source" name="source" class="form-control" type="text" aria-required="true">
               </div>
-              <label class="col-sm-2 control-label" style="margin-left: 227px;">网址：</label>
-              <div class="col-sm-5">
+              <label class="col-sm-2 control-label" style="position:absolute;left: 267px;">网址：</label>
+              <div class="col-sm-5" style="width: 314px;position: absolute;left: 37%;top:1%;">
                 <input id="website" name="website" class="form-control" type="text" aria-required="true">
               </div>
             </div>
@@ -496,13 +499,6 @@ li, a, input {
                 <input id="descnName" name="descnName" class="form-control" type="text" aria-required="true">
               </div>
             </div>
-            <!--<div class="form-group" id="2">
-              <label class="col-sm-2 control-label">题图：</label>
-              <div class="col-sm-10" style="margin-left: 25px;">
-                <input id="uploadThemeImg" name="uploadThemeImg" class="form-control" type="text"  placeholder="点击，选择图片上传" readonly/>
-                <input id="themeImg" class="form-control" name="themeImg" type="file" style="display:none;" value="" />
-              </div>
-            </div>-->
             <div class="form-group" id="2">
               <label class="col-sm-2 control-label">题图：</label>
               <div class="col-sm-10" style="margin-left: 25px;">
@@ -543,7 +539,7 @@ li, a, input {
                 <div class='chooseChannel'>文章类别</div>
                 <ul id="cataTrees" class="ztree"></ul>
               </div>
-			  <span class="help-block m-b-none"style="width: 157px;height: 27px;position: absolute;top: 5px;left: 476px;">
+              <span class="help-block m-b-none"style="width: 157px;height: 27px;position: absolute;top: 5px;left: 476px;">
                 <i class="fa fa-info-circle"></i>点击'加号'可以新增文图视音
               </span>
               <div class="actions">
@@ -663,11 +659,11 @@ $(function(){
   $('select').change(function(){
     var op=$(this).children('option:selected').text();//这就是selected的值 
     if(op!="一般文章") {
-	  $(".aboutCompetitor").css("display","block");
-	} else {
-	  $(".aboutCompetitor").css("display","none");
-	  $("#competitorName").val("");
-	}
+    $(".aboutCompetitor").css("display","block");
+  } else {
+    $(".aboutCompetitor").css("display","none");
+    $("#competitorName").val("");
+  }
   });
 });
 
@@ -841,10 +837,10 @@ function cancelEdit(cane){
 
 //生成summernote编辑框
 function newSummernote(news) {
-  var des='<div class="form-group segment words" id='+segmentIndex+' type="WORD" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;">'+
+  var des='<div class="form-group segment words" id='+segmentIndex+' type="WORD" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;margin-left:40px;">'+
             '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
-            '<label class="col-sm-2 control-label">描述：</label>'+
-              '<div class="col-sm-11" style="margin-left: 25px;margin-top:-10px;border: 1px solid transparent;">'+
+            '<label class="col-sm-2 control-label" style="margin-left:-35px;">描述：</label>'+
+              '<div class="col-sm-12" style="margin-left: -4px;margin-top:-10px;border: 1px solid transparent;margin-bottom:-9px;">'+
               '<div id="summernote'+segmentIndex+'" class="summernote"></div>'+
             '</div>'+
             '<div class="actions">'+
@@ -862,7 +858,8 @@ function newSummernote(news) {
   //初始summernote
   $('.summernote').summernote({
     lang:'zh-CN',
-    height:200,
+    height:120,
+    minHeight:120,
     focus:false,
     toolbar: [
       // [groupName, [list of button]]
@@ -879,12 +876,12 @@ function newSummernote(news) {
 
 //生成图片编辑框
 function newPicture(newp){
-  var pict='<div class="form-group segment pic" id='+segmentIndex+' type="PICTURE" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;">'+
+  var pict='<div class="form-group segment pic" id='+segmentIndex+' type="PICTURE" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;margin-left:40px;">'+
               '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
-              '<label class="col-sm-2 control-label">图片：</label>'+
-              '<div class="col-sm-10"style="margin-left: 25px;">'+
-                '<input id="uploadImg" name="uploadImg" class="form-control" type="file" accept=".png,.jpg" />'+
-                '<input id="ContentImg'+segmentIndex+'" class="form-isvalidate" name="ContentImg" type="hidden" value="" />'+
+              '<label class="col-sm-2 control-label" style="margin-left:-35px;">图片：</label>'+
+              '<div class="col-sm-12"style="margin-left: -4px;">'+
+                '<input id="uploadImg" name="uploadImg" class="form-control" type="file"  placeholder="点击，选择图片上传" style="background-color:#fff;" readonly />'+
+                '<input id="ContentImg'+segmentIndex+'" class="form-isvalidate" name="ContentImg" type="hidden"  value="" accept=".png,.jpg"/>'+
                 '<div id="OldOrgPath'+segmentIndex+'" style="display: none"></div>'+
                 '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大5M，支持JPG、PNG格式<span class="uploadPrompt"></span></span>'+
               '</div>'+
@@ -906,10 +903,10 @@ function newPicture(newp){
 
 //生成视频编辑框
 function newVideo(newv){
-  var vid='<div class="form-group segment video" id='+segmentIndex+' type="VIDEO" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;">'+
+  var vid='<div class="form-group segment video" id='+segmentIndex+' type="VIDEO" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;margin-left:40px;">'+
             '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
-            '<label class="col-sm-2 control-label">视频：</label>'+
-            '<div class="col-sm-10"style="margin-left: 25px;">'+
+            '<label class="col-sm-2 control-label" style="margin-left:-35px;">视频：</label>'+
+            '<div class="col-sm-12"style="margin-left: -4px;">'+
               '<input id="uploadVideo" name="uploadVideo" class="form-control" type="file" accept=".mp4" />'+
               '<input id="ContentVideo'+segmentIndex+'" class="form-isvalidate" name="ContentVideo" type="hidden" value="" />'+
               '<div id="OldOrgPath'+segmentIndex+'" style="display: none"></div>'+
@@ -933,10 +930,10 @@ function newVideo(newv){
 
 //生成音频编辑框
 function newAudio(newa){
-  var aud='<div class="form-group segment audio" id='+segmentIndex+' type="MEDIA" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;">'+
+  var aud='<div class="form-group segment audio" id='+segmentIndex+' type="MEDIA" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;margin-left:40px;">'+
             '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
-            '<label class="col-sm-2 control-label">音频：</label>'+
-            '<div class="col-sm-10" style="margin-left: 25px;">'+
+            '<label class="col-sm-2 control-label" style="margin-left:-35px;">音频：</label>'+
+            '<div class="col-sm-12" style="margin-left: -4px;">'+
               '<input id="uploadAudio" name="uploadAudio" class="form-control" type="file" accept=".mp4,.mp3" />'+
               '<input id="ContentAudio'+segmentIndex+'" class="form-isvalidate" name="ContentAudio" type="hidden" value="" />'+
               '<div id="OldOrgPath'+segmentIndex+'" style="display: none"></div>'+
@@ -957,6 +954,68 @@ function newAudio(newa){
   upLoadFile(segmentIndex);
   segmentIndex++;
 }
+//上传题图
+$("#uploadThemeImg").on("click", function() {
+  $("#themeImg").click();
+});
+$("#themeImg").change(function() {
+  $("#uploadThemeImg").val($(this).val());
+  var _this=$(this);
+  var oMyForm = new FormData();
+  oMyForm.append("ContentFile", $(this)[0].files[0]);
+  $.ajax({
+    url:rootPath+"common/uploadCM.do",
+    type:"POST",
+    data:oMyForm,
+    cache: false,
+    processData: false,
+    contentType: false,
+    dataType:"json",
+    //表单提交前进行验证
+    success: function (opeResult){
+      if(opeResult.ful[0].success=="TRUE"){
+        alert("提交题图");
+        $('#media').val("");
+        $('#uploadMedia').val("");
+        console.log(_this);
+        _this.attr("value",opeResult.ful[0].storeFilepath);//val(opeResult.ful[0].storeFilepath);
+      }
+    },
+    error: function(jqXHR){
+      alert("发生错误" + jqXHR.status);
+    }
+  });
+});
+$("#uploadMedia").on("click", function() {//上传媒体
+  $("#media").click();
+});
+$("#media").change(function() {
+  $("#uploadMedia").val($(this).val());
+  var _this=$(this);
+  var oMyForm = new FormData();
+  oMyForm.append("ContentFile", $(this)[0].files[0]);
+  $.ajax({
+    url:rootPath+"common/uploadCM.do",
+    type:"POST",
+    data:oMyForm,
+    cache: false,
+    processData: false,
+    contentType: false,
+    dataType:"json",
+    //表单提交前进行验证
+    success: function (opeResult){
+      if(opeResult.ful[0].success=="TRUE"){
+        alert("提交媒体");
+        $('#uploadThemeImg').val("");
+        $('#themeImg').val("");
+        _this.attr("value",opeResult.ful[0].storeFilepath);
+      }
+    },
+    error: function(jqXHR){
+      alert("发生错误" + jqXHR.status);
+    }
+  });
+});
 
 //上传文件
 function upLoadFile(segmentIndex){
@@ -1058,7 +1117,7 @@ function createArticle(){
     }
     if(onePart.PartType=="PICTURE"){
       onePart.PartName=$('#ContentImg'+onePart.PartId).val();
-	    var obj = JSON.parse('['+$('#OldOrgPath'+onePart.PartId).html()+']');
+      var obj = JSON.parse('['+$('#OldOrgPath'+onePart.PartId).html()+']');
       onePart.ResouceList = obj;
     }
     if(onePart.PartType=="VIDEO"){
@@ -1071,7 +1130,7 @@ function createArticle(){
       var obj = JSON.parse('['+$('#OldOrgPath'+onePart.PartId).html()+']');
       onePart.ResouceList = obj;
     }
-	  onePart.PartId=id;
+    onePart.PartId=id;
     list.push(onePart);
   });
   var postData={};
@@ -1113,70 +1172,5 @@ function createArticle(){
 function hiden(){
   $(".addContent").css("display", "none");
 }
-
-//start
-$("#uploadThemeImg").on("click", function() {
-  $("#themeImg").click();
-  });
-$("#themeImg").change(function() {
-  $("#uploadThemeImg").val($(this).val());
-  var _this=$(this);
-  var oMyForm = new FormData();
-  oMyForm.append("ContentFile", $(this)[0].files[0]);
-  $.ajax({
-    url:rootPath+"common/uploadCM.do",
-    type:"POST",
-    data:oMyForm,
-    cache: false,
-    processData: false,
-    contentType: false,
-    dataType:"json",
-    //表单提交前进行验证
-    success: function (opeResult){
-	  if(opeResult.ful[0].success=="TRUE"){
-	    alert("提交题图");
-        $('#media').val("");
-	    $('#uploadMedia').val("");
-		console.log(_this);
-	    _this.attr("value",opeResult.ful[0].storeFilepath);//val(opeResult.ful[0].storeFilepath);
-	  }
-    },
-    error: function(jqXHR){
-      alert("发生错误" + jqXHR.status);
-    }
-  });
-});
-$("#uploadMedia").on("click", function() {
-$("#media").click();
-});
-$("#media").change(function() {
-  $("#uploadMedia").val($(this).val());
-  var _this=$(this);
-  var oMyForm = new FormData();
-  oMyForm.append("ContentFile", $(this)[0].files[0]);
-  $.ajax({
-    url:rootPath+"common/uploadCM.do",
-    type:"POST",
-    data:oMyForm,
-    cache: false,
-    processData: false,
-    contentType: false,
-    dataType:"json",
-    //表单提交前进行验证
-    success: function (opeResult){
-	if(opeResult.ful[0].success=="TRUE"){
-	    alert("提交媒体");
-	    $('#uploadThemeImg').val("");
-	    $('#themeImg').val("");
-	    _this.attr("value",opeResult.ful[0].storeFilepath);
-	  }
-    },
-    error: function(jqXHR){
-      alert("发生错误" + jqXHR.status);
-    }
-  });
-});
-
-
 </script>
 </html>
