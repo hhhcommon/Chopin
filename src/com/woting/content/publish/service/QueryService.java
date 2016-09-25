@@ -2,8 +2,6 @@ package com.woting.content.publish.service;
 
 import java.io.File;
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -150,7 +148,7 @@ public class QueryService {
 		return false;
 	}
 
-	public Map<String, Object> makeContentHtml(String channelId, String source, String sourcepath, String mastatus, String username, List<Map<String, Object>> list) {
+	public Map<String, Object> makeContentHtml(String channelId,String themeImg,String mediaSrc, String isshow, String source, String sourcepath, String mastatus, String username, List<Map<String, Object>> list) {
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> statustype = new HashMap<>();
 		statustype.put("一般文章", 0);
@@ -182,15 +180,18 @@ public class QueryService {
 			String sourceurl = "<a href='"+sourcepath+"'>"+source+"</a>";
 			ma.setLanguage(sourceurl);
 		}
+		ma.setMaImg(themeImg);
+		ma.setSubjectWords(mediaSrc);
 		ma.setCTime(new Timestamp(System.currentTimeMillis()));
 		ma.setMaPublishTime(ma.getCTime());
+		ma.setLangDid(isshow);
 		String allText = "";
 		String htmlstr = "";
 		if (list != null && list.size() > 0) {
 			for (Map<String, Object> m : list) {
 				switch (m.get("PartType") + "") {
 				case "TITLE": //标题
-					if(mediaService.getMaInfoByTitle(m.get("PartInfo")+"")==null) {
+					if(mediaService.getMaInfoByTitle(m.get("PartInfo")+"")!=null) {
 						map.put("ReturnType", "1015");
 						map.put("Message", "内容重名");
 						return map;
@@ -228,7 +229,6 @@ public class QueryService {
 									FileUtils.deleteFile(new File(imgm.get("FileOrgPath")+""));
 									FileUtils.deleteFile(new File(imgm.get("FileSmallPath")+""));
 								} else {
-									ma.setMaImg(fileOrgPath);
 									//合成html
 									htmlstr += pic.replace("#####PICTURE#####", fileOrgPath);
 								}
@@ -248,7 +248,6 @@ public class QueryService {
 								if(!fileOrgPath.contains(partNamevideo)) {
 									//删除文件
 								} else {
-									ma.setSubjectWords(fileOrgPath);
 									//合成html
 								}
 							}
@@ -267,7 +266,6 @@ public class QueryService {
 								if(!fileOrgPath.contains(partNameaudio)) {
 									//删除文件
 								} else {
-									ma.setSubjectWords(fileOrgPath);
 									//合成html
 								}
 							}
