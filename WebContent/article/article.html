@@ -645,6 +645,37 @@ $(function(){
     
   });
   
+  //2.4-点击发布按钮
+  $("#delpub").on("click",function(){
+    $('.tabContentDiv').each(function(){
+	  if($(this).css('display')=='block') {
+	    $(this).find('input[type="checkBox"]').each(function(){
+		  if($(this).is(':checked')) {
+		    var ma = $(this).parent().parent();
+			var data = {
+			    "ChannelId":ma.attr("catalogId"),
+				"ContentId":ma.attr("id")
+			}
+			$.ajax({
+              type: "POST",    
+              url: _url,
+              dataType: "json",
+              data: JSON.stringify(_data),
+              success: function(jsonData){
+              if(jsonData.ReturnType=="1001") {
+			    
+              }
+            },
+            error:function(jqXHR){
+              alert("发生错误" + jqXHR.status);
+            }
+            });
+          }
+		});
+	  }
+	});
+  });
+  
   //3初始弹出页面点击事件
   //3.1-点击选择栏目,弹出界面出现树
   $(".chooseChannel").on("click",function(){
@@ -775,6 +806,27 @@ function loadCatalogList(returnData){
                   '<div class="clickBar"></div>'+
                 '</div>'
       }
+	  var data = {
+	      "ChannelId":returnData.ResultInfo[i].CatalogId
+	  };
+	  //再次请求
+	  $.ajax({
+        url:rootPath+"content/getNoPubList.do",
+        type:"POST",
+        data:JSON.stringify(data),
+        dataType:"json",
+        //表单提交前进行验证
+        success: function (returnData){
+          if(returnData.ReturnType=="1001"){
+          
+        }else{
+          alert(returnData.Message);
+      }
+    },
+    error: function(jqXHR){
+      alert("发生错误" + jqXHR.status);
+    }
+  });
     }
     $(".tabContent").append(ndiv);
   }
@@ -788,6 +840,8 @@ function loadCatalogList(returnData){
     $(".tabNav li:first").css({background:"#ddd"});
   }
 }
+
+
 
 //点击“ok”修改排序
 $(document).on("click",".listBox .sortUpdateBtn",function(ev){

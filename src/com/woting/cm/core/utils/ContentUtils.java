@@ -99,7 +99,7 @@ public abstract class ContentUtils {
                                                   List<Map<String, Object>> pubChannelList,
                                                   List<Map<String, Object>> favoriteList) {
         Map<String, Object> retM=new HashMap<String, Object>();;
-        retM.put("MediaType", "AUDIO");
+        retM.put("MediaType", "Content");
 
         retM.put("ContentId", one.get("id"));//P01-公共：ID
         retM.put("ContentName", one.get("maTitle"));//P02-公共：名称

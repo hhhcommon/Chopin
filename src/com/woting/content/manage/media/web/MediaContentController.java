@@ -82,7 +82,7 @@ public class MediaContentController {
 			String userId = m.get("UserId") + "";
 			String contentId = m.get("ContentId") + "";
 			if (contentId.equals("null")) {
-				map.put("ReturnType", "0000");
+				map.put("ReturnType", "1011");
 				map.put("Message", "无法获取内容Id");
 				return map;
 			}
@@ -91,7 +91,42 @@ public class MediaContentController {
 				map.put("ResultInfo", contents);
 				map.put("ReturnType", "1001");
 			} else {
+				map.put("ReturnType", "1012");
+				map.put("Message", "查询无内容");
+			}
+			return map;
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("ReturnType", "T");
+			map.put("TClass", e.getClass().getName());
+			map.put("Message", e.getMessage());
+			return map;
+		}
+	}
+	
+	@RequestMapping(value = "/content/getNoPubList.do")
+	@ResponseBody
+	public Map<String, Object> getNoPubList(HttpServletRequest request) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			Map<String, Object> m = RequestUtils.getDataFromRequest(request);
+			if (m == null || m.size() == 0) {
+				map.put("ReturnType", "0000");
+				map.put("Message", "无法获取相关的参数");
+				return map;
+			}
+			String channelId = m.get("ChannelId") + "";
+			if (channelId.equals("null")) {
 				map.put("ReturnType", "1011");
+				map.put("Message", "无法获取内容Id");
+				return map;
+			}
+			List<Map<String, Object>> contents = mediaContentService.getNoPubContentList(channelId);
+			if (contents != null) {
+				map.put("ResultInfo", contents);
+				map.put("ReturnType", "1001");
+			} else {
+				map.put("ReturnType", "1012");
 				map.put("Message", "查询无内容");
 			}
 			return map;
@@ -142,20 +177,17 @@ public class MediaContentController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			Map<String, Object> m = RequestUtils.getDataFromRequest(request);
+			String channelId,userId;
 			if (m == null || m.size() == 0) {
-				map.put("ReturnType", "0000");
-				map.put("Message", "无法获取相关的参数");
-				return map;
+				channelId=null;
+				userId=null;
+			} else {
+				channelId = m.get("ChannelId") + "";
+			    if(channelId.equals("null")) channelId = null;
+			    userId = m.get("UserId") + "";
+			    if (userId.equals("null")) userId = null;
 			}
-			String channelId = m.get("ChannelId") + "";
-			if (channelId.equals("null")) {
-				map.put("ReturnType", "1002");
-				map.put("Message", "无法获取栏目Id");
-				return map;
-			}
-			String userId = m.get("UserId") + "";
-			if (userId.equals("null")) userId = null;
-			List<Map<String, Object>> contents = mediaContentService.getDirectContent(userId, channelId, "1");
+			List<Map<String, Object>> contents = mediaContentService.getDirectContentList(userId, channelId, "1");
 			if (contents != null) {
 				map.put("ResultInfo", contents);
 				map.put("AllCount", contents.size());

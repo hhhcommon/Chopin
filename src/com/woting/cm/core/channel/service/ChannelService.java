@@ -349,6 +349,14 @@ public class ChannelService {
 		return channelAssetDao.queryForList("getListByWhere", m).size();
     }
 
+    public List<ChannelAssetPo> getChannelAssetList(String channelId) {
+    	Map<String, Object> m = new HashMap<>();
+    	m.put("channelId", channelId);
+    	m.put("isValidate", "2");
+    	m.put("sortByClause", "sort desc");
+		return channelAssetDao.queryForList("getList", m);
+    }
+    
     public void removeChannelAsset(String contentId) {
     	channelAssetDao.delete("deleteByAssetId", contentId);
     }
