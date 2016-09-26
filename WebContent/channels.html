@@ -289,10 +289,9 @@ function showLoopImg(channelId) {
       if (!jsonData.AllCount||jsonData.AllCount==0) $("#loopImgArea").hide();
       else {
         $("#loopUi").html("");
-        alert(jsonData.AllCount+"");
         for (var i=0; i<jsonData.AllCount; i++) {
-//          var _img=$("<li><img src='"+jsonData.ResultInfo[i].ContentImg+"' width='100%' height='500'></li>");
-          var _img=$("<li><img src='./resources/chopin/imgs/linked1.png' width='100%' height='500'></li>");
+          var _img=$("<li><img src='"+jsonData.ResultInfo[i].ContentImg+"' width='100%' height='500'></li>");
+//          var _img=$("<li><img src='./resources/chopin/imgs/linked1.png' width='100%' height='500'></li>");
           if (jsonData.ResultInfo[i].ContentId&&jsonData.ResultInfo[i].ContentId.length>0) {
             alert("DDEE123");
             _img.bind("click", function(){
@@ -320,7 +319,6 @@ function showChannelPage(channelId) {
   _data.PageSize=100;
   $.ajax({type:"post", async:true, url:rootPath+"/content/getContents.do", dataType:"json", data:_data,
     success: function(jsonData) {
-      alert(allFields(jsonData));
       if (jsonData.ReturnType=='1001') {
         if (jsonData.ResultInfo.length>0) {
           //删除已有的内容
