@@ -155,7 +155,7 @@ public class QueryController {
 			username = null;
 		}
 		String source = m.get("Source")+"";
-		if (source.equals("null") || source.equals("")) 
+		if (source.equals("null") || source.equals(""))
 			source = null;
 		String sourcepath = m.get("SourcePath")+"";
 		if(sourcepath.equals("null") || sourcepath.equals(""))

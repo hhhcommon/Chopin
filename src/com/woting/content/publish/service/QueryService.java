@@ -2,8 +2,6 @@ package com.woting.content.publish.service;
 
 import java.io.File;
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -190,7 +188,7 @@ public class QueryService {
 			for (Map<String, Object> m : list) {
 				switch (m.get("PartType") + "") {
 				case "TITLE": //标题
-					if(mediaService.getMaInfoByTitle(m.get("PartInfo")+"")==null) {
+					if(mediaService.getMaInfoByTitle(m.get("PartInfo")+"")!=null) {
 						map.put("ReturnType", "1015");
 						map.put("Message", "内容重名");
 						return map;

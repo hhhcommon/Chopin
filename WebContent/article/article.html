@@ -103,7 +103,7 @@ li{list-style: none;}
   width: 100%;
   height: 70px;
   padding: 6px;
-  border-bottom: 2px solid #f3f3f4;
+  border-bottom: 2px solid #e7eaec;
   background: white;
   position: relative;
   cursor: pointer;
@@ -118,14 +118,15 @@ li{list-style: none;}
   float: left;
 }
 .listBox .listImg {
-  height: 100%;
-  width: 15%;
+  height: 62px;
+  width: 96px;
   margin-right: 15px;
   margin-left: 6px;
 }
 .listBox .listImg img {
-  height: 100%;
-  width: 100%;
+  height: 62px;
+  width: 96px;
+  background-size:100% 100%;
 }
 .listBox .listCon{
   width:50%;
@@ -171,7 +172,7 @@ li{list-style: none;}
   width: 60px;
   height: 20px;
   background-color: #f3f3f4;
-  color: black;
+  color: #ccc;
   text-align: center;
   border: none;
   border-radius: 4px;
@@ -179,7 +180,8 @@ li{list-style: none;}
 }
 .listBox .sortUpdate .sortUpdateBtn {
   height: 20px;
-  line-heihgt: 20px;
+  line-height: 20px;
+  font-size:16px;
   width: 24px;
   margin: 0;
   padding: 0;
@@ -201,7 +203,6 @@ li{list-style: none;}
 .tabNav{
   width: 100%;
   height: 30px;
-  border:1px solid red;
   overflow: hidden;
 }
 .tabNav li{
@@ -211,14 +212,15 @@ li{list-style: none;}
   float: left;
   text-align: center;
   line-height:30px;
+  cursor:pointer;
 }
 .tabContent{
   width: 100%;
-  height:80%;
+  height:91%;
   position: relative;
-  border:1px solid green;
   overflow: auto;
   margin-top: -10px;
+  border: 1px solid black;
 }
 .tabContent div{
   width: 100%;
@@ -542,6 +544,7 @@ li, a, input {
 var zTreeObj,zTreeObjs,des;
 var rootPath=getRootPath();
 var segmentIndex=3;
+var optType=1;//选中页面树上的节点
 //需要加载的分类树的数据，以list方式给出
 var loadTreeData=[{ChannelId:"",TreeViewType:"zTree"}];
 //初始化方法：页面加载完成后执行
@@ -600,7 +603,7 @@ $(function(){
   //2.1-点击添加按钮
   $("#add").on("click",function(){
     $(".segment").remove();//清空数据
-    $("#titleName,#channelName,#descnName,#channelId").val("");//清空数据
+    $("#titleName,#channelName,#descnName,#channelId,#source,#website,#competitorName").val("");//清空数据
     $(".row,.shade").show();
   });
   //2.2-点击修改按钮
@@ -625,7 +628,7 @@ $(function(){
   $(".close-link,.cancels").on("click",function(){
     $(".row,.shade").hide();
   });
-  //4.1-文章类型，改变状态，判断是否显示选手姓名输入框
+  //3.4-文章类型，改变状态，判断是否显示选手姓名输入框
   $('select').change(function(){
     var op=$(this).children('option:selected').text();//这就是selected的值 
     if(op!="一般文章") {
@@ -669,8 +672,17 @@ function loadTree(loadData) {
 function nodeSelected(event, treeId, treeNode) {
   var node=zTreeObj.getSelectedNodes();//获取 模态框里zTree当前被选中的节点数据集合
   var selectedNode=node[0]; //当前选中的节点
-  alert("当前选中节点的id:"+selectedNode.id);
-  var _data={ChannelId:selectedNode.id,PerSize:"10000",PageSize:"10000",Page:"1"};
+  opt=1;
+  loadCatalog(selectedNode);
+}
+
+//请求加载文章列表
+function loadCatalog(selectedNode){
+  if(opt==1){
+    var _data={ChannelId:selectedNode.id,PerSize:"10000",PageSize:"10000",Page:"1"};
+  }else{
+    var _data={ChannelId:selectedNode,PerSize:"10000",PageSize:"10000",Page:"1"};
+  }
   $.ajax({
     url:rootPath+"content/getContents.do",
     type:"POST",
@@ -679,11 +691,10 @@ function nodeSelected(event, treeId, treeNode) {
     //表单提交前进行验证
     success: function (returnData){
       if(returnData.ReturnType=="1001"){
-        loadCatalog(returnData);
+        loadCatalogList(returnData);
       }else{
-        alert("当前栏目无相关文章列表!");
         $(".tabNav").text("");
-        $(".tabContent").text("");
+        $(".tabContent").text("当前栏目无相关文章列表").css({"font-size":"20px","text-align":"center"});
       }
     },
     error: function(jqXHR){
@@ -692,21 +703,21 @@ function nodeSelected(event, treeId, treeNode) {
   });
 }
 
-//加载栏目类别
-function loadCatalog(returnData){
+//加载文章列表
+function loadCatalogList(returnData){
   var nli,ndiv,loadArtList;
   $(".tabNav,.tabContent").html("");//加载数据前清空导航栏和内容框
   for(var i=0;i<returnData.AllCount;i++){
-    nli=$("<li id="+returnData.ResultInfo[i].CatalogId+" onclick='clickTab(this)'>"+returnData.ResultInfo[i].CatalogName+"</li>");
-    nli.css({"width":($(".tabNav").width())/(returnData.AllCount)});
+    nli=$("<li id="+returnData.ResultInfo[i].ChannelId+" onclick='clickTab(this)'>"+returnData.ResultInfo[i].CatalogName+"</li>");
+    nli.css({"width":($(".tabNav").width())/(returnData.AllCount+1)});
     $(".tabNav").append(nli);
     ndiv=$("<div class='tabContentDiv'></div>");
     for(var j=0;j<returnData.ResultInfo[i].AllCount;j++){
-      loadArtList='<div class="listBox" id='+returnData.ResultInfo[i].List[j].ContentId+'>'+
+      loadArtList='<div class="listBox" catalogId='+returnData.ResultInfo[i].CatalogId+' id='+returnData.ResultInfo[i].List[j].ContentId+'>'+
                     '<div class="listCheck"><input type="checkBox" name=""></div>'+
-                    '<div class="listImg"><img alt="mage" src=""></div>'+
+                    '<div class="listImg"><img alt="mage" src='+returnData.ResultInfo[i].List[j].ContentImg+'></div>'+
                     '<div class="listCon">'+
-                      '<h3>'+returnData.ResultInfo[i].List[j].ContentId+'</h3>'+
+                      '<h3>'+returnData.ResultInfo[i].List[j].ContentName+'</h3>'+
                       '<p class="secTitle">'+returnData.ResultInfo[i].List[j].ContentDesc+'</p>'+
                       '<p class="other"><span>'+returnData.ResultInfo[i].List[j].ContentPubTime+'</span></p>'+
                     '</div>'+
@@ -720,12 +731,52 @@ function loadCatalog(returnData){
     }
   $(".tabContent").append(ndiv);
   }
+  
+  nli=$("<li id='lunbotu' onclick='clickTab(this)'>轮播图</li>");
+  nli.css({"width":($(".tabNav").width())/(returnData.AllCount+1)});
+  $(".tabNav").append(nli);
+  ndiv=$("<div class='tabContentDiv'></div>");
+  $(".tabContent").append(ndiv);
+  
+  if($(".tabNav li").length>1){
+    $(".tabNav li:first").css({background:"#ddd"});
+  }
 }
+
+//点击“ok”修改排序
+$(document).on("click",".listBox .sortUpdateBtn",function(ev){
+  //阻止事件向上级冒泡
+  ev.stopPropagation();
+  var _data={"ChannelId":$(this).parent().parent().attr("CatalogId"),
+             "ContentId":$(this).parent().parent().attr("id"),
+             "ContentSort":$(this).siblings(".sortNum").val()
+          };
+  var selectedNode=$(this).parent().parent().attr("CatalogId");
+  $.ajax({
+    url:rootPath+"content/modifyPubSort.do",
+    type:"POST",
+    data:JSON.stringify(_data),
+    dataType:"json",
+    //表单提交前进行验证
+    success: function (returnData){
+      if(returnData.ReturnType=="1001"){
+        alert("排序修改成功！");
+        loadCatalog(selectedNode);
+      }else{
+        alert(returnData.Message);
+      }
+    },
+    error: function(jqXHR){
+      alert("发生错误" + jqXHR.status);
+    }
+  });
+  opt=2;
+})
 
 //栏目的tab切换
 function clickTab(clickt){
-  $(clickt).css({background:"red"});
   $(clickt).siblings().css({background:""});
+  $(clickt).css({background:"#ddd"});
   $(".tabContent>div").hide();
   $(".tabContent>div").eq($(".tabNav li").index(clickt)).show();
 }
