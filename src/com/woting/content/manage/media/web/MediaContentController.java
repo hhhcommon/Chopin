@@ -125,6 +125,7 @@ public class MediaContentController {
 			if (contents != null) {
 				map.put("ResultInfo", contents);
 				map.put("ReturnType", "1001");
+				map.put("AllCount", contents.size());
 			} else {
 				map.put("ReturnType", "1012");
 				map.put("Message", "查询无内容");

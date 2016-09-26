@@ -787,7 +787,7 @@ function loadCatalogList(returnData){
                       '<button class="sortUpdateBtn">OK</button>'+
                     '</div>'+
                     '<div class="clickBar"></div>'+
-                  '</div>'
+                  '</div>';
       ndiv.append(loadArtList);
       //添加轮播图列表
       if(returnData.ResultInfo[i].List[j].IsDirect==true) {
@@ -804,31 +804,50 @@ function loadCatalogList(returnData){
                     '<button class="sortUpdateBtn">OK</button>'+
                   '</div>'+
                   '<div class="clickBar"></div>'+
-                '</div>'
+                '</div>';
       }
-	  var data = {
-	      "ChannelId":returnData.ResultInfo[i].CatalogId
-	  };
-	  //再次请求
-	  $.ajax({
-        url:rootPath+"content/getNoPubList.do",
-        type:"POST",
-        data:JSON.stringify(data),
-        dataType:"json",
-        //表单提交前进行验证
-        success: function (returnData){
-          if(returnData.ReturnType=="1001"){
-          
+	}
+	var data = {
+	  "ChannelId":returnData.ResultInfo[i].CatalogId
+	};
+	//再次请求
+	$.ajax({
+      url:rootPath+"content/getNoPubList.do",
+      type:"POST",
+      data:JSON.stringify(data),
+      dataType:"json",
+      //表单提交前进行验证
+      success: function (returnData){
+        if(returnData.ReturnType=="1001"){
+          for(var j=0;j<returnData.AllCount;j++){
+            loadArtList='<div class="listBox" catalogId='+data.ChannelId+' id='+returnData.ResultInfo[j].ContentId+'>'+
+                  '<div class="listCheck"><input type="checkBox" name=""></div>'+
+                  '<div class="listImg"><img alt="mage" src='+returnData.ResultInfo[j].ContentImg+'></div>'+
+                  '<div class="listCon">'+
+                    '<h3>'+returnData.ResultInfo[j].ContentName+'</h3>'+
+                    '<p class="secTitle">'+returnData.ResultInfo[j].ContentDesc+'</p>'+
+                    '<p class="other"><span>'+returnData.ResultInfo[j].ContentPubTime+'</span></p>'+
+                  '</div>'+
+                  '<div class="sortUpdate">'+
+                    '<input type="text" class="sortNum" value="'+returnData.ResultInfo[j].ContentSort+'">'+
+                    '<button class="sortUpdateBtn">OK</button>'+
+                  '</div>'+
+                  '<div class="clickBar"></div>'+
+                '</div>';
+              ndiv.append(loadArtList);
+          }
         }else{
           alert(returnData.Message);
+        }
+	  },
+      error: function(jqXHR){
+        alert("发生错误" + jqXHR.status);
       }
-    },
-    error: function(jqXHR){
-      alert("发生错误" + jqXHR.status);
-    }
-  });
-    }
-    $(".tabContent").append(ndiv);
+    });
+	console.log(ndiv);
+	$(".tabContent").append(ndiv);
+	console.log($(".tabContent"));
+	alert(JSON.stringify($(".tabContent")));
   }
   nli=$("<li id='lunbotu' onclick='clickTab(this)'>轮播图</li>");
   nli.css({"width":($(".tabNav").width())/(returnData.AllCount+1)});
