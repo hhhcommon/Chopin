@@ -280,14 +280,11 @@ public class MediaContentService {
 		String[] ids = new String[1];
 		ids[0] = ma.getId();
 		List<ChannelAssetPo> chas = channelService.getChannelAssetsByAssetId(contentId);
-		long t1 = System.currentTimeMillis();
 		List<Map<String, Object>> fm = favoriteService.getContentFavoriteInfo(ids, userId);
-		long t2 = System.currentTimeMillis();
 		if (chas != null && chas.size() > 0) {
 			List<Map<String, Object>> chasm = channelContentService.getChannelAssetList(chas);
 			mam = ContentUtils.convert2Ma(ma.convert2Po().toHashMap(), null, null, chasm, fm);
 		}
-		mam.put("FavDuration", t2-t1);
 		return mam;
 	}
 
