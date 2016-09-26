@@ -47,6 +47,7 @@ public class FileUploadAppController extends AbstractFileUploadController {
                 datamap.put("ReturnType", "200");
                 datamap.put("Message", "需要登录");
             } else {
+                userId=mUdk.getUserId();
                 datamap.putAll(mUdk.toHashMapAsBean());
             }
             if (datamap.get("ReturnType")==null&&StringUtils.isNullOrEmptyOrSpace(userId)) {

@@ -110,6 +110,7 @@ public class DiscussService {
         try {
             Map<String, String> param=new HashMap<String, String>();
             param.put("articleId", articleId);
+            param.put("sortByClause", " cTime desc");
             List<DiscussPo> ol=null;
             if (page>=0) { //分页
                 if (page==0) page=1;

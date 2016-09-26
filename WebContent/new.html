@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="./resources/plugins/hplus/js/jquery-2.1.1.min.js"></script>
+</head>
+<body style="height:100px;">
+<div id="A1" style="width:100px;height:30px; background-color:red">
+  <li>sadsafda</li>
+</div>
+<div id="A2" style="width:100px;height:30px; background-color:blue;display:none;"></div>
+</body>
+<script>
+var i=0;
+var a=window.setInterval(function(){
+	$("#A1").html((i++)+"");
+	if (i>3) window.clearInterval(a);
+}, 500);
+window.setTimeout(function(){
+	window.clearInterval(a);
+}, 3000);
+//var a2Sel=false;
+$(function(){
+  $("#A2").bind("mouseenter", function() {
+  	a2Sel=true;
+  });
+  $("#A2").bind("mouseleave", function() {
+    a2Sel=false;
+  });
+
+  $("#A1").bind("mouseover", function() {
+    $("#A2").show();
+  });
+  $("#A1").bind("mouseout", function() {
+    	 $("#A2").hide();
+//       if (!a2Sel)
+//    else a2Sel=false;
+  });
+});
+</script>
+</html>

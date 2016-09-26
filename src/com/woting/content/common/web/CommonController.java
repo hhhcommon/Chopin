@@ -16,6 +16,8 @@ import com.spiritdata.framework.util.StringUtils;
 import com.woting.cm.core.channel.service.ChannelService;
 import com.woting.cm.core.common.model.Owner;
 import com.woting.content.manage.media.service.MediaContentService;
+import com.woting.passport.UGA.persistence.pojo.UserPo;
+import com.woting.passport.UGA.service.UserService;
 import com.woting.passport.mobile.MobileParam;
 import com.woting.passport.mobile.MobileUDKey;
 import com.woting.passport.session.SessionService;
@@ -28,8 +30,10 @@ import org.jsoup.Jsoup;
 @Controller
 @RequestMapping(value="")
 public class CommonController {
-	@Resource
-	private ChannelService channelService;
+    @Resource
+    private ChannelService channelService;
+    @Resource
+    private UserService userService;
     @Resource(name="redisSessionService")
     private SessionService sessionService;
     @Resource
@@ -71,7 +75,9 @@ public class CommonController {
                         map.put("ReturnType", "2002");
                         map.put("Message", "无法找到相应的用户");
                     }else {
+                        UserPo upo=userService.getUserById(retM.get("UserId")+"");
                         map.put("ReturnType", "1001");
+                        if (upo!=null) map.put("UserInfo", upo.toHashMap4Mobile());
                     }
                 }
                 map.put("ServerStatus", "1"); //服务器状态
@@ -347,14 +353,16 @@ public class CommonController {
         for (String key: m.keySet()) {
             if (m.get(key)!=null) conn.data(key, m.get(key)+"");
         }
-        Document doc=conn.timeout(5000).ignoreContentType(true).get();
-
-        String str=doc.select("body").html().toString();
-        str=str.replaceAll("\"", "'");
-        str=str.replaceAll("\n", "");
-        str=str.replaceAll("&quot;", "\"");
-        str=str.replaceAll("\r", "");
-
-        return str;
+        try {
+            Document doc=conn.timeout(5000).ignoreContentType(true).get();
+            String str=doc.select("body").html().toString();
+            str=str.replaceAll("\"", "'");
+            str=str.replaceAll("\n", "");
+            str=str.replaceAll("&quot;", "\"");
+            str=str.replaceAll("\r", "");
+            return str;
+        } catch(Exception e) {
+            return "{\"ReturnType\":\"1000\",\"Message\":\"地址错误\"}";
+        }
     }
 }

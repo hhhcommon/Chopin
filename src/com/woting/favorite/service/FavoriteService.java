@@ -148,6 +148,7 @@ public class FavoriteService {
             } else { //删除
                 if (ufPo==null) return 5;//还未点赞，不能删除
                 if (ufPo.getSumNum()>0) userFavoriteDao.update("decrement", ufPo.getId());
+                userFavoriteDao.delete(ufPo.getId());
             }
         }
         if (flag==2) { //举报，只有增加
@@ -260,7 +261,7 @@ public class FavoriteService {
                 }
             }
 
-            if (!mas.isEmpty()) {
+            if (mas!=null&&!mas.isEmpty()) {
                 //获得相关栏目信息
                 String whereStr="";
                 String[] articlaIds=new String[mas.size()];

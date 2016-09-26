@@ -167,14 +167,14 @@
   <div id="navi" class="topBlock" style="width:755px;padding-top:15px;"></div>
   <div id="oper" class="topBlock" style="width:198px;padding-top:12px;">
     <button class="searchBtn"></button>
-    <button class="operButton" style="margin-left:65px">登录</button>
+    <button class="operButton" style="margin-left:65px" onclick="test()">登录</button>
     <button class="operButton" style="margin-left:5px">注册</button>
   </div>
 </div>
 
 <!-- 中间主框架 -->
 <div id="mainSegment">
-  <iframe frameborder="no" style="display:none;width:1366px;" id="mainContent" _src="/channels.html"></iframe>
+  <iframe frameborder="no" style="display:none;width:1366px;" id="mainContent" scrolling="no"></iframe>
 </div>
 </body>
 
@@ -189,7 +189,6 @@ var INIT_PARAM={
     mainId: "mainSegment"
   },
   page_width: 1366,
-  page_height: 1000,
   top_shadow_color:"#FFA735",
   top_height: 82,
   top_peg: false,
@@ -317,6 +316,7 @@ function loadNavigateMenu() {
             });
           }
         }
+        showChannelPage(0);
       } else {
         $.messager.alert("错误", "加载导航菜单：<br/>"+jsonData.message, "error");
       }
@@ -328,14 +328,63 @@ function loadNavigateMenu() {
 }
 
 function showChannelPage(channelId) {
-  var ifm=$("#mainContent");
-  var _url=ifm.attr("_src");
-  ifm.attr("src",rootPath+_url+"?ChannelId="+channelId);
-  if (ifm.attr("src")) ifm.css("display","block");
+  var _cUrl=rootPath+"/channels.html?ChannelId="+channelId;
+  showInIframe(_cUrl);
 }
 
+function showInIframe(iframeSrc) {
+  var ifm=$("#mainContent");
+  ifm.attr("src",iframeSrc);
+  ifm.css("display","block");
+  var iframe=document.getElementById("mainContent");
+  var oldHeight=0;
+  var timer1=setInterval(function() {
+  	var subHeight=0;
+    var subWeb=iframe.contentWindow.document.body;
+    if (subWeb) {
+      $("#mainContent").attr("height", subWeb.scrollHeight);
+    	subHeight=subWeb.scrollHeight;
+    }
+    $("#a_html").height(subHeight);
+    if (subHeight==oldHeight&&subHeight!=0) {
+    	window.clearInterval(timer1);
+    }
+  },200);
+  if (iframe.attachEvent) {
+    iframe.attachEvent("onload", function(){
+    	var subHeight=0;
+      var subWeb=iframe.contentWindow.document.body;
+      if (subWeb) {
+        $("#mainContent").attr("height", subWeb.scrollHeight);
+      	subHeight=subWeb.scrollHeight;
+      }
+      $("#a_html").height($("#mainContent").height());
+      if (subHeight>50) window.clearInterval(timer1);
+    });
+  } else {
+    iframe.onload=function(){
+    	var subHeight=0;
+      var subWeb=iframe.contentWindow.document.body;
+      if (subWeb) {
+        $("#mainContent").attr("height", subWeb.scrollHeight);
+      	subHeight=subWeb.scrollHeight;
+      }
+      $("#a_html").height($("#mainContent").height());
+      if (subHeight>50) window.clearInterval(timer1);
+    };
+  }
+  setTimeout(function() {
+    window.clearInterval(timer1);
+    var subWeb=iframe.contentWindow.document.body;
+    if (subWeb) $("#mainContent").attr("height", subWeb.scrollHeight);
+    $("#a_html").height($("#mainContent").height());
+  }, 5000);
+}
+function test() {
+	showInIframe("http://localhost:1108/Chopin/articleShell.html?ContentId=000000001");
+}
 function showMask(message) {
-  alert("");
+  alert("in main");
 }
 function cleanMask(message) {
   
