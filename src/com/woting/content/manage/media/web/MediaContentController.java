@@ -160,7 +160,9 @@ public class MediaContentController {
 				map.put("Message", "无法获取栏目Id");
 				return map;
 			}
-			List<Map<String, Object>> contents = mediaContentService.getDirectContent(channelId, "1");
+			String userId = m.get("UserId") + "";
+			if (userId.equals("null")) userId = null;
+			List<Map<String, Object>> contents = mediaContentService.getDirectContent(userId, channelId, "1");
 			if (contents != null) {
 				map.put("ResultInfo", contents);
 				map.put("AllCount", contents.size());
