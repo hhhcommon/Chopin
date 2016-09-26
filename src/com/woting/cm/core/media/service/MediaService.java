@@ -95,6 +95,8 @@ public class MediaService {
         	    MediaAsset ma=new MediaAsset();
 			    ma.buildFromPo(mediaAssetPo);
 			    Map<String, Object> mam = ContentUtils.convert2Ma(ma.toHashMap(), null, null, chsm, fm);
+			    String img = mam.get("ContentImg")+"";
+			    mam.put("ContentSmallImg", img.replace("group03/", "group04/small"));
 			    list.add(mam);
 		    }
         }

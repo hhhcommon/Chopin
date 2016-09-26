@@ -310,14 +310,11 @@ public class MediaContentService {
 		List<Map<String, Object>> l = new ArrayList<>();
 		if(chas!=null&&chas.size()>0) {
 			for (ChannelAssetPo cha : chas) {
-				Map<String, Object> mm = new HashMap<>();
 				MediaAsset ma = mediaService.getMaInfoById(cha.getAssetId());
-				mm.put("ContentImg", ma.getMaImg());
-				mm.put("ContentURL", ma.getKeyWords());
-				mm.put("CTime", ma.getCTime());
-				mm.put("Sort", cha.getSort());
-				mm.put("ChannelId", cha.getChannelId());
-				l.add(mm);
+				Map<String, Object> mam = ContentUtils.convert2Ma(ma.convert2Po().toHashMap(), null, null, null, null);
+				mam.put("ContentSort", cha.getSort());
+				mam.put("ChannelId", cha.getChannelId());
+				l.add(mam);
 			}
 			return l;
 		}

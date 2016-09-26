@@ -57,7 +57,7 @@ public class QueryService {
 		mapo.setMaTitle(title);
 		mapo.setMaPubType(3);
 		mapo.setMaPubId(userId);
-		mapo.setMaPublisher(userPo.getUserName());
+		mapo.setMaPublisher(userPo.getLoginName());
 		int num = FileUploadUtils.getFileType(filePath);
 		if (num==1 || num==2) {
 			mapo.setSubjectWords(filePath);
@@ -148,7 +148,7 @@ public class QueryService {
 		return false;
 	}
 
-	public Map<String, Object> makeContentHtml(String channelId, String source, String sourcepath, String mastatus, String username, List<Map<String, Object>> list) {
+	public Map<String, Object> makeContentHtml(String channelId,String themeImg,String mediaSrc, String isshow, String source, String sourcepath, String mastatus, String username, List<Map<String, Object>> list) {
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> statustype = new HashMap<>();
 		statustype.put("一般文章", 0);
@@ -180,8 +180,11 @@ public class QueryService {
 			String sourceurl = "<a href='"+sourcepath+"'>"+source+"</a>";
 			ma.setLanguage(sourceurl);
 		}
+		ma.setMaImg(themeImg);
+		ma.setSubjectWords(mediaSrc);
 		ma.setCTime(new Timestamp(System.currentTimeMillis()));
 		ma.setMaPublishTime(ma.getCTime());
+		ma.setLangDid(isshow);
 		String allText = "";
 		String htmlstr = "";
 		if (list != null && list.size() > 0) {
@@ -226,7 +229,6 @@ public class QueryService {
 									FileUtils.deleteFile(new File(imgm.get("FileOrgPath")+""));
 									FileUtils.deleteFile(new File(imgm.get("FileSmallPath")+""));
 								} else {
-									ma.setMaImg(fileOrgPath);
 									//合成html
 									htmlstr += pic.replace("#####PICTURE#####", fileOrgPath);
 								}
@@ -246,7 +248,6 @@ public class QueryService {
 								if(!fileOrgPath.contains(partNamevideo)) {
 									//删除文件
 								} else {
-									ma.setSubjectWords(fileOrgPath);
 									//合成html
 								}
 							}
@@ -265,7 +266,6 @@ public class QueryService {
 								if(!fileOrgPath.contains(partNameaudio)) {
 									//删除文件
 								} else {
-									ma.setSubjectWords(fileOrgPath);
 									//合成html
 								}
 							}

@@ -144,6 +144,16 @@ public class QueryController {
 			map.put("Message", "无法获得类型信息");
 			return map;
 		}
+		String themeImg = m.get("ThemeImg")+"";
+		if (themeImg.equals("null") || themeImg.equals("")) 
+			themeImg = null;
+		String mediaSrc = m.get("MediaSrc")+"";
+		if(mediaSrc.equals("null") || mediaSrc.equals(""))
+			mediaSrc = null;
+		String isshowstr = m.get("IsShow")+"";
+		String isshow = "false";
+		if (isshowstr.equals("true")) 
+			isshow = "true";
 		String username = m.get("UserName")+"";
 		if (!mastatus.equals("一般文章")) {
 			if (username.equals("null") || username.equals("")) {
@@ -166,7 +176,7 @@ public class QueryController {
 			map.put("Message", "参数不全");
 			return map;
 		}
-		map = queryService.makeContentHtml(channelid, source, sourcepath, mastatus, username, list);
+		map = queryService.makeContentHtml(channelid, themeImg, mediaSrc, isshow, source, sourcepath, mastatus, username, list);
 		return map;
 	}
 	
