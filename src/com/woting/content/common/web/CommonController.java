@@ -353,14 +353,16 @@ public class CommonController {
         for (String key: m.keySet()) {
             if (m.get(key)!=null) conn.data(key, m.get(key)+"");
         }
-        Document doc=conn.timeout(5000).ignoreContentType(true).get();
-
-        String str=doc.select("body").html().toString();
-        str=str.replaceAll("\"", "'");
-        str=str.replaceAll("\n", "");
-        str=str.replaceAll("&quot;", "\"");
-        str=str.replaceAll("\r", "");
-
-        return str;
+        try {
+            Document doc=conn.timeout(5000).ignoreContentType(true).get();
+            String str=doc.select("body").html().toString();
+            str=str.replaceAll("\"", "'");
+            str=str.replaceAll("\n", "");
+            str=str.replaceAll("&quot;", "\"");
+            str=str.replaceAll("\r", "");
+            return str;
+        } catch(Exception e) {
+            return "{\"ReturnType\":\"1000\",\"Message\":\"地址错误\"}";
+        }
     }
 }

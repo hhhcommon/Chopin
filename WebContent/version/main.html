@@ -329,13 +329,14 @@ $(function() {
       $(this).removeAttr("readonly");
     });
   });
-  
+
   //四、新增修改版本处理
   $("button[opeType='verAdd']").on("click", function() {//新增版本
     //首先判断是可以新增版本
     verWinType=1;
     $("#verAdd").find(".modal-header>h4").html("添加版本");
     $.ajax({type:"post", async:true, url:rootPath+"version/allowInsert.do", dataType:"json",
+    	alert("DDDD");
       success: function(jsonData) {
         if (jsonData.AllowInsert==1) {
           if (curVer==null) {
