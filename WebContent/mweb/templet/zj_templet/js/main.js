@@ -71,7 +71,6 @@ $(function(){
 	//打开APP或下载
 	$(".downLoad").click(function(){
 		window.location=$(".zjIntro").attr("zjOpenApp");
-	    
         window.setTimeout(function () {
             window.location.href= "http://182.92.175.134/download/WoTing.apk";
         },2000);

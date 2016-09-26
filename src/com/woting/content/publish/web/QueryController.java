@@ -138,22 +138,46 @@ public class QueryController {
 			map.put("Message", "无法获得栏目Id");
 			return map;
 		}
+		String mastatus = m.get("ContentStatus")+"";
+		if (mastatus.equals("null") || mastatus.equals("")) {
+			map.put("ReturnType", "1013");
+			map.put("Message", "无法获得类型信息");
+			return map;
+		}
+		String themeImg = m.get("ThemeImg")+"";
+		if (themeImg.equals("null") || themeImg.equals("")) 
+			themeImg = null;
+		String mediaSrc = m.get("MediaSrc")+"";
+		if(mediaSrc.equals("null") || mediaSrc.equals(""))
+			mediaSrc = null;
+		String isshowstr = m.get("IsShow")+"";
+		String isshow = "false";
+		if (isshowstr.equals("true")) 
+			isshow = "true";
+		String username = m.get("UserName")+"";
+		if (!mastatus.equals("一般文章")) {
+			if (username.equals("null") || username.equals("")) {
+				map.put("ReturnType", "1014");
+				map.put("Message", "无法获得选手姓名");
+				return map;
+			}
+		} else {
+			username = null;
+		}
+		String source = m.get("Source")+"";
+		if (source.equals("null") || source.equals(""))
+			source = null;
+		String sourcepath = m.get("SourcePath")+"";
+		if(sourcepath.equals("null") || sourcepath.equals(""))
+			sourcepath = null;
 		List<Map<String, Object>> list = (List<Map<String, Object>>) m.get("List");
 		if(list==null || list.size()==0) {
 			map.put("ReturnType", "1013");
 			map.put("Message", "参数不全");
 			return map;
 		}
-		boolean isok = queryService.makeContentHtml(channelid, list);
-		if(isok) {
-			map.put("ReturnType", "1001");
-		    map.put("Message", "添加成功");
-		    return map;
-		} else {
-			map.put("ReturnType", "1014");
-			map.put("Message", "添加失败");
-			return map;
-		}
+		map = queryService.makeContentHtml(channelid, themeImg, mediaSrc, isshow, source, sourcepath, mastatus, username, list);
+		return map;
 	}
 	
 	/**

@@ -69,8 +69,14 @@ public class MediaContentService {
 					for (MediaAsset ma : mas) {
 						Map<String, Object> mam = ContentUtils.convert2Ma(ma.convert2Po().toHashMap(), null, null, chsm, fm);
 						for (ChannelAssetPo cs : chas) {
-							if(cs.getAssetId().equals(mam.get("ContentId")))
+							if(cs.getAssetId().equals(mam.get("ContentId"))) {
 								mam.put("ContentSort", cs.getSort());
+								if (cs.getFlowFlag()==1) {
+									mam.put("IsDirect", true);
+								} else {
+									mam.put("IsDirect", false);
+								}
+							}
 						}
 						ll.add(mam);
 					}
@@ -114,8 +120,15 @@ public class MediaContentService {
 							for (MediaAsset ma : mas) {
 								Map<String, Object> mam = ContentUtils.convert2Ma(ma.convert2Po().toHashMap(), null, null, chasm, fm);
 								for (ChannelAssetPo css : chas) {
-									if(css.getAssetId().equals(mam.get("ContentId")))
+									if(css.getAssetId().equals(mam.get("ContentId"))) {
 										mam.put("ContentSort", css.getSort());
+										if (css.getFlowFlag()==1) {
+											mam.put("IsDirect", true);
+										} else {
+											mam.put("IsDirect", false);
+										}
+									}
+										
 								}
 								ll.add(mam);
 							}
@@ -168,8 +181,14 @@ public class MediaContentService {
 					for (MediaAsset ma : mas) {
 						Map<String, Object> mam = ContentUtils.convert2Ma(ma.convert2Po().toHashMap(), null, null, chasm, fm);
 						for (ChannelAssetPo css : chas) {
-							if(css.getAssetId().equals(mam.get("ContentId")))
+							if(css.getAssetId().equals(mam.get("ContentId"))) {
 								mam.put("ContentSort", css.getSort());
+								if (css.getFlowFlag()==1) {
+									mam.put("IsDirect", true);
+								} else {
+									mam.put("IsDirect", false);
+								}
+							}
 						}
 						ll.add(mam);
 					}
@@ -272,11 +291,11 @@ public class MediaContentService {
 		return mam;
 	}
 
-	public List<Map<String, Object>> getDirectContent(String channelId, String flowFlag) {
+	public List<Map<String, Object>> getDirectContent(String userId, String channelId, String flowFlag) {
 		Map<String, Object> m = new HashMap<>();
 		m.put("flowFlag", flowFlag);
 		m.put("isValidate", 1);
-		m.put("sortByClause", "sort");
+		m.put("sortByClause", "sort desc");
 		String channelIds = "";
 		List<ChannelPo> chs = channelService.getChannelsByPcId(channelId);
 		if (chs!=null && chs.size()>0) {
@@ -290,15 +309,17 @@ public class MediaContentService {
 		List<ChannelAssetPo> chas = channelService.getChannelAssets(m);
 		List<Map<String, Object>> l = new ArrayList<>();
 		if(chas!=null&&chas.size()>0) {
+			String[] ids = new String[chas.size()];
+			for (int i=0;i<chas.size();i++) {
+				ids[i] = chas.get(i).getAssetId();
+			}
+			List<Map<String, Object>> fm = favoriteService.getContentFavoriteInfo(ids, userId);
 			for (ChannelAssetPo cha : chas) {
-				Map<String, Object> mm = new HashMap<>();
 				MediaAsset ma = mediaService.getMaInfoById(cha.getAssetId());
-				mm.put("ContentImg", ma.getMaImg());
-				mm.put("ContentURL", ma.getKeyWords());
-				mm.put("CTime", ma.getCTime());
-				mm.put("Sort", cha.getSort());
-				mm.put("ChannelId", cha.getChannelId());
-				l.add(mm);
+				Map<String, Object> mam = ContentUtils.convert2Ma(ma.convert2Po().toHashMap(), null, null, null, fm);
+				mam.put("ContentSort", cha.getSort());
+				mam.put("ChannelId", cha.getChannelId());
+				l.add(mam);
 			}
 			return l;
 		}

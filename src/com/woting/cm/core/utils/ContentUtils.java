@@ -105,7 +105,7 @@ public abstract class ContentUtils {
         retM.put("ContentName", one.get("maTitle"));//P02-公共：名称
         retM.put("ContentSubjectWord", one.get("subjectWords"));//P03-公共：主题词
         retM.put("ContentPub", one.get("maPublisher"));//P05-公共：发布者，集团名称
-        retM.put("ContentPubTime", Timestamp.valueOf(one.get("maPublishTime")==null?null:one.get("maPublishTime")+""));//P06-公共：发布时间
+        retM.put("ContentPubTime", one.get("maPublishTime")==null?null:Timestamp.valueOf(one.get("maPublishTime")+""));//P06-公共：发布时间
         retM.put("ContentImg", one.get("maImg"));//P07-公共：相关图片
         retM.put("ContentPlay", one.get("maURL"));//P08-公共：主播放Url，这个应该从其他地方来，现在先这样//TODO
         retM.put("ContentURI", "http://www.wotingfm.com/Chopin/articleShell.html?ContentId="+retM.get("ContentId"));//P08-公共：主播放Url，这个应该从其他地方来，现在先这样//TODO
@@ -117,7 +117,7 @@ public abstract class ContentUtils {
 
         retM.put("ContentTimes", one.get("timeLong"));//S01-特有：播放时长
 
-        retM.put("CTime", Timestamp.valueOf(one.get("CTime")+""));//A1-管控：节目创建时间，目前以此进行排序
+        retM.put("CTime", one.get("CTime")==null?null:Timestamp.valueOf(one.get("CTime")+""));//A1-管控：节目创建时间，目前以此进行排序
 
         return retM;
     }
@@ -201,7 +201,7 @@ public abstract class ContentUtils {
             if ((_c.get("assetType")+"").equals(resTableName)&&(_c.get("assetId")+"").equals(resId)) {
                 oneChn=new HashMap<String, Object>();
                 oneChn.put("ChannelName", _c.get("channelName"));
-                oneChn.put("PubTime", Timestamp.valueOf(_c.get("pubTime")+""));
+                oneChn.put("PubTime", _c.get("pubTime")==null?null:Timestamp.valueOf(_c.get("pubTime")+""));
                 oneChn.put("FlowFlag", _c.get("flowFlag"));
                 oneChn.put("ChannelId", _c.get("channelId"));
                 ret.add(oneChn);
