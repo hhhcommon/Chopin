@@ -113,6 +113,8 @@ public abstract class ContentUtils {
         retM.put("ContentDesc", one.get("descn"));//P11-公共：说明
         retM.put("ContentStatus", one.get("maStatus"));
         retM.put("ContentSource",one.get("language"));
+        String imgpath = one.get("maImg")+"";
+        retM.put("ContentSmallImg",imgpath.replace("group03/", "group04/small"));
         fillExtInfo(retM, "AUDIO", personList, cataList, pubChannelList, favoriteList);//填充扩展信息
 
         retM.put("ContentTimes", one.get("timeLong"));//S01-特有：播放时长

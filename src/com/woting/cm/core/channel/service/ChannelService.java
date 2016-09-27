@@ -360,4 +360,8 @@ public class ChannelService {
     public void removeChannelAsset(String contentId) {
     	channelAssetDao.delete("deleteByAssetId", contentId);
     }
+    
+    public int removeChannelAssetByEntity(Map<String, Object> m) {
+		return channelAssetDao.delete("deleteByEntity", m);
+    }
 }

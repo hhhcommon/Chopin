@@ -291,6 +291,8 @@ public class MediaContentService {
 	}
 	
 	public List<Map<String, Object>> getNoPubContentList(String channelId){
+		ChannelPo ch = channelService.getChannelById(channelId);
+		
 		List<ChannelAssetPo> chas = channelService.getChannelAssetList(channelId);
 		if(chas==null || chas.size()==0)
 			return null;
@@ -327,6 +329,30 @@ public class MediaContentService {
 		}
 		return ls;
 	}	
+	
+	public Map<String, Object> removeContent(String channelId, String contentId) {
+		Map<String, Object> m = new HashMap<>();
+		m.put("channelId", channelId);
+		m.put("assetId", contentId);
+		int num = channelService.removeChannelAssetByEntity(m);
+		m.clear();
+		if (channelService.getChannelAssetsByAssetId(contentId).size() == 0) { //如果其他栏目下无此内容，则删除此内容
+			mediaService.removeMa(contentId);
+			if(num>0) {
+				m.put("ReturnType", "1001");
+				m.put("Message", "内容彻底删除");
+				return m;
+			}
+			return null;
+		} else {
+			if (num>0) {
+			    m.put("ReturnType", "1001");
+			    m.put("Message", "栏目下此内容删除成功");
+			    return m;
+		    }
+			return null;
+		}
+	}
 	
 	private List<Map<String, Object>> getDirectContent(String userId, String channelId, String flowFlag, boolean getone) {
 		Map<String, Object> m = new HashMap<>();
