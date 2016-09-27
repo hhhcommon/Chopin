@@ -149,6 +149,10 @@
     limit #{page,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
   </select>
 
+  <select id="getListAll" resultMap="channelAssetMap" parameterType="java.util.Map">
+    select <include refid="Base_Column_List"/>from wt_ChannelAsset 
+  </select>
+
   <!-- 获得一条数据 -->
   <select id="getInfo" parameterType="java.util.Map" resultMap="channelAssetMap">
     select <include refid="Base_Column_List"/>from wt_ChannelAsset <if test="_parameter!=null"><include refid="WhereClauseByEntiey"/></if>

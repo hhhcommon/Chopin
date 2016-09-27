@@ -99,7 +99,7 @@ public class QueryService {
 		chas.setId(SequenceUUID.getPureUUID());
 		chas.setChannelId(channelId);
 		chas.setAssetId(mapo.getId());
-		chas.setAssetType("wt_Mediasset");
+		chas.setAssetType("wt_MediaAsset");
 		chas.setPublisherId(userId);
 		chas.setPubName(title);
 		if (mapo.getMaImg() != null)
@@ -207,6 +207,12 @@ public class QueryService {
 			for (Map<String, Object> m : list) {
 				switch (m.get("PartType") + "") {
 				case "TITLE": //标题
+					String matitle = m.get("PartInfo")+"";
+					if(matitle.equals("null")) {
+						map.put("ReturnType", "1016");
+						map.put("Message", "标题名为空");
+						return map;
+					}
 					if(mediaService.getMaInfoByTitle(m.get("PartInfo")+"")!=null) {
 						map.put("ReturnType", "1015");
 						map.put("Message", "内容重名");
@@ -272,7 +278,6 @@ public class QueryService {
 									//删除文件
 									FileUtils.deleteFile(new File(fileOrgPath));
 								} else {
-									ma.setSubjectWords(fileOrgPath);
 									//合成html
 									htmlstr += video.replace("#####VIDEO#####", fileOrgPath);
 								}
@@ -280,7 +285,7 @@ public class QueryService {
 						}
 					};
 					break;
-				case "AUDIO" :
+				case "MEDIA" :
 					String partNameaudio = m.get("PartName")+"";
 					if (partNameaudio.equals("null") || partNameaudio.equals("")) {
 						//删除文件
@@ -292,15 +297,14 @@ public class QueryService {
 							}
 						}
 					} else {
-						List<Map<String, Object>> videos = (List<Map<String, Object>>) m.get("ResouceList");
-						if (videos!=null && videos.size()>0) {
-							for (Map<String, Object> videom : videos) {
-								String fileOrgPath = videom.get("FileOrgPath")+"";
+						List<Map<String, Object>> audios = (List<Map<String, Object>>) m.get("ResouceList");
+						if (audios!=null && audios.size()>0) {
+							for (Map<String, Object> audiom : audios) {
+								String fileOrgPath = audiom.get("FileOrgPath")+"";
 								if(!fileOrgPath.contains(partNameaudio)) {
 									//删除文件
 									FileUtils.deleteFile(new File(fileOrgPath));
 								} else {
-									ma.setSubjectWords(fileOrgPath);
 									//合成html
 									htmlstr += audio.replace("#####AUDIO#####", fileOrgPath);
 								}
