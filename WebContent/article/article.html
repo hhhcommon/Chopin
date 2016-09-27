@@ -659,7 +659,9 @@ $(function(){
               data: JSON.stringify(data),
               success: function(jsonData){
               if(jsonData.ReturnType=="1001") {
-			    
+			    alert("删除成功");
+				$("#"+ma.attr("id")).remove();
+				$("#"+"lunbotu"+ma.attr("id")).remove();
               }
             },
             error:function(jqXHR){
@@ -818,7 +820,7 @@ function loadCatalogList(returnData){
       ndiv.append(loadArtList);
       //添加轮播图列表
       if(returnData.ResultInfo[i].List[j].IsDirect==true) {
-        ddiv +='<div class="listBox" catalogId='+returnData.ResultInfo[i].CatalogId+' id='+returnData.ResultInfo[i].List[j].ContentId+'>'+
+        ddiv +='<div class="listBox" catalogId='+returnData.ResultInfo[i].CatalogId+' id='+'lunbotu'+returnData.ResultInfo[i].List[j].ContentId+'>'+
                   '<div class="listCheck"><input type="checkBox" name=""></div>'+
                   '<div class="listImg"><img alt="mage" src='+returnData.ResultInfo[i].List[j].ContentImg+'></div>'+
                   '<div class="listCon">'+

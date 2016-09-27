@@ -33,7 +33,11 @@ public class QueryService {
 	private MediaService mediaService;
 	@Resource
 	private UserService userService;
-	private String html = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><link href=\"../resources/css/contentapp.css\" rel=\"stylesheet\"></head><body>#####CONTENT#####</body></html>";
+	private String html = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\">"
+			+ "<link href=\"../resources/css/contentapp.css\" rel=\"stylesheet\">"
+			+ "<script type=\"text/javascript\" src=\"../resources/plugins/hplus/js/jquery-2.1.1.min.js\"></script>"
+			+ "<script type=\"text/javascript\" src=\"../resource/js/competitor.js\"></script>"
+			+ "</head><body>#####CONTENT#####</body></html>";
 	private String word = "<div class=\"conpetitorContent\">" //内容页文本内容
 			+ "<div class=\"word\">#####WORD#####</div>"
 			+ "</div>";
@@ -41,7 +45,20 @@ public class QueryService {
 			+ "<img src=\"#####PICTURE#####\"/>"
 					+ "</div>"
 					+ "</div>";
-
+	private String video = "<div class=\"conpetitorContent\">"
+			+ "<div class=\"video\">"
+			+ "<video  id=\"myVideo\" controls preload >"
+			+ "<source src=\"#####VIDEO#####\" >"
+			+ "</video>"
+			+ "</div>"
+			+ "</div>";
+	private String audio = "<div class=\"conpetitorContent\">"
+			+ "<div class=\"audio\">"
+			+ "<audio id=\"myAudio\" controls>"
+			+ "<source src=\"#####AUDIO#####\" type=\"audio/mpeg\">"
+			+ "</audio>"
+			+ "</div>"
+			+ "</div>";
 	public Map<String, Object> addContentByApp(String userId, String title, String filePath, String descn,
 			String channelId) {
 		Map<String, Object> map = new HashMap<>();
@@ -239,6 +256,13 @@ public class QueryService {
 					String partNamevideo = m.get("PartName")+"";
 					if (partNamevideo.equals("null") || partNamevideo.equals("")) {
 						//删除文件
+						List<Map<String, Object>> videos = (List<Map<String, Object>>) m.get("ResouceList");
+						if(videos!=null && videos.size()>0) {
+							for (Map<String, Object> videom : videos) {
+								String fileOrgPath = videom.get("FileOrgPath")+"";
+								FileUtils.deleteFile(new File(fileOrgPath));
+							}
+						}
 					} else {
 						List<Map<String, Object>> videos = (List<Map<String, Object>>) m.get("ResouceList");
 						if (videos!=null && videos.size()>0) {
@@ -246,8 +270,11 @@ public class QueryService {
 								String fileOrgPath = videom.get("FileOrgPath")+"";
 								if(!fileOrgPath.contains(partNamevideo)) {
 									//删除文件
+									FileUtils.deleteFile(new File(fileOrgPath));
 								} else {
+									ma.setSubjectWords(fileOrgPath);
 									//合成html
+									htmlstr += video.replace("#####VIDEO#####", fileOrgPath);
 								}
 							}
 						}
@@ -257,6 +284,13 @@ public class QueryService {
 					String partNameaudio = m.get("PartName")+"";
 					if (partNameaudio.equals("null") || partNameaudio.equals("")) {
 						//删除文件
+						List<Map<String, Object>> audios = (List<Map<String, Object>>) m.get("ResouceList");
+						if (audios!=null && audios.size()>0) {
+							for (Map<String, Object> audiom : audios) {
+								String fileOrgPath = audiom.get("FileOrgPath")+"";
+								FileUtils.deleteFile(new File(fileOrgPath));
+							}
+						}
 					} else {
 						List<Map<String, Object>> videos = (List<Map<String, Object>>) m.get("ResouceList");
 						if (videos!=null && videos.size()>0) {
@@ -264,8 +298,11 @@ public class QueryService {
 								String fileOrgPath = videom.get("FileOrgPath")+"";
 								if(!fileOrgPath.contains(partNameaudio)) {
 									//删除文件
+									FileUtils.deleteFile(new File(fileOrgPath));
 								} else {
+									ma.setSubjectWords(fileOrgPath);
 									//合成html
+									htmlstr += audio.replace("#####AUDIO#####", fileOrgPath);
 								}
 							}
 						}

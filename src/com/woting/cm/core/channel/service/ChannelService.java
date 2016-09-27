@@ -68,7 +68,7 @@ public class ChannelService {
             Map<String, Object> param=new HashMap<String, Object>();
             param.put("ownerType", "100");
             param.put("sortByClause", "sort");
-            List<ChannelPo> cpol=channelDao.queryForList("getListAll");
+            List<ChannelPo> cpol=channelDao.queryForList(param);
             if (cpol!=null&&!cpol.isEmpty()) {
                 List<Channel> cl=new ArrayList<Channel>();
                 for (ChannelPo cpo: cpol) {
@@ -361,7 +361,13 @@ public class ChannelService {
     	channelAssetDao.delete("deleteByAssetId", contentId);
     }
     
-    public int removeChannelAssetByEntity(Map<String, Object> m) {
-		return channelAssetDao.delete("deleteByEntity", m);
+    public boolean removeChannelAssetByEntity(Map<String, Object> m) {
+    	try {
+			channelAssetDao.delete("deleteByEntity", m);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
     }
 }

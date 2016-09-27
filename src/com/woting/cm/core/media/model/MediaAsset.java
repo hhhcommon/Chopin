@@ -265,7 +265,7 @@ public class MediaAsset extends BaseObject implements Serializable, ModelSwapPo 
         pubCount=_po.getPubCount();
         maStatus=_po.getMaStatus();
         CTime=_po.getCTime();
-
+        allText=_po.getAllText();
         //所属专辑、发布栏目、声音源等信息无法从这里得到
     }
 

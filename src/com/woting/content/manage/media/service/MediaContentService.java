@@ -17,6 +17,7 @@ import com.woting.cm.core.media.model.MediaAsset;
 import com.woting.cm.core.media.persis.po.MediaAssetPo;
 import com.woting.cm.core.media.service.MediaService;
 import com.woting.cm.core.utils.ContentUtils;
+import com.woting.content.common.utils.FileUploadUtils;
 import com.woting.content.manage.channel.service.ChannelContentService;
 import com.woting.favorite.service.FavoriteService;
 import com.woting.passport.UGA.persistence.pojo.UserPo;
@@ -334,18 +335,34 @@ public class MediaContentService {
 		Map<String, Object> m = new HashMap<>();
 		m.put("channelId", channelId);
 		m.put("assetId", contentId);
-		int num = channelService.removeChannelAssetByEntity(m);
+		boolean n = channelService.removeChannelAssetByEntity(m);
 		m.clear();
-		if (channelService.getChannelAssetsByAssetId(contentId).size() == 0) { //如果其他栏目下无此内容，则删除此内容
-			mediaService.removeMa(contentId);
-			if(num>0) {
+		if (n && channelService.getChannelAssetsByAssetId(contentId).size() == 0) { //如果其他栏目下无此内容，则删除此内容
+			MediaAsset ma = mediaService.getMaInfoById(contentId);
+			String img = ma.getMaImg();
+			if(img!=null && !img.equals("null")) {
+				FileUploadUtils.deleteFile(img.replace("http://www.wotingfm.com/", "/opt/tomcat_Chopin/webapps/"));
+				String smallimg = img.replace("group03/", "group04/small");
+				FileUploadUtils.deleteFile(smallimg.replace("http://www.wotingfm.com/", "/opt/tomcat_Chopin/webapps/"));
+			}
+			String vodie = ma.getSubjectWords();
+			if(vodie!=null && !vodie.equals("null")) 
+				FileUploadUtils.deleteFile(vodie.replace("http://www.wotingfm.com/", "/opt/tomcat_Chopin/webapps/"));
+			String htmlpath = ma.getMaURL();
+			if (htmlpath!=null && !htmlpath.equals("null")) 
+				FileUploadUtils.deleteFile(htmlpath.replace("http://www.wotingfm.com/", "/opt/tomcat_Chopin/webapps/"));
+			String shareurl = ma.getKeyWords();
+			if(shareurl!=null && !shareurl.equals("null"))
+				FileUploadUtils.deleteFile(htmlpath.replace("http://www.wotingfm.com/", "/opt/tomcat_Chopin/webapps/"));
+			boolean isok = mediaService.removeMa(contentId);
+			if(isok) {
 				m.put("ReturnType", "1001");
 				m.put("Message", "内容彻底删除");
 				return m;
 			}
 			return null;
 		} else {
-			if (num>0) {
+			if (n) {
 			    m.put("ReturnType", "1001");
 			    m.put("Message", "栏目下此内容删除成功");
 			    return m;

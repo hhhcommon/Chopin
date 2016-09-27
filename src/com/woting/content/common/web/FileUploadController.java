@@ -39,7 +39,7 @@ public class FileUploadController extends AbstractFileUploadController{
             	String smallImgName = "small"+newname;
                 String smallImgPath = rootpath+MediaPath[typenum]+smallImgName.trim();
                 try {
-			        Thumbnails.of(new File(filepath)).size(144, 108).toFile(smallImgPath);
+			        Thumbnails.of(new File(filepath)).size(288, 216).toFile(smallImgPath);
 			        m.put("smallFilename", smallImgName);
 			        m.put("smallFilepath", webpath+MediaPath[typenum]+smallImgName);
 		        } catch (IOException e) {e.printStackTrace();}
