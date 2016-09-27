@@ -349,10 +349,10 @@ public class ChannelService {
 		return channelAssetDao.queryForList("getListByWhere", m).size();
     }
 
-    public List<ChannelAssetPo> getChannelAssetList(String channelId) {
+    public List<ChannelAssetPo> getChannelAssetList(String channelIds) {
     	Map<String, Object> m = new HashMap<>();
-    	m.put("channelId", channelId);
     	m.put("isValidate", "2");
+    	m.put("whereByClause", "channelId in ("+channelIds+")");
     	m.put("sortByClause", "sort desc");
 		return channelAssetDao.queryForList("getList", m);
     }

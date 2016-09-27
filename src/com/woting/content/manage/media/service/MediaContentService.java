@@ -293,8 +293,18 @@ public class MediaContentService {
 	
 	public List<Map<String, Object>> getNoPubContentList(String channelId){
 		ChannelPo ch = channelService.getChannelById(channelId);
-		
-		List<ChannelAssetPo> chas = channelService.getChannelAssetList(channelId);
+		List<ChannelPo> chs = new ArrayList<>();
+		String ids = "";
+		if (ch!=null) {
+			chs = channelService.getChannelsByPcId(channelId);
+			if (chs!=null && chs.size()>0) {
+				for (ChannelPo c : chs) {
+					ids += ",'"+c.getId()+"'";
+				}
+			}
+			ids = "'"+channelId+"'"+ids;
+		}else return null;
+		List<ChannelAssetPo> chas = channelService.getChannelAssetList(ids);
 		if(chas==null || chas.size()==0)
 			return null;
 		List<Map<String, Object>> chasm=channelContentService.getChannelAssetList(chas);
