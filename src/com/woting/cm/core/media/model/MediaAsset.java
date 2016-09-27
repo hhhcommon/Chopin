@@ -228,7 +228,7 @@ public class MediaAsset extends BaseObject implements Serializable, ModelSwapPo 
         ret.setCTime(CTime);
         ret.setPubCount(pubCount);
         ret.setMaStatus(maStatus);
-
+        ret.setAllText(allText);
         return ret;
     }
 

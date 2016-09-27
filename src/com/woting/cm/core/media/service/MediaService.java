@@ -212,7 +212,7 @@ public class MediaService {
 			e.printStackTrace();
 			return false;
 		}
-    	return true;
+    	return true; 
     }
     
     public void removeCha(String assetId){

@@ -164,6 +164,7 @@ public class QueryService {
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	public Map<String, Object> makeContentHtml(String channelId,String themeImg,String mediaSrc, String isshow, String source, String sourcepath, String mastatus, String username, List<Map<String, Object>> list) {
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> statustype = new HashMap<>();
