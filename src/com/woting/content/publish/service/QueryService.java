@@ -36,7 +36,7 @@ public class QueryService {
 	private String html = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\">"
 			+ "<link href=\"../resources/css/contentapp.css\" rel=\"stylesheet\">"
 			+ "<script type=\"text/javascript\" src=\"../resources/plugins/hplus/js/jquery-2.1.1.min.js\"></script>"
-			+ "<script type=\"text/javascript\" src=\"../resource/js/competitor.js\"></script>"
+			+ "<script type=\"text/javascript\" src=\"../resources/js/competitor.js\"></script>"
 			+ "</head><body>#####CONTENT#####</body></html>";
 	private String word = "<div class=\"conpetitorContent\">" //内容页文本内容
 			+ "<div class=\"word\">#####WORD#####</div>"
