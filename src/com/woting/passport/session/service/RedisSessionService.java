@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
@@ -19,7 +20,7 @@ import com.woting.passport.login.service.MobileUsedService;
 import com.woting.passport.mobile.MobileUDKey;
 import com.woting.passport.session.SessionService;
 import com.woting.passport.session.key.UserDeviceKey;
-import com.woting.passport.session.redis.RedisUserDeviceKey;
+import com.woting.passport.session.redis.RedisHttpSessionUserDeviceKey;
 
 @Service
 public class RedisSessionService implements SessionService {
@@ -46,7 +47,7 @@ public class RedisSessionService implements SessionService {
      *   1001 设备自动登录成功
      *   1001 设备自动登录成功，并返回用户的UserId
      */
-    public Map<String, Object> dealUDkeyEntry(UserDeviceKey udk, String operDesc) {
+    public Map<String, Object> dealUDkeyEntry(UserDeviceKey udk, String operDesc, HttpSession session) {
         Map<String,Object> map=new HashMap<String, Object>();
         if (udk==null||StringUtils.isNullOrEmptyOrSpace(udk.getDeviceId())) {
             map.put("ReturnType", "2001");
@@ -54,7 +55,7 @@ public class RedisSessionService implements SessionService {
             return map;
         }
 
-        RedisUserDeviceKey rUdk=new RedisUserDeviceKey(udk);
+        RedisHttpSessionUserDeviceKey rUdk=new RedisHttpSessionUserDeviceKey(udk, session);
         RedisConnection conn=null;
         try {
             conn=redisConn.getConnection();
@@ -121,8 +122,8 @@ public class RedisSessionService implements SessionService {
 
 
     @Override
-    public void registUser(UserDeviceKey udk) {
-        RedisUserDeviceKey rUdk=new RedisUserDeviceKey(udk);
+    public void registUser(UserDeviceKey udk, HttpSession session) {
+        RedisHttpSessionUserDeviceKey rUdk=new RedisHttpSessionUserDeviceKey(udk, session);
 
         RedisConnection conn=null;
         try {
@@ -138,7 +139,7 @@ public class RedisSessionService implements SessionService {
     }
 
     @Override
-    public List<? extends UserDeviceKey> getActivedUserUDKs(String userId) {
+    public List<? extends UserDeviceKey> getActivedUserUDKs(String userId, HttpSession session) {
         List<UserDeviceKey> retl=new ArrayList<UserDeviceKey>();
 
         RedisConnection conn=null;
@@ -147,7 +148,7 @@ public class RedisSessionService implements SessionService {
             MobileUDKey mUdk=new MobileUDKey();
             mUdk.setUserId(userId);
             mUdk.setPCDType(1);
-            RedisUserDeviceKey rUdk=new RedisUserDeviceKey(mUdk);
+            RedisHttpSessionUserDeviceKey rUdk=new RedisHttpSessionUserDeviceKey(mUdk, session);
             byte[] _deviceId=conn.get(rUdk.getKey_UserLoginDeviceType().getBytes());
             if (_deviceId!=null) {
                 mUdk.setDeviceId(new String(_deviceId));
@@ -156,7 +157,7 @@ public class RedisSessionService implements SessionService {
             mUdk=new MobileUDKey();
             mUdk.setUserId(userId);
             mUdk.setPCDType(2);
-            rUdk=new RedisUserDeviceKey(mUdk);
+            rUdk=new RedisHttpSessionUserDeviceKey(mUdk, session);
             _deviceId=conn.get(rUdk.getKey_UserLoginDeviceType().getBytes());
             if (_deviceId!=null) {
                 mUdk.setDeviceId(new String(_deviceId));
@@ -170,11 +171,11 @@ public class RedisSessionService implements SessionService {
     }
 
     @Override
-    public UserDeviceKey getActivedUserUDK(String userId, int pcdType) {
+    public UserDeviceKey getActivedUserUDK(String userId, int pcdType, HttpSession session) {
         MobileUDKey mUdk=new MobileUDKey();
         mUdk.setUserId(userId);
         mUdk.setPCDType(pcdType);
-        RedisUserDeviceKey rUdk=new RedisUserDeviceKey(mUdk);
+        RedisHttpSessionUserDeviceKey rUdk=new RedisHttpSessionUserDeviceKey(mUdk, session);
 
         RedisConnection conn=null;
         try {
@@ -190,8 +191,8 @@ public class RedisSessionService implements SessionService {
     }
 
     @Override
-    public void logoutSession(UserDeviceKey udk) {
-        RedisUserDeviceKey rUdk=new RedisUserDeviceKey(udk);
+    public void logoutSession(UserDeviceKey udk, HttpSession session) {
+        RedisHttpSessionUserDeviceKey rUdk=new RedisHttpSessionUserDeviceKey(udk, session);
 
         RedisConnection conn=null;
         try {

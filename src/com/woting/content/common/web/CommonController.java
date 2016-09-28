@@ -64,7 +64,7 @@ public class CommonController {
                 return map;
             } else {
                 mUdk=MobileParam.build(m).getUserDeviceKey();
-                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "common/entryApp");
+                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "common/entryApp", request.getSession());
                 if ((retM.get("ReturnType")+"").equals("2001")) {
                     map.put("ReturnType", "0000");
                     map.put("Message", "无法获取设备Id(IMEI)");
@@ -81,6 +81,7 @@ public class CommonController {
                     }
                 }
                 map.put("ServerStatus", "1"); //服务器状态
+                map.put("IsExtension", "0"); //是否推广
             }
             return map;
         } catch(Exception e) {
@@ -108,7 +109,7 @@ public class CommonController {
                 if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
                     mUdk.setDeviceId(request.getSession().getId());
                 }
-                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "searchByText");
+                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "searchByText", request.getSession());
                 if ((retM.get("ReturnType")+"").equals("2001")) {
                     map.put("ReturnType", "0000");
                     map.put("Message", "无法获取设备Id(IMEI)");
@@ -137,7 +138,7 @@ public class CommonController {
             }
             int pageSize=10;
             try {
-                page=Integer.parseInt(m.get("PageSize")==null?null:m.get("PageSize")+"");
+                pageSize=Integer.parseInt(m.get("PageSize")==null?null:m.get("PageSize")+"");
             } catch(Exception e) {
             }
 
@@ -183,7 +184,7 @@ public class CommonController {
                 if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
                     mUdk.setDeviceId(request.getSession().getId());
                 }
-                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "getHotKeys");
+                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "getHotKeys", request.getSession());
                 if ((retM.get("ReturnType")+"").equals("2001")) {
                     map.put("ReturnType", "0000");
                     map.put("Message", "无法获取设备Id(IMEI)");
@@ -265,7 +266,7 @@ public class CommonController {
                 if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
                     mUdk.setDeviceId(request.getSession().getId());
                 }
-                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "searchHotKeys");
+                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "searchHotKeys", request.getSession());
                 if ((retM.get("ReturnType")+"").equals("2001")) {
                     map.put("ReturnType", "0000");
                     map.put("Message", "无法获取设备Id(IMEI)");

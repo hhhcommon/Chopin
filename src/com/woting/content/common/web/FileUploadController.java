@@ -3,6 +3,9 @@ package com.woting.content.common.web;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 
 import com.spiritdata.framework.FConstants;
@@ -26,7 +29,7 @@ public class FileUploadController extends AbstractFileUploadController{
 			"media/group03/",  //上传的原始图片文件路径
 			"media/group04/"}; //上传的略缩图文件路径
     @Override
-    public Map<String, Object> afterUploadOneFileOnSuccess(Map<String, Object> m, Map<String, Object> a, Map<String, Object> p) {
+    public Map<String, Object> afterUploadOneFileOnSuccess(Map<String, Object> m, Map<String, Object> a, Map<String, Object> p, HttpSession session) {
     	String rootpath = SystemCache.getCache(FConstants.APPOSPATH).getContent()+"";
         String filepath = m.get("storeFilename")+"".trim();
         String filename = FileNameUtils.getFileName(filepath);
@@ -51,10 +54,5 @@ public class FileUploadController extends AbstractFileUploadController{
             m.put("success", "TRUE");
         }
         return m;
-    }
-
-    @Override
-    public void afterUploadAllFiles(Map<String, Object> retMap, Map<String, Object> a, Map<String, Object> p) {
-    	
     }
 }
