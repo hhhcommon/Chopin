@@ -17,7 +17,9 @@ import com.woting.cm.core.media.model.MediaAsset;
 import com.woting.cm.core.media.persis.po.MediaAssetPo;
 import com.woting.cm.core.media.service.MediaService;
 import com.woting.cm.core.utils.ContentUtils;
+import com.woting.content.common.utils.FileUploadUtils;
 import com.woting.content.manage.channel.service.ChannelContentService;
+import com.woting.discuss.service.DiscussService;
 import com.woting.favorite.service.FavoriteService;
 import com.woting.passport.UGA.persistence.pojo.UserPo;
 import com.woting.passport.UGA.service.UserService;
@@ -29,6 +31,8 @@ public class MediaContentService {
 	private MediaService mediaService;
 	@Resource
 	private FavoriteService favoriteService;
+	@Resource
+	private DiscussService discussService;
 	@Resource
 	private ChannelContentService channelContentService;
 	@Resource
@@ -87,6 +91,7 @@ public class MediaContentService {
 					m.put("AllCount", ll.size());
 					m.put("CatalogId", chPo.getId());
 					m.put("CatalogName", chPo.getChannelName());
+					m.put("CatalogEName", chPo.getChannelEName());
 					l.add(m);
 				}
 			} else {
@@ -127,8 +132,7 @@ public class MediaContentService {
 										} else {
 											mam.put("IsDirect", false);
 										}
-									}
-										
+									}	
 								}
 								ll.add(mam);
 							}
@@ -138,6 +142,7 @@ public class MediaContentService {
 								m.put("AllCount", ll.size());
 								m.put("CatalogId", cho.getId());
 								m.put("CatalogName", cho.getChannelName());
+								m.put("CatalogEName", cho.getChannelEName());
 								l.add(m);
 							}
 						}
@@ -198,6 +203,7 @@ public class MediaContentService {
 						m.put("AllCount", ll.size());
 						m.put("CatalogId", ch.getId());
 						m.put("CatalogName", ch.getChannelName());
+						m.put("CatalogEName", ch.getChannelEName());
 						l.add(m);
 					}
 				}
@@ -239,7 +245,7 @@ public class MediaContentService {
                 mas.addAll(p.getResult());
             }
         }
-        if (!mas.isEmpty()) {
+        if (mas!=null&&!mas.isEmpty()) {
             //获得栏目列表
             whereStr="";
             String[] articlaIds=new String[mas.size()];
@@ -280,22 +286,115 @@ public class MediaContentService {
 		String[] ids = new String[1];
 		ids[0] = ma.getId();
 		List<ChannelAssetPo> chas = channelService.getChannelAssetsByAssetId(contentId);
-		long t1 = System.currentTimeMillis();
 		List<Map<String, Object>> fm = favoriteService.getContentFavoriteInfo(ids, userId);
-		long t2 = System.currentTimeMillis();
 		if (chas != null && chas.size() > 0) {
 			List<Map<String, Object>> chasm = channelContentService.getChannelAssetList(chas);
 			mam = ContentUtils.convert2Ma(ma.convert2Po().toHashMap(), null, null, chasm, fm);
 		}
-		mam.put("FavDuration", t2-t1);
 		return mam;
 	}
+	
+	public List<Map<String, Object>> getNoPubContentList(String channelId){
+		ChannelPo ch = channelService.getChannelById(channelId);
+		List<ChannelPo> chs = new ArrayList<>();
+		String ids = "";
+		if (ch!=null) {
+			chs = channelService.getChannelsByPcId(channelId);
+			if (chs!=null && chs.size()>0) {
+				for (ChannelPo c : chs) {
+					ids += ",'"+c.getId()+"'";
+				}
+			}
+			ids = "'"+channelId+"'"+ids;
+		}else return null;
+		List<ChannelAssetPo> chas = channelService.getChannelAssetList(ids);
+		if(chas==null || chas.size()==0)
+			return null;
+		List<Map<String, Object>> chasm=channelContentService.getChannelAssetList(chas);
+		List<Map<String, Object>> l = new ArrayList<>();
+		for (ChannelAssetPo cha : chas) {
+			MediaAsset ma = mediaService.getMaInfoById(cha.getAssetId());
+			Map<String, Object> mm = ContentUtils.convert2Ma(ma.convert2Po().toHashMap(), null, null, chasm, null);
+			mm.put("ContentSort", cha.getSort());
+			if (cha.getFlowFlag()==1) {
+				mm.put("IsDirect", true);
+			} else {
+				mm.put("IsDirect", false);
+			}
+			l.add(mm);
+		}
+		return l;
+	}
 
-	public List<Map<String, Object>> getDirectContent(String channelId, String flowFlag) {
+	public List<Map<String, Object>> getDirectContentList(String userId, String channelId, String flowFlag) {
+		List<Map<String, Object>> ls = new ArrayList<>();
+		if (userId==null && channelId==null) {
+			List<ChannelPo> chs = channelService.getChannelsByPcId("0");
+			if(chs!=null && chs.size()>0) {
+				for (ChannelPo ch : chs) {
+					List<Map<String, Object>> l = getDirectContent(null, ch.getId(), flowFlag, true);
+					if (l!=null && l.size()>0) {
+						ls.addAll(l);
+					}
+				}
+			}
+		} else {
+			ls = getDirectContent(userId, channelId, flowFlag, false);
+		}
+		return ls;
+	}	
+	
+	public Map<String, Object> removeContent(String channelId, String contentId) {
+		Map<String, Object> m = new HashMap<>();
+		m.put("channelId", channelId);
+		m.put("assetId", contentId);
+		boolean n = channelService.removeChannelAssetByEntity(m);
+		m.clear();
+		if (n && channelService.getChannelAssetsByAssetId(contentId).size() == 0) { //如果其他栏目下无此内容，则删除此内容
+			MediaAsset ma = mediaService.getMaInfoById(contentId);
+			String img = ma.getMaImg();
+			if(img!=null && !img.equals("null")) {
+				FileUploadUtils.deleteFile(img.replace("http://www.wotingfm.com/", "/opt/tomcat_Chopin/webapps/"));
+				String smallimg = img.replace("group03/", "group04/small");
+				FileUploadUtils.deleteFile(smallimg.replace("http://www.wotingfm.com/", "/opt/tomcat_Chopin/webapps/"));
+			}
+			String vodie = ma.getSubjectWords();
+			if(vodie!=null && !vodie.equals("null")) 
+				FileUploadUtils.deleteFile(vodie.replace("http://www.wotingfm.com/", "/opt/tomcat_Chopin/webapps/"));
+			String htmlpath = ma.getMaURL();
+			if (htmlpath!=null && !htmlpath.equals("null")) 
+				FileUploadUtils.deleteFile(htmlpath.replace("http://www.wotingfm.com/", "/opt/tomcat_Chopin/webapps/"));
+			String shareurl = ma.getKeyWords();
+			if(shareurl!=null && !shareurl.equals("null"))
+				FileUploadUtils.deleteFile(htmlpath.replace("http://www.wotingfm.com/", "/opt/tomcat_Chopin/webapps/"));
+			boolean isok = mediaService.removeMa(contentId);
+//			int removefavnum = favoriteService.delArticleFavorite(contentId,channelId);
+//			int removedisnum = discussService.delArticleFavorite(contentId,channelId);
+			if(isok) {
+				m.put("ReturnType", "1001");
+				m.put("Message", "内容彻底删除");
+//				m.put("RemoveFavNum", value);
+//				m.put("RemoveDisNum", value);
+				return m;
+			}
+			return null;
+		} else {
+			if (n) {
+			    m.put("ReturnType", "1001");
+			    m.put("Message", "栏目下此内容删除成功");
+//				m.put("RemoveFavNum", value);
+//				m.put("RemoveDisNum", value);
+			    return m;
+		    }
+			return null;
+		}
+	}
+	
+	private List<Map<String, Object>> getDirectContent(String userId, String channelId, String flowFlag, boolean getone) {
 		Map<String, Object> m = new HashMap<>();
 		m.put("flowFlag", flowFlag);
 		m.put("isValidate", 1);
-		m.put("sortByClause", "sort");
+		m.put("sortByClause", "sort desc");
 		String channelIds = "";
 		List<ChannelPo> chs = channelService.getChannelsByPcId(channelId);
 		if (chs!=null && chs.size()>0) {
@@ -309,15 +408,18 @@ public class MediaContentService {
 		List<ChannelAssetPo> chas = channelService.getChannelAssets(m);
 		List<Map<String, Object>> l = new ArrayList<>();
 		if(chas!=null&&chas.size()>0) {
+			String[] ids = new String[chas.size()];
+			for (int i=0;i<chas.size();i++) {
+				ids[i] = chas.get(i).getAssetId();
+			}
+			List<Map<String, Object>> fm = favoriteService.getContentFavoriteInfo(ids, userId);
 			for (ChannelAssetPo cha : chas) {
-				Map<String, Object> mm = new HashMap<>();
 				MediaAsset ma = mediaService.getMaInfoById(cha.getAssetId());
-				mm.put("ContentImg", ma.getMaImg());
-				mm.put("ContentURL", ma.getKeyWords());
-				mm.put("CTime", ma.getCTime());
-				mm.put("Sort", cha.getSort());
-				mm.put("ChannelId", cha.getChannelId());
-				l.add(mm);
+				Map<String, Object> mam = ContentUtils.convert2Ma(ma.convert2Po().toHashMap(), null, null, null, fm);
+				mam.put("ContentSort", cha.getSort());
+				mam.put("ChannelId", cha.getChannelId());
+				l.add(mam);
+				if (getone) break;
 			}
 			return l;
 		}

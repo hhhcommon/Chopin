@@ -33,8 +33,11 @@ public class QueryService {
 	private MediaService mediaService;
 	@Resource
 	private UserService userService;
-	private String html = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><link href=\"../resources/css/contentapp.css\" rel=\"stylesheet\"></head><body>#####CONTENT#####</body></html>";
-//	private String cssstr = "*{margin:0;padding:0;}li{list-style: none;}html{font-size:62.5%;}.container{width:90%; height:auto; margin:0px auto; overflow: hidden; border:1px solid red;}.header{width:100%; height:30px; margin-top: 20px;}.header .line{width: 5px; height: 20px; border-radius: 6px; margin-top: 4px; margin-left: 10px; display: block; float: left; background: gray;}.header .category{width: 10%; height: 20px; color: gray; font-size: 1.7rem; margin-top: 3px; margin-left: 8px; float: left; display: block;}.titleContent{width:100%; height:auto;}.titleContent h2{width:100%; font-size:3rem; text-align:center; color:black;}.webSource{width:17%; font-size:14px; color: rgba(0, 0, 0, 0.39); margin:10px auto;}.webSource .time{width:50%;}.webSource .source{width:50%; margin-left:3%;}.conpetitorContent{width:100%; height:auto; margin-top:10px;}.conpetitorContent .word{width:84%; height:97%; margin:0px auto; color:rgba(0,0,0,0.64); line-height:31px;}.conpetitorContent .pic{width:50%; height:100%; margin:0px auto;}.conpetitorContent .pic img{width:100%; height:100%; background-size:100% 100%;}";
+	private String html = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\">"
+			+ "<link href=\"../resources/css/contentapp.css\" rel=\"stylesheet\">"
+			+ "<script type=\"text/javascript\" src=\"../resources/plugins/hplus/js/jquery-2.1.1.min.js\"></script>"
+			+ "<script type=\"text/javascript\" src=\"../resources/js/competitor.js\"></script>"
+			+ "</head><body>#####CONTENT#####</body></html>";
 	private String word = "<div class=\"conpetitorContent\">" //内容页文本内容
 			+ "<div class=\"word\">#####WORD#####</div>"
 			+ "</div>";
@@ -42,7 +45,20 @@ public class QueryService {
 			+ "<img src=\"#####PICTURE#####\"/>"
 					+ "</div>"
 					+ "</div>";
-
+	private String video = "<div class=\"conpetitorContent\">"
+			+ "<div class=\"video\">"
+			+ "<video  id=\"myVideo\" controls preload >"
+			+ "<source src=\"#####VIDEO#####\" >"
+			+ "</video>"
+			+ "</div>"
+			+ "</div>";
+	private String audio = "<div class=\"conpetitorContent\">"
+			+ "<div class=\"audio\">"
+			+ "<audio id=\"myAudio\" controls>"
+			+ "<source src=\"#####AUDIO#####\" type=\"audio/mpeg\">"
+			+ "</audio>"
+			+ "</div>"
+			+ "</div>";
 	public Map<String, Object> addContentByApp(String userId, String title, String filePath, String descn,
 			String channelId) {
 		Map<String, Object> map = new HashMap<>();
@@ -57,7 +73,7 @@ public class QueryService {
 		mapo.setMaTitle(title);
 		mapo.setMaPubType(3);
 		mapo.setMaPubId(userId);
-		mapo.setMaPublisher(userPo.getUserName());
+		mapo.setMaPublisher(userPo.getLoginName());
 		int num = FileUploadUtils.getFileType(filePath);
 		if (num==1 || num==2) {
 			mapo.setSubjectWords(filePath);
@@ -83,7 +99,7 @@ public class QueryService {
 		chas.setId(SequenceUUID.getPureUUID());
 		chas.setChannelId(channelId);
 		chas.setAssetId(mapo.getId());
-		chas.setAssetType("wt_Mediasset");
+		chas.setAssetType("wt_MediaAsset");
 		chas.setPublisherId(userId);
 		chas.setPubName(title);
 		if (mapo.getMaImg() != null)
@@ -148,7 +164,8 @@ public class QueryService {
 		return false;
 	}
 
-	public Map<String, Object> makeContentHtml(String channelId,String themeImg,String mediaSrc, String isshow, String source, String sourcepath, String mastatus, String username, List<Map<String, Object>> list) {
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> makeContentHtml(String channelIds,String themeImg,String mediaSrc, String isshow, String source, String sourcepath, String mastatus, String username, List<Map<String, Object>> list) {
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> statustype = new HashMap<>();
 		statustype.put("一般文章", 0);
@@ -191,6 +208,12 @@ public class QueryService {
 			for (Map<String, Object> m : list) {
 				switch (m.get("PartType") + "") {
 				case "TITLE": //标题
+					String matitle = m.get("PartInfo")+"";
+					if(matitle.equals("null")) {
+						map.put("ReturnType", "1016");
+						map.put("Message", "标题名为空");
+						return map;
+					}
 					if(mediaService.getMaInfoByTitle(m.get("PartInfo")+"")!=null) {
 						map.put("ReturnType", "1015");
 						map.put("Message", "内容重名");
@@ -240,6 +263,13 @@ public class QueryService {
 					String partNamevideo = m.get("PartName")+"";
 					if (partNamevideo.equals("null") || partNamevideo.equals("")) {
 						//删除文件
+						List<Map<String, Object>> videos = (List<Map<String, Object>>) m.get("ResouceList");
+						if(videos!=null && videos.size()>0) {
+							for (Map<String, Object> videom : videos) {
+								String fileOrgPath = videom.get("FileOrgPath")+"";
+								FileUtils.deleteFile(new File(fileOrgPath));
+							}
+						}
 					} else {
 						List<Map<String, Object>> videos = (List<Map<String, Object>>) m.get("ResouceList");
 						if (videos!=null && videos.size()>0) {
@@ -247,26 +277,37 @@ public class QueryService {
 								String fileOrgPath = videom.get("FileOrgPath")+"";
 								if(!fileOrgPath.contains(partNamevideo)) {
 									//删除文件
+									FileUtils.deleteFile(new File(fileOrgPath));
 								} else {
 									//合成html
+									htmlstr += video.replace("#####VIDEO#####", fileOrgPath);
 								}
 							}
 						}
 					};
 					break;
-				case "AUDIO" :
+				case "MEDIA" :
 					String partNameaudio = m.get("PartName")+"";
 					if (partNameaudio.equals("null") || partNameaudio.equals("")) {
 						//删除文件
+						List<Map<String, Object>> audios = (List<Map<String, Object>>) m.get("ResouceList");
+						if (audios!=null && audios.size()>0) {
+							for (Map<String, Object> audiom : audios) {
+								String fileOrgPath = audiom.get("FileOrgPath")+"";
+								FileUtils.deleteFile(new File(fileOrgPath));
+							}
+						}
 					} else {
-						List<Map<String, Object>> videos = (List<Map<String, Object>>) m.get("ResouceList");
-						if (videos!=null && videos.size()>0) {
-							for (Map<String, Object> videom : videos) {
-								String fileOrgPath = videom.get("FileOrgPath")+"";
+						List<Map<String, Object>> audios = (List<Map<String, Object>>) m.get("ResouceList");
+						if (audios!=null && audios.size()>0) {
+							for (Map<String, Object> audiom : audios) {
+								String fileOrgPath = audiom.get("FileOrgPath")+"";
 								if(!fileOrgPath.contains(partNameaudio)) {
 									//删除文件
+									FileUtils.deleteFile(new File(fileOrgPath));
 								} else {
 									//合成html
+									htmlstr += audio.replace("#####AUDIO#####", fileOrgPath);
 								}
 							}
 						}
@@ -277,20 +318,26 @@ public class QueryService {
 			}
 		}
 		ma.setAllText(CacheUtils.cleanTag(allText));
-		ChannelAssetPo cha = new ChannelAssetPo();
-		cha.setId(SequenceUUID.getPureUUID());
-		cha.setAssetId(ma.getId());
-		cha.setAssetType("wt_MediaAsset");
-		cha.setChannelId(channelId);
-		cha.setPublisherId(ma.getMaPubId());
-		cha.setCheckerId("0");
-		cha.setFlowFlag(2);
-		cha.setSort(0);
-		cha.setIsValidate(1);
-		cha.setPubName(ma.getMaTitle());
-		cha.setPubImg(ma.getMaImg());
-		cha.setCTime(ma.getCTime());
-		cha.setPubTime(ma.getCTime());
+		String[] channelid = channelIds.split(",");
+		if (channelid!=null && channelid.length>0) {
+			for (String cid : channelid) {
+				ChannelAssetPo cha = new ChannelAssetPo();
+		        cha.setId(SequenceUUID.getPureUUID());
+		        cha.setAssetId(ma.getId());
+		        cha.setAssetType("wt_MediaAsset");
+		        cha.setChannelId(cid);
+		        cha.setPublisherId(ma.getMaPubId());
+		        cha.setCheckerId("0");
+		        cha.setFlowFlag(2);
+		        cha.setSort(0);
+		        cha.setIsValidate(1);
+		        cha.setPubName(ma.getMaTitle());
+		        cha.setPubImg(ma.getMaImg());
+		        cha.setCTime(ma.getCTime());
+		        cha.setPubTime(ma.getCTime());
+		        channelService.insertChannelAsset(cha);
+			}
+		}
 		htmlstr = html.replace("#####CONTENT#####", htmlstr);
 		String path = SystemCache.getCache(FConstants.APPOSPATH).getContent()+"mweb/"+ma.getId()+".html";
 		FileUploadUtils.writeFile(htmlstr, path);
@@ -299,7 +346,6 @@ public class QueryService {
 		MediaAsset mas = new MediaAsset();
 		mas.buildFromPo(ma);
 		mediaService.saveMa(mas);
-		channelService.insertChannelAsset(cha);
 		map.put("ReturnType", "1001");
 		map.put("Message", "添加成功");
 		return map;

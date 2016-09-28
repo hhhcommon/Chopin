@@ -99,7 +99,7 @@ public abstract class ContentUtils {
                                                   List<Map<String, Object>> pubChannelList,
                                                   List<Map<String, Object>> favoriteList) {
         Map<String, Object> retM=new HashMap<String, Object>();;
-        retM.put("MediaType", "AUDIO");
+        retM.put("MediaType", "Content");
 
         retM.put("ContentId", one.get("id"));//P01-公共：ID
         retM.put("ContentName", one.get("maTitle"));//P02-公共：名称
@@ -109,10 +109,12 @@ public abstract class ContentUtils {
         retM.put("ContentImg", one.get("maImg"));//P07-公共：相关图片
         retM.put("ContentPlay", one.get("maURL"));//P08-公共：主播放Url，这个应该从其他地方来，现在先这样//TODO
         retM.put("ContentURI", "http://www.wotingfm.com/Chopin/articleShell.html?ContentId="+retM.get("ContentId"));//P08-公共：主播放Url，这个应该从其他地方来，现在先这样//TODO
-        retM.put("ContentShareURL", one.get("keyWords"));//分享地址
+        retM.put("ContentShareURL", "http://www.wotingfm.com/Chopin/articleFrameShell.html?ContentId="+retM.get("ContentId"));//分享地址
         retM.put("ContentDesc", one.get("descn"));//P11-公共：说明
         retM.put("ContentStatus", one.get("maStatus"));
         retM.put("ContentSource",one.get("language"));
+        String imgpath = one.get("maImg")+"";
+        retM.put("ContentSmallImg",imgpath.replace("group03/", "group04/small"));
         fillExtInfo(retM, "AUDIO", personList, cataList, pubChannelList, favoriteList);//填充扩展信息
 
         retM.put("ContentTimes", one.get("timeLong"));//S01-特有：播放时长

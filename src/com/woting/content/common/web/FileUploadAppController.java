@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Controller;
 import com.spiritdata.framework.FConstants;
@@ -28,7 +30,7 @@ public class FileUploadAppController extends AbstractFileUploadController {
     private SessionService sessionService;
 
     @Override
-    public Map<String, Object> afterUploadOneFileOnSuccess(Map<String, Object> m, Map<String, Object> a, Map<String, Object> p) {
+    public Map<String, Object> afterUploadOneFileOnSuccess(Map<String, Object> m, Map<String, Object> a, Map<String, Object> p, HttpSession session) {
         String tempFileName=m.get("storeFilename")+"";
         Map<String,Object> retmap=new HashMap<String, Object>();
         Map<String,Object> datamap=new HashMap<String, Object>();
@@ -39,7 +41,7 @@ public class FileUploadAppController extends AbstractFileUploadController {
             datamap.put("Message", "无法获取需要的参数");
         } else {
             MobileUDKey mUdk=MobileParam.build(p).getUserDeviceKey();
-            Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "fileUpload");
+            Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "fileUpload", session);
             if ((retM.get("ReturnType")+"").equals("2001")) {
                 datamap.put("ReturnType", "0000");
                 datamap.put("Message", "无法获取设备Id(IMEI)");
@@ -47,6 +49,7 @@ public class FileUploadAppController extends AbstractFileUploadController {
                 datamap.put("ReturnType", "200");
                 datamap.put("Message", "需要登录");
             } else {
+                userId=mUdk.getUserId();
                 datamap.putAll(mUdk.toHashMapAsBean());
             }
             if (datamap.get("ReturnType")==null&&StringUtils.isNullOrEmptyOrSpace(userId)) {

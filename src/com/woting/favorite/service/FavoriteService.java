@@ -148,6 +148,7 @@ public class FavoriteService {
             } else { //删除
                 if (ufPo==null) return 5;//还未点赞，不能删除
                 if (ufPo.getSumNum()>0) userFavoriteDao.update("decrement", ufPo.getId());
+                userFavoriteDao.delete(ufPo.getId());
             }
         }
         if (flag==2) { //举报，只有增加
@@ -206,19 +207,16 @@ public class FavoriteService {
                 //喜欢
                 if (ufPo.getResTableName().equals("1")) {
                     if (ufPo.getOwnerId().equals(userId)) findOne.put("IsFavorate", 1);
+                    if ((Integer)findOne.get("FavoSum")==-1) findOne.put("FavoSum", 0);
                     findOne.put("FavoSum", (Integer)findOne.get("FavoSum")+ufPo.getSumNum());
                 }
                 //举报
                 if (ufPo.getResTableName().equals("2")) {
                     if (ufPo.getOwnerId().equals(userId)) findOne.put("IsReport", 1);
+                    if ((Integer)findOne.get("RepoSum")==-1) findOne.put("RepoSum", 0);
                     findOne.put("RepoSum", (Integer)findOne.get("RepoSum")+ufPo.getSumNum());
                 }
             }
-        }
-        //最后的调整
-        for (Map<String, Object> o: ret) {
-            if ((Integer)o.get("FavoSum")!=-1) o.put("FavoSum", (Integer)o.get("FavoSum")+1);
-            if ((Integer)o.get("RepoSum")!=-1) o.put("RepoSum", (Integer)o.get("RepoSum")+1);
         }
         return ret;
     }
@@ -260,7 +258,7 @@ public class FavoriteService {
                 }
             }
 
-            if (!mas.isEmpty()) {
+            if (mas!=null&&!mas.isEmpty()) {
                 //获得相关栏目信息
                 String whereStr="";
                 String[] articlaIds=new String[mas.size()];
@@ -292,5 +290,19 @@ public class FavoriteService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * 删除某文章的所有喜欢的内容
+     * @param articleId 文章Id
+     * @param channelId 文章的Id
+     * @return 返回删除的数目
+     */
+    public int delArticleFavorite(String articleId, String channelId) {
+        //获得列表
+        Map<String, String> param=new HashMap<String, String>();
+        param.put("resId", articleId);
+
+        return userFavoriteDao.delete("delArticle", param);
     }
 }

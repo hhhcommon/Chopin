@@ -95,6 +95,8 @@ public class MediaService {
         	    MediaAsset ma=new MediaAsset();
 			    ma.buildFromPo(mediaAssetPo);
 			    Map<String, Object> mam = ContentUtils.convert2Ma(ma.toHashMap(), null, null, chsm, fm);
+			    String img = mam.get("ContentImg")+"";
+			    mam.put("ContentSmallImg", img.replace("group03/", "group04/small"));
 			    list.add(mam);
 		    }
         }
@@ -204,9 +206,13 @@ public class MediaService {
     }
 
     public boolean removeMa(String id){
-    	if (mediaAssetDao.delete("multiMaById", id)>0) 
-    		return true;
-    	return false;
+    	try {
+			mediaAssetDao.delete("multiMaById", id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+    	return true; 
     }
     
     public void removeCha(String assetId){

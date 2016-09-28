@@ -110,6 +110,7 @@ public class DiscussService {
         try {
             Map<String, String> param=new HashMap<String, String>();
             param.put("articleId", articleId);
+            param.put("sortByClause", " cTime desc");
             List<DiscussPo> ol=null;
             if (page>=0) { //分页
                 if (page==0) page=1;
@@ -199,5 +200,19 @@ public class DiscussService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * 删除某文章的所有评论
+     * @param articleId 文章Id
+     * @param channelId 文章的Id
+     * @return 返回删除的数目
+     */
+    public int delArticleFavorite(String articleId, String channelId) {
+        //获得列表
+        Map<String, String> param=new HashMap<String, String>();
+        param.put("resId", articleId);
+
+        return discussDao.delete("delArticle", param);
     }
 }

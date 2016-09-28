@@ -5,12 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
-
 import com.spiritdata.framework.core.cache.CacheEle;
 import com.spiritdata.framework.core.cache.SystemCache;
 import com.spiritdata.framework.core.dao.mybatis.MybatisDAO;
@@ -352,7 +349,25 @@ public class ChannelService {
 		return channelAssetDao.queryForList("getListByWhere", m).size();
     }
 
+    public List<ChannelAssetPo> getChannelAssetList(String channelIds) {
+    	Map<String, Object> m = new HashMap<>();
+    	m.put("isValidate", "2");
+    	m.put("whereByClause", "channelId in ("+channelIds+")");
+    	m.put("sortByClause", "sort desc");
+		return channelAssetDao.queryForList("getList", m);
+    }
+    
     public void removeChannelAsset(String contentId) {
     	channelAssetDao.delete("deleteByAssetId", contentId);
+    }
+    
+    public boolean removeChannelAssetByEntity(Map<String, Object> m) {
+    	try {
+			channelAssetDao.delete("deleteByEntity", m);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
     }
 }
