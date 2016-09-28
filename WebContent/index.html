@@ -51,9 +51,13 @@
 .logoImg {
   width:43px;
   height:43px;
-  background-color:#FFA634;
-  border-radius:21px;
   float:left;
+}
+.logoImg img {
+  width:auto;  
+  height:auto;  
+  max-width:100%;  
+  max-height:100%;   
 }
 .logoWord {
   width:110px;
@@ -161,7 +165,7 @@
 <!-- 头部:悬浮 -->
 <div id="topSegment">
   <div id="logo" class="topBlock" style="width:172px; float:left;">
-    <div id="logo-img" class="logoImg"></div>
+    <div id="logo-img" class="logoImg"><img src="./resources/chopin/imgs/logo_yellow.png"></img></div>
     <div id="logo-word" class="logoWord"></div>
   </div>
   <div id="navi" class="topBlock" style="width:755px;padding-top:15px;"></div>
@@ -174,7 +178,7 @@
 
 <!-- 中间主框架 -->
 <div id="mainSegment">
-  <iframe frameborder="no" style="display:none;width:1366px;" id="mainContent" scrolling="no"></iframe>
+  <iframe frameborder="no" style="display:none;width:1366px;" id="mainContent" scrolling="yes"></iframe>
 </div>
 </body>
 
