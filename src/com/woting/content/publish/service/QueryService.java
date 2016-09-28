@@ -165,7 +165,7 @@ public class QueryService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Map<String, Object> makeContentHtml(String channelIds,String themeImg,String mediaSrc, String isshow, String source, String sourcepath, String mastatus, String username, List<Map<String, Object>> list) {
+	public Map<String, Object> makeContentHtml(String channelIds,String themeImg,String mediaSrc, String source, String sourcepath, String mastatus, String username, List<Map<String, Object>> list) {
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> statustype = new HashMap<>();
 		statustype.put("一般文章", 0);
@@ -201,7 +201,7 @@ public class QueryService {
 		ma.setSubjectWords(mediaSrc);
 		ma.setCTime(new Timestamp(System.currentTimeMillis()));
 		ma.setMaPublishTime(ma.getCTime());
-		ma.setLangDid(isshow);
+		ma.setLangDid("false");
 		String allText = "";
 		String htmlstr = "";
 		if (list != null && list.size() > 0) {
