@@ -45,13 +45,14 @@ public class QueryService {
 			+ "<img src=\"#####PICTURE#####\"/>"
 					+ "</div>"
 					+ "</div>";
-	private String video = "<div class=\"conpetitorContent\">"
+	private String video = "<div class=\"conpetitorContent\">" //内容视频信息
 			+ "<div class=\"video\">"
 			+ "<video  id=\"myVideo\" controls preload >"
 			+ "<source src=\"#####VIDEO#####\" >"
 			+ "</video>"
 			+ "</div>"
 			+ "</div>";
+	private String thirdvideo = "<iframe class=\"thirdvideo\"  src=\"#####THIRDVIDEO#####\"></iframe>";
 	private String audio = "<div class=\"conpetitorContent\">"
 			+ "<div class=\"audio\">"
 			+ "<audio id=\"myAudio\" controls>"
@@ -261,6 +262,11 @@ public class QueryService {
 					break;
 				case "VIDEO" :
 					String partNamevideo = m.get("PartName")+"";
+					String thpart = m.get("PartThirdPlayPath")+"";
+					if (!thpart.equals("null")) {
+						htmlstr += thirdvideo.replace("#####THIRDVIDEO#####", thpart);
+						partNamevideo = "";
+					}
 					if (partNamevideo.equals("null") || partNamevideo.equals("")) {
 						//删除文件
 						List<Map<String, Object>> videos = (List<Map<String, Object>>) m.get("ResouceList");

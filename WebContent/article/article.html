@@ -663,6 +663,9 @@ $(function(){
     $(".segment").remove();//清空数据
     $("#titleName,#channelName,#descnName,#channelId,#source,#website,#competitorName,#uploadThemeImg,#uploadMedia").val("");//清空数据
     $("#themeImg,#media").attr("value","");
+    $("#channelName li").each(function(){
+    	$(this).remove();
+    });
     $(".row,.shade").show();
   });
   //2.2-点击修改按钮
@@ -806,7 +809,7 @@ $(function(){
             var ma = $(this).parent().parent();
             var data = {
               "ChannelId":ma.attr("catalogId"),
-              "ContentId":ma.attr("id"),
+              "ContentId":ma.attr("id").replace("lunbotu",""),
               "ContentStatus":"2"
             }
             $.ajax({
@@ -1195,11 +1198,17 @@ function newVideo(newv){
   var vid='<div class="form-group segment video" id='+segmentIndex+' type="VIDEO" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;margin-left:40px;">'+
             '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
             '<label class="col-sm-2 control-label" style="margin-left:-35px;">视频：</label>'+
-            '<div class="col-sm-12"style="margin-left: -4px;">'+
+            '<div class="col-sm-12"style="margin-left: -4px;height: 100px;">'+
               '<input id="uploadVideo" name="uploadVideo" class="form-control" type="file" accept=".mp4" />'+
               '<input id="ContentVideo'+segmentIndex+'" class="form-isvalidate" name="ContentVideo" type="hidden" value="" />'+
               '<div id="OldOrgPath'+segmentIndex+'" style="display: none"></div>'+
               '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大100M，支持mp4格式<span class="uploadPrompt"></span></span>'+
+              '<input id="srcpath'+segmentIndex+'" name="titleName" class="form-control" type="text" aria-required="true" placeholder="第三方视频地址" list="thirdpartypath">'+
+              '<datalist id="thirdpartypath">'+
+                '<option value="http://v.qq.com/iframe/player.html?vid=j0327cet597&tiny=0&auto=0  腾讯地址">'+
+                '<option value="http://player.youku.com/embed/XMTc0MDM4NjA2NA==  优酷地址">'+
+                '<option value="http://open.iqiyi.com/developer/player_js/coopPlayerIndex.html?vid=21926e39d7fcc357fe1767ae9075702d&tvId=543739800  爱奇艺地址">'+
+              '</datalist>'+
             '</div>'+
             '<div class="actions">'+
               '<div class="toggle"><img src="../resources/images/off.png" alt=""  onclick="show(this)"/></div>'+
@@ -1428,6 +1437,11 @@ function createArticle(){
     }
     if(onePart.PartType=="VIDEO"){
       onePart.PartName=$('#ContentVideo'+onePart.PartId).val();
+      var thpath = $('#srcpath'+onePart.PartId).val();
+      if(thpath!="" || thpath=="第三方视频地址") {
+      	onePart.PartThirdPlayPath=thpath;
+      	onePart.PartName="";
+      }
       var obj = JSON.parse('['+$('#OldOrgPath'+onePart.PartId).html()+']');
       onePart.ResouceList = obj;
     }
