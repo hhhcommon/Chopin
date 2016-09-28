@@ -71,7 +71,7 @@ public class ChannelService {
             Map<String, Object> param=new HashMap<String, Object>();
             param.put("ownerType", "100");
             param.put("sortByClause", "sort");
-            List<ChannelPo> cpol=channelDao.queryForList("getListAll");
+            List<ChannelPo> cpol=channelDao.queryForList(param);
             if (cpol!=null&&!cpol.isEmpty()) {
                 List<Channel> cl=new ArrayList<Channel>();
                 for (ChannelPo cpo: cpol) {

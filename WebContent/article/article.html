@@ -200,26 +200,28 @@ li{list-style: none;}
   display: none;
 }
 /*栏目切换*/
-.tabNav{
-  width: 100%;
-  height: 30px;
+.tabNav {
+  width: 200px;
+  height: 100%;
   overflow: hidden;
+  margin-bottom: 0px;
 }
 .tabNav li{
-  width: 25%;
+  width: 200px;
   height: 30px;
+  line-height: 30px;
   border:1px solid black;
-  float: left;
   text-align: center;
-  line-height:30px;
   cursor:pointer;
+  font-size:20px;
 }
-.tabContent{
-  width: 100%;
-  height:91%;
-  position: relative;
+.tabContent {
+  width: 62.78%;
+  height: 339px;
+  position: absolute;
+  margin-left: 200px;
   overflow: auto;
-  margin-top: -10px;
+  top: 57px;
   border: 1px solid black;
 }
 .tabContent div{
@@ -306,11 +308,35 @@ li{list-style: none;}
 .aboutCompetitor #competitorName{
   height: 100%;
 }
-#channelId,#channelName{
+#channelId{
   width: 297px;
   height: 27px;
   position: absolute;
   margin-top: -2%;
+}
+#channelName{
+  position: absolute;
+  overflow: auto;
+}
+#channelName li{
+  width: 82px;
+  height: 30px;
+  margin-left:5px;
+  float: left;
+  margin-top: 13px;
+  border:1px solid black;
+  cursor: pointer;
+  text-align: center;
+  line-height:25px;
+}
+.remind{
+  width: auto;
+  height: 27px;
+  border: 1px solid red;
+  position: absolute;
+  margin-top: 3px;
+  margin-left: 31px;
+  display: none;
 }
 #source{
   width: 200px;
@@ -332,13 +358,12 @@ li{list-style: none;}
   width: 27px;
   top: -5px;
 }
-
 .chooseChannel{
   width: 83px;
   height: 27px;
   position: absolute;
   left:46%;
-  margin-top: -1.99%;
+  margin-top: -5.99%;
   font-size: 15px;
   line-height: 27px;
   text-align: center;
@@ -350,7 +375,7 @@ li{list-style: none;}
   height: 145px;
   margin-left: 2px;
   margin-top: 28px;
-  border:1px solid rgba(32, 27, 27, 0.08);
+  border:1px solid rgba(32, 27, 27, 0.36);
 }
 .ibox .channel .actions {
   width: 84px;
@@ -451,7 +476,9 @@ li, a, input {
               <button type="button" id="add" opeType="claAdd" class="btn" style="margin-right:3px;">添加</button>
               <button type="button" id="mod" opeType="claMod" class="btn" style="margin-right:3px;">修改</button>
               <button type="button" id="del" opeType="claDel" class="btn" style="margin-right:3px;">删除</button>
-              <button type="button" id="setCarousel" opeType="setCarousel" class="btn" style="margin-left:177px;">设为轮播图</button>
+              <button type="button" id="addpub" class="btn" style="margin-left:3px; margin-right:3px;">发布</button>
+              <button type="button" id="delpub" class="btn" style="margin-right:3px;">撤销发布</button>
+              <button type="button" id="setCarousel" opeType="setCarousel" class="btn" style="margin-left:50px;">设为轮播图</button>
               <button type="button" id="canCarousel" opeType="canCarousel" class="btn" style="margin-left:3px;">撤销轮播图</button>
             </div>
             <div class="ibox-content">
@@ -512,7 +539,7 @@ li, a, input {
                 <input id="uploadMedia" name="uploadMedia" class="form-control" type="text"  placeholder="点击，选择音/视频上传" style="background-color:#fff;" readonly/>
                 <input id="media" class="form-control" name="media" type="file" style="display:none;" value="" accept=".mp3,.mp4"/>
                 <input type="checkBox" name="" id="only" value="" class="checkMedia" />
-                <span class="help-block m-b-none"style="width: 140px;height: 27px;position: absolute;top: -2px;left: 459px;"><i class="fa fa-info-circle"></i>题图和媒体只能提交一个</span>
+                <span class="help-block m-b-none"style="width: 170px;height: 27px;position: absolute;top: -2px;left: 459px;"><i class="fa fa-info-circle"></i>题图和媒体只能提交一个</span>
               </div>
             </div>
             <div class="form-group">
@@ -531,15 +558,18 @@ li, a, input {
                 </div>
               </div>
             </div>
-            <div class="form-group channel" id="0" style="top:11px;">
+            <div class="form-group channel" style="top:11px;">
               <label class="col-sm-2 control-label">类别：</label>
               <div class="col-sm-10" style="margin-left: 25px;">
+                <div style="width: 298px;height:50px;position: relative; overflow-y:auto;overflow-x:hidden;border: 1px solid #1c84c6;" >
+                  <ul id="channelName"></ul>
+                </div>
+                <span class="remind">是否删除？如果是，请点击这个按钮</span>
                 <input id="channelId" name="channelId" class="form-control" placeholder="栏目id" type="hidden" aria-required="true" value="">
-                <input id="channelName" name="channelName" class="form-control" placeholder="选择文章类别" type="text" aria-required="true">
                 <div class='chooseChannel'>文章类别</div>
                 <ul id="cataTrees" class="ztree"></ul>
               </div>
-              <span class="help-block m-b-none"style="width: 157px;height: 27px;position: absolute;top: 5px;left: 476px;">
+              <span class="help-block m-b-none"style="width: 170px;height: 27px;position: absolute;top: 5px;left: 476px;">
                 <i class="fa fa-info-circle"></i>点击'加号'可以新增文图视音
               </span>
               <div class="actions">
@@ -630,7 +660,8 @@ $(function(){
   //2.1-点击添加按钮
   $("#add").on("click",function(){
     $(".segment").remove();//清空数据
-    $("#titleName,#channelName,#descnName,#channelId,#source,#website,#competitorName").val("");//清空数据
+    $("#titleName,#channelName,#descnName,#channelId,#source,#website,#competitorName,#uploadThemeImg,#uploadMedia").val("");//清空数据
+    $("#themeImg,#media").attr("value","");
     $(".row,.shade").show();
   });
   //2.2-点击修改按钮
@@ -639,7 +670,67 @@ $(function(){
   });
   //2.3-点击删除按钮
   $("#del").on("click",function(){
-    
+    var _url=rootPath+"content/removeContent.do";
+    $('.tabContentDiv').each(function(){
+      if($(this).css('display')=='block') {
+        $(this).find('input[type="checkBox"]').each(function(){
+          if($(this).is(':checked')) {
+            var ma = $(this).parent().parent();
+            var data = {
+              "ChannelId":ma.attr("catalogId"),
+              "ContentId":ma.attr("id")
+            }
+            $.ajax({
+              type: "POST",    
+              url: _url,
+              dataType: "json",
+              data: JSON.stringify(data),
+              success: function(jsonData){
+                if(jsonData.ReturnType=="1001") {
+                  alert("删除成功");
+                  $("#"+ma.attr("id")).remove();
+                  $("#"+"lunbotu"+ma.attr("id")).remove();
+                }
+              },
+              error:function(jqXHR){
+                alert("发生错误" + jqXHR.status);
+              }
+            });
+          }
+        });
+      }
+    });
+  });
+  
+  //2.4-点击发布按钮
+  $("#addpub").on("click",function(){
+    $('.tabContentDiv').each(function(){
+      if($(this).css('display')=='block') {
+        $(this).find('input[type="checkBox"]').each(function(){
+          if($(this).is(':checked')) {
+            var ma = $(this).parent().parent();
+            var data = {
+              "ChannelId":ma.attr("catalogId"),
+              "ContentId":ma.attr("id")
+            }
+            $.ajax({
+              type: "POST",    
+              url: _url,
+              dataType: "json",
+              data: JSON.stringify(_data),
+              success: function(jsonData){
+                if(jsonData.ReturnType=="1001") {
+          
+                }
+              },
+              error:function(jqXHR){
+                alert("发生错误" + jqXHR.status);
+              }
+            });
+          }
+        });
+      }
+    });
   });
   
   //3初始弹出页面点击事件
@@ -731,13 +822,13 @@ function loadCatalog(selectedNode){
 }
 
 //加载文章列表
-function loadCatalogList(returnData){
-  var nli,ndiv,loadArtList;
+function loadCatalogList(returnData,channelId){
+  var nli,ndiv,loadArtList,ddiv="";
   $(".tabNav,.tabContent").html("");//加载数据前清空导航栏和内容框
   for(var i=0;i<returnData.AllCount;i++){
     nli=$("<li id="+returnData.ResultInfo[i].ChannelId+" onclick='clickTab(this)'>"+returnData.ResultInfo[i].CatalogName+"</li>");
-    nli.css({"width":($(".tabNav").width())/(returnData.AllCount)});
     $(".tabNav").append(nli);
+    $(".tabNav li:first").css({background:"#ddd"});
     ndiv=$("<div class='tabContentDiv'></div>");
     for(var j=0;j<returnData.ResultInfo[i].AllCount;j++){
       loadArtList='<div class="listBox" catalogId='+returnData.ResultInfo[i].CatalogId+' id='+returnData.ResultInfo[i].List[j].ContentId+'>'+
@@ -752,15 +843,81 @@ function loadCatalogList(returnData){
                       '<input type="text" class="sortNum" value="'+returnData.ResultInfo[i].List[j].ContentSort+'">'+
                       '<button class="sortUpdateBtn">OK</button>'+
                     '</div>'+
-                    '<div class="clickBar"></div>'+
-                  '</div>'
+                    '<div class="isLunbo" style="width: auto;height: 20px;position: absolute; top: 46px;left: 382px;">是轮播图</div>'+
+                  '</div>';
       ndiv.append(loadArtList);
-    }
+      //添加轮播图列表
+      if(returnData.ResultInfo[i].List[j].IsDirect==true) {
+        ddiv +='<div class="listBox" catalogId='+returnData.ResultInfo[i].CatalogId+' id='+'lunbotu'+returnData.ResultInfo[i].List[j].ContentId+'>'+
+                  '<div class="listCheck"><input type="checkBox" name=""></div>'+
+                  '<div class="listImg"><img alt="mage" src='+returnData.ResultInfo[i].List[j].ContentImg+'></div>'+
+                  '<div class="listCon">'+
+                    '<h3>'+returnData.ResultInfo[i].List[j].ContentName+'</h3>'+
+                    '<p class="secTitle">'+returnData.ResultInfo[i].List[j].ContentDesc+'</p>'+
+                    '<p class="other"><span>'+returnData.ResultInfo[i].List[j].ContentPubTime+'</span></p>'+
+                  '</div>'+
+                  '<div class="sortUpdate">'+
+                    '<input type="text" class="sortNum" value="'+returnData.ResultInfo[i].List[j].ContentSort+'">'+
+                    '<button class="sortUpdateBtn">OK</button>'+
+                  '</div>'+
+                  '<div class="isLunbo" style="width: auto;height: 20px;position: absolute; top: 46px;left: 382px;">是轮播图</div>'+
+                '</div>';
+      }
+  }
+    $(".tabContent").append(ndiv);
+  }
+  nli=$("<li id='lunbotu' onclick='clickTab(this)'>轮播图</li>");
+  $(".tabNav").append(nli);
+  ndiv=$("<div class='tabContentDiv'></div>");
+  ndiv.append(ddiv);
   $(".tabContent").append(ndiv);
-  }
-  if($(".tabNav li").length>1){
-    $(".tabNav li:first").css({background:"#ddd"});
-  }
+  
+  //添加未发布列表
+  nli =$("<li id='weifabu' onclick='clickTab(this)'>未发布</li>");
+  $(".tabNav").append(nli);
+  ndiv=$("<div class='tabContentDiv'></div>");
+  var data = {
+    "ChannelId":selectedNode.id
+  };
+  //再次请求
+  $.ajax({
+    url:rootPath+"content/getNoPubList.do",
+    type:"POST",
+    data:JSON.stringify(data),
+    dataType:"json",
+    //表单提交前进行验证
+    success: function (returnData){
+      if(returnData.ReturnType=="1001"){
+        for(var j=0;j<returnData.AllCount;j++){
+          loadArtList='<div class="listBox" catalogId='+data.ChannelId+' id='+returnData.ResultInfo[j].ContentId+'>'+
+                        '<div class="listCheck"><input type="checkBox" name=""></div>'+
+                        '<div class="listImg"><img alt="mage" src='+returnData.ResultInfo[j].ContentImg+'></div>'+
+                        '<div class="listCon">'+
+                          '<h3>'+returnData.ResultInfo[j].ContentName+'</h3>'+
+                          '<p class="secTitle">'+returnData.ResultInfo[j].ContentDesc+'</p>'+
+                          '<p class="other"><span>'+returnData.ResultInfo[j].ContentPubTime+'</span></p>'+
+                        '</div>'+
+                        '<div class="parentChannel"style="width: 100px;height: 20px; position: absolute;top: 5px;right: 5px;">'+
+                          '<span>属于：</span>'+
+                          '<span>'+returnData.ResultInfo[j].ContentName+'</span>'+
+                        '</div>'+
+                        '<div class="sortUpdate">'+
+                          '<input type="text" class="sortNum" value="'+returnData.ResultInfo[j].ContentSort+'">'+
+                          '<button class="sortUpdateBtn">OK</button>'+
+                        '</div>'+
+                        '<div class="isLunbo" style="width: auto;height: 20px;position: absolute; top: 46px;left: 382px;">是轮播图</div>'+
+                      '</div>';
+          ndiv.append(loadArtList);
+        }
+        $(".tabContent").append(ndiv);
+      }else{
+        alert(returnData.Message);
+      }
+    },
+    error: function(jqXHR){
+      alert("发生错误" + jqXHR.status);
+    }
+  });
 }
 
 //点击“ok”修改排序
@@ -770,7 +927,7 @@ $(document).on("click",".listBox .sortUpdateBtn",function(ev){
   var _data={"ChannelId":$(this).parent().parent().attr("CatalogId"),
              "ContentId":$(this).parent().parent().attr("id"),
              "ContentSort":$(this).siblings(".sortNum").val()
-          };
+            };
   var selectedNode=$(this).parent().parent().attr("CatalogId");
   $.ajax({
     url:rootPath+"content/modifyPubSort.do",
@@ -805,10 +962,36 @@ function clickTab(clickt){
 function onClick(event, treeId, treeNode) {
   var node=zTreeObjs.getSelectedNodes();//获取 模态框里zTree当前被选中的节点数据集合
   var modalNode=node[0]; //当前选中的节点
-  $("#channelId").val(modalNode.id);
-  $("#channelName").val(modalNode.name);
+  var mid=modalNode.id;
+  var issame = 0;
+  if($("#channelName li").length > 0){
+    $("#channelName li").each(function(){
+      if($(this).attr("ncId")==mid){
+        issame = 1;
+      }
+    });
+    if(issame==0){
+      var ncli="<li ncId="+mid+">"+modalNode.name+"</li>";
+      $("#channelName").append(ncli);
+    }else{
+      alert("当前栏目已存在！");
+    }
+  }else{
+    var ncli="<li ncId="+mid+">"+modalNode.name+"</li>";
+    $("#channelName").append(ncli);
+  }
   $("#cataTrees").hide();
-};
+}
+$(document).on("mouseenter","#channelName li",function(){
+  $(".remind").show();
+});
+$(document).on("mouseleave","#channelName li",function(){
+  $(".remind").hide();
+});
+$(document).on("click","#channelName li",function(){
+  $(this).remove();
+  $(".remind").hide();
+});
 
 //点击栏目边上的“加号”
 function show(plus){
@@ -876,7 +1059,7 @@ function newSummernote(news) {
 
 //生成图片编辑框
 function newPicture(newp){
-  var pict='<div class="form-group segment pic" id='+segmentIndex+' type="PICTURE" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;margin-left:40px;">'+
+  var pict= '<div class="form-group segment pic" id='+segmentIndex+' type="PICTURE" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;margin-left:40px;">'+
               '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
               '<label class="col-sm-2 control-label" style="margin-left:-35px;">图片：</label>'+
               '<div class="col-sm-12"style="margin-left: -4px;">'+
@@ -954,6 +1137,7 @@ function newAudio(newa){
   upLoadFile(segmentIndex);
   segmentIndex++;
 }
+
 //上传题图
 $("#uploadThemeImg").on("click", function() {
   $("#themeImg").click();
@@ -974,10 +1158,8 @@ $("#themeImg").change(function() {
     //表单提交前进行验证
     success: function (opeResult){
       if(opeResult.ful[0].success=="TRUE"){
-        alert("提交题图");
-        $('#media').val("");
+        $('#media').attr("value","");
         $('#uploadMedia').val("");
-        console.log(_this);
         _this.attr("value",opeResult.ful[0].storeFilepath);//val(opeResult.ful[0].storeFilepath);
       }
     },
@@ -986,7 +1168,9 @@ $("#themeImg").change(function() {
     }
   });
 });
-$("#uploadMedia").on("click", function() {//上传媒体
+
+//上传媒体
+$("#uploadMedia").on("click", function() {
   $("#media").click();
 });
 $("#media").change(function() {
@@ -1005,9 +1189,8 @@ $("#media").change(function() {
     //表单提交前进行验证
     success: function (opeResult){
       if(opeResult.ful[0].success=="TRUE"){
-        alert("提交媒体");
         $('#uploadThemeImg').val("");
-        $('#themeImg').val("");
+        $('#themeImg').attr("value","");
         _this.attr("value",opeResult.ful[0].storeFilepath);
       }
     },
@@ -1023,7 +1206,7 @@ function upLoadFile(segmentIndex){
     var _this=$(this);
     var oMyForm = new FormData();
     oMyForm.append("ContentFile", $(this)[0].files[0]);
-    alert($(_this).parent().parent().attr("TYPE"));
+//  alert($(_this).parent().parent().attr("TYPE"));
     if(($(_this).parent().parent().attr("TYPE"))=="PICTURE"){
       if(($(this)[0].files[0].size)/1048576>5){//图片大于5M
         alert("图片过大，请换一张图片上传！");
@@ -1095,6 +1278,23 @@ function requestUpload(_this,oMyForm,segmentIndex){
 
 //生成文章内容
 function createArticle(){
+  //点提交根据选中栏目的名称获取id
+  if($("#channelName li").length>0){
+    var channelids = "";
+    $("#channelName li").each(function(){
+      var c=$(this).attr("ncId");
+//    alert(c);
+      if(channelids==""){
+        channelids=c;
+      }else{
+        channelids += ","+c;
+      } 
+    })
+  }else{
+    alert("栏目为空");
+    return;
+  }
+  $("#channelId").val(channelids);
   var list=[];
   var title={};//标题
   title.PartId=1;
@@ -1126,7 +1326,7 @@ function createArticle(){
       onePart.ResouceList = obj;
     }
     if(onePart.PartType=="MEDIA"){
-      onePart.PartName=$('#ContentAduio'+onePart.PartId).val();
+      onePart.PartName=$('#ContentAudio'+onePart.PartId).val();
       var obj = JSON.parse('['+$('#OldOrgPath'+onePart.PartId).html()+']');
       onePart.ResouceList = obj;
     }
@@ -1135,8 +1335,8 @@ function createArticle(){
   });
   var postData={};
   postData.ChannelId=$("#channelId").val();
-  postData.ThemeImg=$("#themeImg").val();
-  postData.MediaSrc=$("#media").val();
+  postData.ThemeImg=$("#themeImg").attr("value");
+  postData.MediaSrc=$("#media").attr("value");
   if($('#checkbox-id').is(':checked')) {
     postData.IsShow="true";
   } else {
