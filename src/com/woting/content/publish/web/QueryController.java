@@ -132,8 +132,8 @@ public class QueryController {
 	public Map<String, Object> addByWeb(HttpServletRequest request) {
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> m = RequestUtils.getDataFromRequest(request);
-		String channelid = m.get("ChannelId")+"";
-		if(channelid.equals("null") || channelid.equals("")) {
+		String channelids = m.get("ChannelId")+"";
+		if(channelids.equals("null") || channelids.equals("")) {
 			map.put("ReturnType", "1012");
 			map.put("Message", "无法获得栏目Id");
 			return map;
@@ -176,7 +176,7 @@ public class QueryController {
 			map.put("Message", "参数不全");
 			return map;
 		}
-		map = queryService.makeContentHtml(channelid, themeImg, mediaSrc, isshow, source, sourcepath, mastatus, username, list);
+		map = queryService.makeContentHtml(channelids, themeImg, mediaSrc, isshow, source, sourcepath, mastatus, username, list);
 		return map;
 	}
 	
@@ -294,7 +294,7 @@ public class QueryController {
 	}
 	
 	/**
-	 * 撤销已发布内容
+	 * 修改轮播图状态
 	 * 
 	 * @param request
 	 * @return
