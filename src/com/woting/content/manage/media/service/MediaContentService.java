@@ -242,7 +242,7 @@ public class MediaContentService {
                 mas.addAll(p.getResult());
             }
         }
-        if (!mas.isEmpty()) {
+        if (mas!=null&&!mas.isEmpty()) {
             //获得栏目列表
             whereStr="";
             String[] articlaIds=new String[mas.size()];

@@ -149,6 +149,7 @@ public class UserService implements UgaUserService {
         //查看是否已经存在了
         ThirdUserPo tuPo=thirdUserDao.getInfoObject("getInfoByThirdUserId", thirdUserId);
         UserPo uPo=null;
+        System.out.println("==============================================================================234=======");
 
         if (tuPo==null) {
             //若没有存在：1-加入新的用户
@@ -171,8 +172,8 @@ public class UserService implements UgaUserService {
             tuPo.setThirdLoginCount(1);
             tuPo.setThirdUserInfo(JsonUtils.objToJson(tuserData));
             //保存到数据库
-            thirdUserDao.insert(tuPo);
             this.insertUser(uPo);
+            thirdUserDao.insert(tuPo);
         } else {
             //若存在：加一次登录数
             Map<String, Object> paramM=new HashMap<String, Object>();

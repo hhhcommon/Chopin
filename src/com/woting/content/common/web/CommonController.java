@@ -81,6 +81,7 @@ public class CommonController {
                     }
                 }
                 map.put("ServerStatus", "1"); //服务器状态
+                map.put("IsExtension", "0"); //是否推广
             }
             return map;
         } catch(Exception e) {
@@ -137,7 +138,7 @@ public class CommonController {
             }
             int pageSize=10;
             try {
-                page=Integer.parseInt(m.get("PageSize")==null?null:m.get("PageSize")+"");
+                pageSize=Integer.parseInt(m.get("PageSize")==null?null:m.get("PageSize")+"");
             } catch(Exception e) {
             }
 

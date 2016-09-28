@@ -21,6 +21,7 @@
 <script src="./resources/js/framework.utils.js"></script>
 <script src="./resources/plugins/spiritui/jq.spirit.utils.js"></script>
 <script src="./resources/plugins/spiritui/jq.spirit.pageFrame.js"></script>
+<script src="./channelData.json"></script>
 
 <link rel="stylesheet" type="text/css" href="./resources/plugins/easyui-1.3.4/themes/default/easyui.css"/>
 <link rel="stylesheet" type="text/css" href="./resources/plugins/easyui-1.3.4/themes/icon.css"/>
@@ -222,113 +223,104 @@ function myResize() {
 }
 //加载导航菜单
 function loadNavigateMenu() {
-  $.ajax({type:"post", async:true, url:rootPath+"/baseinfo/getChannelTree4View.do", dataType:"json",
-    success: function(jsonData) {
-      if (jsonData.ReturnType=='1001') {
-        var i=0;
-        var nav=$("<div id='0' class='nav lineDiv' style='width:60px'>首页</div>");
-        $("#navi").append(nav);
-        $(nav).click(function() {
-          showChannelPage($(this).attr("id"));
-        });
-        for (;i<jsonData.Data.children.length; i++) {
-          var oneNav=jsonData.Data.children[i];
-          if (oneNav.children&&oneNav.children.length>0) {
-            nav=$("<div id='nav_"+oneNav.id+"' class='nav lineDiv' cid='"+oneNav.id+"'>"+oneNav.name+"<span class='selArrow'></span></div>");
-            //创建新的divMenu
-            var divMenu=$("<div id='menu_"+oneNav.id+"' class='_menu' cid='"+oneNav.id+"'></div>");
-            var j=0;
-            for (;j<oneNav.children.length;j++) {
-              var oneMenuItem=$("<div id='"+oneNav.children[j].id+"' class='_menuItem' cid='"+oneNav.children[j].id+"'>"+oneNav.children[j].name+"</div>");
-              $(divMenu).append(oneMenuItem);
-              $(oneMenuItem).click(function() {
-                showChannelPage($(this).attr("cid"));
-              });
-            }
-            $("body").append(divMenu);
-            $(divMenu).bind("mouseover", function() {
-              var cid=$(this).attr("cid");
-              curMenuId=cid;
-              //菜单显示处理
-              $("#nav_"+cid).css("color", "#FFA634");
-              $("#nav_"+cid).find("span").removeClass("selArrow").addClass("selArrow_hover");
-            });
-            $(divMenu).find("div").each(function() {
-              $(this).bind("mouseover", function() {
-                var cid=$(this).parent().attr("cid");
-                curMenuId=cid;
-                //菜单显示处理
-                $("#nav_"+cid).css("color", "#FFA634");
-                $("#nav_"+cid).find("span").removeClass("selArrow").addClass("selArrow_hover");
-              });
-            });
-            $(divMenu).bind("mouseout", function() {
-              var cid=$(this).attr("cid");
-              curMenuId=0;
-              setTimeout(function(){
-                if (cid!=curMenuId) {
-                  $("#menu_"+cid).hide();
-                  //菜单显示处理
-                  $("#nav_"+cid).css("color", "#fff");
-                  $("#nav_"+cid).find("span").removeClass("selArrow_hover").addClass("selArrow");
-                }
-              }, 200);
-            });
-            $(divMenu).find("div").each(function() {
-              $(this).bind("mouseout", function() {
-                var cid=$(this).parent().attr("cid");
-                curMenuId=0;
-                setTimeout(function(){
-                  if (cid!=curMenuId) {
-                    $("#menu_"+cid).hide();
-                    //菜单显示处理
-                    $("#nav_"+cid).css("color", "#fff");
-                    $("#nav_"+cid).find("span").removeClass("selArrow_hover").addClass("selArrow");
-                  }
-                }, 200);
-              });
-            });
-          } else nav=$("<div id='nav_"+oneNav.id+"' class='nav lineDiv'>"+oneNav.name+"</div>");
-          $("#navi").append(nav);
-          $(nav).click(function() {
+  if (channelData.ReturnType=='1001') {
+    var i=0;
+    var nav=$("<div id='0' class='nav lineDiv' style='width:60px'>首页</div>");
+    $("#navi").append(nav);
+    $(nav).click(function() {
+      showChannelPage($(this).attr("id"));
+    });
+    for (;i<channelData.Data.children.length; i++) {
+      var oneNav=channelData.Data.children[i];
+      if (oneNav.children&&oneNav.children.length>0) {
+        nav=$("<div id='nav_"+oneNav.id+"' class='nav lineDiv' cid='"+oneNav.id+"'>"+oneNav.name+"<span class='selArrow'></span></div>");
+        //创建新的divMenu
+        var divMenu=$("<div id='menu_"+oneNav.id+"' class='_menu' cid='"+oneNav.id+"'></div>");
+        var j=0;
+        for (;j<oneNav.children.length;j++) {
+          var oneMenuItem=$("<div id='"+oneNav.children[j].id+"' class='_menuItem' cid='"+oneNav.children[j].id+"'>"+oneNav.children[j].name+"</div>");
+          $(divMenu).append(oneMenuItem);
+          $(oneMenuItem).click(function() {
             showChannelPage($(this).attr("cid"));
           });
-          if (oneNav.children&&oneNav.children.length>0) {
-            $("#nav_"+oneNav.id).bind("mouseover", function() {
-              //定位menue的位置
-              var cid=$(this).attr("cid");
-              curMenuId=cid;
-              $("#menu_"+cid).css({
-                "left":$("#nav_"+cid).offset().left-15,
-                "top":$("#nav_"+cid).offset().top+47
-              });
-              //菜单显示处理
-              $("#nav_"+cid).css("color", "#FFA634");
-              $("#nav_"+cid).find("span").removeClass("selArrow").addClass("selArrow_hover");
-              $("#menu_"+cid).show();
-            });
-            $("#nav_"+oneNav.id).bind("mouseout", function() {
-              var cid=$(this).attr("cid");
-              curMenuId=0;
-              setTimeout(function(){
-                if (cid!=curMenuId) {
-                  $("#menu_"+cid).hide();
-                  $("#nav_"+cid).css("color", "#fff");
-                  $("#nav_"+cid).find("span").removeClass("selArrow_hover").addClass("selArrow");
-                }
-              }, 200);
-            });
-          }
         }
-        showChannelPage(0);
-      } else {
-        $.messager.alert("错误", "加载导航菜单：<br/>"+jsonData.message, "error");
+        $("body").append(divMenu);
+        $(divMenu).bind("mouseover", function() {
+          var cid=$(this).attr("cid");
+          curMenuId=cid;
+          //菜单显示处理
+          $("#nav_"+cid).css("color", "#FFA634");
+          $("#nav_"+cid).find("span").removeClass("selArrow").addClass("selArrow_hover");
+        });
+        $(divMenu).find("div").each(function() {
+          $(this).bind("mouseover", function() {
+            var cid=$(this).parent().attr("cid");
+            curMenuId=cid;
+            //菜单显示处理
+            $("#nav_"+cid).css("color", "#FFA634");
+            $("#nav_"+cid).find("span").removeClass("selArrow").addClass("selArrow_hover");
+          });
+        });
+        $(divMenu).bind("mouseout", function() {
+          var cid=$(this).attr("cid");
+          curMenuId=0;
+          setTimeout(function(){
+            if (cid!=curMenuId) {
+              $("#menu_"+cid).hide();
+              //菜单显示处理
+              $("#nav_"+cid).css("color", "#fff");
+              $("#nav_"+cid).find("span").removeClass("selArrow_hover").addClass("selArrow");
+            }
+          }, 200);
+        });
+        $(divMenu).find("div").each(function() {
+          $(this).bind("mouseout", function() {
+            var cid=$(this).parent().attr("cid");
+            curMenuId=0;
+            setTimeout(function(){
+              if (cid!=curMenuId) {
+                $("#menu_"+cid).hide();
+                //菜单显示处理
+                $("#nav_"+cid).css("color", "#fff");
+                $("#nav_"+cid).find("span").removeClass("selArrow_hover").addClass("selArrow");
+              }
+            }, 200);
+          });
+        });
+      } else nav=$("<div id='nav_"+oneNav.id+"' class='nav lineDiv'>"+oneNav.name+"</div>");
+      $("#navi").append(nav);
+      $(nav).click(function() {
+        showChannelPage($(this).attr("cid"));
+      });
+      if (oneNav.children&&oneNav.children.length>0) {
+        $("#nav_"+oneNav.id).bind("mouseover", function() {
+          //定位menue的位置
+          var cid=$(this).attr("cid");
+          curMenuId=cid;
+          $("#menu_"+cid).css({
+            "left":$("#nav_"+cid).offset().left-15,
+            "top":$("#nav_"+cid).offset().top+47
+          });
+          //菜单显示处理
+          $("#nav_"+cid).css("color", "#FFA634");
+          $("#nav_"+cid).find("span").removeClass("selArrow").addClass("selArrow_hover");
+          $("#menu_"+cid).show();
+        });
+        $("#nav_"+oneNav.id).bind("mouseout", function() {
+          var cid=$(this).attr("cid");
+          curMenuId=0;
+          setTimeout(function(){
+            if (cid!=curMenuId) {
+              $("#menu_"+cid).hide();
+              $("#nav_"+cid).css("color", "#fff");
+              $("#nav_"+cid).find("span").removeClass("selArrow_hover").addClass("selArrow");
+            }
+          }, 200);
+        });
       }
-    },
-    error: function(jqXHR) {
-      $.messager.alert("错误", "加载导航菜单：<br/>"+jqXHR.status, "error");
     }
-  });
+    showChannelPage(0);
+  }
 }
 
 function showChannelPage(channelId) {
@@ -343,35 +335,35 @@ function showInIframe(iframeSrc) {
   var iframe=document.getElementById("mainContent");
   var oldHeight=0;
   var timer1=setInterval(function() {
-  	var subHeight=0;
-    var subWeb=iframe.contentWindow.document.body;
-    if (subWeb) {
-      $("#mainContent").attr("height", subWeb.scrollHeight);
-    	subHeight=subWeb.scrollHeight;
+  var subHeight=0;
+  var subWeb=iframe.contentWindow.document.body;
+  if (subWeb) {
+    $("#mainContent").attr("height", subWeb.scrollHeight);
+      subHeight=subWeb.scrollHeight;
     }
     $("#a_html").height(subHeight);
     if (subHeight==oldHeight&&subHeight!=0) {
-    	window.clearInterval(timer1);
+      window.clearInterval(timer1);
     }
   },200);
   if (iframe.attachEvent) {
     iframe.attachEvent("onload", function(){
-    	var subHeight=0;
+      var subHeight=0;
       var subWeb=iframe.contentWindow.document.body;
       if (subWeb) {
         $("#mainContent").attr("height", subWeb.scrollHeight);
-      	subHeight=subWeb.scrollHeight;
+        subHeight=subWeb.scrollHeight;
       }
       $("#a_html").height($("#mainContent").height());
       if (subHeight>50) window.clearInterval(timer1);
     });
   } else {
     iframe.onload=function(){
-    	var subHeight=0;
+      var subHeight=0;
       var subWeb=iframe.contentWindow.document.body;
       if (subWeb) {
         $("#mainContent").attr("height", subWeb.scrollHeight);
-      	subHeight=subWeb.scrollHeight;
+        subHeight=subWeb.scrollHeight;
       }
       $("#a_html").height($("#mainContent").height());
       if (subHeight>50) window.clearInterval(timer1);
@@ -382,10 +374,11 @@ function showInIframe(iframeSrc) {
     var subWeb=iframe.contentWindow.document.body;
     if (subWeb) $("#mainContent").attr("height", subWeb.scrollHeight);
     $("#a_html").height($("#mainContent").height());
-  }, 5000);
+  }, 4000);
 }
-function test() {
-	showInIframe("http://localhost:1108/Chopin/articleShell.html?ContentId=000000001");
+function setMainHeight(height) {
+  $("#mainContent").attr("height", height);
+  $("#a_html").height($("#mainContent").height());
 }
 function showMask(message) {
   alert("in main");

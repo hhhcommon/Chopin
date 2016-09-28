@@ -806,6 +806,11 @@ public class PassportController {
             Map<String, Object> rm=userService.thirdLogin(thirdType, tuserId, tuserName, tuserImg, tuserData);
 
             //3-成功后，自动登陆，处理Redis
+            if ((UserPo)rm.get("userInfo")==null) {
+                map.put("ReturnType", "1003");
+                map.put("Message", "第三方登录失败！");
+                return map;
+            }
             String _userId=((UserPo)rm.get("userInfo")).getUserId();
             mUdk.setUserId(_userId);
             RedisConnection rConn=redisConn.getConnection();
