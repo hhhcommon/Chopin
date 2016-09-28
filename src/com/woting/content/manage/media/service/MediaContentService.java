@@ -19,6 +19,7 @@ import com.woting.cm.core.media.service.MediaService;
 import com.woting.cm.core.utils.ContentUtils;
 import com.woting.content.common.utils.FileUploadUtils;
 import com.woting.content.manage.channel.service.ChannelContentService;
+import com.woting.discuss.service.DiscussService;
 import com.woting.favorite.service.FavoriteService;
 import com.woting.passport.UGA.persistence.pojo.UserPo;
 import com.woting.passport.UGA.service.UserService;
@@ -30,6 +31,8 @@ public class MediaContentService {
 	private MediaService mediaService;
 	@Resource
 	private FavoriteService favoriteService;
+	@Resource
+	private DiscussService discussService;
 	@Resource
 	private ChannelContentService channelContentService;
 	@Resource
@@ -365,9 +368,13 @@ public class MediaContentService {
 			if(shareurl!=null && !shareurl.equals("null"))
 				FileUploadUtils.deleteFile(htmlpath.replace("http://www.wotingfm.com/", "/opt/tomcat_Chopin/webapps/"));
 			boolean isok = mediaService.removeMa(contentId);
+//			int removefavnum = favoriteService.delArticleFavorite(contentId,channelId);
+//			int removedisnum = discussService.delArticleFavorite(contentId,channelId);
 			if(isok) {
 				m.put("ReturnType", "1001");
 				m.put("Message", "内容彻底删除");
+//				m.put("RemoveFavNum", value);
+//				m.put("RemoveDisNum", value);
 				return m;
 			}
 			return null;
@@ -375,6 +382,8 @@ public class MediaContentService {
 			if (n) {
 			    m.put("ReturnType", "1001");
 			    m.put("Message", "栏目下此内容删除成功");
+//				m.put("RemoveFavNum", value);
+//				m.put("RemoveDisNum", value);
 			    return m;
 		    }
 			return null;

@@ -165,7 +165,7 @@ public class QueryService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Map<String, Object> makeContentHtml(String channelId,String themeImg,String mediaSrc, String isshow, String source, String sourcepath, String mastatus, String username, List<Map<String, Object>> list) {
+	public Map<String, Object> makeContentHtml(String channelIds,String themeImg,String mediaSrc, String isshow, String source, String sourcepath, String mastatus, String username, List<Map<String, Object>> list) {
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> statustype = new HashMap<>();
 		statustype.put("一般文章", 0);
@@ -318,20 +318,26 @@ public class QueryService {
 			}
 		}
 		ma.setAllText(CacheUtils.cleanTag(allText));
-		ChannelAssetPo cha = new ChannelAssetPo();
-		cha.setId(SequenceUUID.getPureUUID());
-		cha.setAssetId(ma.getId());
-		cha.setAssetType("wt_MediaAsset");
-		cha.setChannelId(channelId);
-		cha.setPublisherId(ma.getMaPubId());
-		cha.setCheckerId("0");
-		cha.setFlowFlag(2);
-		cha.setSort(0);
-		cha.setIsValidate(1);
-		cha.setPubName(ma.getMaTitle());
-		cha.setPubImg(ma.getMaImg());
-		cha.setCTime(ma.getCTime());
-		cha.setPubTime(ma.getCTime());
+		String[] channelid = channelIds.split(",");
+		if (channelid!=null && channelid.length>0) {
+			for (String cid : channelid) {
+				ChannelAssetPo cha = new ChannelAssetPo();
+		        cha.setId(SequenceUUID.getPureUUID());
+		        cha.setAssetId(ma.getId());
+		        cha.setAssetType("wt_MediaAsset");
+		        cha.setChannelId(cid);
+		        cha.setPublisherId(ma.getMaPubId());
+		        cha.setCheckerId("0");
+		        cha.setFlowFlag(2);
+		        cha.setSort(0);
+		        cha.setIsValidate(1);
+		        cha.setPubName(ma.getMaTitle());
+		        cha.setPubImg(ma.getMaImg());
+		        cha.setCTime(ma.getCTime());
+		        cha.setPubTime(ma.getCTime());
+		        channelService.insertChannelAsset(cha);
+			}
+		}
 		htmlstr = html.replace("#####CONTENT#####", htmlstr);
 		String path = SystemCache.getCache(FConstants.APPOSPATH).getContent()+"mweb/"+ma.getId()+".html";
 		FileUploadUtils.writeFile(htmlstr, path);
@@ -340,7 +346,6 @@ public class QueryService {
 		MediaAsset mas = new MediaAsset();
 		mas.buildFromPo(ma);
 		mediaService.saveMa(mas);
-		channelService.insertChannelAsset(cha);
 		map.put("ReturnType", "1001");
 		map.put("Message", "添加成功");
 		return map;
