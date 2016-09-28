@@ -533,7 +533,18 @@ li, a, input {
                 <input id="uploadThemeImg" name="uploadThemeImg" class="form-control" type="text"  placeholder="点击，选择图片上传" style="background-color:#fff;" readonly />
                 <input id="themeImg" class="form-control" name="themeImg" type="file" style="display:none;" value="" accept=".png,.jpg"/>
               </div>
-              <span class="help-block m-b-none"style="width: 170px;height: 27px;position: absolute;top: -2px;left: 459px;"><i class="fa fa-info-circle"></i>题图和媒体只能提交一个</span>
+              <span class="help-block m-b-none"style="width: 170px;height: 27px;position: absolute;top: -2px;left: 459px;"><i class="fa fa-info-circle"></i>题图,引用和媒体只能提交一个</span>
+            </div>
+            <div class="form-group" id="2">
+              <label class="col-sm-2 control-label">引用：</label>
+              <div class="col-sm-10" style="margin-left: 25px;">
+              <input id="thirdpath" name="titleName" class="form-control" type="text" aria-required="true" placeholder="第三方视频地址" list="thirdpartypath" style="width: 360px;height: 27px;">
+              <datalist id="thirdpartypath">
+                <option value="http://v.qq.com/iframe/player.html?vid=j0327cet597&tiny=0&auto=0  腾讯地址">
+                <option value="http://player.youku.com/embed/XMTc0MDM4NjA2NA==  优酷地址">
+                <option value="http://open.iqiyi.com/developer/player_js/coopPlayerIndex.html?vid=21926e39d7fcc357fe1767ae9075702d&tvId=543739800  爱奇艺地址">
+              </datalist>
+              </div>
             </div>
             <div class="form-group" id="2">
               <label class="col-sm-2 control-label">媒体：</label>
@@ -661,7 +672,7 @@ $(function(){
   //2.1-点击添加按钮
   $("#add").on("click",function(){
     $(".segment").remove();//清空数据
-    $("#titleName,#channelName,#descnName,#channelId,#source,#website,#competitorName,#uploadThemeImg,#uploadMedia").val("");//清空数据
+    $("#titleName,#channelName,#descnName,#channelId,#source,#website,#competitorName,#uploadThemeImg,#uploadMedia,#thirdpath").val("");//清空数据
     $("#themeImg,#media").attr("value","");
     $("#channelName li").each(function(){
     	$(this).remove();
@@ -1203,12 +1214,6 @@ function newVideo(newv){
               '<input id="ContentVideo'+segmentIndex+'" class="form-isvalidate" name="ContentVideo" type="hidden" value="" />'+
               '<div id="OldOrgPath'+segmentIndex+'" style="display: none"></div>'+
               '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大100M，支持mp4格式<span class="uploadPrompt"></span></span>'+
-              '<input id="srcpath'+segmentIndex+'" name="titleName" class="form-control" type="text" aria-required="true" placeholder="第三方视频地址" list="thirdpartypath">'+
-              '<datalist id="thirdpartypath">'+
-                '<option value="http://v.qq.com/iframe/player.html?vid=j0327cet597&tiny=0&auto=0  腾讯地址">'+
-                '<option value="http://player.youku.com/embed/XMTc0MDM4NjA2NA==  优酷地址">'+
-                '<option value="http://open.iqiyi.com/developer/player_js/coopPlayerIndex.html?vid=21926e39d7fcc357fe1767ae9075702d&tvId=543739800  爱奇艺地址">'+
-              '</datalist>'+
             '</div>'+
             '<div class="actions">'+
               '<div class="toggle"><img src="../resources/images/off.png" alt=""  onclick="show(this)"/></div>'+
@@ -1437,11 +1442,6 @@ function createArticle(){
     }
     if(onePart.PartType=="VIDEO"){
       onePart.PartName=$('#ContentVideo'+onePart.PartId).val();
-      var thpath = $('#srcpath'+onePart.PartId).val();
-      if(thpath!="" || thpath=="第三方视频地址") {
-      	onePart.PartThirdPlayPath=thpath;
-      	onePart.PartName="";
-      }
       var obj = JSON.parse('['+$('#OldOrgPath'+onePart.PartId).html()+']');
       onePart.ResouceList = obj;
     }
@@ -1459,6 +1459,7 @@ function createArticle(){
   postData.MediaSrc=$("#media").attr("value");
   postData.Source=$("#source").val();
   postData.SourcePath=$("#website").val();
+  postData.ThirdPath=$("#thirdpath").val();
   postData.ContentStatus=$("select").find("option:selected").text();
   postData.UserName=$("#competitorName").val();
   postData.List=list;

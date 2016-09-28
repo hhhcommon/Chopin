@@ -150,6 +150,9 @@ public class QueryController {
 		String mediaSrc = m.get("MediaSrc")+"";
 		if(mediaSrc.equals("null") || mediaSrc.equals(""))
 			mediaSrc = null;
+		String thirdpath = m.get("ThirdPath")+"";
+		if(thirdpath.equals("null") || thirdpath.equals(""))
+			thirdpath = null;
 		String username = m.get("UserName")+"";
 		if (!mastatus.equals("一般文章")) {
 			if (username.equals("null") || username.equals("")) {
@@ -172,7 +175,7 @@ public class QueryController {
 			map.put("Message", "参数不全");
 			return map;
 		}
-		map = queryService.makeContentHtml(channelids, themeImg, mediaSrc, source, sourcepath, mastatus, username, list);
+		map = queryService.makeContentHtml(channelids, themeImg, mediaSrc, thirdpath, source, sourcepath, mastatus, username, list);
 		return map;
 	}
 	

@@ -52,7 +52,6 @@ public class QueryService {
 			+ "</video>"
 			+ "</div>"
 			+ "</div>";
-	private String thirdvideo = "<iframe class=\"thirdvideo\"  src=\"#####THIRDVIDEO#####\"></iframe>";
 	private String audio = "<div class=\"conpetitorContent\">"
 			+ "<div class=\"audio\">"
 			+ "<audio id=\"myAudio\" controls>"
@@ -166,7 +165,7 @@ public class QueryService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Map<String, Object> makeContentHtml(String channelIds,String themeImg,String mediaSrc, String source, String sourcepath, String mastatus, String username, List<Map<String, Object>> list) {
+	public Map<String, Object> makeContentHtml(String channelIds,String themeImg, String mediaSrc, String thirdpath, String source, String sourcepath, String mastatus, String username, List<Map<String, Object>> list) {
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> statustype = new HashMap<>();
 		statustype.put("一般文章", 0);
@@ -199,7 +198,10 @@ public class QueryService {
 			ma.setLanguage(sourceurl);
 		}
 		ma.setMaImg(themeImg);
-		ma.setSubjectWords(mediaSrc);
+		if (mediaSrc!=null) 
+			ma.setSubjectWords(mediaSrc);
+		if(thirdpath!=null)
+			ma.setSubjectWords(thirdpath);
 		ma.setCTime(new Timestamp(System.currentTimeMillis()));
 		ma.setMaPublishTime(ma.getCTime());
 		ma.setLangDid("false");
@@ -262,11 +264,6 @@ public class QueryService {
 					break;
 				case "VIDEO" :
 					String partNamevideo = m.get("PartName")+"";
-					String thpart = m.get("PartThirdPlayPath")+"";
-					if (!thpart.equals("null")) {
-						htmlstr += thirdvideo.replace("#####THIRDVIDEO#####", thpart);
-						partNamevideo = "";
-					}
 					if (partNamevideo.equals("null") || partNamevideo.equals("")) {
 						//删除文件
 						List<Map<String, Object>> videos = (List<Map<String, Object>>) m.get("ResouceList");
