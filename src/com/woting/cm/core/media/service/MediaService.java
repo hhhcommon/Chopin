@@ -206,9 +206,13 @@ public class MediaService {
     }
 
     public boolean removeMa(String id){
-    	if (mediaAssetDao.delete("multiMaById", id)>0) 
-    		return true;
-    	return false;
+    	try {
+			mediaAssetDao.delete("multiMaById", id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+    	return true; 
     }
     
     public void removeCha(String assetId){
