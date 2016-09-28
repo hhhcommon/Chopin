@@ -368,13 +368,13 @@ public class MediaContentService {
 			if(shareurl!=null && !shareurl.equals("null"))
 				FileUploadUtils.deleteFile(htmlpath.replace("http://www.wotingfm.com/", "/opt/tomcat_Chopin/webapps/"));
 			boolean isok = mediaService.removeMa(contentId);
-//			int removefavnum = favoriteService.delArticleFavorite(contentId,channelId);
-//			int removedisnum = discussService.delArticleFavorite(contentId,channelId);
+			int removefavnum = favoriteService.delArticleFavorite(contentId,channelId);
+			int removedisnum = discussService.delArticleFavorite(contentId,channelId);
 			if(isok) {
 				m.put("ReturnType", "1001");
 				m.put("Message", "内容彻底删除");
-//				m.put("RemoveFavNum", value);
-//				m.put("RemoveDisNum", value);
+				m.put("RemoveFavNum", removefavnum);
+				m.put("RemoveDisNum", removedisnum);
 				return m;
 			}
 			return null;
