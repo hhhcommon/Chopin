@@ -410,6 +410,9 @@
       </div>
     </form>
   </div>
+
+<div id="mainSegment">
+  <iframe frameborder="no" style="display:none;width:1366px;height:500;" id="mainContent" scrolling="no"></iframe>
 </div>
 </body>
 
@@ -607,11 +610,17 @@ function showInIframe(iframeSrc) {
   }, 4000);
 }
 function setMainHeight(height) {
-  $("#mainContent").attr("height", height);
+  if (height==-1) {
+    var defaultHeight=500;
+    if ($(window).height()>500) defaultHeight=$(window).height();
+    $("#mainContent").attr("height", defaultHeight);
+  } else {
+    $("#mainContent").attr("height", height);
+  }
   $("#a_html").height($("#mainContent").height());
 }
 function showMask(message) {
-  alert("in main");
+
 }
 function cleanMask(message) {
   

@@ -37,6 +37,8 @@ public class FileUploadController extends AbstractFileUploadController{
         if(typenum>0) {
             String newname = SequenceUUID.getPureUUID()+filename.substring(filename.lastIndexOf("."), filename.length());
             String newpath = rootpath+MediaPath[typenum-1]+newname;
+            File f=new File(rootpath+MediaPath[typenum-1]);
+            f.mkdirs();
             FileUtils.copyFile(filepath, newpath);
             if(typenum==3) {
             	String smallImgName = "small"+newname;

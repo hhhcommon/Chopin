@@ -20,6 +20,8 @@ import com.woting.cm.core.media.persis.po.MediaAssetPo;
 import com.woting.cm.core.media.service.MediaService;
 import com.woting.content.common.utils.FileUploadUtils;
 import com.woting.content.publish.utils.CacheUtils;
+import com.woting.discuss.service.DiscussService;
+import com.woting.favorite.service.FavoriteService;
 import com.woting.passport.UGA.persistence.pojo.UserPo;
 import com.woting.passport.UGA.service.UserService;
 
@@ -31,6 +33,10 @@ public class QueryService {
 	private ChannelService channelService;
 	@Resource
 	private MediaService mediaService;
+	@Resource
+	private FavoriteService favoriteService;
+	@Resource
+	private DiscussService discussService;
 	@Resource
 	private UserService userService;
 	private String html = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\">"
@@ -45,7 +51,7 @@ public class QueryService {
 			+ "<img src=\"#####PICTURE#####\"/>"
 					+ "</div>"
 					+ "</div>";
-	private String video = "<div class=\"conpetitorContent\">"
+	private String video = "<div class=\"conpetitorContent\">" //内容视频信息
 			+ "<div class=\"video\">"
 			+ "<video  id=\"myVideo\" controls preload >"
 			+ "<source src=\"#####VIDEO#####\" >"
@@ -63,10 +69,17 @@ public class QueryService {
 			String channelId) {
 		Map<String, Object> map = new HashMap<>();
 		if (mediaService.getMaInfoByTitle(title) != null) {
-			map.put("ReturnType", "1006");
+			map.put("ReturnType", "1016");
 			map.put("Message", "内容重名");
 			return map;
 		}
+		String htmlstr = "";
+		if(descn!=null) {
+			descn = "<p>"+descn+"</p>";
+			descn = word.replace("#####WORD#####", descn);
+			htmlstr = htmlstr.replace("#####CONTENT#####", descn);
+		}
+		
 		UserPo userPo = userService.getUserById(userId);
 		MediaAssetPo mapo = new MediaAssetPo();
 		mapo.setId(SequenceUUID.getPureUUID());
@@ -88,10 +101,13 @@ public class QueryService {
 		mapo.setPubCount(1);
 		String alltext = "##"+title+"####"+descn+"##";
 		mapo.setAllText(alltext);
+		String path = SystemCache.getCache(FConstants.APPOSPATH).getContent()+"mweb/"+mapo.getId()+".html";
+		FileUploadUtils.writeFile(htmlstr, path);
+		mapo.setMaURL(path);
 		MediaAsset mat = new MediaAsset();
 		mat.buildFromPo(mapo);
 		if (!mediaService.saveMa(mat)) {
-			map.put("ReturnType", "1007");
+			map.put("ReturnType", "1017");
 			map.put("Message", "内容添加失败");
 			return map;
 		}
@@ -114,7 +130,7 @@ public class QueryService {
 		chas.setPubTime(new Timestamp(System.currentTimeMillis()));
 		if (!channelService.insertChannelAsset(chas)) {
 			mediaService.removeMa(mapo.getId());
-			map.put("ReturnType", "1007");
+			map.put("ReturnType", "1017");
 			map.put("Message", "内容添加失败");
 			return map;
 		} else {
@@ -128,9 +144,31 @@ public class QueryService {
 		return mediaService.getMaInfoByMaPubId(userId);
 	}
 
-	public void removeContentByApp(String userId, String contentId) {
+	public Map<String, Object> removeContentByApp(String userId, String contentId) {
+		MediaAsset ma = mediaService.getMaInfoById(contentId);
+		String img = ma.getMaImg();
+		if(img!=null && !img.equals("null")) {
+			FileUploadUtils.deleteFile(img.replace("http://www.wotingfm.com/", "/opt/tomcat_Chopin/webapps/"));
+			String smallimg = img.replace("group03/", "group04/small");
+			FileUploadUtils.deleteFile(smallimg.replace("http://www.wotingfm.com/", "/opt/tomcat_Chopin/webapps/"));
+		}
+		String vodie = ma.getSubjectWords();
+		if(vodie!=null && !vodie.equals("null")) 
+			FileUploadUtils.deleteFile(vodie.replace("http://www.wotingfm.com/", "/opt/tomcat_Chopin/webapps/"));
+		String htmlpath = ma.getMaURL();
+		if (htmlpath!=null && !htmlpath.equals("null")) 
+			FileUploadUtils.deleteFile(htmlpath.replace("http://www.wotingfm.com/", "/opt/tomcat_Chopin/webapps/"));
+		String shareurl = ma.getKeyWords();
+		if(shareurl!=null && !shareurl.equals("null"))
+			FileUploadUtils.deleteFile(htmlpath.replace("http://www.wotingfm.com/", "/opt/tomcat_Chopin/webapps/"));
 		mediaService.removeMa(contentId);
 		channelService.removeChannelAsset(contentId);
+		int removefavnum = favoriteService.delArticleFavorite(contentId,"6");
+		int removedisnum = discussService.delArticleFavorite(contentId,"6");
+		Map<String, Object> map = new HashMap<>();
+		map.put("RemoveFavNum", removefavnum);
+		map.put("RemoveDisNum", removedisnum);
+		return map;
 	}
 
 	// 只用于发布已撤销的内容
@@ -165,7 +203,7 @@ public class QueryService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Map<String, Object> makeContentHtml(String channelIds,String themeImg,String mediaSrc, String source, String sourcepath, String mastatus, String username, List<Map<String, Object>> list) {
+	public Map<String, Object> makeContentHtml(String channelIds,String themeImg, String mediaSrc, String thirdpath, String source, String sourcepath, String mastatus, String username, List<Map<String, Object>> list) {
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> statustype = new HashMap<>();
 		statustype.put("一般文章", 0);
@@ -198,7 +236,10 @@ public class QueryService {
 			ma.setLanguage(sourceurl);
 		}
 		ma.setMaImg(themeImg);
-		ma.setSubjectWords(mediaSrc);
+		if (mediaSrc!=null) 
+			ma.setSubjectWords(mediaSrc);
+		if(thirdpath!=null)
+			ma.setSubjectWords(thirdpath);
 		ma.setCTime(new Timestamp(System.currentTimeMillis()));
 		ma.setMaPublishTime(ma.getCTime());
 		ma.setLangDid("false");

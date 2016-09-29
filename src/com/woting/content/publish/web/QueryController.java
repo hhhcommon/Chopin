@@ -37,29 +37,31 @@ public class QueryController {
 		Map<String, Object> m = RequestUtils.getDataFromRequest(request);
 		String userId = m.get("UserId")+"";
 		if(userId.equals("null")) {
-			map.put("ReturnType", "1002");
+			map.put("ReturnType", "1012");
 			map.put("Message", "无法获得用户Id");
 			return map;
 		}
 		String title = m.get("ContentTitle")+"";
 		if(title.equals("null")) {
-			map.put("ReturnType", "1003");
+			map.put("ReturnType", "1013");
 			map.put("Message", "无法获得内容标题");
 			return map;
 		}
 		String filePath = m.get("FilePath")+"";
 		if(filePath.equals("null")) {
-			map.put("ReturnType", "1004");
+			map.put("ReturnType", "1014");
 			map.put("Message", "无内容路径");
 			return map;
 		}
 		String channelId = m.get("ChannelId")+"";
 		if(channelId.equals("null")) {
-			map.put("ReturnType", "1005");
+			map.put("ReturnType", "1015");
 			map.put("Message", "无栏目Id");
 			return map;
 		}
 		String descn = m.get("ContentDecsn")+"";
+		if (descn.equals("null") || descn.equals("")) 
+			return null;
 		map = queryService.addContentByApp(userId,title,filePath,descn,channelId);
 		return map;
 	}
@@ -104,20 +106,27 @@ public class QueryController {
 		Map<String, Object> m = RequestUtils.getDataFromRequest(request);
 		String userId = m.get("UserId")+"";
 		if(userId.equals("null")) {
-			map.put("ReturnType", "1002");
+			map.put("ReturnType", "1012");
 			map.put("Message", "无法获得用户Id");
 			return map;
 		}
 		String contentId = m.get("ContentId")+"";
 		if(contentId.equals("null")) {
-			map.put("ReturnType", "1003");
+			map.put("ReturnType", "1013");
 			map.put("Message", "无法获得内容Id");
 			return map;
 		}
-		queryService.removeContentByApp(userId, contentId);
-		map.put("ReturnType", "1001");
-		map.put("Message", "成功删除");
-		return map;
+		map = queryService.removeContentByApp(userId, contentId);
+		if (map==null) {
+			map = new HashMap<>();
+			map.put("ReturnType", "1014");
+			map.put("Message", "删除失败");
+			return map;
+		} else {
+			map.put("ReturnType", "1001");
+		    map.put("Message", "成功删除");
+		    return map;
+		}
 	}
 	
 	/**
@@ -150,6 +159,9 @@ public class QueryController {
 		String mediaSrc = m.get("MediaSrc")+"";
 		if(mediaSrc.equals("null") || mediaSrc.equals(""))
 			mediaSrc = null;
+		String thirdpath = m.get("ThirdPath")+"";
+		if(thirdpath.equals("null") || thirdpath.equals(""))
+			thirdpath = null;
 		String username = m.get("UserName")+"";
 		if (!mastatus.equals("一般文章")) {
 			if (username.equals("null") || username.equals("")) {
@@ -172,7 +184,7 @@ public class QueryController {
 			map.put("Message", "参数不全");
 			return map;
 		}
-		map = queryService.makeContentHtml(channelids, themeImg, mediaSrc, source, sourcepath, mastatus, username, list);
+		map = queryService.makeContentHtml(channelids, themeImg, mediaSrc, thirdpath, source, sourcepath, mastatus, username, list);
 		return map;
 	}
 	

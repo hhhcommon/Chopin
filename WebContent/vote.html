@@ -34,59 +34,73 @@
 <title></title>
 <style>
 html { color:#000; background:#fff; }
-body { padding:0; width:100% }
+body { width:100% padding-left:20px; padding-right:20px;}
 
-#a_content {
-  padding: 50px 20px 50px 20px;
+._tr{
+	height:100px;
+	border-top:1px solid #D9D9D9;
+	padding: 20px 7px 19px 7px;
 }
-#a_content div {
-  border:1px solid red;
-  width:100%;
+#mainTable {
+	width:100%;
+	padding-left:15px;
+	padding-right:15px;
 }
-#a_title {
-  height:34px;
-  text-align:center;
-  align:center;
-  line-height:34px;
-  font-size:30px;
-  font-family: vista_MS;
-  font-weight:bold;
-  display:inline-block; 
-}
-#a_time {
-  height:38px;
-  text-align:center;
-  align:center;
-  line-height:38px;
-  font-size:18px;
-  font-family: vista_MS;  
-}
-#a_time span {
-  height:38px;
-  text-align:bottom;
-  align:center;
-  line-height:38px;
-  font-family: vista_MS;  
-  font-size:18px;
-  color:#000;
-}
-#a_img {
-  height:30px;
-}
-#a_media {
-  height:30px;
-}
-#a_html {
-  height:30px;
+._portrait img {
+	height:60px;
+	width:60px;
+	border-radius:30px;
+	border: 1px solid #FFA634;
 }
 </style>
 </head>
-<body>
+<body><center>
 <div id="vote_main" style="display:yes;">
+	<table id="mainTable">
+<tr class="_tr">
+<td class="_portrait">
+<img src="./asset/members/portrait/孙嘉源.jpg">
+</td>
+<td class="_prograss">
+<div>说明</div>
+<div>进度条</div>
+</td>
+<td class="_vote"></td>
+</tr><tr class="_tr">
+<td class="_portrait">
+<img src="./asset/members/portrait/孙嘉源.jpg">
+</td>
+<td class="_prograss">
+<div>说明</div>
+<div>进度条</div>
+</td>
+<td class="_vote"></td>
+</tr>
+	</table>
 </div>
-</body>
+</center></body>
 
 <script>
 var rootPath=getRootPath();
+//主函数
+$(function() {
+	alert($(window).width());
+  if (rootPath.length==1) rootPath="http://www.wotingfm.com/Chopin";
+  $.ajax({type:"post", async:true, url:rootPath+"/playSumCount.do", dataType:"json",
+    timeout:2000,
+    success: function(jsonData) {
+      drawPage(jsonData.ResultInfo);
+    },
+    error: function(jqXHR) {
+    }
+  });
+});
+
+function drawPage(_data) {
+  for (var i=0; i<_data.length; i++) {
+  	var newLine=$("<tr class='_tr'><td class='_portrait'><img src='./asset/members/portrait/"+_data[i].UserName+".jpg'></img></td><td class='_prograss'><div>说明</div><div>进度条</div></td><td class='_vote'></td></tr>");
+  	$("#mainTable").append(newLine);
+  }
+}
 </script>
 </html>
