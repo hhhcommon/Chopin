@@ -45,7 +45,7 @@ public class QueryService {
 			+ "<img src=\"#####PICTURE#####\"/>"
 					+ "</div>"
 					+ "</div>";
-	private String video = "<div class=\"conpetitorContent\">"
+	private String video = "<div class=\"conpetitorContent\">" //内容视频信息
 			+ "<div class=\"video\">"
 			+ "<video  id=\"myVideo\" controls preload >"
 			+ "<source src=\"#####VIDEO#####\" >"
@@ -165,7 +165,7 @@ public class QueryService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Map<String, Object> makeContentHtml(String channelIds,String themeImg,String mediaSrc, String isshow, String source, String sourcepath, String mastatus, String username, List<Map<String, Object>> list) {
+	public Map<String, Object> makeContentHtml(String channelIds,String themeImg, String mediaSrc, String thirdpath, String source, String sourcepath, String mastatus, String username, List<Map<String, Object>> list) {
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> statustype = new HashMap<>();
 		statustype.put("一般文章", 0);
@@ -198,10 +198,13 @@ public class QueryService {
 			ma.setLanguage(sourceurl);
 		}
 		ma.setMaImg(themeImg);
-		ma.setSubjectWords(mediaSrc);
+		if (mediaSrc!=null) 
+			ma.setSubjectWords(mediaSrc);
+		if(thirdpath!=null)
+			ma.setSubjectWords(thirdpath);
 		ma.setCTime(new Timestamp(System.currentTimeMillis()));
 		ma.setMaPublishTime(ma.getCTime());
-		ma.setLangDid(isshow);
+		ma.setLangDid("false");
 		String allText = "";
 		String htmlstr = "";
 		if (list != null && list.size() > 0) {
