@@ -242,10 +242,11 @@ public class DiscussController {
             } catch(Exception e) {
             }
 
-            List<Discuss> ol=discussService.getArticleDiscusses(articleId, page, pageSize);
+            Map<String, Object> ol=discussService.getArticleDiscusses(articleId, page, pageSize);
             if (ol!=null&&ol.size()>0) {
                 map.put("ReturnType", "1001");
-                map.put("OpinionList", convertDiscissView(ol));
+                map.put("AllCount", ol.get("AllCount"));
+                map.put("OpinionList", ol.get("List"));
             } else {
                 map.put("ReturnType", "1011");
                 map.put("Message", "无评论信息");
@@ -356,11 +357,12 @@ public class DiscussController {
             } catch(Exception e) {
             }
 
-            List<Map<String, Object>> al=discussService.getUserDiscusses(mUdk.getUserId(), page, pageSize);
+            Map<String, Object> al=discussService.getUserDiscusses(mUdk.getUserId(), page, pageSize);
 
             if (al!=null&&al.size()>0) {
                 map.put("ReturnType", "1001");
-                map.put("ContentList", al);
+                map.put("AllCount", al.get("AllCount"));
+                map.put("ContentList", al.get("List"));
             } else {
                 map.put("ReturnType", "1011");
                 map.put("Message", "无用户评论列表");
