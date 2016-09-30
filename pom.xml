@@ -5,7 +5,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
   <!-- 配置编码格式，与eclpse的IDE环境编码格式匹配 -->
-  <!-- D:\workIDE\projects\Chopin || D:\XBwork\code_short.pcm || D:\workIDE\Chopin -->
+  <!-- D:\workIDE\projects\Chopin || D:\workIDE\Chopin || D:\workIDE\Chopin -->
 
   <properties>
     <projectDir>D:\workIDE\Chopin</projectDir>

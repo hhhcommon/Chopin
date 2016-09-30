@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes">
+    <title>选手内容页简介</title>
+    <style>
+*{ margin: 0;padding: 0;list-style: none;font-family: "微软雅黑";}
+html{height:100%;}
+html{font-size:62.5%;}
+.resume{
+  width: 6.38rem;
+  font-family: "微软雅黑";
+  margin: 0.5rem auto;
+  /*border:2px solid black;*/
+  overflow: hidden;
+}
+.resume_brief{
+  width: 5.55rem;
+  margin: 0px auto;
+  overflow: hidden;
+  /*border:2px solid pink;*/
+}
+.photo{
+  width:1.3rem;
+  height:1.78rem;
+  border:1px solid gray;
+  float:left;
+}
+.photo img{
+  width:1.3rem;
+  height:1.78rem;
+  baackground-size:100% 100%;
+}
+.informtion1{
+  width:1.68rem;
+  height:1.78rem;
+  margin-left:0.14rem;
+  float: left;
+}
+.informtion2{
+  width:2.03rem;
+  height:1.78rem;
+  float: left;
+  margin-left:0.36rem;
+}
+.informtion1 ul{
+  width: 1.82rem;
+  height: 0.6rem;
+  overflow: hidden;
+  text-align:left;
+}
+.informtion2 ul{
+  width: 2.0rem;
+  height: 0.6rem;
+  overflow: hidden;
+  text-align:left;
+}
+.informtion1 ul .attr{
+  width: 0.92rem;
+  height:0.61rem;
+  color:rgb(6,6,6);
+  float:left;
+}
+.informtion2 ul .attr{
+  width: 1.01rem;
+  height:0.61rem;
+  float:left;
+}
+.informtion1 ul .value{
+  width: 0.77rem;
+  height:0.61rem;
+  color:rgba(165,165,165,1);
+  float:left;
+  text-align: left;
+  text-indent: 0.11rem;
+}
+.informtion2 ul .value{
+  width: 0.99rem;
+  height:0.61rem;
+  float:left;
+  color:rgba(165,165,165,1);
+  text-align: left;
+  text-indent: 0.12rem;
+}
+.instruction{
+  width: 5.55rem;
+  height: auto;
+  margin: 0.1rem auto;
+  overflow: hidden;
+  color:rgba(165,165,165,1);
+  /*border:1px solid black;*/
+}
+.attr{
+  font-size: 0.22rem;
+  line-height: 0.6rem;
+  font-weight: 400;
+}
+.value{
+  font-size: 0.21rem;
+  line-height: 0.6rem;
+}
+.instruction{
+  font-size: 0.22rem;
+  line-height: 0.42rem;
+  text-indent: 0.3rem;
+}
+</style>
+</head>
+<body>
+<div class="resume">
+  <div class="resume_brief">
+    <div class="photo"><img src="images/1.jpg" alt="" /></div>
+    <div class="informtion1">
+      <ul>
+        <li class="attr">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</li>
+        <li class="value">金惠珍</li>
+      </ul>
+      <ul>
+        <li class="attr">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别</li>
+        <li class="value">女</li>
+      </ul>
+      <ul>
+        <li class="attr">参赛组别</li>
+        <li class="value">青年组</li>
+      </ul>
+    </div>
+    <div class="informtion2">
+      <ul>
+        <li class="attr">籍&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;贯</li>
+        <li class="value">中国沈阳</li>
+      </ul>
+      <ul>
+        <li class="attr">等&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;级</li>
+        <li class="value">﹡﹡</li>
+      </ul>
+      <ul>
+        <li class="attr">证件后4位</li>
+        <li class="value">0425</li>
+      </ul>
+    </div>
+  </div>
+  <div class="instruction">现在如果要在页面中使用标签，需要考虑三种情况，支（如果这玩 意儿没出事的话），支持
+  以用到 的媒介属性和方法，以及媒介事件。标签的使用标签含有 以（如果这玩 意儿没出事的话），支持
+  及一个内部使用的标签标签外，还可以包含当指定的视频都不能 播放时，返回的内容。</div>
+ </div>
+</body>
+<script>
+window.onload = function(){
+  var wid = document.documentElement.clientWidth;
+  var newfs = wid*100/640;
+    //wid*默认的字体大小/设计图的大小
+  var html = document.getElementsByTagName('html')[0];
+  html.style.fontSize = newfs+"px";
+}
+window.onresize = function(){
+  var wid = document.documentElement.clientWidth;
+  var newfs = wid*100/640;
+  var html = document.getElementsByTagName('html')[0];
+  html.style.fontSize = newfs+"px";
+}
+
+</script>
+</html>
