@@ -42,7 +42,7 @@ public class QueryService {
 	private String html = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\">"
 			+ "<link href=\"../resources/css/contentapp.css\" rel=\"stylesheet\">"
 			+ "<script type=\"text/javascript\" src=\"../resources/plugins/hplus/js/jquery-2.1.1.min.js\"></script>"
-			+ "<script type=\"text/javascript\" src=\"../resources/js/competitor.js\"></script>"
+			+ "<script type=\"text/javascript\" src=\"../resources/js/contentapp.js\"></script>"
 			+ "</head><body>#####CONTENT#####</body></html>";
 	private String word = "<div class=\"conpetitorContent\">" //内容页文本内容
 			+ "<div class=\"word\">#####WORD#####</div>"
@@ -101,7 +101,7 @@ public class QueryService {
 		mapo.setPubCount(1);
 		String alltext = "##"+title+"####"+descn+"##";
 		mapo.setAllText(alltext);
-		String path = SystemCache.getCache(FConstants.APPOSPATH).getContent()+"mweb/"+mapo.getId()+".html";
+		String path = SystemCache.getCache(FConstants.APPOSPATH).getContent()+"dataCenter/mweb/"+mapo.getId()+".html";
 		FileUploadUtils.writeFile(htmlstr, path);
 		mapo.setMaURL(path);
 		MediaAsset mat = new MediaAsset();
@@ -380,10 +380,10 @@ public class QueryService {
 			}
 		}
 		htmlstr = html.replace("#####CONTENT#####", htmlstr);
-		String path = SystemCache.getCache(FConstants.APPOSPATH).getContent()+"mweb/"+ma.getId()+".html";
+		String path = SystemCache.getCache(FConstants.APPOSPATH).getContent()+"dataCenter/mweb/"+ma.getId()+".html";
 		FileUploadUtils.writeFile(htmlstr, path);
-		ma.setMaURL("http://www.wotingfm.com/Chopin/mweb/"+ma.getId()+".html");
-		ma.setKeyWords("http://www.wotingfm.com/Chopin/mweb/"+ma.getId()+".html");
+		ma.setMaURL("http://www.wotingfm.com/Chopin/dataCenter/mweb/"+ma.getId()+".html");
+		ma.setKeyWords("http://www.wotingfm.com/Chopin/dataCenter/mweb/"+ma.getId()+".html");
 		MediaAsset mas = new MediaAsset();
 		mas.buildFromPo(ma);
 		mediaService.saveMa(mas);

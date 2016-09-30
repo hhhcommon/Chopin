@@ -3,11 +3,8 @@ package com.woting.content.common.web;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
-
 import javax.servlet.http.HttpSession;
-
 import org.springframework.stereotype.Controller;
-
 import com.spiritdata.framework.FConstants;
 import com.spiritdata.framework.core.cache.SystemCache;
 import com.spiritdata.framework.core.web.AbstractFileUploadController;
@@ -15,14 +12,13 @@ import com.spiritdata.framework.util.FileNameUtils;
 import com.spiritdata.framework.util.FileUtils;
 import com.spiritdata.framework.util.SequenceUUID;
 import com.woting.content.common.utils.FileUploadUtils;
-
 import net.coobird.thumbnailator.Thumbnails;
 
 @Controller
 public class FileUploadController extends AbstractFileUploadController{
 //	private static final String rootpath = "/opt/tomcat_Chopin/webapps/Chopin/";
 //	private static final String rootpath = "D:/workIDE/Chopin/WebContent/";
-	private static final String webpath = "http://www.wotingfm.com/Chopin/";
+	private static final String webpath = "http://www.wotingfm.com/Chopin/dataCenter/";
 	private static final String[] MediaPath = {
 			"media/group01/",  //上传的音频文件路径
 			"media/group02/",  //上传的视频文件路径

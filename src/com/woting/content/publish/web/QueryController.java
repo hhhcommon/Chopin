@@ -63,6 +63,9 @@ public class QueryController {
 		if (descn.equals("null") || descn.equals("")) 
 			return null;
 		map = queryService.addContentByApp(userId,title,filePath,descn,channelId);
+		if (map==null) {
+			
+		}
 		return map;
 	}
 	
@@ -88,8 +91,10 @@ public class QueryController {
 			map.put("ReturnType", "1001");
 			map.put("ResultInfo", mm);
 		    map.put("Message", "查询成功");
+		}else{
+			map.put("ReturnType", "1003");
+		    map.put("Message", "查询无内容");
 		}
-		
 		return map;
 	}
 	
