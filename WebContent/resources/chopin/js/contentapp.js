@@ -1,0 +1,3 @@
+$(function(){
+ $("span").addClass("fontsize");
+})
