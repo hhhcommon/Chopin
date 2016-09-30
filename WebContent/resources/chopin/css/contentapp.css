@@ -1,17 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <html xmlns="http://www.w3.org/1999/xhtml">
-  <meta charset="UTF-8">
-  <title>参赛选手</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="renderer" content="webkit">
-  <meta name="applicable-device" content="pc,mobile">
-  <script type="text/javascript" src="../js/jquery-2.1.1.min.js"></script>
-  <script type="text/javascript" src="competitor.js"></script>
-<style>
-/*全局样式*/
+﻿/*全局样式*/
 *{margin:0;padding:0;}
 li{list-style: none;}
 html,body{height:100%;font-size:62.5%}
@@ -163,50 +150,3 @@ html,body{height:100%;font-size:62.5%}
   height:40px;
   margin:0px auto 10px;
 }
-</style>
-</head>
-  <body>
-    <div class="container">
-      <div class="header">
-        <span class="line"></span>
-        <span class="category">参赛选手</span>
-      </div>
-      <div class="titleContent">
-        <h2>李瑞琦</h2>
-      </div>
-      <div class="conpetitorContent">
-        <div class="pic">
-          <img src="1.jpg" alt="" />
-        </div>
-      </div>
-      <div class="conpetitorContent">
-        <div class="word">
-          <p>现在如果要在页面中使用video标签，需要考虑三种情况，支持Ogg Theora或者VP8（如果这玩</p>
-          <p>意儿没出事的话）的一个内部使用的标签标签外，还可以包含当指定的视频都不能 播放时，返</p> 
-          <p>好吧，现在让我们从技术层面来认识HTML 5的视频，包括video标签的使用，视频对象可以用到</p>
-          <p>的媒介属性和方法，以及媒介事件。Video标签的使用Video标签含有签标签外，还可以包含当</p>
-          <p>指定的视频都不能 播放时，返可以包含当指定的视频都签外 以及一个内部使用的标签标。，还不能 播放时，返回的内容</p>
-                
-               
-        </div>
-      </div>
-      <div class="conpetitorContent">
-        <div class="video">
-          <video  id="myVideo" controls preload >
-            <source src="http://v.qq.com/iframe/player.html?vid=j0327cet597&tiny=0&auto=0"  type="video/mp4">
-          </video>
-        </div>
-      </div>
-      <div class="conpetitorContent">
-        <div class="audio">
-          <audio id="myAudio" controls>
-            <source src="audio.mp3" type="audio/mpeg">
-          </audio>
-        </div>
-      </div>
-  </div>
-  </body>
-<script>
-
-</script>
-</html>
