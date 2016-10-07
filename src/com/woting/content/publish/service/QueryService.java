@@ -103,6 +103,7 @@ public class QueryService {
 		mapo.setAllText(alltext);
 		String path = SystemCache.getCache(FConstants.APPOSPATH).getContent()+"dataCenter/mweb/"+mapo.getId()+".html";
 		FileUploadUtils.writeFile(htmlstr, path);
+		path = "http://www.wotingfm.com/Chopin/dataCenter/mweb/"+mapo.getId()+"/"+mapo.getId()+".html";
 		mapo.setMaURL(path);
 		MediaAsset mat = new MediaAsset();
 		mat.buildFromPo(mapo);
