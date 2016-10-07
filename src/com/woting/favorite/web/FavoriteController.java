@@ -47,7 +47,7 @@ public class FavoriteController {
                 if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
                     mUdk.setDeviceId(request.getSession().getId());
                 }
-                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "clickFavorite", request.getSession());
+                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "clickFavorite");
                 if ((retM.get("ReturnType")+"").equals("2001")) {
                     map.put("ReturnType", "0000");
                     map.put("Message", "无法获取设备Id(IMEI)");
@@ -176,7 +176,7 @@ public class FavoriteController {
                 if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
                     mUdk.setDeviceId(request.getSession().getId());
                 }
-                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "user/getFavoriteList.do", request.getSession());
+                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "user/getFavoriteList.do");
                 if ((retM.get("ReturnType")+"").equals("2001")) {
                     map.put("ReturnType", "0000");
                     map.put("Message", "无法获取设备Id(IMEI)");

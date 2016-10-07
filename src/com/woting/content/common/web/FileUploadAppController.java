@@ -41,7 +41,7 @@ public class FileUploadAppController extends AbstractFileUploadController {
             datamap.put("Message", "无法获取需要的参数");
         } else {
             MobileUDKey mUdk=MobileParam.build(p).getUserDeviceKey();
-            Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "fileUpload", session);
+            Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "fileUpload");
             if ((retM.get("ReturnType")+"").equals("2001")) {
                 datamap.put("ReturnType", "0000");
                 datamap.put("Message", "无法获取设备Id(IMEI)");
