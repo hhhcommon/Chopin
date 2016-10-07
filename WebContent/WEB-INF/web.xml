@@ -101,7 +101,7 @@
   <servlet>
     <servlet-name>springMvc</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-      <init-param>
+    <init-param>
       <param-name>contextConfigLocation</param-name>
       <param-value>classpath*:springMvcConfig/*Mvc.xml</param-value>
     </init-param>
@@ -110,6 +110,17 @@
   <servlet-mapping>
     <servlet-name>springMvc</servlet-name>
     <url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+  <!-- end Servlet设置 -->
+  <!-- Servlet Chopin -->
+  <servlet>
+    <servlet-name>ArticleShell</servlet-name>
+    <servlet-class>com.woting.chopin.servlet.ArticleShell</servlet-class>
+    <load-on-startup>2</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ArticleShell</servlet-name>
+    <url-pattern>articleShell.html</url-pattern>
   </servlet-mapping>
   <!-- end Servlet设置 -->
 
