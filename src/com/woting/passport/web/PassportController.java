@@ -28,7 +28,7 @@ import com.woting.passport.login.service.MobileUsedService;
 import com.woting.passport.mobile.MobileParam;
 import com.woting.passport.mobile.MobileUDKey;
 import com.woting.passport.session.SessionService;
-import com.woting.passport.session.redis.RedisHttpSessionUserDeviceKey;
+import com.woting.passport.session.redis.RedisUserDeviceKey;
 import com.woting.plugins.sms.SendSMS;
 
 @Controller
@@ -106,7 +106,7 @@ public class PassportController {
                 return map;
             }
             RedisConnection rConn=redisConn.getConnection();
-            RedisHttpSessionUserDeviceKey redisUdk=new RedisHttpSessionUserDeviceKey(mUdk, request.getSession());
+            RedisUserDeviceKey redisUdk=new RedisUserDeviceKey(mUdk);
             if (usePhone!=null&&usePhone.equals("1")) {
                 //1.5-手机号码注册
                 byte[] getValue=rConn.get(redisUdk.getKey_UserPhoneCheck().getBytes());
@@ -129,7 +129,7 @@ public class PassportController {
             mUdk.setUserId(nu.getUserId());
             ExpirableBlockKey rLock=RedisBlockLock.lock(redisUdk.getKey_Lock(), rConn);
             try {
-                sessionService.registUser(mUdk, request.getSession());
+                sessionService.registUser(mUdk);
                 MobileUsedPo mu=new MobileUsedPo();
                 mu.setImei(mUdk.getDeviceId());
                 mu.setStatus(1);
@@ -204,11 +204,11 @@ public class PassportController {
             if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
                 mUdk.setDeviceId(request.getSession().getId());
             }
-            RedisHttpSessionUserDeviceKey redisUdk=new RedisHttpSessionUserDeviceKey(mUdk, request.getSession());
+            RedisUserDeviceKey redisUdk=new RedisUserDeviceKey(mUdk);
             RedisConnection rConn=redisConn.getConnection();
             ExpirableBlockKey rLock=RedisBlockLock.lock(redisUdk.getKey_Lock(), rConn);
             try {
-                sessionService.registUser(mUdk, request.getSession());
+                sessionService.registUser(mUdk);
                 MobileUsedPo mu=new MobileUsedPo();
                 mu.setImei(mUdk.getDeviceId());
                 mu.setStatus(1);
@@ -255,7 +255,7 @@ public class PassportController {
                 if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
                     mUdk.setDeviceId(request.getSession().getId());
                 }
-                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "user/mlogout", request.getSession());
+                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "user/mlogout");
                 if ((retM.get("ReturnType")+"").equals("2001")) {
                     map.put("ReturnType", "0000");
                     map.put("Message", "无法获取设备Id(IMEI)");
@@ -274,10 +274,10 @@ public class PassportController {
 
             //2-注销
             RedisConnection rConn=redisConn.getConnection();
-            RedisHttpSessionUserDeviceKey redisUdk=new RedisHttpSessionUserDeviceKey(mUdk, request.getSession());
+            RedisUserDeviceKey redisUdk=new RedisUserDeviceKey(mUdk);
             ExpirableBlockKey rLock=RedisBlockLock.lock(redisUdk.getKey_Lock(), rConn);
             try {
-                sessionService.logoutSession(mUdk, request.getSession());
+                sessionService.logoutSession(mUdk);
                 //保存使用情况
                 MobileUsedPo mu=new MobileUsedPo();
                 mu.setImei(mUdk.getDeviceId());
@@ -389,7 +389,7 @@ public class PassportController {
                 if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
                     mUdk.setDeviceId(request.getSession().getId());
                 }
-                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "user/registerByPhoneNum", request.getSession());
+                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "user/registerByPhoneNum");
                 if (retM==null) {
                     map.put("ReturnType", "1003");
                     map.put("Message", "无法获取会话信息");
@@ -414,7 +414,7 @@ public class PassportController {
                 String smsRetNum=SendSMS.sendSms(phoneNum, checkNum, "通过手机号注册用户");
                 //向Session中加入验证信息
                 RedisConnection rConn=redisConn.getConnection();
-                RedisHttpSessionUserDeviceKey redisUdk=new RedisHttpSessionUserDeviceKey(mUdk, request.getSession());
+                RedisUserDeviceKey redisUdk=new RedisUserDeviceKey(mUdk);
                 try {
                     rConn.pSetEx(redisUdk.getKey_UserPhoneCheck().getBytes(), 100*1000, (System.currentTimeMillis()+"::"+phoneNum+"::"+checkNum).getBytes());
                 } finally {
@@ -454,7 +454,7 @@ public class PassportController {
                 if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
                     mUdk.setDeviceId(request.getSession().getId());
                 }
-                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "user/retrieveByPhoneNum", request.getSession());
+                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "user/retrieveByPhoneNum");
                 if (retM==null) {
                     map.put("ReturnType", "1003");
                     map.put("Message", "无法获取会话信息");
@@ -479,7 +479,7 @@ public class PassportController {
                 String smsRetNum=SendSMS.sendSms(phoneNum, checkNum, "通过绑定手机号找回密码");
                 //向Session中加入验证信息
                 RedisConnection rConn=redisConn.getConnection();
-                RedisHttpSessionUserDeviceKey redisUdk=new RedisHttpSessionUserDeviceKey(mUdk, request.getSession());
+                RedisUserDeviceKey redisUdk=new RedisUserDeviceKey(mUdk);
                 try {
                     rConn.pSetEx(redisUdk.getKey_UserPhoneCheck().getBytes(), 100*1000, (System.currentTimeMillis()+"::"+phoneNum+"::"+checkNum).getBytes());
                 } finally {
@@ -519,7 +519,7 @@ public class PassportController {
                 if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
                     mUdk.setDeviceId(request.getSession().getId());
                 }
-                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "user/reSendPhoneCheckCode", request.getSession());
+                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "user/reSendPhoneCheckCode");
                 if (retM==null) {
                     map.put("ReturnType", "1003");
                     map.put("Message", "无法获取会话信息");
@@ -544,7 +544,7 @@ public class PassportController {
             if (map.get("ReturnType")!=null) return map;
 
             RedisConnection rConn=redisConn.getConnection();
-            RedisHttpSessionUserDeviceKey redisUdk=new RedisHttpSessionUserDeviceKey(mUdk, request.getSession());
+            RedisUserDeviceKey redisUdk=new RedisUserDeviceKey(mUdk);
             byte[] getValue=redisUdk.getKey_UserPhoneCheck().getBytes();
             String info=(getValue==null?null:new String(rConn.get(getValue)));
 
@@ -603,7 +603,7 @@ public class PassportController {
                 map.put("Message", "无法获取需要的参数");
             } else {
                 mUdk=MobileParam.build(m).getUserDeviceKey();
-                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "user/checkPhoneCheckCode", request.getSession());
+                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "user/checkPhoneCheckCode");
                 if (retM==null) {
                     map.put("ReturnType", "1000");
                     map.put("Message", "无法获取会话信息");
@@ -631,7 +631,7 @@ public class PassportController {
 
             //验证验证码
             RedisConnection rConn=redisConn.getConnection();
-            RedisHttpSessionUserDeviceKey redisUdk=new RedisHttpSessionUserDeviceKey(mUdk, request.getSession());
+            RedisUserDeviceKey redisUdk=new RedisUserDeviceKey(mUdk);
             String info=new String(rConn.get(redisUdk.getKey_UserPhoneCheck().getBytes()));
             if (info==null||info.equals("null")) {
                 map.put("ReturnType", "1005");
@@ -698,7 +698,7 @@ public class PassportController {
                 if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
                     mUdk.setDeviceId(request.getSession().getId());
                 }
-                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "user/updatePwd_AfterCheckPhoneOK", request.getSession());
+                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "user/updatePwd_AfterCheckPhoneOK");
                 if (retM==null) {
                     map.put("ReturnType", "1000");
                     map.put("Message", "无法获取会话信息");
@@ -719,7 +719,7 @@ public class PassportController {
             UserPo up=userService.getUserById(m.get("RetrieveUserId")==null?null:(m.get("RetrieveUserId")+""));
             String info=null;
             RedisConnection rConn=redisConn.getConnection();
-            RedisHttpSessionUserDeviceKey redisUdk=new RedisHttpSessionUserDeviceKey(mUdk, request.getSession());
+            RedisUserDeviceKey redisUdk=new RedisUserDeviceKey(mUdk);
             try {
                 byte[] getValue=redisUdk.getKey_UserPhoneCheck().getBytes();
                 info=getValue==null?"":new String(rConn.get(getValue));
@@ -814,10 +814,10 @@ public class PassportController {
             String _userId=((UserPo)rm.get("userInfo")).getUserId();
             mUdk.setUserId(_userId);
             RedisConnection rConn=redisConn.getConnection();
-            RedisHttpSessionUserDeviceKey redisUdk=new RedisHttpSessionUserDeviceKey(mUdk, request.getSession());
+            RedisUserDeviceKey redisUdk=new RedisUserDeviceKey(mUdk);
             ExpirableBlockKey rLock=RedisBlockLock.lock(redisUdk.getKey_Lock(), rConn);
             try {
-                sessionService.registUser(mUdk, request.getSession());
+                sessionService.registUser(mUdk);
                 //3.2-保存使用情况
                 MobileUsedPo mu=new MobileUsedPo();
                 mu.setImei(mUdk.getDeviceId());
