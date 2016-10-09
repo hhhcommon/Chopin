@@ -96,6 +96,19 @@
   <select id="getCurrentPubVersion" resultMap="versionMap">
     select <include refid="Base_Column_List"/> from p_Version where id=(select max(id) from p_Version where pubFlag>0)
   </select>
+  <!-- 获得新于某个版本号的发布过的版本的个数，用于判断是否可以删除 -->
+  <select id="newerVerCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(*) from p_Version <![CDATA[ where id>#{id,jdbcType=INTEGER} and pubFlag>0 ]]>
+  </select>
+  <select id="newerVerList" parameterType="java.util.Map" resultMap="versionMap">
+    select <include refid="Base_Column_List"/> from p_Version <![CDATA[ where id>#{id,jdbcType=INTEGER} and pubFlag>0 ]]> order by id
+  </select>
+  <!-- 获得应该比较的版本记录 -->
+  <select id="getCmpVer" parameterType="java.util.Map" resultMap="versionMap">
+    select a.* from p_Version a,
+    (select max(id) as id from p_Version where pubFlag>0 <if test="lessId!=null and lessId>0"><![CDATA[ and id<#{lessId,jdbcType=VARCHAR}]]></if>) b
+    where a.id=b.id
+  </select>
 
   <!-- 新增数据 -->
   <insert id="insert" parameterType="java.util.Map">
@@ -148,6 +161,23 @@
       <if test="extHisPatchInfo!=null">extHisPatchInfo=#{extHisPatchInfo,jdbcType=VARCHAR},</if>
     </set>
     where id=#{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateAll" parameterType="java.util.Map">
+    update p_Version
+    <set>
+      <if test="appName!=null">appName=#{appName,jdbcType=VARCHAR},</if>
+      <if test="version!=null">version=#{version,jdbcType=VARCHAR},</if>
+      <if test="verMemo!=null">verMemo=#{verMemo,jdbcType=VARCHAR},</if>
+      <if test="bugMemo!=null">bugMemo=#{bugMemo,jdbcType=VARCHAR},</if>
+      <if test="pubFlag!=null">pubFlag=#{pubFlag,jdbcType=INTEGER},</if>
+      <if test="apkFile!=null">apkFile=#{apkFile,jdbcType=VARCHAR},</if>
+      <if test="apkSize!=null">apkSize=#{apkSize,jdbcType=INTEGER},</if>
+      <if test="isCurVer!=null">isCurVer=#{isCurVer,jdbcType=INTEGER},</if>
+      <if test="pubTime!=null">pubTime=#{pubTime,jdbcType=TIMESTAMP},</if>
+      <if test="CTime!=null">cTime=#{CTime,jdbcType=TIMESTAMP},</if>
+      <if test="lmTime!=null">lmTime=#{lmTime,jdbcType=TIMESTAMP},</if>
+      <if test="extHisPatchInfo!=null">extHisPatchInfo=#{extHisPatchInfo,jdbcType=VARCHAR},</if>
+    </set>
   </update>
 
   <!-- 删除数据 -->

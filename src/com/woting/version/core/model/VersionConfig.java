@@ -49,10 +49,10 @@ public class VersionConfig extends BaseObject {
      */
     public Map<String, Object> toHashMap4View() {
         Map<String, Object> ret=new HashMap<String, Object>();
-        if (StringUtils.isNullOrEmptyOrSpace(pubStorePath)) ret.put("PubStorPath", pubStorePath);
-        if (StringUtils.isNullOrEmptyOrSpace(pubFileName)) ret.put("PubFileName", pubFileName);
-        if (StringUtils.isNullOrEmptyOrSpace(pubUrl)) ret.put("PubUrl", pubUrl);
-        if (StringUtils.isNullOrEmptyOrSpace(verGoodsStorePath)) ret.put("VerGoodsStorePath", verGoodsStorePath);
+        if (!StringUtils.isNullOrEmptyOrSpace(pubStorePath)) ret.put("PubStorePath", pubStorePath);
+        if (!StringUtils.isNullOrEmptyOrSpace(pubFileName)) ret.put("PubFileName", pubFileName);
+        if (!StringUtils.isNullOrEmptyOrSpace(pubUrl)) ret.put("PubUrl", pubUrl);
+        if (!StringUtils.isNullOrEmptyOrSpace(verGoodsStorePath)) ret.put("VerGoodsStorePath", verGoodsStorePath);
         return ret;
     }
 }
