@@ -290,6 +290,20 @@ public class MediaContentService {
 		if (chas != null && chas.size() > 0) {
 			List<Map<String, Object>> chasm = channelContentService.getChannelAssetList(chas);
 			mam = ContentUtils.convert2Ma(ma.convert2Po().toHashMap(), null, null, chasm, fm);
+			String alltext = ma.getAllText();
+			int num1 = alltext.indexOf("####");
+			if (num1>0) {
+				int num2 = alltext.indexOf("####", num1+4);
+				if (num2>0) {
+					alltext = alltext.substring(num2+4, alltext.length());
+					alltext = alltext.replace("#", "");
+				}
+			}
+			if(!alltext.contains("#") && !alltext.equals("") && alltext.length()>0) {
+				mam.put("ContentTTS", alltext);
+			} else {
+				mam.put("ContentTTS", null);
+			}
 		}
 		return mam;
 	}
