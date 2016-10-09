@@ -193,6 +193,41 @@ public class QueryController {
 		return map;
 	}
 	
+	/**
+	 * 修改已发布内容信息
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "getContentInfo2Updata.do")
+	@ResponseBody
+	public Map<String, Object> updateContentInfo(HttpServletRequest request) {
+		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> m = RequestUtils.getDataFromRequest(request);
+		if (m == null || m.size() == 0) {
+			map.put("ReturnType", "0000");
+			map.put("Message", "无法获取相关的参数");
+			return map;
+		}
+		String contentid = m.get("ContentId")+"";
+		if(contentid.equals("null")) {
+			map.put("ReturnType", "1013");
+			map.put("Message", "缺少内容Id");
+			return map;
+		}
+		map = queryService.modifyContentInfo(contentid);
+		if(map!=null) {
+			map.put("ReturnType", "1001");
+		    map.put("Message", "修改成功");
+		    return map;
+		} else {
+			map = new HashMap<>();
+			map.put("ReturnType", "1014");
+			map.put("Message", "修改失败");
+			return map;
+		}
+	}
+	
 	
 	/**
 	 * 发布已撤销内容

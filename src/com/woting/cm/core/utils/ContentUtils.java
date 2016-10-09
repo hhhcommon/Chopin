@@ -110,6 +110,7 @@ public abstract class ContentUtils {
         retM.put("ContentPlay", one.get("maURL"));//P08-公共：主播放Url，这个应该从其他地方来，现在先这样//TODO
         retM.put("ContentURI", "http://www.wotingfm.com/Chopin/articleShell.html?ContentId="+retM.get("ContentId"));//P08-公共：主播放Url，这个应该从其他地方来，现在先这样//TODO
         retM.put("ContentShareURL", "http://www.wotingfm.com/Chopin/articleFrameShell.html?ContentId="+retM.get("ContentId"));//分享地址
+        retM.put("ContentPubImg", one.get("maImg"));//轮播图内容图片
         retM.put("ContentDesc", one.get("descn"));//P11-公共：说明
         retM.put("ContentStatus", one.get("maStatus"));
         retM.put("ContentSource",one.get("language"));

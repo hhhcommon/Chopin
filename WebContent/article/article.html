@@ -681,7 +681,33 @@ $(function(){
   });
   //2.2-点击修改按钮
   $("#mod").on("click",function(){
-    
+    var _url=rootPath+"content/getContentInfo2Updata.do";
+    $('.tabContentDiv').each(function(){
+      if($(this).css('display')=='block') {
+        $(this).find('input[type="radio"]').each(function(){
+          if($(this).is(':checked')) {
+            var ma = $(this).parent().parent();
+            var data = {
+              "ContentId":ma.attr("id")
+            }
+            $.ajax({
+              type: "POST",    
+              url: _url,
+              dataType: "json",
+              data: JSON.stringify(data),
+              success: function(jsonData){
+                if(jsonData.ReturnType=="1001") {
+                  alert("成功");
+                }
+              },
+              error:function(jqXHR){
+                alert("发生错误" + jqXHR.status);
+              }
+            });
+          }
+        });
+      }
+    });
   });
   //2.3-点击删除按钮
   $("#del").on("click",function(){
@@ -948,7 +974,7 @@ function loadCatalogList(returnData,channelId){
     ndiv=$("<div class='tabContentDiv'></div>");
     for(var j=0;j<returnData.ResultInfo[i].AllCount;j++){
       loadArtList='<div class="listBox" catalogId='+returnData.ResultInfo[i].CatalogId+' id='+returnData.ResultInfo[i].List[j].ContentId+'>'+
-                    '<div class="listCheck"><input type="radio" name=""></div>'+
+                    '<div class="listCheck"><input type="radio" name="radio"></div>'+
                     '<div class="listImg"><img alt="mage" src='+returnData.ResultInfo[i].List[j].ContentImg+'></div>'+
                     '<div class="listCon">'+
                       '<h3>'+returnData.ResultInfo[i].List[j].ContentName+'</h3>'+
@@ -969,7 +995,7 @@ function loadCatalogList(returnData,channelId){
       //添加轮播图列表
       if(returnData.ResultInfo[i].List[j].IsDirect==true) {
         ddiv +='<div class="listBox" catalogId='+returnData.ResultInfo[i].CatalogId+' id='+'lunbotu'+returnData.ResultInfo[i].List[j].ContentId+'>'+
-                  '<div class="listCheck"><input type="radio" name=""></div>'+
+                  '<div class="listCheck"><input type="radio" name="radio"></div>'+
                   '<div class="listImg"><img alt="mage" src='+returnData.ResultInfo[i].List[j].ContentImg+'></div>'+
                   '<div class="listCon">'+
                     '<h3>'+returnData.ResultInfo[i].List[j].ContentName+'</h3>'+
@@ -1009,7 +1035,7 @@ function loadCatalogList(returnData,channelId){
       if(returnData.ReturnType=="1001"){
         for(var i=0;i<returnData.AllCount;i++){
           loadArtList='<div class="listBox" catalogId='+returnData.ResultInfo[i].ContentPubChannels[0].ChannelId+' id='+returnData.ResultInfo[i].ContentId+'>'+
-                        '<div class="listCheck"><input type="radio" name=""></div>'+
+                        '<div class="listCheck"><input type="radio" name="radio"></div>'+
                         '<div class="listImg"><img alt="mage" src='+returnData.ResultInfo[i].ContentImg+'></div>'+
                         '<div class="listCon">'+
                           '<h3>'+returnData.ResultInfo[i].ContentName+'</h3>'+
