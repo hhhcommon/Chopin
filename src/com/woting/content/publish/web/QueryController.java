@@ -194,7 +194,7 @@ public class QueryController {
 	}
 	
 	/**
-	 * 修改已发布内容信息
+	 * 获取需要修改的已发布内容信息
 	 * 
 	 * @param request
 	 * @return
@@ -211,23 +211,22 @@ public class QueryController {
 		}
 		String contentid = m.get("ContentId")+"";
 		if(contentid.equals("null")) {
-			map.put("ReturnType", "1013");
+			map.put("ReturnType", "1011");
 			map.put("Message", "缺少内容Id");
 			return map;
 		}
 		map = queryService.modifyContentInfo(contentid);
 		if(map!=null) {
 			map.put("ReturnType", "1001");
-		    map.put("Message", "修改成功");
+		    map.put("Message", "获取成功");
 		    return map;
 		} else {
 			map = new HashMap<>();
-			map.put("ReturnType", "1014");
-			map.put("Message", "修改失败");
+			map.put("ReturnType", "1012");
+			map.put("Message", "获取失败");
 			return map;
 		}
 	}
-	
 	
 	/**
 	 * 发布已撤销内容
