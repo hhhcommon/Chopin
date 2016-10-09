@@ -542,9 +542,7 @@ public class QueryService {
 		return map;
 	}
 
-	public Map<String, Object> updateContentHtml(String contentid, String channelids, String themeImg, String mediaSrc,
-			String thirdpath, String source, String sourcepath, String mastatus, String username,
-			List<Map<String, Object>> list) {
+	public Map<String, Object> updateContentHtml(String contentid, String channelids, String themeImg, String mediaSrc, String thirdpath, String source, String sourcepath, String mastatus, String username,List<Map<String, Object>> list) {
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> statustype = new HashMap<>();
 		statustype.put("一般文章", 0);
@@ -574,7 +572,6 @@ public class QueryService {
 		}
 		if (source != null && sourcepath != null) {
 			String sourceurl = "<a href='" + sourcepath + "'>" + source + "</a>";
-			
 			ma.setLanguage(sourceurl);
 		}
 		ma.setMaImg(themeImg);
@@ -713,31 +710,31 @@ public class QueryService {
 			    cha.setPubImg(ma.getMaImg());
 			    cha.setCTime(ma.getCTime());
 			    cha.setPubTime(ma.getCTime());
+			    mediaService.updateCha(cha);
 			} else {
-//				cha = new ChannelAsset();
-//			cha.setId(SequenceUUID.getPureUUID());
-//			cha.setAssetId(ma.getId());
-//			cha.setAssetType("wt_MediaAsset");
-//			cha.setChannelId(str);
-//			cha.setPublisherId(ma.getMaPubId());
-//			cha.setCheckerId("0");
-//			cha.setFlowFlag(2);
-//			cha.setSort(0);
-//			cha.setIsValidate(1);
-//			cha.setPubName(ma.getMaTitle());
-//		    cha.setPubImg(ma.getMaImg());
-//		    cha.setCTime(ma.getCTime());
-//		    cha.setPubTime(ma.getCTime());
+				ChannelAssetPo chapo = new ChannelAssetPo();
+			    chapo.setId(SequenceUUID.getPureUUID());
+			    chapo.setAssetId(ma.getId());
+			    chapo.setAssetType("wt_MediaAsset");
+			    chapo.setChannelId(str);
+			    chapo.setPublisherId(ma.getMaPubId());
+			    chapo.setCheckerId("0");
+			    chapo.setFlowFlag(2);
+			    chapo.setSort(0);
+			    chapo.setIsValidate(1);
+			    chapo.setPubName(ma.getMaTitle());
+		        chapo.setPubImg(ma.getMaImg());
+		        chapo.setCTime(ma.getCTime());
+		        chapo.setPubTime(ma.getCTime());
+		        channelService.insertChannelAsset(chapo);
 			}
-			
-			
-//			channelService.insertChannelAsset(cha);
 		}
 		chas = chas.substring(1);
 		Map<String, Object> m = new HashMap<>();
 		m.put("value", "channelId not in ("+chas+") and assetId = "+contentid);
 		mediaService.removeChaByMap(m);
-		
-		return null;
+		map.put("ReturnType", "1001");
+		map.put("Message", "修改成功");
+		return map;
 	}
 }
