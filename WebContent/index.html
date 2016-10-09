@@ -14,14 +14,15 @@
 <![endif]-->
 
 <script src="./resources/plugins/hplus/js/jquery-2.1.1.min.js"></script>
+
 <script src="./resources/plugins/easyui-1.3.4/jquery.easyui.min.js"></script>
-<script src="./resources/js/mainPage.js"></script>
+<script src="./resources/js/mainPageWeb.js"></script>
 <script src="./resources/js/common.utils.js"></script>
 <script src="./resources/js/context.utils.js"></script>
 <script src="./resources/js/framework.utils.js"></script>
 <script src="./resources/plugins/spiritui/jq.spirit.utils.js"></script>
 <script src="./resources/plugins/spiritui/jq.spirit.pageFrame.js"></script>
-<script src="./channelData.json"></script>
+<!--<script src="./channelData.json"></script>-->
 
 <link rel="stylesheet" type="text/css" href="./resources/plugins/easyui-1.3.4/themes/default/easyui.css"/>
 <link rel="stylesheet" type="text/css" href="./resources/plugins/easyui-1.3.4/themes/icon.css"/>
@@ -35,6 +36,9 @@
 <title>我听肖邦</title>
 
 <style>
+body{
+  font-family: vista_MS;
+}
 .lineDiv {
   float:left;
 }
@@ -138,7 +142,7 @@
   display:none;
   z-index:2000;
   width:110px;
-  position:absolute;
+  position:fixed;
   background-color:#0E0E0E ;
 }
 ._menuItem {
@@ -157,20 +161,20 @@
 /*登陆界面样式*/
 .login_modal{
   width:400px;
-  height:330px;
-  position:relative;
+  height:300px;
+  position:fixed;
   top:120px;
-  margin:auto;
-  background:black;
+  left:35%;
+  background:#0E0E0E;
   display: none;
-  font-family: "微软雅黑";
+  font-family: vista_MS;
   cursor:pointer;
   z-index:10;
 }
 .login_header{
   width:100%;
   height:45px;
-  background:black;
+  background:#0E0E0E;
   color:white;
   font-weight:bolder;
   line-height: 45px;
@@ -179,55 +183,67 @@
   overflow: hidden;
 }
 .login_header1{
-  width:50%;
+  width:33.33%;
   height:100%;
   float:left;
+  font-family: vista_MS;
   font-size: 15px;
-  background:black;
+  background:#0E0E0E;
 }
 .login_header2{
-  width:50%;
+  width:33.33%;
   height:100%;
   float:left;
+  font-family: vista_MS;
   font-size: 15px;
   background:gray;
 }
-.login_content{
+.login_header3{
+  width:33.33%;
+  height:100%;
+  float: left;
+  font-family: vista_MS;
+  font-size: 15px;
+  background: gray;
+}
+.login_content,.register_content,.forget_content{
   width:100%;
-  height:295px;
+  height:250px;
   position: absolute;
   margin-top: 25px;
+}
+.register_content,.forget_content{
+  display: none;
 }
 #loginform{
   width:75%;
   height:100%;
   margin:auto;
-  /*background:yellow;*/
 }
 .input_group {
   width:75%;
   height:50px;
   position: absolute;
-  /*border:1px solid red;*/
 }
 .usernameSpan,.userpasswordSpan{
   width: 60px;
   height: 35px;
-  font-size: 20px;
+  font-size: 16px;
   color: white;
-  margin-top:10px;
+  margin-top:12px;
   text-align: center;
   line-height: 35px;
   display: block;
 }
 #usernameInput,#userpasswordInput{
-  width: 235px;
+  width: 232px;
   height: 35px;
   position: absolute;
   top: 10px;
   left: 60px;
   overflow: hidden;
   border-radius: 0px;
+  font-size: 16px;
 }
 .remember{
   width: 90px;
@@ -237,7 +253,6 @@
   font-size:16px;
   margin-left:60px;
   color:white;
-  /*border:1px solid red;*/
   float: left;
 }
 .forget{
@@ -248,7 +263,6 @@
   font-size:16px;
   color:white;
   margin-left:58px;
-  /*border:1px solid red;*/
   float: left;
 }
 .logined{
@@ -321,6 +335,58 @@
   display: none;
   z-index:1;
 }
+.showUserCenter{
+  width: 150px;
+  height: 30px;
+  color: white;
+  font-weight: bold;
+  font-family: vista_MS;
+  font-size: 16px;
+  cursor: pointer;
+  position: absolute;
+  margin-left: 70px;
+  padding-top: 6px;
+}
+.dropdown-menu{
+  width: 150px;
+  background:#0E0E0E;
+  color: #fff;
+  z-index: 2000;
+  cursor: pointer;
+  height: 125px;
+  position: fixed;
+  top: 80px;
+  left: 1110px;
+  display: none;
+}
+.center,.love,.upload,.exit{
+  height: 30px;
+  line-height: 30px;
+  font-family: vista_MS;
+  font-size: 15px;
+  padding-left:15px;
+}
+.qr_code{
+  width: 400px;
+  margin-top: 20px;
+  height: 200px;
+  background: #ddd;
+}
+.registeByApp{
+  width: 400px;
+  text-align: center;
+  line-height: 55px;
+  font-size: 20px;
+  height: 55px;
+  font-family: vista_MS;
+  background: #fafafa
+}
+.cancelLog{
+  color: white;
+  position: absolute;
+  top: -13px;
+  left: 384px;
+}
 </style>
 </head>
 
@@ -356,8 +422,8 @@
   </div>
   <div id="oper" class="topBlock" style="width:198px;padding-top:12px;">
     <button class="searchBtn"></button>
-    <button class="operButton" style="margin-left:65px" onclick="test()">登录</button>
-    <button class="operButton" style="margin-left:5px">注册</button>
+    <button  id="logBtn" class="operButton" style="margin-left:65px;cursor:pointer;" onclick="test()">登录</button>
+    <button  id="regBtn"class="operButton" style="margin-left:5px;cursor:pointer;">注册</button>
   </div>
 </div>
 
@@ -395,49 +461,56 @@
   <div id="64b4d375" class="_menuItem" cid="64b4d375" onclick="showChannelPage('64b4d375')">文化</div>
   <div id="6d0a1d3f" class="_menuItem" cid="6d0a1d3f" onclick="showChannelPage('6d0a1d3f')">历史</div>
 </div>
+<div class="dropdown-menu">
+  <div class="center" href="#" >我的作品</div>
+  <div class="upload" href="#" >上传作品</div>
+  <div class="love" href="#" >我喜欢的</div>
+  <div class="exit" href="#">安全退出</div>
+</div>
+<iframe src="session.jsp" width="0" height="0" style="display:none"></iframe>
 <!--登陆界面遮罩层-->
 <div class="mask"></div>
 <!--登录界面-->
 <div class="login_modal">
   <ul class="login_header">
-    <li class="login_header1">登录账号</li>
     <li class="login_header2">注册账号</li>
+    <li class="login_header1">登录账号</li>
+    <li class="login_header3">忘记密码</li>
+    <li class="cancelLog">×</li>
   </ul>
   <div class="login_content">
     <form action="" name="loginform" id="loginform">
-      <div class="input_group "style="top:45px;">
+      <div class="input_group "style="top:50px;">
         <span class="usernameSpan">账号</span>
         <input class="form-control required" id="usernameInput" name="usernameInput" type="text" placeholder="手机号/用户名" aria-invalid="true" minlength="15">
       </div>
-      <div class="input_group" style="top:95px;">
+      <div class="input_group" style="top:110px;">
         <span class="userpasswordSpan">密码</span>
-        <input class="form-control required" id="userpasswordInput" name="userpasswordInput" type="text" placeholder="登录密码" aria-invalid="true" minlength="15">
-      </div>
-      <div class="input_group" style="top:145px;">
-        <div class="remember"><input type="checkbox" style="width:17px;height:17px;margin-top:0px;" />记住密码</div>
-        <div class="forget">忘记密码？</div>
+        <input class="form-control required" id="userpasswordInput" name="userpasswordInput" type="password" placeholder="登录密码" aria-invalid="true" minlength="15">
       </div>
       <div class="input_group" style="top:195px;">
         <div class="logined">登 录</div>
       </div>
-      <div class="input_group" style="top:245px;">
-        <ul class="tpl">
-          <li class="line_left"></li>
-          <li class="weChat"></li>
-          <li class="blog"></li>
-          <li class="qq"></li>
-          <li class="line_right"></li>
-        </ul>
-      </div>
     </form>
   </div>
+  <div class="register_content">
+    <div class="qr_code" style="top:145px;">放置二维码</div>
+    <div class="registeByApp">请通过扫码注册账号</div>
+  </div>
+  <div class="forget_content">
+    <div class="qr_code" style="top:145px;">放置二维码</div>
+    <div class="registeByApp">请通过扫码找回密码</div>
+  </div>
 </div>
-
 </body>
-
 <script>
 var rootPath=getRootPath();
 var curMenuId=0;
+var deviceId="";
+
+function setDeviceId(sessionId) {
+  deviceId=sessionId;
+}
 //主窗口参数
 var INIT_PARAM={
   pageObjs: {
@@ -463,19 +536,32 @@ $(function() {
     $.messager.alert("错误", "页面初始化失败<br/>"+initStr, "error");
     return ;
   };
-  //加载导航菜单
-//loadNavigateMenu();
-});
-
-//初始化界面
-function initPosition() {
-}
-//当界面尺寸改变
-function myResize() {
-}
-//加载导航菜单
-function loadNavigateMenu() {
-  showChannelPage(0);
+  window.setTimeout(function(){$(".selArrow").show(0);}, 50);
+  //导航菜单处理
+  $(".nav").bind("mouseover", function() {
+    //定位menue的位置
+    var cid=$(this).attr("cid");
+    curMenuId=cid;
+    if (!curMenuId) return ;
+    $("#menu_"+cid).css({
+      "left":$("#nav_"+cid).offset().left-15,
+    });
+    //菜单显示处理
+    $("#nav_"+cid).css("color", "#FFA634");
+    $("#nav_"+cid).find("span").removeClass("selArrow").addClass("selArrow_hover");
+    $("#menu_"+cid).show();
+  });
+  $(".nav").bind("mouseout", function() {
+    var cid=$(this).attr("cid");
+    curMenuId=0;
+    setTimeout(function(){
+      if (cid!=curMenuId) {
+        $("#menu_"+cid).hide();
+        $("#nav_"+cid).css("color", "#fff");
+        $("#nav_"+cid).find("span").removeClass("selArrow_hover").addClass("selArrow");
+      }
+    }, 200);
+  });
   $("._menu").bind("mouseover", function() {
     var cid=$(this).attr("cid");
     curMenuId=cid;
@@ -518,40 +604,19 @@ function loadNavigateMenu() {
       }, 200);
     });
   });
-  $("#navi").find("div").each(function() {
-    $(this).bind("mouseover", function() {
-    alert("test123123");
-    //定位menue的位置
-    var cid=$(this).attr("cid");
-    curMenuId=cid;
-    $("#menu_"+cid).css({
-      "left":$("#nav_"+cid).offset().left-15,
-      "top":$("#nav_"+cid).offset().top+47
-    });
-    //菜单显示处理
-    $(this).css("color", "#FFA634");
-    $(this).find("span").removeClass("selArrow").addClass("selArrow_hover");
-    $("#menu_"+cid).show();
-    });
-  });
-  $(".nav").bind("mouseout", function() {
-    var cid=$(this).attr("cid");
-    curMenuId=0;
-    setTimeout(function(){
-      if (cid!=curMenuId) {
-        $("#menu_"+cid).hide();
-        $("#nav_"+cid).css("color", "#fff");
-        $("#nav_"+cid).find("span").removeClass("selArrow_hover").addClass("selArrow");
-      }
-    , 200);
-  });
+  showChannelPage('0');
+});
+//初始化界面
+function initPosition() {
+}
+//当界面尺寸改变
+function myResize() {
 }
 
 function showChannelPage(channelId) {
-  var _cUrl=rootPath+"/channels.html?ChannelId="+channelId;
+  var _cUrl=rootPath+"channels.html?ChannelId="+channelId;
   showInIframe(_cUrl);
 }
-
 function showInIframe(iframeSrc) {
   var ifm=$("#mainContent");
   ifm.attr("src",iframeSrc);
@@ -616,11 +681,122 @@ function showMask(message) {
 function cleanMask(message) {
   
 }
-//登陆界面
+
+/*
+ * 登陆界面
+*/
+
+//登录账号
+$(".login_header1").on("click",function(){
+  $(this).css({"background":"#0E0E0E"});
+  $(".login_header2,.login_header3").css({"background":"gray"});
+  $(".register_content,.forget_content").hide();
+  $(".login_content").show();
+})
+
+//注册账号
+$(".login_header2").on("click",function(){
+  $(this).css({"background":"#0E0E0E"});
+  $(".login_header1,.login_header3").css({"background":"gray"});
+  $(".login_content,.forget_content").hide();
+  $(".register_content").show();
+})
+
+//修改密码
+$(".login_header3").on("click",function(){
+  $(this).css({"background":"#0E0E0E"});
+  $(".login_header1,.login_header2").css({"background":"gray"});
+  $(".login_content,.register_content").hide();
+  $(".forget_content").show();
+})
+
+//取消登陆
+$(document).on("click",".cancelLog",function(){
+  var sure=confirm("确定要取消登陆吗？");
+  if(sure==true){
+    $(".login_modal").hide();
+  }else{
+    return false;
+  }
+})
+
 /*登陆相关的方法*/
 function test(){
+  $("#usernameInput").val("");
+  $("#userpasswordInput").val("");
   $(".mask").show();
   $(".login_modal").show();
 }
+$(document).on("click",".logined",function(){
+  var data={
+            "IMEI":deviceId,
+            "PCDType":"3",
+            "UserName":$("#usernameInput").val(),
+            "Password":$("#userpasswordInput").val()
+  };
+  if($(".remember input[type='checkbox']").is(":checked")) data.remember="yes";
+  else data.remember="no";
+  $.ajax({
+    type: "POST",
+    url: rootPath+"passport/user/mlogin.do",
+    dataType: "json",
+    data: JSON.stringify(data),
+    success: function(jsonData){
+      if(jsonData.ReturnType=="1001") {
+        alert("登陆成功！");
+        $(".mask").hide();
+        $(".login_modal").hide();
+        var logSuccess=jsonData.UserInfo.UserName;
+        loginSuccess(logSuccess);
+      }else{
+        alert(jsonData.Message);
+      }
+    },
+    error:function(jqXHR){
+      alert("发生错误" + jqXHR.status);
+    }
+  });
+});
+function loginSuccess(logSuccess){
+  $("#logBtn,#regBtn").hide();
+  var userCenter='<div class="showUserCenter">'+logSuccess+'<span class="selArrow"></span></div>';
+  $(".searchBtn").after(userCenter);
+  $(document).on("mouseover",".showUserCenter",function(){
+    $(".showUserCenter").css("color", "#FFA634");
+    $(".showUserCenter").find("span").removeClass("selArrow").addClass("selArrow_hover");
+    $(".showUserCenter").find(".dropdown-menu").show();
+    $(".dropdown-menu").show();
+  });
+  $(document).on("mouseout",".showUserCenter",function(){
+    setTimeout(function(){
+      $(".showUserCenter").css("color", "#fff");
+      $(".showUserCenter").find("span").removeClass("selArrow_hover").addClass("selArrow");
+      $(".showUserCenter").find(".dropdown-menu").hide();
+      $(".dropdown-menu").hide();
+    },3000);
+  });
+  $(".dropdown-menu").find("div").each(function() {
+    $(this).on("mouseover",function(){
+      $(this).css("color", "#FFA634");
+    });
+  });
+  $(".dropdown-menu").find("div").each(function() {
+    $(this).on("mouseout",function(){
+      $(this).css("color", "#fff");
+    });
+  });
+}
+
+//安全退出
+$(document).on("click",'.exit',function(){
+  var sure=confirm("确定要退出登陆吗？");
+  if(sure==true){
+    $(".dropdown-menu,.showUserCenter").hide();
+    $("#logBtn,#regBtn").show();
+  }else{
+    return false;
+  }
+});
+
 </script>
 </html>
