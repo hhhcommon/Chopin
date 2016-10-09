@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import com.spiritdata.framework.FConstants;
 import com.spiritdata.framework.core.cache.SystemCache;
 import com.spiritdata.framework.util.FileUtils;
-import com.spiritdata.framework.util.JsonUtils;
 import com.spiritdata.framework.util.SequenceUUID;
 import com.woting.cm.core.channel.model.ChannelAsset;
 import com.woting.cm.core.channel.persis.po.ChannelAssetPo;
@@ -47,6 +46,7 @@ public class QueryService {
 	@Resource
 	private UserService userService;
 	private String html = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\">"
+			+ "<meta name=\"viewport\" content=\"width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;\">"
 			+ "<link href=\"../resources/css/contentapp.css\" rel=\"stylesheet\">"
 			+ "<script type=\"text/javascript\" src=\"../resources/plugins/hplus/js/jquery-2.1.1.min.js\"></script>"
 			+ "<script type=\"text/javascript\" src=\"../resources/js/contentapp.js\"></script>"
@@ -298,8 +298,7 @@ public class QueryService {
 								}
 							}
 						}
-					}
-					;
+					};
 					break;
 				case "VIDEO":
 					String partNamevideo = m.get("PartName") + "";
@@ -326,8 +325,7 @@ public class QueryService {
 								}
 							}
 						}
-					}
-					;
+					};
 					break;
 				case "MEDIA":
 					String partNameaudio = m.get("PartName") + "";
@@ -354,8 +352,7 @@ public class QueryService {
 								}
 							}
 						}
-					}
-					;
+					};
 					break;
 				default:
 					break;
@@ -407,7 +404,7 @@ public class QueryService {
 		return false;
 	}
 
-	public Map<String, Object> modifyContentInfo(String contentid) {
+	public Map<String, Object> getContentInfo2Updata(String contentid) {
 		Map<String, Object> map = new HashMap<>();
 		MediaAsset mediaAsset = mediaService.getMaInfoById(contentid);
 		String channelIds = "";
@@ -421,20 +418,30 @@ public class QueryService {
 				channelIds = channelIds.substring(1);
 			}
 		}
+		Map<String, Object> statustype = new HashMap<>();
+		statustype.put("0", "一般文章");
+		statustype.put("1", "选手介绍");
+		statustype.put("2", "选手图片");
+		statustype.put("3", "选手视频");
+		statustype.put("4", "选手音频");
+		statustype.put("5", "选手文章");
 		MediaAssetPo mapo = mediaAsset.convert2Po();
 		String title = mapo.getMaTitle(); // 文章标题
-		int pubtype = mapo.getMaPubType();
+		int pubtype = mapo.getMaStatus();
 		String pubname = mapo.getMaPublisher();
 		String maimg = mapo.getMaImg(); // 文章题图
 		String mahtml = mapo.getMaURL(); // 文章页面路径
 		String masrc = mapo.getSubjectWords(); // 文章媒体
 		String isshow = mapo.getLangDid(); // 是否显示题图,媒体
-		String language = mapo.getLanguage(); // 文章来源和网站<a
-												// href='http://www.sin80.com/series/chopin-polonaises'>新芭网</a>
-		Document docm = Jsoup.parse(language);
-		Element ee = docm.body().select("a").get(0);
-		String sourcepath = ee.attr("href");
-		String source = ee.html();
+		String language = mapo.getLanguage(); // 文章来源和网站<a href='http://www.sin80.com/series/chopin-polonaises'>新芭网</a>
+		String sourcepath = "";
+		String source = "";
+		if (language!=null && !language.equals("null")) {
+			Document docm = Jsoup.parse(language);
+		    Element ee = docm.body().select("a").get(0);
+		    sourcepath = ee.attr("href");
+		    source = ee.html();
+		}
 		String descn = mapo.getDescn(); // 文章摘要
 		Document doc = null;
 		map.put("ChannelIds", channelIds);
@@ -458,7 +465,7 @@ public class QueryService {
 			map.put("MediaSrc", "");
 			map.put("ThirdPath", "");
 		}
-		map.put("ContentStatus", pubtype);
+		map.put("ContentStatus", statustype.get(pubtype+""));
 		map.put("UserName", pubname);
 		List<Map<String, Object>> ls = new ArrayList<>();
 		Map<String, Object> m1 = new HashMap<>();
