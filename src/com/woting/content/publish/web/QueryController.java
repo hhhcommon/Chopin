@@ -193,6 +193,98 @@ public class QueryController {
 		return map;
 	}
 	
+	/**
+	 * 获取需要修改的已发布内容信息
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "getContentInfo2Updata.do")
+	@ResponseBody
+	public Map<String, Object> getupdateContentInfo(HttpServletRequest request) {
+		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> m = RequestUtils.getDataFromRequest(request);
+		if (m == null || m.size() == 0) {
+			map.put("ReturnType", "0000");
+			map.put("Message", "无法获取相关的参数");
+			return map;
+		}
+		String contentid = m.get("ContentId")+"";
+		if(contentid.equals("null")) {
+			map.put("ReturnType", "1011");
+			map.put("Message", "缺少内容Id");
+			return map;
+		}
+		map = queryService.getContentInfo2Updata(contentid);
+		if(map!=null) {
+			map.put("ReturnType", "1001");
+		    map.put("Message", "获取成功");
+		    return map;
+		} else {
+			map = new HashMap<>();
+			map.put("ReturnType", "1012");
+			map.put("Message", "获取失败");
+			return map;
+		}
+	}
+	
+	/**
+	 * 修改的已发布内容信息
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "updataContentInfo.do")
+	@ResponseBody
+	public Map<String, Object> updateContentInfo(HttpServletRequest request) {
+		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> m = RequestUtils.getDataFromRequest(request);
+		String channelids = m.get("ChannelId")+"";
+		if(channelids.equals("null") || channelids.equals("")) {
+			map.put("ReturnType", "1012");
+			map.put("Message", "无法获得栏目Id");
+			return map;
+		}
+		String mastatus = m.get("ContentStatus")+"";
+		if (mastatus.equals("null") || mastatus.equals("")) {
+			map.put("ReturnType", "1013");
+			map.put("Message", "无法获得类型信息");
+			return map;
+		}
+		String themeImg = m.get("ThemeImg")+"";
+		if (themeImg.equals("null") || themeImg.equals("")) 
+			themeImg = null;
+		String mediaSrc = m.get("MediaSrc")+"";
+		if(mediaSrc.equals("null") || mediaSrc.equals(""))
+			mediaSrc = null;
+		String thirdpath = m.get("ThirdPath")+"";
+		if(thirdpath.equals("null") || thirdpath.equals(""))
+			thirdpath = null;
+		String username = m.get("UserName")+"";
+		if (!mastatus.equals("一般文章")) {
+			if (username.equals("null") || username.equals("")) {
+				map.put("ReturnType", "1014");
+				map.put("Message", "无法获得选手姓名");
+				return map;
+			}
+		} else {
+			username = null;
+		}
+		String source = m.get("Source")+"";
+		if (source.equals("null") || source.equals(""))
+			source = null;
+		String sourcepath = m.get("SourcePath")+"";
+		if(sourcepath.equals("null") || sourcepath.equals(""))
+			sourcepath = null;
+		List<Map<String, Object>> list = (List<Map<String, Object>>) m.get("List");
+		if(list==null || list.size()==0) {
+			map.put("ReturnType", "1013");
+			map.put("Message", "参数不全");
+			return map;
+		}
+		map = queryService.makeContentHtml(channelids, themeImg, mediaSrc, thirdpath, source, sourcepath, mastatus, username, list);
+		return map;
+	}
 	
 	/**
 	 * 发布已撤销内容

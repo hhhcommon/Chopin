@@ -531,7 +531,7 @@ li, a, input {
               <label class="col-sm-2 control-label">题图：</label>
               <div class="col-sm-10" style="margin-left: 25px;">
                 <input id="uploadThemeImg" name="uploadThemeImg" class="form-control" type="text"  placeholder="点击，选择图片上传" style="background-color:#fff;" readonly />
-                <input id="themeImg" class="form-control" name="themeImg" type="file" style="display:none;" value="" accept=".png,.jpg"/>
+                <input id="themeImg" class="form-control" name="themeImg" type="file" style="display:none;" value="" accept=".png,.jpg,.jpeg"/>
               </div>
               <span class="help-block m-b-none"style="width: 170px;height: 27px;position: absolute;top: -2px;left: 459px;"><i class="fa fa-info-circle"></i>题图,引用和媒体只能提交一个</span>
             </div>
@@ -681,7 +681,34 @@ $(function(){
   });
   //2.2-点击修改按钮
   $("#mod").on("click",function(){
-    
+    var _url=rootPath+"content/getContentInfo2Updata.do";
+    $('.tabContentDiv').each(function(){
+      if($(this).css('display')=='block'){
+        $(this).find('input[type="radio"]').each(function(){
+          if($(this).is(':checked')){
+            var ma = $(this).parent().parent();
+            var data = {"ContentId":ma.attr("id")};
+            $.ajax({
+              type: "POST",
+              url: _url,
+              dataType: "json",
+              data: JSON.stringify(data),
+              success: function(jsonData){
+                if(jsonData.ReturnType=="1001") {
+                  var jsonData=jsonData;
+                  modifyArticle(jsonData);
+                  $(".row,.shade").show();
+                  alert("欢迎修改！");
+                }
+              },
+              error:function(jqXHR){
+                alert("发生错误" + jqXHR.status);
+              }
+            });
+          }
+        });
+      }
+    });
   });
   //2.3-点击删除按钮
   $("#del").on("click",function(){
@@ -705,6 +732,8 @@ $(function(){
                   alert("删除成功");
                   $("#"+ma.attr("id")).remove();
                   $("#"+"lunbotu"+ma.attr("id")).remove();
+                }else{
+                  alert(jsonData.Message);
                 }
               },
               error:function(jqXHR){
@@ -948,7 +977,7 @@ function loadCatalogList(returnData,channelId){
     ndiv=$("<div class='tabContentDiv'></div>");
     for(var j=0;j<returnData.ResultInfo[i].AllCount;j++){
       loadArtList='<div class="listBox" catalogId='+returnData.ResultInfo[i].CatalogId+' id='+returnData.ResultInfo[i].List[j].ContentId+'>'+
-                    '<div class="listCheck"><input type="radio" name=""></div>'+
+                    '<div class="listCheck"><input type="radio" name="radio"></div>'+
                     '<div class="listImg"><img alt="mage" src='+returnData.ResultInfo[i].List[j].ContentImg+'></div>'+
                     '<div class="listCon">'+
                       '<h3>'+returnData.ResultInfo[i].List[j].ContentName+'</h3>'+
@@ -969,7 +998,7 @@ function loadCatalogList(returnData,channelId){
       //添加轮播图列表
       if(returnData.ResultInfo[i].List[j].IsDirect==true) {
         ddiv +='<div class="listBox" catalogId='+returnData.ResultInfo[i].CatalogId+' id='+'lunbotu'+returnData.ResultInfo[i].List[j].ContentId+'>'+
-                  '<div class="listCheck"><input type="radio" name=""></div>'+
+                  '<div class="listCheck"><input type="radio" name="radio"></div>'+
                   '<div class="listImg"><img alt="mage" src='+returnData.ResultInfo[i].List[j].ContentImg+'></div>'+
                   '<div class="listCon">'+
                     '<h3>'+returnData.ResultInfo[i].List[j].ContentName+'</h3>'+
@@ -1009,7 +1038,7 @@ function loadCatalogList(returnData,channelId){
       if(returnData.ReturnType=="1001"){
         for(var i=0;i<returnData.AllCount;i++){
           loadArtList='<div class="listBox" catalogId='+returnData.ResultInfo[i].ContentPubChannels[0].ChannelId+' id='+returnData.ResultInfo[i].ContentId+'>'+
-                        '<div class="listCheck"><input type="radio" name=""></div>'+
+                        '<div class="listCheck"><input type="radio" name="radio"></div>'+
                         '<div class="listImg"><img alt="mage" src='+returnData.ResultInfo[i].ContentImg+'></div>'+
                         '<div class="listCon">'+
                           '<h3>'+returnData.ResultInfo[i].ContentName+'</h3>'+
@@ -1184,7 +1213,7 @@ function newPicture(newp){
               '<label class="col-sm-2 control-label" style="margin-left:-35px;">图片：</label>'+
               '<div class="col-sm-12"style="margin-left: -4px;">'+
                 '<input id="uploadImg" name="uploadImg" class="form-control" type="file"  placeholder="点击，选择图片上传" style="background-color:#fff;" readonly />'+
-                '<input id="ContentImg'+segmentIndex+'" class="form-isvalidate" name="ContentImg" type="hidden"  value="" accept=".png,.jpg"/>'+
+                '<input id="ContentImg'+segmentIndex+'" class="form-isvalidate" name="ContentImg" type="hidden"  value="" accept=".png,.jpg,.jpeg"/>'+
                 '<div id="OldOrgPath'+segmentIndex+'" style="display: none"></div>'+
                 '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大5M，支持JPG、PNG格式<span class="uploadPrompt"></span></span>'+
               '</div>'+
@@ -1486,6 +1515,11 @@ function createArticle(){
 //隐藏所有的addContent 
 function hiden(){
   $(".addContent").css("display", "none");
+}
+
+//修改功能
+function modifyArticle(jsonData){
+  
 }
 </script>
 </html>
