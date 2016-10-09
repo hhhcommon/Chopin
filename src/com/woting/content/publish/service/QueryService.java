@@ -2,15 +2,22 @@ package com.woting.content.publish.service;
 
 import java.io.File;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 import com.spiritdata.framework.FConstants;
 import com.spiritdata.framework.core.cache.SystemCache;
 import com.spiritdata.framework.util.FileUtils;
+import com.spiritdata.framework.util.JsonUtils;
 import com.spiritdata.framework.util.SequenceUUID;
 import com.woting.cm.core.channel.model.ChannelAsset;
 import com.woting.cm.core.channel.persis.po.ChannelAssetPo;
@@ -44,27 +51,17 @@ public class QueryService {
 			+ "<script type=\"text/javascript\" src=\"../resources/plugins/hplus/js/jquery-2.1.1.min.js\"></script>"
 			+ "<script type=\"text/javascript\" src=\"../resources/js/contentapp.js\"></script>"
 			+ "</head><body>#####CONTENT#####</body></html>";
-	private String word = "<div class=\"conpetitorContent\">" //内容页文本内容
-			+ "<div class=\"word\">#####WORD#####</div>"
-			+ "</div>";
-	private String pic = "<div class=\"conpetitorContent\"><div class=\"pic\">" //内容页图片信息
-			+ "<img src=\"#####PICTURE#####\"/>"
-					+ "</div>"
-					+ "</div>";
-	private String video = "<div class=\"conpetitorContent\">" //内容视频信息
-			+ "<div class=\"video\">"
-			+ "<video  id=\"myVideo\" controls preload >"
-			+ "<source src=\"#####VIDEO#####\" >"
-			+ "</video>"
-			+ "</div>"
-			+ "</div>";
-	private String audio = "<div class=\"conpetitorContent\">"
-			+ "<div class=\"audio\">"
-			+ "<audio id=\"myAudio\" controls>"
-			+ "<source src=\"#####AUDIO#####\" type=\"audio/mpeg\">"
-			+ "</audio>"
-			+ "</div>"
-			+ "</div>";
+	private String word = "<div class=\"conpetitorContent\">" // 内容页文本内容
+			+ "<div class=\"word\">#####WORD#####</div>" + "</div>";
+	private String pic = "<div class=\"conpetitorContent\"><div class=\"pic\">" // 内容页图片信息
+			+ "<img src=\"#####PICTURE#####\"/>" + "</div>" + "</div>";
+	private String video = "<div class=\"conpetitorContent\">" // 内容视频信息
+			+ "<div class=\"video\">" + "<video  id=\"myVideo\" controls preload >"
+			+ "<source src=\"#####VIDEO#####\" >" + "</video>" + "</div>" + "</div>";
+	private String audio = "<div class=\"conpetitorContent\">" + "<div class=\"audio\">"
+			+ "<audio id=\"myAudio\" controls>" + "<source src=\"#####AUDIO#####\" type=\"audio/mpeg\">" + "</audio>"
+			+ "</div>" + "</div>";
+
 	public Map<String, Object> addContentByApp(String userId, String title, String filePath, String descn,
 			String channelId) {
 		Map<String, Object> map = new HashMap<>();
@@ -74,12 +71,12 @@ public class QueryService {
 			return map;
 		}
 		String htmlstr = "";
-		if(descn!=null) {
-			descn = "<p>"+descn+"</p>";
+		if (descn != null) {
+			descn = "<p>" + descn + "</p>";
 			descn = word.replace("#####WORD#####", descn);
 			htmlstr = htmlstr.replace("#####CONTENT#####", descn);
 		}
-		
+
 		UserPo userPo = userService.getUserById(userId);
 		MediaAssetPo mapo = new MediaAssetPo();
 		mapo.setId(SequenceUUID.getPureUUID());
@@ -88,10 +85,10 @@ public class QueryService {
 		mapo.setMaPubId(userId);
 		mapo.setMaPublisher(userPo.getLoginName());
 		int num = FileUploadUtils.getFileType(filePath);
-		if (num==1 || num==2) {
+		if (num == 1 || num == 2) {
 			mapo.setSubjectWords(filePath);
 		}
-		if(num==3) {
+		if (num == 3) {
 			mapo.setMaImg(filePath);
 		}
 		mapo.setDescn(descn);
@@ -99,11 +96,12 @@ public class QueryService {
 		mapo.setCTime(new Timestamp(System.currentTimeMillis()));
 		mapo.setMaPublishTime(new Timestamp(System.currentTimeMillis()));
 		mapo.setPubCount(1);
-		String alltext = "##"+title+"####"+descn+"##";
+		String alltext = "##" + title + "####" + descn + "##";
 		mapo.setAllText(alltext);
-		String path = SystemCache.getCache(FConstants.APPOSPATH).getContent()+"dataCenter/mweb/"+mapo.getId()+".html";
+		String path = SystemCache.getCache(FConstants.APPOSPATH).getContent() + "dataCenter/mweb/" + mapo.getId()
+				+ ".html";
 		FileUploadUtils.writeFile(htmlstr, path);
-		path = "http://www.wotingfm.com/Chopin/dataCenter/mweb/"+mapo.getId()+"/"+mapo.getId()+".html";
+		path = "http://www.wotingfm.com/Chopin/dataCenter/mweb/" + mapo.getId() + "/" + mapo.getId() + ".html";
 		mapo.setMaURL(path);
 		MediaAsset mat = new MediaAsset();
 		mat.buildFromPo(mapo);
@@ -148,24 +146,24 @@ public class QueryService {
 	public Map<String, Object> removeContentByApp(String userId, String contentId) {
 		MediaAsset ma = mediaService.getMaInfoById(contentId);
 		String img = ma.getMaImg();
-		if(img!=null && !img.equals("null")) {
+		if (img != null && !img.equals("null")) {
 			FileUploadUtils.deleteFile(img.replace("http://www.wotingfm.com/", "/opt/tomcat_Chopin/webapps/"));
 			String smallimg = img.replace("group03/", "group04/small");
 			FileUploadUtils.deleteFile(smallimg.replace("http://www.wotingfm.com/", "/opt/tomcat_Chopin/webapps/"));
 		}
 		String vodie = ma.getSubjectWords();
-		if(vodie!=null && !vodie.equals("null")) 
+		if (vodie != null && !vodie.equals("null"))
 			FileUploadUtils.deleteFile(vodie.replace("http://www.wotingfm.com/", "/opt/tomcat_Chopin/webapps/"));
 		String htmlpath = ma.getMaURL();
-		if (htmlpath!=null && !htmlpath.equals("null")) 
+		if (htmlpath != null && !htmlpath.equals("null"))
 			FileUploadUtils.deleteFile(htmlpath.replace("http://www.wotingfm.com/", "/opt/tomcat_Chopin/webapps/"));
 		String shareurl = ma.getKeyWords();
-		if(shareurl!=null && !shareurl.equals("null"))
+		if (shareurl != null && !shareurl.equals("null"))
 			FileUploadUtils.deleteFile(htmlpath.replace("http://www.wotingfm.com/", "/opt/tomcat_Chopin/webapps/"));
 		mediaService.removeMa(contentId);
 		channelService.removeChannelAsset(contentId);
-		int removefavnum = favoriteService.delArticleFavorite(contentId,"6");
-		int removedisnum = discussService.delArticleFavorite(contentId,"6");
+		int removefavnum = favoriteService.delArticleFavorite(contentId, "6");
+		int removedisnum = discussService.delArticleFavorite(contentId, "6");
 		Map<String, Object> map = new HashMap<>();
 		map.put("RemoveFavNum", removefavnum);
 		map.put("RemoveDisNum", removedisnum);
@@ -204,7 +202,8 @@ public class QueryService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Map<String, Object> makeContentHtml(String channelIds,String themeImg, String mediaSrc, String thirdpath, String source, String sourcepath, String mastatus, String username, List<Map<String, Object>> list) {
+	public Map<String, Object> makeContentHtml(String channelIds, String themeImg, String mediaSrc, String thirdpath,
+			String source, String sourcepath, String mastatus, String username, List<Map<String, Object>> list) {
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> statustype = new HashMap<>();
 		statustype.put("一般文章", 0);
@@ -222,7 +221,7 @@ public class QueryService {
 			ma.setMaStatus(0);
 		} else {
 			UserPo u = userService.getUserByUserName(username);
-			if (u==null) {
+			if (u == null) {
 				map.put("ReturnType", "1014");
 				map.put("Message", "用户不存在");
 				return map;
@@ -232,14 +231,14 @@ public class QueryService {
 			ma.setMaPublisher(u.getUserName());
 			ma.setMaStatus(Integer.valueOf(statustype.get(mastatus) + ""));
 		}
-		if (source!=null && sourcepath !=null) {
-			String sourceurl = "<a href='"+sourcepath+"'>"+source+"</a>";
+		if (source != null && sourcepath != null) {
+			String sourceurl = "<a href='" + sourcepath + "'>" + source + "</a>";
 			ma.setLanguage(sourceurl);
 		}
 		ma.setMaImg(themeImg);
-		if (mediaSrc!=null) 
+		if (mediaSrc != null)
 			ma.setSubjectWords(mediaSrc);
-		if(thirdpath!=null)
+		if (thirdpath != null)
 			ma.setSubjectWords(thirdpath);
 		ma.setCTime(new Timestamp(System.currentTimeMillis()));
 		ma.setMaPublishTime(ma.getCTime());
@@ -249,142 +248,147 @@ public class QueryService {
 		if (list != null && list.size() > 0) {
 			for (Map<String, Object> m : list) {
 				switch (m.get("PartType") + "") {
-				case "TITLE": //标题
-					String matitle = m.get("PartInfo")+"";
-					if(matitle.equals("null")) {
+				case "TITLE": // 标题
+					String matitle = m.get("PartInfo") + "";
+					if (matitle.equals("null")) {
 						map.put("ReturnType", "1016");
 						map.put("Message", "标题名为空");
 						return map;
 					}
-					if(mediaService.getMaInfoByTitle(m.get("PartInfo")+"")!=null) {
+					if (mediaService.getMaInfoByTitle(m.get("PartInfo") + "") != null) {
 						map.put("ReturnType", "1015");
 						map.put("Message", "内容重名");
 						return map;
 					}
-					ma.setMaTitle(m.get("PartInfo")+"");
-					allText +="##"+ma.getMaTitle()+"##";
+					ma.setMaTitle(m.get("PartInfo") + "");
+					allText += "##" + ma.getMaTitle() + "##";
 					break;
-				case "DESCN": //摘要
-					ma.setDescn(m.get("PartInfo")+"");
-					allText +="##"+ma.getDescn()+"##";
+				case "DESCN": // 摘要
+					ma.setDescn(m.get("PartInfo") + "");
+					allText += "##" + ma.getDescn() + "##";
 					break;
-				case "WORD" : //文本内容
-					allText += "##"+m.get("PartInfo")+"##";
-					//合成html
-					htmlstr += word.replace("#####WORD#####", m.get("PartInfo")+"");
+				case "WORD": // 文本内容
+					allText += "##" + m.get("PartInfo") + "##";
+					// 合成html
+					htmlstr += word.replace("#####WORD#####", m.get("PartInfo") + "");
 					break;
-				case "PICTURE" : //图片信息
-					String partNameimg = m.get("PartName")+"";
+				case "PICTURE": // 图片信息
+					String partNameimg = m.get("PartName") + "";
 					if (partNameimg.equals("null") || partNameimg.equals("")) {
-						//删除文件
+						// 删除文件
 						List<Map<String, Object>> imgs = (List<Map<String, Object>>) m.get("ResouceList");
-						if(imgs!=null && imgs.size()>0) {
+						if (imgs != null && imgs.size() > 0) {
 							for (Map<String, Object> imgm : imgs) {
-								FileUtils.deleteFile(new File(imgm.get("FileOrgPath")+""));
-								FileUtils.deleteFile(new File(imgm.get("FileSmallPath")+""));
+								FileUtils.deleteFile(new File(imgm.get("FileOrgPath") + ""));
+								FileUtils.deleteFile(new File(imgm.get("FileSmallPath") + ""));
 							}
 						}
 					} else {
 						List<Map<String, Object>> imgs = (List<Map<String, Object>>) m.get("ResouceList");
-						if(imgs!=null && imgs.size()>0) {
+						if (imgs != null && imgs.size() > 0) {
 							for (Map<String, Object> imgm : imgs) {
-								String fileOrgPath = imgm.get("FileOrgPath")+"";
-								if(!fileOrgPath.contains(partNameimg)) {
-									//删除文件
-									FileUtils.deleteFile(new File(imgm.get("FileOrgPath")+""));
-									FileUtils.deleteFile(new File(imgm.get("FileSmallPath")+""));
+								String fileOrgPath = imgm.get("FileOrgPath") + "";
+								if (!fileOrgPath.contains(partNameimg)) {
+									// 删除文件
+									FileUtils.deleteFile(new File(imgm.get("FileOrgPath") + ""));
+									FileUtils.deleteFile(new File(imgm.get("FileSmallPath") + ""));
 								} else {
-									//合成html
+									// 合成html
 									htmlstr += pic.replace("#####PICTURE#####", fileOrgPath);
 								}
 							}
 						}
-					};
+					}
+					;
 					break;
-				case "VIDEO" :
-					String partNamevideo = m.get("PartName")+"";
+				case "VIDEO":
+					String partNamevideo = m.get("PartName") + "";
 					if (partNamevideo.equals("null") || partNamevideo.equals("")) {
-						//删除文件
+						// 删除文件
 						List<Map<String, Object>> videos = (List<Map<String, Object>>) m.get("ResouceList");
-						if(videos!=null && videos.size()>0) {
+						if (videos != null && videos.size() > 0) {
 							for (Map<String, Object> videom : videos) {
-								String fileOrgPath = videom.get("FileOrgPath")+"";
+								String fileOrgPath = videom.get("FileOrgPath") + "";
 								FileUtils.deleteFile(new File(fileOrgPath));
 							}
 						}
 					} else {
 						List<Map<String, Object>> videos = (List<Map<String, Object>>) m.get("ResouceList");
-						if (videos!=null && videos.size()>0) {
+						if (videos != null && videos.size() > 0) {
 							for (Map<String, Object> videom : videos) {
-								String fileOrgPath = videom.get("FileOrgPath")+"";
-								if(!fileOrgPath.contains(partNamevideo)) {
-									//删除文件
+								String fileOrgPath = videom.get("FileOrgPath") + "";
+								if (!fileOrgPath.contains(partNamevideo)) {
+									// 删除文件
 									FileUtils.deleteFile(new File(fileOrgPath));
 								} else {
-									//合成html
+									// 合成html
 									htmlstr += video.replace("#####VIDEO#####", fileOrgPath);
 								}
 							}
 						}
-					};
+					}
+					;
 					break;
-				case "MEDIA" :
-					String partNameaudio = m.get("PartName")+"";
+				case "MEDIA":
+					String partNameaudio = m.get("PartName") + "";
 					if (partNameaudio.equals("null") || partNameaudio.equals("")) {
-						//删除文件
+						// 删除文件
 						List<Map<String, Object>> audios = (List<Map<String, Object>>) m.get("ResouceList");
-						if (audios!=null && audios.size()>0) {
+						if (audios != null && audios.size() > 0) {
 							for (Map<String, Object> audiom : audios) {
-								String fileOrgPath = audiom.get("FileOrgPath")+"";
+								String fileOrgPath = audiom.get("FileOrgPath") + "";
 								FileUtils.deleteFile(new File(fileOrgPath));
 							}
 						}
 					} else {
 						List<Map<String, Object>> audios = (List<Map<String, Object>>) m.get("ResouceList");
-						if (audios!=null && audios.size()>0) {
+						if (audios != null && audios.size() > 0) {
 							for (Map<String, Object> audiom : audios) {
-								String fileOrgPath = audiom.get("FileOrgPath")+"";
-								if(!fileOrgPath.contains(partNameaudio)) {
-									//删除文件
+								String fileOrgPath = audiom.get("FileOrgPath") + "";
+								if (!fileOrgPath.contains(partNameaudio)) {
+									// 删除文件
 									FileUtils.deleteFile(new File(fileOrgPath));
 								} else {
-									//合成html
+									// 合成html
 									htmlstr += audio.replace("#####AUDIO#####", fileOrgPath);
 								}
 							}
 						}
-					};
+					}
+					;
 					break;
-				default: break;
+				default:
+					break;
 				}
 			}
 		}
 		ma.setAllText(CacheUtils.cleanTag(allText));
 		String[] channelid = channelIds.split(",");
-		if (channelid!=null && channelid.length>0) {
+		if (channelid != null && channelid.length > 0) {
 			for (String cid : channelid) {
 				ChannelAssetPo cha = new ChannelAssetPo();
-		        cha.setId(SequenceUUID.getPureUUID());
-		        cha.setAssetId(ma.getId());
-		        cha.setAssetType("wt_MediaAsset");
-		        cha.setChannelId(cid);
-		        cha.setPublisherId(ma.getMaPubId());
-		        cha.setCheckerId("0");
-		        cha.setFlowFlag(2);
-		        cha.setSort(0);
-		        cha.setIsValidate(1);
-		        cha.setPubName(ma.getMaTitle());
-		        cha.setPubImg(ma.getMaImg());
-		        cha.setCTime(ma.getCTime());
-		        cha.setPubTime(ma.getCTime());
-		        channelService.insertChannelAsset(cha);
+				cha.setId(SequenceUUID.getPureUUID());
+				cha.setAssetId(ma.getId());
+				cha.setAssetType("wt_MediaAsset");
+				cha.setChannelId(cid);
+				cha.setPublisherId(ma.getMaPubId());
+				cha.setCheckerId("0");
+				cha.setFlowFlag(2);
+				cha.setSort(0);
+				cha.setIsValidate(1);
+				cha.setPubName(ma.getMaTitle());
+				cha.setPubImg(ma.getMaImg());
+				cha.setCTime(ma.getCTime());
+				cha.setPubTime(ma.getCTime());
+				channelService.insertChannelAsset(cha);
 			}
 		}
 		htmlstr = html.replace("#####CONTENT#####", htmlstr);
-		String path = SystemCache.getCache(FConstants.APPOSPATH).getContent()+"dataCenter/mweb/"+ma.getId()+".html";
+		String path = SystemCache.getCache(FConstants.APPOSPATH).getContent() + "dataCenter/mweb/" + ma.getId()
+				+ ".html";
 		FileUploadUtils.writeFile(htmlstr, path);
-		ma.setMaURL("http://www.wotingfm.com/Chopin/dataCenter/mweb/"+ma.getId()+".html");
-		ma.setKeyWords("http://www.wotingfm.com/Chopin/dataCenter/mweb/"+ma.getId()+".html");
+		ma.setMaURL("http://www.wotingfm.com/Chopin/dataCenter/mweb/" + ma.getId() + ".html");
+		ma.setKeyWords("http://www.wotingfm.com/Chopin/dataCenter/mweb/" + ma.getId() + ".html");
 		MediaAsset mas = new MediaAsset();
 		mas.buildFromPo(ma);
 		mediaService.saveMa(mas);
@@ -401,5 +405,132 @@ public class QueryService {
 			return true;
 		}
 		return false;
+	}
+
+	public Map<String, Object> modifyContentInfo(String contentid) {
+		Map<String, Object> map = new HashMap<>();
+		MediaAsset mediaAsset = mediaService.getMaInfoById(contentid);
+		String channelIds = "";
+		if (mediaAsset != null) {
+			List<Map<String, Object>> chas = mediaService.getCHAByAssetId("'" + mediaAsset.getId() + "'",
+					"wt_MediaAsset");
+			if (chas != null && chas.size() > 0) {
+				for (Map<String, Object> m2 : chas) {
+					channelIds += "," + m2.get("channelId");
+				}
+				channelIds = channelIds.substring(1);
+			}
+		}
+		MediaAssetPo mapo = mediaAsset.convert2Po();
+		String title = mapo.getMaTitle(); // 文章标题
+		int pubtype = mapo.getMaPubType();
+		String pubname = mapo.getMaPublisher();
+		String maimg = mapo.getMaImg(); // 文章题图
+		String mahtml = mapo.getMaURL(); // 文章页面路径
+		String masrc = mapo.getSubjectWords(); // 文章媒体
+		String isshow = mapo.getLangDid(); // 是否显示题图,媒体
+		String language = mapo.getLanguage(); // 文章来源和网站<a
+												// href='http://www.sin80.com/series/chopin-polonaises'>新芭网</a>
+		Document docm = Jsoup.parse(language);
+		Element ee = docm.body().select("a").get(0);
+		String sourcepath = ee.attr("href");
+		String source = ee.html();
+		String descn = mapo.getDescn(); // 文章摘要
+		Document doc = null;
+		map.put("ChannelIds", channelIds);
+		map.put("ThemeImg", maimg);
+		map.put("Source", source);
+		map.put("SourcePath", sourcepath);
+		if (masrc != null) {
+			if (masrc.contains("wotingfm.com")) {
+				map.put("MediaSrc", masrc);
+				map.put("ThirdPath", "");
+			} else {
+				if (masrc.contains("http")) {
+					map.put("MediaSrc", "");
+					map.put("ThirdPath", masrc);
+				} else {
+					map.put("MediaSrc", "");
+					map.put("ThirdPath", "");
+				}
+			}
+		} else {
+			map.put("MediaSrc", "");
+			map.put("ThirdPath", "");
+		}
+		map.put("ContentStatus", pubtype);
+		map.put("UserName", pubname);
+		List<Map<String, Object>> ls = new ArrayList<>();
+		Map<String, Object> m1 = new HashMap<>();
+		m1.put("PartId", 1);
+		m1.put("PartType", "TITLE");
+		m1.put("PartInfo", title);
+		ls.add(m1);
+		Map<String, Object> m2 = new HashMap<>();
+		m2.put("PartId", 2);
+		m2.put("PartType", "DESCN");
+		m2.put("PartInfo", descn);
+		ls.add(m2);
+		try {
+			doc = Jsoup.connect(mahtml).ignoreContentType(true).timeout(10000).get();
+			if (doc != null) {
+				Element body = doc.body();
+				Elements eles = body.select("div[class=conpetitorContent]");
+				if (eles != null && eles.size() > 0) {
+					int num = 3;
+					for (Element ele : eles) {
+						Elements els = ele.children().select("div[class]");
+						ele = els.get(0);
+						String type = ele.attr("class");
+						String html = ele.html();
+						Map<String, Object> m = new HashMap<>();
+						m.put("PartId", num);
+						m.put("PartType", type);
+						if (type.equals("word")) {
+							m.put("PartInfo", html);
+						} else {
+							if (type.equals("pic")) {
+								Document d1 = Jsoup.parse(html);
+								Element el = d1.body().select("img").get(0);
+								String path = el.attr("src");
+								m.put("PartName", path.subSequence(path.lastIndexOf("/") + 1, path.length()));
+								List<Map<String, Object>> l = new ArrayList<>();
+								Map<String, Object> ms = new HashMap<>();
+								ms.put("FileOrgPath", path);
+								ms.put("FileSmallPath", path.replace("group03/", "group04/small"));
+								l.add(ms);
+								m.put("Resouce", l);
+							} else if (type.equals("video")) {
+								Document d1 = Jsoup.parse(html);
+								Element el = d1.body().select("source").get(0);
+								String path = el.attr("source");
+								m.put("PartName", path.subSequence(path.lastIndexOf("/") + 1, path.length()));
+								List<Map<String, Object>> l = new ArrayList<>();
+								Map<String, Object> ms = new HashMap<>();
+								ms.put("FileOrgPath", path);
+								l.add(ms);
+								m.put("Resouce", l);
+							} else if (type.equals("audio")) {
+								Document d1 = Jsoup.parse(html);
+								Element el = d1.body().select("source").get(0);
+								String path = el.attr("source");
+								m.put("PartName", path.subSequence(path.lastIndexOf("/") + 1, path.length()));
+								List<Map<String, Object>> l = new ArrayList<>();
+								Map<String, Object> ms = new HashMap<>();
+								ms.put("FileOrgPath", path);
+								l.add(ms);
+								m.put("Resouce", l);
+							}
+						}
+						ls.add(m);
+						num++;
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		map.put("List", ls);
+		return map;
 	}
 }

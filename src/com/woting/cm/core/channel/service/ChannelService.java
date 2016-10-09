@@ -299,6 +299,7 @@ public class ChannelService {
     public List<ChannelPo> getChannelsByPcId(String pcId) {
     	Map<String, Object> m = new HashMap<>();
     	m.put("pcId", pcId);
+    	m.put("sortByClause", "sort desc ,cTime desc");
 		return channelDao.queryForList("getList", m);
     }
 

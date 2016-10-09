@@ -681,7 +681,33 @@ $(function(){
   });
   //2.2-点击修改按钮
   $("#mod").on("click",function(){
-    
+    var _url=rootPath+"content/getContentInfo2Updata.do";
+    $('.tabContentDiv').each(function(){
+      if($(this).css('display')=='block') {
+        $(this).find('input[type="radio"]').each(function(){
+          if($(this).is(':checked')) {
+            var ma = $(this).parent().parent();
+            var data = {
+              "ContentId":ma.attr("id")
+            }
+            $.ajax({
+              type: "POST",    
+              url: _url,
+              dataType: "json",
+              data: JSON.stringify(data),
+              success: function(jsonData){
+                if(jsonData.ReturnType=="1001") {
+                  alert("成功");
+                }
+              },
+              error:function(jqXHR){
+                alert("发生错误" + jqXHR.status);
+              }
+            });
+          }
+        });
+      }
+    });
   });
   //2.3-点击删除按钮
   $("#del").on("click",function(){
