@@ -239,6 +239,12 @@ public class QueryController {
 	public Map<String, Object> updateContentInfo(HttpServletRequest request) {
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> m = RequestUtils.getDataFromRequest(request);
+		String contentid = m.get("ContentId")+"";
+		if(contentid.equals("null") || contentid.equals("")) {
+			map.put("ReturnType", "1011");
+			map.put("Message", "无法获得内容Id");
+			return map;
+		}
 		String channelids = m.get("ChannelId")+"";
 		if(channelids.equals("null") || channelids.equals("")) {
 			map.put("ReturnType", "1012");
@@ -282,7 +288,7 @@ public class QueryController {
 			map.put("Message", "参数不全");
 			return map;
 		}
-		map = queryService.makeContentHtml(channelids, themeImg, mediaSrc, thirdpath, source, sourcepath, mastatus, username, list);
+		map = queryService.updateContentHtml(contentid, channelids, themeImg, mediaSrc, thirdpath, source, sourcepath, mastatus, username, list);
 		return map;
 	}
 	
