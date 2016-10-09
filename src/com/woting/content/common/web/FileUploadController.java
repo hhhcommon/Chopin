@@ -18,7 +18,7 @@ import net.coobird.thumbnailator.Thumbnails;
 public class FileUploadController extends AbstractFileUploadController{
 //	private static final String rootpath = "/opt/tomcat_Chopin/webapps/Chopin/";
 //	private static final String rootpath = "D:/workIDE/Chopin/WebContent/";
-	private static final String webpath = "http://www.wotingfm.com/Chopin/dataCenter/";
+	private static final String webpath = "http://www.wotingfm.com/Chopin/";
 	private static final String[] MediaPath = {
 			"dataCenter/media/group01/",  //上传的音频文件路径
 			"dataCenter/media/group02/",  //上传的视频文件路径

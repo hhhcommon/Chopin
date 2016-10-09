@@ -10,7 +10,7 @@ public class FileUploadUtils {
 	private static final String[] mediatype = {".mp3",".MP3",".mP3",".Mp3"};
 	private static final String[] videotype = {".mp4",".MP4",".mP4",".Mp4"};
 	private static final String[] picturetype = {".jpg",".png",".JPG",".PNG",".Jpg",".jPG",".jPg",".jpG",".JpG"
-			                                     ,"JPg",".Png",".PNg",".pNG",".pnG",".pNg",".PnG"};
+			                                     ,"JPg",".Png",".PNg",".pNG",".pnG",".pNg",".PnG",".jpeg"};
 	/**
 	 * 判断文件上传的类型
 	 * @return

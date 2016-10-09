@@ -283,6 +283,7 @@ public class MediaContentService {
 	public Map<String, Object> getContentInfo(String userId, String contentId) {
 		Map<String, Object> mam = null;
 		MediaAsset ma = mediaService.getMaInfoById(contentId);
+		if (ma==null) return null;
 		String[] ids = new String[1];
 		ids[0] = ma.getId();
 		List<ChannelAssetPo> chas = channelService.getChannelAssetsByAssetId(contentId);

@@ -629,7 +629,7 @@ public class VersionController {
                     map.put("Message", "无法获得当前发布版本");
                 } else {
                     map.put("ReturnType", "1001");
-                    //map.putAll(m);
+                    map.putAll(m);
                 }
             }
             map.put("ServerStatus", "1");

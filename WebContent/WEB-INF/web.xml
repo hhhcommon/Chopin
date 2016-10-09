@@ -112,17 +112,6 @@
     <url-pattern>*.do</url-pattern>
   </servlet-mapping>
   <!-- end Servlet设置 -->
-  <!-- Servlet Chopin -->
-  <servlet>
-    <servlet-name>ArticleShell</servlet-name>
-    <servlet-class>com.woting.chopin.servlet.ArticleShell</servlet-class>
-    <load-on-startup>2</load-on-startup>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>ArticleShell</servlet-name>
-    <url-pattern>articleShell.html</url-pattern>
-  </servlet-mapping>
-  <!-- end Servlet设置 -->
 
   <welcome-file-list>
     <welcome-file>/broadcast/list.jsp</welcome-file>
