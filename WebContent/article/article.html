@@ -683,13 +683,11 @@ $(function(){
   $("#mod").on("click",function(){
     var _url=rootPath+"content/getContentInfo2Updata.do";
     $('.tabContentDiv').each(function(){
-      if($(this).css('display')=='block') {
+      if($(this).css('display')=='block'){
         $(this).find('input[type="radio"]').each(function(){
-          if($(this).is(':checked')) {
+          if($(this).is(':checked')){
             var ma = $(this).parent().parent();
-            var data = {
-              "ContentId":ma.attr("id")
-            }
+            var data = {"ContentId":ma.attr("id")};
             $.ajax({
               type: "POST",    
               url: _url,
@@ -697,7 +695,10 @@ $(function(){
               data: JSON.stringify(data),
               success: function(jsonData){
                 if(jsonData.ReturnType=="1001") {
-                  alert("成功");
+                  var jsonData=jsonData;
+                  modifyArticle(jsonData);
+                  $(".row,.shade").show();
+                  alert("欢迎修改！");
                 }
               },
               error:function(jqXHR){
@@ -731,6 +732,8 @@ $(function(){
                   alert("删除成功");
                   $("#"+ma.attr("id")).remove();
                   $("#"+"lunbotu"+ma.attr("id")).remove();
+                }else{
+                  alert(jsonData.Message);
                 }
               },
               error:function(jqXHR){
@@ -1512,6 +1515,11 @@ function createArticle(){
 //隐藏所有的addContent 
 function hiden(){
   $(".addContent").css("display", "none");
+}
+
+//修改功能
+function modifyArticle(jsonData){
+  
 }
 </script>
 </html>
