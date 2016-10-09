@@ -371,4 +371,8 @@ public class ChannelService {
 		}
 		return true;
     }
+    
+    public void removeChannelAssetByMap(Map<String, Object> m) {
+    	channelAssetDao.delete("delByChannels", m);
+    }
 }

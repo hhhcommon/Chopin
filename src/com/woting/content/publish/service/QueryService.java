@@ -96,6 +96,7 @@ public class QueryService {
 		mapo.setCTime(new Timestamp(System.currentTimeMillis()));
 		mapo.setMaPublishTime(new Timestamp(System.currentTimeMillis()));
 		mapo.setPubCount(1);
+		mapo.setLangDid("true");
 		String alltext = "##" + title + "####" + descn + "##";
 		mapo.setAllText(alltext);
 		String path = SystemCache.getCache(FConstants.APPOSPATH).getContent() + "dataCenter/mweb/" + mapo.getId()
@@ -701,6 +702,41 @@ public class QueryService {
 			}
 		}
 		ma.setAllText(CacheUtils.cleanTag(allText));
+		mediaService.updateMa(ma);
+		String[] chass = channelids.split(",");
+		String chas = "";
+		for (String str : chass) {
+			chas += ",'"+str+"'";
+			ChannelAsset cha = mediaService.getChannelAssetByChannelIdAndAssetId(str, contentid);
+			if(cha!=null) {
+				cha.setPubName(ma.getMaTitle());
+			    cha.setPubImg(ma.getMaImg());
+			    cha.setCTime(ma.getCTime());
+			    cha.setPubTime(ma.getCTime());
+			} else {
+//				cha = new ChannelAsset();
+//			cha.setId(SequenceUUID.getPureUUID());
+//			cha.setAssetId(ma.getId());
+//			cha.setAssetType("wt_MediaAsset");
+//			cha.setChannelId(str);
+//			cha.setPublisherId(ma.getMaPubId());
+//			cha.setCheckerId("0");
+//			cha.setFlowFlag(2);
+//			cha.setSort(0);
+//			cha.setIsValidate(1);
+//			cha.setPubName(ma.getMaTitle());
+//		    cha.setPubImg(ma.getMaImg());
+//		    cha.setCTime(ma.getCTime());
+//		    cha.setPubTime(ma.getCTime());
+			}
+			
+			
+//			channelService.insertChannelAsset(cha);
+		}
+		chas = chas.substring(1);
+		Map<String, Object> m = new HashMap<>();
+		m.put("value", "channelId not in ("+chas+") and assetId = "+contentid);
+		mediaService.removeChaByMap(m);
 		
 		return null;
 	}
