@@ -479,6 +479,7 @@ public class QueryService {
 		m2.put("PartInfo", descn);
 		ls.add(m2);
 		try {
+			mahtml = mahtml.replace("www.wotingfm.com", "123.56.254.75:1108");
 			doc = Jsoup.connect(mahtml).ignoreContentType(true).timeout(10000).get();
 			if (doc != null) {
 				Element body = doc.body();
@@ -510,7 +511,7 @@ public class QueryService {
 							} else if (type.equals("video")) {
 								Document d1 = Jsoup.parse(html);
 								Element el = d1.body().select("source").get(0);
-								String path = el.attr("source");
+								String path = el.attr("src");
 								m.put("PartName", path.subSequence(path.lastIndexOf("/") + 1, path.length()));
 								List<Map<String, Object>> l = new ArrayList<>();
 								Map<String, Object> ms = new HashMap<>();
@@ -520,7 +521,7 @@ public class QueryService {
 							} else if (type.equals("audio")) {
 								Document d1 = Jsoup.parse(html);
 								Element el = d1.body().select("source").get(0);
-								String path = el.attr("source");
+								String path = el.attr("src");
 								m.put("PartName", path.subSequence(path.lastIndexOf("/") + 1, path.length()));
 								List<Map<String, Object>> l = new ArrayList<>();
 								Map<String, Object> ms = new HashMap<>();

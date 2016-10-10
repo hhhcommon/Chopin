@@ -37,7 +37,7 @@
 li{list-style: none;}
 /*工具条区域样式*/
 .toobarArea{
-  height:40px;
+  height:auto;
   width:100%;
   line-height:30px;
   background:#eff3f6;
@@ -71,7 +71,7 @@ li{list-style: none;}
   position: absolute;
   left: 0;
   top: 0;
-  width: 420px;
+  width: 370px;
   height: 100%;
   border-right: 1px solid #ccc;
   overflow: hidden;
@@ -91,10 +91,11 @@ li{list-style: none;}
   right:0;
   top:0;
   height:100%;
-  width:calc(100% - 420px);
+  width:calc(100% - 370px);
   background:white;
 }
 .detail{
+  position: relative;
   height:400px;
   border:1px solid black;
   overflow: auto;
@@ -218,11 +219,11 @@ li{list-style: none;}
 }
 .tabContent {
   width: 66.3%;
-  height: 400px;
+  height: 398px;
   position: absolute;
   margin-left: 175px;
   overflow: auto;
-  top: 57px;
+  top: 0px;
   border-left: 1px solid black;
 }
 .tabContent div{
@@ -418,7 +419,7 @@ li{list-style: none;}
   height: 35px;
   position: absolute;
   left: 98%;
-  margin-top: 17%;
+  margin-top: 0%;
   cursor: pointer;
 }
 .ibox .pic .actions,.ibox .video .actions,.ibox .audio .actions{
@@ -684,6 +685,12 @@ $(function(){
   //2.2-点击修改按钮
   $("#mod").on("click",function(){
     type=2;
+    $(".segment").remove();//清空数据
+    $("#titleName,#channelName,#descnName,#channelId,#source,#website,#competitorName,#uploadThemeImg,#uploadMedia,#thirdpath").val("");//清空数据
+    $("#themeImg,#media").attr("value","");
+    $("#channelName li").each(function(){
+      $(this).remove();
+    });
     var _url=rootPath+"content/getContentInfo2Updata.do";
     $('.tabContentDiv').each(function(){
       if($(this).css('display')=='block'){
@@ -891,7 +898,7 @@ $(function(){
       saveModify();
     }
   })
-  //3.3-点击提交,取消按钮，遮罩层和弹出层消失
+  //3.3-点击关闭,取消按钮，遮罩层和弹出层消失
   $(".close-link,.cancels").on("click",function(){
     $(".row,.shade").hide();
   });
@@ -1184,7 +1191,7 @@ function newSummernote(news) {
               '<div class="col-sm-12" style="margin-left: -4px;margin-top:-10px;border: 1px solid transparent;margin-bottom:-9px;">'+
               '<div id="summernote'+segmentIndex+'" class="summernote"></div>'+
             '</div>'+
-            '<div class="actions">'+
+            '<div class="actions" style="margin-top: 18%;">'+
               '<div class="toggle"><img src="../resources/images/off.png" alt=""  onclick="show(this)"/></div>'+
               '<ul class="addContent" style="display: none;">'+
                 '<li class="word" onclick="newSummernote(this)">文</li>'+
@@ -1401,7 +1408,6 @@ function requestUpload(_this,oMyForm,segmentIndex){
     dataType:"json",
     //表单提交前进行验证
     success: function (opeResult){
-      console.log(opeResult);
       if(opeResult.ful[0].success=="TRUE"){
         _this.siblings("input[type='hidden']").val(opeResult.ful[0].storeFilename);
         var ds = $('#OldOrgPath'+segmentIndex).html();
@@ -1571,13 +1577,15 @@ function modifyArticle(jsonData,contentid){
   }
   for(var i=2;i<jsonData.List.length;i++){
     if(jsonData.List[i].PartType=="word"){
+      alert("word"+i);
+      segmentIndex++;
       var des='<div class="form-group segment words" id='+segmentIndex+' type="WORD" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;margin-left:40px;">'+
                 '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
                 '<label class="col-sm-2 control-label" style="margin-left:-35px;">描述：</label>'+
                 '<div class="col-sm-12" style="margin-left: -4px;margin-top:-10px;border: 1px solid transparent;margin-bottom:-9px;">'+
                   '<div id="summernote'+segmentIndex+'" class="summernote"></div>'+
                 '</div>'+
-                '<div class="actions">'+
+                '<div class="actions" style="margin-top: 18%;">'+
                   '<div class="toggle"><img src="../resources/images/off.png" alt=""  onclick="show(this)"/></div>'+
                   '<ul class="addContent" style="display: none;">'+
                     '<li class="word" onclick="newSummernote(this)">文</li>'+
@@ -1586,11 +1594,14 @@ function modifyArticle(jsonData,contentid){
                     '<li class="audios" onclick="newAudio(this)">音</li>'+
                   '</ul>'+
                 '</div>'+
-              '</div>'
+              '</div>';
+      $("#articleForm .form-group:last").before(des);
       //初始summernote
-      $('.summernote').summernote({
+      $('#summernote'+segmentIndex).summernote({
         lang:'zh-CN',
         height:120,
+        minHeight:120,
+        maxHeight:120,
         focus:false,
         toolbar: [
           // [groupName, [list of button]]
@@ -1601,18 +1612,19 @@ function modifyArticle(jsonData,contentid){
           ['para', ['ul', 'ol', 'paragraph']],
           ['height', ['height']]
         ]
-      });       
-      $("#articleForm .form-group:last-child").before(des);
-      $(".summernote").summernote('code', jsonData.List[i].PartInfo);
+      });
+      debugger
+      $('#summernote'+segmentIndex).summernote('code', jsonData.List[i].PartInfo);
     }
-    segmentIndex++;
     if(jsonData.List[i].PartType=="pic"){
+      alert("pic"+i);
+      segmentIndex++;
       var pict= '<div class="form-group segment pic" id='+segmentIndex+' type="PICTURE" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;margin-left:40px;">'+
                   '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
                   '<label class="col-sm-2 control-label" style="margin-left:-35px;">图片：</label>'+
                   '<div class="col-sm-12"style="margin-left: -4px;">'+
                    '<input id="uploadImg" name="uploadImg" class="form-control" type="file"  placeholder="点击，选择图片上传" style="background-color:#fff;" readonly />'+
-                   '<input id="uploadImgs" name="uploadImgs" class="form-control" type="text" value='+jsonData.List[i].PartName+' style="width:400px;height:34px;position:absolute;top:0px;left:394px;background-color:#fff;" />'+
+                   '<input id="uploadImgs" name="uploadImgs" class="form-control" type="text" value="'+jsonData.List[i].PartName+'" style="width:400px;height:34px;position:absolute;top:0px;left:394px;background-color:#fff;" />'+
                    '<input id="ContentImg'+segmentIndex+'" class="form-isvalidate" name="ContentImg" type="hidden"  value='+jsonData.List[i].PartName+' accept=".png,.jpg,.jpeg"/>'+
                    '<div id="OldOrgPath'+segmentIndex+'" style="display: none">'+JSON.stringify(jsonData.List[i].Resouce[0])+'</div>'+
                    '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大5M，支持JPG、PNG格式<span class="uploadPrompt"></span></span>'+
@@ -1626,18 +1638,19 @@ function modifyArticle(jsonData,contentid){
                       '<li class="audios" onclick="newAudio(this)">音</li>'+
                     '</ul>'+
                   '</div>'+
-                '</div>'
+                '</div>';
       $("#articleForm .form-group:last-child").before(pict);
       upLoadFile(segmentIndex);
-      segmentIndex++;
     }
     if(jsonData.List[i].PartType=="video"){
+      alert("video"+i);
+      segmentIndex++;
       var vid='<div class="form-group segment video" id='+segmentIndex+' type="VIDEO" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;margin-left:40px;">'+
                 '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
                 '<label class="col-sm-2 control-label" style="margin-left:-35px;">视频：</label>'+
                 '<div class="col-sm-12"style="margin-left: -4px;height: 100px;">'+
                   '<input id="uploadVideo" name="uploadVideo" class="form-control" type="file" accept=".mp4" />'+
-                  '<input id="uploadVideos" name="uploadVideos" class="form-control" type="text" value='+jsonData.List[i].PartName+' style="width:400px;height:34px;position:absolute;top:0px;left:394px;background-color:#fff;" accept=".mp4" />'+
+                  '<input id="uploadVideos" name="uploadVideos" class="form-control" type="text" value="'+jsonData.List[i].PartName+'" style="width:400px;height:34px;position:absolute;top:0px;left:394px;background-color:#fff;" accept=".mp4" />'+
                   '<input id="ContentVideo'+segmentIndex+'" class="form-isvalidate" name="ContentVideo" type="hidden" value='+jsonData.List[i].PartName+' />'+
                   '<div id="OldOrgPath'+segmentIndex+'" style="display: none">'+JSON.stringify(jsonData.List[i].Resouce[0])+'</div>'+
                   '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大100M，支持mp4格式<span class="uploadPrompt"></span></span>'+
@@ -1651,18 +1664,19 @@ function modifyArticle(jsonData,contentid){
                     '<li class="audios" onclick="newAudio(this)">音</li>'+
                   '</ul>'+
                 '</div>'+
-              '</div>'
+              '</div>';
       $("#articleForm .form-group:last-child").before(vid);
       upLoadFile(segmentIndex);
-      segmentIndex++;
     }
     if(jsonData.List[i].PartType=="audio"){
+      alert("audio"+i);
+      segmentIndex++;
       var aud='<div class="form-group segment audio" id='+segmentIndex+' type="MEDIA" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;margin-left:40px;">'+
                 '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
                 '<label class="col-sm-2 control-label" style="margin-left:-35px;">音频：</label>'+
                 '<div class="col-sm-12" style="margin-left: -4px;">'+
                   '<input id="uploadAudio" name="uploadAudio" class="form-control" type="file" accept=".mp4,.mp3" />'+
-                  '<input id="uploadAudios" name="uploadAudios" class="form-control" type="text" value='+jsonData.List[i].PartName+' style="width:400px;height:34px;position:absolute;top:0px;left:394px;background-color:#fff;" accept=".mp4" />'+
+                  '<input id="uploadAudios" name="uploadAudios" class="form-control" type="text" value="'+jsonData.List[i].PartName+'" style="width:400px;height:34px;position:absolute;top:0px;left:394px;background-color:#fff;" accept=".mp4" />'+
                   '<input id="ContentAudio'+segmentIndex+'" class="form-isvalidate" name="ContentAudio" type="hidden" value='+jsonData.List[i].PartName+' />'+
                   '<div id="OldOrgPath'+segmentIndex+'" style="display: none">'+JSON.stringify(jsonData.List[i].Resouce[0])+'</div>'+
                   '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大30M，支持mp3<span class="uploadPrompt"></span></span>'+
@@ -1676,7 +1690,7 @@ function modifyArticle(jsonData,contentid){
                     '<li class="audios" onclick="newAudio(this)">音</li>'+
                   '</ul>'+
                 '</div>'+
-              '</div>'
+              '</div>';
       $("#articleForm .form-group:last-child").before(aud);
       upLoadFile(segmentIndex);
       segmentIndex++;
