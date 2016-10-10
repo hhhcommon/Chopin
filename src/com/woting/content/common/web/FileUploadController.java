@@ -18,12 +18,12 @@ import net.coobird.thumbnailator.Thumbnails;
 public class FileUploadController extends AbstractFileUploadController{
 //	private static final String rootpath = "/opt/tomcat_Chopin/webapps/Chopin/";
 //	private static final String rootpath = "D:/workIDE/Chopin/WebContent/";
-	private static final String webpath = "http://www.wotingfm.com/Chopin/dataCenter/";
+	private static final String webpath = "http://www.wotingfm.com/Chopin/";
 	private static final String[] MediaPath = {
-			"media/group01/",  //上传的音频文件路径
-			"media/group02/",  //上传的视频文件路径
-			"media/group03/",  //上传的原始图片文件路径
-			"media/group04/"}; //上传的略缩图文件路径
+			"dataCenter/media/group01/",  //上传的音频文件路径
+			"dataCenter/media/group02/",  //上传的视频文件路径
+			"dataCenter/media/group03/",  //上传的原始图片文件路径
+			"dataCenter/media/group04/"}; //上传的略缩图文件路径
     @Override
     public Map<String, Object> afterUploadOneFileOnSuccess(Map<String, Object> m, Map<String, Object> a, Map<String, Object> p, HttpSession session) {
     	String rootpath = SystemCache.getCache(FConstants.APPOSPATH).getContent()+"";

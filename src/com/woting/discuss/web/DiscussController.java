@@ -54,7 +54,7 @@ public class DiscussController {
                 if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
                     mUdk.setDeviceId(request.getSession().getId());
                 }
-                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "discuss/add", request.getSession());
+                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "discuss/add");
                 if ((retM.get("ReturnType")+"").equals("2001")) {
                     map.put("ReturnType", "0000");
                     map.put("Message", "无法获取设备Id(IMEI)");
@@ -141,7 +141,7 @@ public class DiscussController {
                 if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
                     mUdk.setDeviceId(request.getSession().getId());
                 }
-                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "discuss/del", request.getSession());
+                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "discuss/del");
                 if ((retM.get("ReturnType")+"").equals("2001")) {
                     map.put("ReturnType", "0000");
                     map.put("Message", "无法获取设备Id(IMEI)");
@@ -220,7 +220,7 @@ public class DiscussController {
                 if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
                     mUdk.setDeviceId(request.getSession().getId());
                 }
-                sessionService.dealUDkeyEntry(mUdk, "discuss/article/getList", request.getSession());
+                sessionService.dealUDkeyEntry(mUdk, "discuss/article/getList");
             }
 
             //1-获取文章Id
@@ -318,7 +318,7 @@ public class DiscussController {
                 if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
                     mUdk.setDeviceId(request.getSession().getId());
                 }
-                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "discuss/article/getList", request.getSession());
+                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "discuss/article/getList");
                 if (!mUdk.isUser()||"0".equals(mUdk.getUserId())) {
                     map.put("ReturnType", "1002");
                     map.put("Message", "无法获得用户Id");

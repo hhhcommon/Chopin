@@ -201,6 +201,10 @@ public class MediaService {
         mediaAssetDao.update("updateMa", ma.convert2Po());
     }
     
+    public void updateMa(MediaAssetPo ma) {
+    	mediaAssetDao.update("updateMa", ma);
+    }
+    
     public int  updateCha(ChannelAsset cha) {
     	return channelAssetDao.update("update", cha.convert2Po().toHashMap());
     }
@@ -217,5 +221,9 @@ public class MediaService {
     
     public void removeCha(String assetId){
     	channelAssetDao.delete("deleteByAssetId", assetId);
+    }
+    
+    public void removeChaByMap(Map<String, Object> m) {
+    	channelAssetDao.delete("delByChannels", m);
     }
 }
