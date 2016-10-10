@@ -151,7 +151,7 @@ body {margin:0;}
   width:100%;
   height:25px;
   color:#000;
-  font-size:20px;
+  font-size:18px;
   font-weight:800;
   padding-top:20px;
   margin-top:8px;
@@ -175,7 +175,6 @@ body {margin:0;}
   font-size:36;
   color:#fff;
   font-family:vista_MS;
-
 }
 </style>
 </head>
@@ -187,10 +186,10 @@ body {margin:0;}
 </center></body>
 
 <script>
+var deviceId="";
 function setDeviceId(sessionId) {
   deviceId=sessionId;
 }
-
 var isApp=getUrlParam(window.location.href, "isApp");//如果是App就有这个值
 isApp=!(!isApp);
 var rootPath=getRootPath();
@@ -204,14 +203,14 @@ var pcdType=(isApp?1:3);
 
 //主函数
 $(function() {
-  if (rootPath.length==1) rootPath="http://www.wotingfm.com/Chopin/";
+  if (rootPath.length==1) rootPath="http://localhost:1108/Chopin/";
   $.ajax({type:"post", async:true, url:rootPath+"playSumCount.do", dataType:"json",
-    timeout:2000,
+    timeout:4000,
     success: function(jsonData) {
       if (jsonData.ReturnType=='1001') drawPage(jsonData.ResultInfo);
       else showNullPage();
     },
-    error: function(jqXHR) {
+    error: function(jqXHR) {alert("dd");
       showNullPage();
     }
   });
@@ -273,9 +272,9 @@ function showPlayer(cId) {
 function votePlayer(cId) {
   var _data={};
   _data.IMEI=deviceId;
-   _data.PCDType
+  _data.PCDType
   $.ajax({type:"post", async:true, url:rootPath+"clickFavorite.do", dataType:"json", data:_data,
-    timeout:2000,
+    timeout:1000,
     success: function(jsonData) {
       if (jsonData.ReturnType=='1001') drawPage(jsonData.ResultInfo);
       else showNullPage();
@@ -284,7 +283,6 @@ function votePlayer(cId) {
       showNullPage();
     }
   });
-  
   var _maxChange=(maxId.indexOf(cId)!=-1);
   var _maxVoteAll=(maxVote/4)*5;
 
@@ -333,8 +331,6 @@ function showNullPage() {
     $(nullImg).css({"height":function(){return ($(window).width()-20)*(411/minWidth);}});
   } else {
     $(nullImg).css({"width":minWidth, "height":411});
-    $(nullImg).css({"margin-top":"5px"});
-    $(nullImg).css({"margin-left":function(){return (($(window).width()-minWidth)/2);}});
   }
 }
 </script>

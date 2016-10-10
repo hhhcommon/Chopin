@@ -341,7 +341,8 @@ body { padding:0; }
 <div id="a_content">
   <div id="a_title"><%=title%></div>
   <div id="a_time"><span id="_time"><%=time%></span></div>
-<%if (!StringUtils.isNullOrEmptyOrSpace(source)) {%>
+<%if (!StringUtils.isNullOrEmptyOrSpace(source)) {
+  source=source.replace("<a ", "<a target='_blank' ");%>
   <div id="a_source"><span id="_source">来源:<%=source%></span></div>
 <%}%>
 <%
