@@ -525,7 +525,7 @@ li, a, input {
             <div class="form-group" id="2">
               <label class="col-sm-2 control-label">摘要：</label>
               <div class="col-sm-10" style="margin-left: 25px;">
-                <input id="descnName" name="descnName" class="form-control" type="text" aria-required="true">
+                <textarea id="descnName" name="descnName" class="form-control" type="text" aria-required="true" style="height:60px;"></textarea>
               </div>
             </div>
             <div class="form-group" id="2">
@@ -533,8 +533,16 @@ li, a, input {
               <div class="col-sm-10" style="margin-left: 25px;">
                 <input id="uploadThemeImg" name="uploadThemeImg" class="form-control" type="text"  placeholder="点击，选择图片上传" style="background-color:#fff;" readonly />
                 <input id="themeImg" class="form-control" name="themeImg" type="file" style="display:none;" value="" accept=".png,.jpg,.jpeg"/>
+                <input type="checkBox" name="" id="only" value="" class="checkMedia" />
               </div>
-              <span class="help-block m-b-none"style="width: 170px;height: 27px;position: absolute;top: -2px;left: 459px;"><i class="fa fa-info-circle"></i>题图,引用和媒体只能提交一个</span>
+              <span class="help-block m-b-none"style="width: 190px;height: 27px;position: absolute;top: -2px;left: 459px;"><i class="fa fa-info-circle"></i>选中，则显示题图；否则不显示</span>
+            </div>
+            <div class="form-group" id="2">
+              <label class="col-sm-2 control-label" style="white-space: nowrap;">轮播图：</label>
+              <div class="col-sm-10" style="margin-left: 25px;">
+                <input id="carousel" name="carousel" class="form-control" type="text"  placeholder="点击，选择图片上传" style="background-color:#fff;width:360px;height:27px;" readonly />
+                <input id="carouselImg" class="form-control" name="carouselImg" type="file" style="display:none;" value="" accept=".png,.jpg,.jpeg"/>
+              </div>
             </div>
             <div class="form-group" id="2">
               <label class="col-sm-2 control-label">引用：</label>
@@ -546,6 +554,7 @@ li, a, input {
                 <option value="http://open.iqiyi.com/developer/player_js/coopPlayerIndex.html?vid=21926e39d7fcc357fe1767ae9075702d&tvId=543739800  爱奇艺地址">
               </datalist>
               </div>
+              <span class="help-block m-b-none"style="width: 170px;height: 27px;position: absolute;top: -2px;left: 459px;"><i class="fa fa-info-circle"></i>题图,引用和媒体只能提交一个</span>
             </div>
             <div class="form-group" id="2">
               <label class="col-sm-2 control-label">媒体：</label>
@@ -678,13 +687,14 @@ $(function(){
     $("#titleName,#channelName,#descnName,#channelId,#source,#website,#competitorName,#uploadThemeImg,#uploadMedia,#thirdpath").val("");//清空数据
     $("#themeImg,#media").attr("value","");
     $("#channelName li").each(function(){
-    	$(this).remove();
+      $(this).remove();
     });
     $(".row,.shade").show();
   });
   //2.2-点击修改按钮
   $("#mod").on("click",function(){
     type=2;
+    segmentIndex=3
     $(".segment").remove();//清空数据
     $("#titleName,#channelName,#descnName,#channelId,#source,#website,#competitorName,#uploadThemeImg,#uploadMedia,#thirdpath").val("");//清空数据
     $("#themeImg,#media").attr("value","");
@@ -1335,6 +1345,36 @@ $("#themeImg").change(function() {
   });
 });
 
+//上传轮播图
+$("#carousel").on("click", function() {
+  $("#carouselImg").click();
+});
+$("#carouselImg").change(function() {
+  $("#carousel").val($(this).val());
+  var _this=$(this);
+  var oMyForm = new FormData();
+  oMyForm.append("ContentFile", $(this)[0].files[0]);
+  $.ajax({
+    url:rootPath+"common/uploadCM.do",
+    type:"POST",
+    data:oMyForm,
+    cache: false,
+    processData: false,
+    contentType: false,
+    dataType:"json",
+    //表单提交前进行验证
+    success: function (opeResult){
+      if(opeResult.ful[0].success=="TRUE"){
+        _this.attr("value",opeResult.ful[0].storeFilepath);//val(opeResult.ful[0].storeFilepath);
+        alert("轮播图上传成功");
+      }
+    },
+    error: function(jqXHR){
+      alert("发生错误" + jqXHR.status);
+    }
+  });
+});
+
 //上传媒体
 $("#uploadMedia").on("click", function() {
   $("#media").click();
@@ -1577,7 +1617,6 @@ function modifyArticle(jsonData,contentid){
   }
   for(var i=2;i<jsonData.List.length;i++){
     if(jsonData.List[i].PartType=="word"){
-      alert("word"+i);
       segmentIndex++;
       var des='<div class="form-group segment words" id='+segmentIndex+' type="WORD" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;margin-left:40px;">'+
                 '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
@@ -1594,7 +1633,7 @@ function modifyArticle(jsonData,contentid){
                     '<li class="audios" onclick="newAudio(this)">音</li>'+
                   '</ul>'+
                 '</div>'+
-              '</div>';
+              '</div>' 
       $("#articleForm .form-group:last").before(des);
       //初始summernote
       $('#summernote'+segmentIndex).summernote({
@@ -1613,11 +1652,9 @@ function modifyArticle(jsonData,contentid){
           ['height', ['height']]
         ]
       });
-      debugger
       $('#summernote'+segmentIndex).summernote('code', jsonData.List[i].PartInfo);
     }
     if(jsonData.List[i].PartType=="pic"){
-      alert("pic"+i);
       segmentIndex++;
       var pict= '<div class="form-group segment pic" id='+segmentIndex+' type="PICTURE" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;margin-left:40px;">'+
                   '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
@@ -1638,12 +1675,11 @@ function modifyArticle(jsonData,contentid){
                       '<li class="audios" onclick="newAudio(this)">音</li>'+
                     '</ul>'+
                   '</div>'+
-                '</div>';
-      $("#articleForm .form-group:last-child").before(pict);
+                '</div>'
+      $("#articleForm .form-group:last").before(pict);
       upLoadFile(segmentIndex);
     }
     if(jsonData.List[i].PartType=="video"){
-      alert("video"+i);
       segmentIndex++;
       var vid='<div class="form-group segment video" id='+segmentIndex+' type="VIDEO" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;margin-left:40px;">'+
                 '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
@@ -1664,12 +1700,11 @@ function modifyArticle(jsonData,contentid){
                     '<li class="audios" onclick="newAudio(this)">音</li>'+
                   '</ul>'+
                 '</div>'+
-              '</div>';
-      $("#articleForm .form-group:last-child").before(vid);
+              '</div>'
+      $("#articleForm .form-group:last").before(vid);
       upLoadFile(segmentIndex);
     }
     if(jsonData.List[i].PartType=="audio"){
-      alert("audio"+i);
       segmentIndex++;
       var aud='<div class="form-group segment audio" id='+segmentIndex+' type="MEDIA" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;margin-left:40px;">'+
                 '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
@@ -1690,8 +1725,8 @@ function modifyArticle(jsonData,contentid){
                     '<li class="audios" onclick="newAudio(this)">音</li>'+
                   '</ul>'+
                 '</div>'+
-              '</div>';
-      $("#articleForm .form-group:last-child").before(aud);
+              '</div>'
+      $("#articleForm .form-group:last").before(aud);
       upLoadFile(segmentIndex);
       segmentIndex++;
     }
@@ -1758,6 +1793,11 @@ function saveModify(){
   postData.ContentId=$("#contentid").val();
   postData.ThemeImg=$("#themeImg").attr("value");
   postData.MediaSrc=$("#media").attr("value");
+  if($('#only').is(':checked')) {//是否显示题图
+    postData.IsShow="true";
+  } else {
+    postData.IsShow="false";
+  }
   postData.Source=$("#source").val();
   postData.SourcePath=$("#website").val();
   postData.ThirdPath=$("#thirdpath").val();
