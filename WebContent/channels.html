@@ -7,6 +7,7 @@
 <meta http-equiv="cache-control" content="no-cache"/>
 <meta http-equiv="pragma" content="no-cache"/>
 <meta http-equiv="expires" content="0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!--[if lt IE 8]>
 <script>
   alert('本系统已不支持IE6-8，请使用谷歌、火狐等浏览器\n或360、QQ等国产浏览器的极速模式浏览本页面！');
@@ -27,7 +28,6 @@
 
 <link rel="stylesheet" type="text/css" href="./resources/chopin/css/font.css"/>
 <link rel="stylesheet" type="text/css" href="./resources/css/common.css"/>
-<link rel="stylesheet" type="text/css" href="./resources/css/mainPage.css"/>
 <link rel="stylesheet" type="text/css" href="./resources/plugins/spiritui/themes/default/all.css"/>
 
 <title></title>
@@ -37,8 +37,8 @@ html {color:#000; background:#0E0E0E;}
 body {width: 1366px;}
 
 .hasPadding {
-  padding-left:100px;
-  padding-right:100px;
+  padding-left:120px;
+  padding-right:120px;
 }
 #loopImgArea {
   height:570px;
@@ -120,64 +120,79 @@ ul, ol {padding: 0;}
   opacity: 1;
 }
 .channelBar {
-  height:450px;
+  height:350px;
   margin-top:40px;
 }
 .channelBarTitle {
   height:55px;
 }
 .channelBarLine {
-  margin-top:15px;
-  height:380px;
+  margin-top:12px;
+  height:283px;
+}
+.channelBarLineList {
+  margin-top:30px;
+  height:283px;
 }
 .oneContent {
-  height:380px;
-  width:287px;
-  margin-left:6px;
+  height:283px;
+  width:200px;
+  margin-left:31px;
   float:left;
-  border-radius:6px;
   position:relative;
-  background-color:yellow;
+  background-size:cover;
+  background-color:black;
 }
-.oneContent img {
+.oneContent .img {
   position:absolute;
-  height:380px;
-  width:287px;
-  border-radius:5px;
+  height:200px;
+  width:200px;
+  cursor:pointer;
+}
+.oneContent .imgl {
+  position:absolute;
+  height:283px;
+  width:200px;
+  cursor:pointer;
 }
 .oneContent-mask {
   position:absolute;
   height:380px;
-  width:287px;
-  border-radius:6px;
-  background: -webkit-linear-gradient(white , white, #8A8A8A 100%); /* Safari 5.1 - 6.0 */
-  background: -o-linear-gradient(white , whit, #8A8A8A 100%); /* Opera 11.1 - 12.0 */
-  background: -moz-linear-gradient(white, whit, #8A8A8A 100%); /* Firefox 3.6 - 15 */
-  background: linear-gradient(white, whit, #8A8A8A 100%); /* 标准的语法（必须放在最后） */
-  filter:alpha(opacity=40);  
-  -moz-opacity:0.4;  
-  -khtml-opacity:0.4;  
-  opacity:0.4;
+  width:270px;
+  background: -webkit-linear-gradient(white , white, black 100%); /* Safari 5.1 - 6.0 */
+  background: -o-linear-gradient(white , whit, black  100%); /* Opera 11.1 - 12.0 */
+  background: -moz-linear-gradient(white, whit, black  100%); /* Firefox 3.6 - 15 */
+  background: linear-gradient(white, whit, black 100%); /* 标准的语法（必须放在最后） */
+  filter:alpha(opacity=30);  
+  -moz-opacity:0.3;  
+  -khtml-opacity:0.3;  
+  opacity:0.3;
   bottom:0px;
 }
 .oneContent-text {
   position:absolute;
-  height:380px;
-  width:287px;
-  border-radius:6px;
+  top:200px;
+  height:83px;
+  width:200px;
   position:relative;
+  cursor:pointer;
+  bottom:0px;
 }
 .oneContent-text p {
   position:absolute;
-  bottom:17px;
+  bottom:18px;
   margin-left:20px;
   font-family: vista_MS;
   font-size:14px;
-  color:#fff;
+  color:#fefefe;
 }
 .oneContent-text p:first-child {
-  bottom:40px;
-  font-size:20px;
+  bottom:45px;
+  width:170px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:16px;
   font-weight:bold;
 }
 .oneContent:first-child {
@@ -185,7 +200,7 @@ ul, ol {padding: 0;}
 }
 .operButton {
   position:absolute;
-  right:102px;
+  right:132px;
   margin-top:20px;
   border-radius:4px;
   padding-top:1px;
@@ -216,7 +231,7 @@ ul, ol {padding: 0;}
 }
 .cName {
   height:28px;
-  width:200px;
+  width:260px;
   font-family:vista_MS;
   font-weight:bold;
   color:#FFA634;
@@ -232,40 +247,23 @@ ul, ol {padding: 0;}
   padding-left:12px;
   font-style:italic;
 }
+.nullBack {
+  display: inline-block; 
+  width: 100%; 
+  height: 500; 
+  text-height:500;
+  valign:center;
+  align:center;
+  font-size:36;
+  color:#fff;
+  font-family:vista_MS;
+}
 </style>
 </head>
 <body>
-<div id="loopImgArea" class="banner" style="display:none;">
-  <ul id="loopUi">
-  </ul>
-</div>
-<div id="channelArea" class="hasPadding">
-  <div class="channelBar">
-    <div class="channelBarTitle">
-      <div class="barTitleArea">
-        <div class="cName"><div class="h_split"></div>赛况情况</div>
-        <div class="eName">dddd</div>
-      </div>
-      <button class="operButton" onclick="">更多</button>
-    </div>
-    <div class="channelBarLine">
-      <div class="oneContent">
-      	<img id="testImg" src=""></img>
-        <div class="oneContent-mask">
-        </div>
-        <div class="oneContent-text">
-          <p>测试标题测试标题测试标题测试标测试标题测试标题</p>
-          <p>2016.9.4</p>
-        </div>
-      </div>
-      <div class="oneContent"><div></div></div>
-      <div class="oneContent"><div></div></div>
-      <div class="oneContent"><div></div></div>
-    </div>
-  </div>
-
-</div>
-<div id="linkedArea" class="hasPadding">
+<div id="loopImgArea" class="banner" style="display:none;"><ul id="loopUi"></ul></div>
+<div id="channelArea" class="hasPadding" style="display:yes;"></div>
+<div id="linkedArea" class="hasPadding" style="display:none;">
   <div class="linkedTitleBar">相关链接</div>
   <div class="v_split"></div>
   <div class="_link" style="float:left">
@@ -283,47 +281,42 @@ ul, ol {padding: 0;}
 <div class="hasPadding" style="width:100%;height:16px;">
   <div class="v_split"></div>
 </div>
-<div id="aboutArea">
+<div id="aboutArea" style="display:none;">
   <p onclick="test(this.value)">京公网安备11002340234234号 | 京ICP备142023423号</p>
   <p>Copyright &copy; 2015-2016 Woting. All Rights Reserved.</p>
   <p>北京我听科技有限公司版权所有</p>
 </div>
+<iframe src="session.jsp" width="0" height="0" style="display:none"></iframe>
 </body>
 
 <script>
+var deviceId="";
+function setDeviceId(sessionId) {
+  deviceId=sessionId;
+}
+
 var rootPath=getRootPath();
-if (rootPath.length<2) rootPath="http://localhost:1108/Chopin/";
+if (rootPath.length<2) rootPath="http://www.wotingfm.com/Chopin/";
 var channelId=getUrlParam(window.location.href, "ChannelId");
 var indexPage=getMainPage();
 
 function test(t) {
-  indexPage.showInIframe("http://localhost:1108/Chopin/articleShell.html?ContentId=000000001");
 }
-
 //主函数
 $(function() {
-	alert("DDD");
-  var img=new Image();
-  var imgSrc="./resources/chopin/imgs/test.png";
-  img.src=imgSrc;
-  img.onload=function() {
-    $("#testImg").attr("src", imgSrc);
-  }
-  img.onerror=function() {
-    $("#testImg").attr("src", "./resources/chopin/imgs/card_default2.png");
-  }
   if (channelId=="0") {
     showChannelPage(0);
     return;
   }
   var _data={};
+  _data.ChannelId=channelId;
   $.ajax({type:"post", async:true, url:rootPath+"/baseinfo/getChannelTree4View.do", dataType:"json", data:_data,
     success: function(jsonData) {
       if (jsonData.ReturnType=='1001') {
-        //showLoopImg(channelId);
+        showLoopImg(channelId);
         var isLeaf=!(jsonData.Data.children&&jsonData.Data.children.length>0);
-        //if (isLeaf) showListPage(channelId);
-        //else showChannelPage(channelId);
+        if (isLeaf) showListPage(channelId);
+        else showChannelPage(channelId);
       } else {
         $.messager.alert("错误", "获得栏目信息：<br/>"+jsonData.message, "error");
       }
@@ -356,6 +349,8 @@ function showLoopImg(channelId) {
           speed:700
         });
         $('#loopImgArea').css("display", "block");
+        var dd=570+$("#channelArea").height()+$("#linkedArea").height()+$("#aboutArea").height()+20;
+        indexPage.setMainHeight(dd);
       }
     },
     error: function(jqXHR) {
@@ -366,7 +361,7 @@ function showLoopImg(channelId) {
 function showChannelPage(channelId) {
   var _data={};
   if (channelId!="0") _data.ChannelId=channelId;
-  _data.PerSize=4;
+  _data.PerSize=5;
   _data.PageSize=100;
   $.ajax({type:"post", async:true, url:rootPath+"/content/getContents.do", dataType:"json", data:_data,
     success: function(jsonData) {
@@ -374,30 +369,37 @@ function showChannelPage(channelId) {
         if (jsonData.ResultInfo.length>0) {
           $("#channelArea").html("");
           for (var i=0; i<jsonData.ResultInfo.length; i++) {
-            var channelBar=$('<div class="channelBar"><div class="channelBarTitle"><div class="barTitleArea"><div class="cName"><div class="h_split"></div></div>'
+            var channelBar=$('<div class="channelBar"><div class="channelBarTitle"><div class="barTitleArea"><div class="cName"></div>'
                             +'<div class="eName"></div></div><button class="operButton">更多</button></div>'
                             +'<div class="channelBarLine"></div></div>');
             channelBar.find(".cName").html("<div class='h_split'></div>"+jsonData.ResultInfo[i].CatalogName);
             if (jsonData.ResultInfo[i].CatalogEName) channelBar.find(".eName").html(jsonData.ResultInfo[i].CatalogEName);
             $("#channelArea").append(channelBar);
-            channelBar.find(".operButton").bind("click", function() {
-              indexPage.showInIframe(rootPath+"channels.html?ChannelId="+jsonData.ResultInfo[i].CatalogId);
-            });
+            channelBar.find(".operButton").attr("onclick", "showChannels('"+jsonData.ResultInfo[i].CatalogId+"')");
             for (var j=0; j<jsonData.ResultInfo[i].List.length; j++) {
-              var oneContent=$('<div class="oneContent"><div class="oneContent-mask"></div><div class="oneContent-text"></div></div>');
+              var oneContent=$('<div class="oneContent"><div class="img" id="cImg'+jsonData.ResultInfo[i].List[j].ContentId+'"></div><div class="oneContent-text"></div></div>');
               var _img=jsonData.ResultInfo[i].List[j].ContentImg;
               if (!_img||_img.length<5) {
                 _img="./resources/chopin/imgs/card_default1.png";
               }
-              _img="./resources/chopin/imgs/card_default1.png";
+              var showFunc= "showArticle('"+jsonData.ResultInfo[i].List[j].ContentId+"')";
+              if (jsonData.ResultInfo[i].List[j].ContentStatus==99) showFunc="showVote()";
+              oneContent.find(".img").attr("title", jsonData.ResultInfo[i].List[j].ContentName);
+              oneContent.find(".img").attr("onclick", showFunc);
               channelBar.find(".channelBarLine").append(oneContent);
-              oneContent.css("background", "url("+_img+") center no-repeat;");
+              var img=new Image();
+              img.id="Img"+jsonData.ResultInfo[i].List[j].ContentId;
+              img.onload=function() {resizeBgd(this);}
+              img.src=_img;
               oneContent.find(".oneContent-text").html("<p>"+jsonData.ResultInfo[i].List[j].ContentName+"</p><p>"+(new Date(jsonData.ResultInfo[i].List[j].ContentPubTime)).format("yyyy-M-d")+"</p>");
-              oneContent.find(".oneContent-text").bind("click", function() {
-                indexPage.showInIframe(rootPath+"articleShell.html?ContentId="+jsonData.ResultInfo[i].List[j].ContentId);
-              });
+              oneContent.find(".oneContent-text").attr("title", jsonData.ResultInfo[i].List[j].ContentName);
+              oneContent.find(".oneContent-text").attr("onclick", showFunc);
             }
           }
+          $("#channelArea").css("height", i*390);
+          $("#linkedArea").css("display", "block");
+          $("#aboutArea").css("display", "block");
+          indexPage.setMainHeight(($("#loopImgArea").is(':visible')?$("#loopImgArea").height():0)+$("#channelArea").height()+$("#linkedArea").height()+$("#aboutArea").height()+20);
         } else showNullPage();
       } else showNullPage();
       resizeParent();
@@ -410,41 +412,106 @@ function showChannelPage(channelId) {
 function showListPage(channelId) {
   var _data={};
   if (channelId!="0") _data.ChannelId=channelId;
-  _data.PerSize=4;
-  _data.PageSize=8;
+  _data.Page=1;
+  _data.PageSize=100;
   $.ajax({type:"post", async:true, url:rootPath+"/content/getContents.do", dataType:"json", data:_data,
     success: function(jsonData) {
       if (jsonData.ReturnType=='1001') {
         if (jsonData.ResultInfo.length>0) {
-          //删除已有的内容
-          //加入图片内容
-          var i=0;
-          for (; i<jsonData.ResultInfo.length; i++) {
-            //一排图片
-            
-            //头
-            //图片
+          $("#channelArea").html("");
+          var k=0;
+          for (var i=0; i<jsonData.ResultInfo.length; i++) {
+            var channelBar=$('<div class="channelBar"><div class="channelBarTitle"><div class="barTitleArea"><div class="cName"></div>'
+                            +'<div class="eName"></div></div></div></div>');
+            channelBar.find(".cName").html("<div class='h_split'></div>"+jsonData.ResultInfo[i].CatalogName);
+            $("#channelArea").append(channelBar);
+            if (jsonData.ResultInfo[i].CatalogEName) channelBar.find(".eName").html(jsonData.ResultInfo[i].CatalogEName);
+            var channelBarLine;
+            for (var j=0; j<jsonData.ResultInfo[i].List.length; j++) {
+              if ((j%5)==0) {
+                k++;
+                channelBarLine=$('<div class="channelBarLineList"></div>');
+                channelBar.append(channelBarLine);
+              }
+              var oneContent=$('<div class="oneContent"><div class="imgl" id="cImg'+jsonData.ResultInfo[i].List[j].ContentId+'"></div><div class="oneContent-text"></div></div>');
+              var _img=jsonData.ResultInfo[i].List[j].ContentImg;
+              if (!_img||_img.length<5) {
+                _img="./resources/chopin/imgs/card_default1.png";
+              }
+              oneContent.find(".imgl").attr("title", jsonData.ResultInfo[i].List[j].ContentName);
+              var showFunc= "showArticle('"+jsonData.ResultInfo[i].List[j].ContentId+"')";
+              if (jsonData.ResultInfo[i].List[j].ContentStatus==99) showFunc="showVote()";
+              oneContent.find(".imgl").attr("onclick", showFunc);
+              oneContent.css("background", "url("+_img+") center no-repeat;");
+              channelBarLine.append(oneContent);
+              var img=new Image();
+              img.id="Img"+jsonData.ResultInfo[i].List[j].ContentId;
+              img.onload=function() {resizeBgd(this);}
+              img.src=_img;
+              oneContent.find(".oneContent-text").html("<p>"+jsonData.ResultInfo[i].List[j].ContentName+"</p><p>"+(new Date(jsonData.ResultInfo[i].List[j].ContentPubTime)).format("yyyy-M-d")+"</p>");
+              oneContent.find(".oneContent-text").attr("title", jsonData.ResultInfo[i].List[j].ContentName);
+              oneContent.find(".oneContent-text").attr("onclick", showFunc);
+            }
           }
-          //加载轮播图
-        }
-      } else if (jsonData.ReturnType=='1011') {
-        showNullPage();
-      } else {
-        showNullPage();
-        $.messager.alert("错误", "获得栏目内容：<br/>"+jsonData.message, "error");
-      }
+          $("#channelArea").css("height", k*312+95);
+          $("#linkedArea").css("display", "block");
+          $("#aboutArea").css("display", "block");
+          try {
+            indexPage.setMainHeight(($("#loopImgArea").is(':visible')?$("#loopImgArea").height():0)+$("#channelArea").height()+$("#linkedArea").height()+$("#aboutArea").height()+20);
+           } catch(e) {
+           }
+        } else showNullPage();
+      } else showNullPage();
       resizeParent();
     },
     error: function(jqXHR) {
       showNullPage();
-      $.messager.alert("错误", "获得栏目内容：<br/>"+jqXHR.status, "error");
     }
   });
 }
+function showArticle(cid) {
+  indexPage.showInIframe(rootPath+"articleFrameShell.jsp?ContentId="+cid);
+}
+function showChannels(cid) {
+  indexPage.showInIframe(rootPath+"channels.html?ChannelId="+cid);
+}
+function showVote() {
+  indexPage.showInIframe(rootPath+"vote.html?PCDType=3&IMEI="+deviceId);
+}
 function showNullPage() {
+  $("#channelArea").css({
+    "height":"500px",
+    "background":"url(./resources/chopin/imgs/nullBack.jpg)",
+    "display":"block"
+  });
+  $("#channelArea").addClass("nullBack");
+  $("#linkedArea").css("display", "block");
+  $("#aboutArea").css("display", "block");
+  indexPage.setMainHeight($("#channelArea").height()+$("#linkedArea").height()+$("#aboutArea").height()+20);
 }
 
 function resizeParent() {
+}
+function resizeBgd(img) {
+  var divId="c"+img.id;
+  var imgW=img.width;
+  var imgH=img.height;
+  var imgRatio=imgW/imgH;
+  var containerW=$("#"+divId).width();
+  var containerH=$("#"+divId).height();
+  var containerRatio=containerW/containerH;
+  var bsW=containerW, bsH=containerH;
+  var rr=imgRatio/containerRatio;
+  if (!(rr<1.25&&rr>0.8)) {
+    if (imgRatio>containerRatio) {
+      bsW=containerH*imgRatio;
+      bsH=containerH;
+    } else {
+      bsW=containerW;
+      bsH=containerW/imgRatio;
+    }
+  }
+  $("#"+divId).attr("style", "background:url("+img.src+") no-repeat top; background-size:"+bsW+"px "+bsH+"px;"); 
 }
 </script>
 </html>
