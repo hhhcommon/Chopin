@@ -226,7 +226,7 @@ li{list-style: none;}
   border-left: 1px solid black;
 }
 .tabContent div{
-  width: 99%;
+  width: 97%;
   height:50%;
 }
 .tabContent .tabContentDiv:first-child{
@@ -613,6 +613,7 @@ li, a, input {
 var zTreeObj,zTreeObjs,des;
 var rootPath=getRootPath();
 var segmentIndex=3;
+var type=1;//1增加2修改
 var optType=1;//选中页面树上的节点
 //需要加载的分类树的数据，以list方式给出
 var loadTreeData=[{ChannelId:"",TreeViewType:"zTree"}];
@@ -671,6 +672,7 @@ $(function(){
   //2-初始化页面按钮
   //2.1-点击添加按钮
   $("#add").on("click",function(){
+    type=1;
     $(".segment").remove();//清空数据
     $("#titleName,#channelName,#descnName,#channelId,#source,#website,#competitorName,#uploadThemeImg,#uploadMedia,#thirdpath").val("");//清空数据
     $("#themeImg,#media").attr("value","");
@@ -681,6 +683,7 @@ $(function(){
   });
   //2.2-点击修改按钮
   $("#mod").on("click",function(){
+    type=2;
     var _url=rootPath+"content/getContentInfo2Updata.do";
     $('.tabContentDiv').each(function(){
       if($(this).css('display')=='block'){
@@ -688,6 +691,7 @@ $(function(){
           if($(this).is(':checked')){
             var ma = $(this).parent().parent();
             var data = {"ContentId":ma.attr("id")};
+            var contentid=data.ContentId;
             $.ajax({
               type: "POST",
               url: _url,
@@ -696,7 +700,7 @@ $(function(){
               success: function(jsonData){
                 if(jsonData.ReturnType=="1001") {
                   var jsonData=jsonData;
-                  modifyArticle(jsonData);
+                  modifyArticle(jsonData,contentid);
                   $(".row,.shade").show();
                   alert("欢迎修改！");
                 }
@@ -880,7 +884,12 @@ $(function(){
   })
   //3.2-点击提交按钮，提交表单
   $(".commit").on("click",function(){
-    createArticle();
+    if(type=="1"){
+      createArticle();
+    }
+    if(type=="2"){
+      saveModify();
+    }
   })
   //3.3-点击提交,取消按钮，遮罩层和弹出层消失
   $(".close-link,.cancels").on("click",function(){
@@ -1212,8 +1221,8 @@ function newPicture(newp){
               '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
               '<label class="col-sm-2 control-label" style="margin-left:-35px;">图片：</label>'+
               '<div class="col-sm-12"style="margin-left: -4px;">'+
-                '<input id="ContentImg'+segmentIndex+'" name="uploadImg" class="form-control" type="text"  placeholder="点击，选择图片上传" style="background-color:#fff;" readonly />'+
-                '<input id="uploadImg" class="form-control" name="ContentImg"  type="file" style="display:none;" value="" accept=".png,.jpg,.jpeg"/>'+
+                '<input id="uploadImg" name="uploadImg" class="form-control" type="file"  placeholder="点击，选择图片上传" style="background-color:#fff;" readonly />'+
+                '<input id="ContentImg'+segmentIndex+'" class="form-isvalidate" name="ContentImg" type="hidden"  value="" accept=".png,.jpg,.jpeg"/>'+
                 '<div id="OldOrgPath'+segmentIndex+'" style="display: none"></div>'+
                 '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大5M，支持JPG、PNG格式<span class="uploadPrompt"></span></span>'+
               '</div>'+
@@ -1350,10 +1359,9 @@ $("#media").change(function() {
     }
   });
 });
-
 //上传文件
 function upLoadFile(segmentIndex){
-  $("input[type='file']").change(function(){
+    $("input[type='file']").change(function(){
     var _this=$(this);
     var oMyForm = new FormData();
     oMyForm.append("ContentFile", $(this)[0].files[0]);
@@ -1518,7 +1526,9 @@ function hiden(){
 }
 
 //修改功能
-function modifyArticle(jsonData){
+function modifyArticle(jsonData,contentid){
+  var contentids='<input type="text" id="contentid"  style="display:none;" value='+contentid+'>';
+  $(".row").append(contentids);
   $("#titleName").val(jsonData.List[0].PartInfo);
   if(jsonData.Source!=""&&jsonData.Source!=null){
     $("#source").val(jsonData.Source);
@@ -1581,7 +1591,6 @@ function modifyArticle(jsonData){
       $('.summernote').summernote({
         lang:'zh-CN',
         height:120,
-        minHeight:120,
         focus:false,
         toolbar: [
           // [groupName, [list of button]]
@@ -1596,15 +1605,17 @@ function modifyArticle(jsonData){
       $("#articleForm .form-group:last-child").before(des);
       $(".summernote").summernote('code', jsonData.List[i].PartInfo);
     }
+    segmentIndex++;
     if(jsonData.List[i].PartType=="pic"){
       var pict= '<div class="form-group segment pic" id='+segmentIndex+' type="PICTURE" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;margin-left:40px;">'+
                   '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
                   '<label class="col-sm-2 control-label" style="margin-left:-35px;">图片：</label>'+
                   '<div class="col-sm-12"style="margin-left: -4px;">'+
-                    '<input id="uploadImg" name="uploadImg" class="form-control" type="file"  placeholder="点击，选择图片上传" style="background-color:#fff;" readonly />'+
-                    '<input id="ContentImg'+segmentIndex+'" class="form-isvalidate" name="ContentImg" type="hidden"  value="" accept=".png,.jpg,.jpeg"/>'+
-                    '<div id="OldOrgPath'+segmentIndex+'" style="display: none"></div>'+
-                    '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大5M，支持JPG、PNG格式<span class="uploadPrompt"></span></span>'+
+                   '<input id="uploadImg" name="uploadImg" class="form-control" type="file"  placeholder="点击，选择图片上传" style="background-color:#fff;" readonly />'+
+                   '<input id="uploadImgs" name="uploadImgs" class="form-control" type="text" value='+jsonData.List[i].PartName+' style="width:400px;height:34px;position:absolute;top:0px;left:394px;background-color:#fff;" />'+
+                   '<input id="ContentImg'+segmentIndex+'" class="form-isvalidate" name="ContentImg" type="hidden"  value='+jsonData.List[i].PartName+' accept=".png,.jpg,.jpeg"/>'+
+                   '<div id="OldOrgPath'+segmentIndex+'" style="display: none">'+JSON.stringify(jsonData.List[i].Resouce[0])+'</div>'+
+                   '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大5M，支持JPG、PNG格式<span class="uploadPrompt"></span></span>'+
                   '</div>'+
                   '<div class="actions">'+
                     '<div class="toggle"><img src="../resources/images/off.png" alt=""  onclick="show(this)"/></div>'+
@@ -1617,11 +1628,146 @@ function modifyArticle(jsonData){
                   '</div>'+
                 '</div>'
       $("#articleForm .form-group:last-child").before(pict);
-//    $("#uploadImg").outerHTML = $("#uploadImg").outerHTML.replace(/(value=\").+\"/i,jsonData.List[i].PartName);
-//    
+      upLoadFile(segmentIndex);
+      segmentIndex++;
     }
-    
+    if(jsonData.List[i].PartType=="video"){
+      var vid='<div class="form-group segment video" id='+segmentIndex+' type="VIDEO" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;margin-left:40px;">'+
+                '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
+                '<label class="col-sm-2 control-label" style="margin-left:-35px;">视频：</label>'+
+                '<div class="col-sm-12"style="margin-left: -4px;height: 100px;">'+
+                  '<input id="uploadVideo" name="uploadVideo" class="form-control" type="file" accept=".mp4" />'+
+                  '<input id="uploadVideos" name="uploadVideos" class="form-control" type="text" value='+jsonData.List[i].PartName+' style="width:400px;height:34px;position:absolute;top:0px;left:394px;background-color:#fff;" accept=".mp4" />'+
+                  '<input id="ContentVideo'+segmentIndex+'" class="form-isvalidate" name="ContentVideo" type="hidden" value='+jsonData.List[i].PartName+' />'+
+                  '<div id="OldOrgPath'+segmentIndex+'" style="display: none">'+JSON.stringify(jsonData.List[i].Resouce[0])+'</div>'+
+                  '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大100M，支持mp4格式<span class="uploadPrompt"></span></span>'+
+                '</div>'+
+                '<div class="actions">'+
+                  '<div class="toggle"><img src="../resources/images/off.png" alt=""  onclick="show(this)"/></div>'+
+                  '<ul class="addContent" style="display: none;">'+
+                    '<li class="word" onclick="newSummernote(this)">文</li>'+
+                    '<li class="picture" onclick="newPicture(this)">图</li>'+
+                    '<li class="video" onclick="newVideo(this)">视</li>'+
+                    '<li class="audios" onclick="newAudio(this)">音</li>'+
+                  '</ul>'+
+                '</div>'+
+              '</div>'
+      $("#articleForm .form-group:last-child").before(vid);
+      upLoadFile(segmentIndex);
+      segmentIndex++;
+    }
+    if(jsonData.List[i].PartType=="audio"){
+      var aud='<div class="form-group segment audio" id='+segmentIndex+' type="MEDIA" style="border:1px solid rgba(32, 27, 27, 0.33);top:25px;border-radius:4px;margin-left:40px;">'+
+                '<div class="cancel" onclick="cancelEdit(this)">X</div>'+
+                '<label class="col-sm-2 control-label" style="margin-left:-35px;">音频：</label>'+
+                '<div class="col-sm-12" style="margin-left: -4px;">'+
+                  '<input id="uploadAudio" name="uploadAudio" class="form-control" type="file" accept=".mp4,.mp3" />'+
+                  '<input id="uploadAudios" name="uploadAudios" class="form-control" type="text" value='+jsonData.List[i].PartName+' style="width:400px;height:34px;position:absolute;top:0px;left:394px;background-color:#fff;" accept=".mp4" />'+
+                  '<input id="ContentAudio'+segmentIndex+'" class="form-isvalidate" name="ContentAudio" type="hidden" value='+jsonData.List[i].PartName+' />'+
+                  '<div id="OldOrgPath'+segmentIndex+'" style="display: none">'+JSON.stringify(jsonData.List[i].Resouce[0])+'</div>'+
+                  '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大30M，支持mp3<span class="uploadPrompt"></span></span>'+
+                '</div>'+
+                '<div class="actions">'+
+                  '<div class="toggle"><img src="../resources/images/off.png" alt=""  onclick="show(this)"/></div>'+
+                  '<ul class="addContent" style="display: none;">'+
+                    '<li class="word" onclick="newSummernote(this)">文</li>'+
+                    '<li class="picture" onclick="newPicture(this)">图</li>'+
+                    '<li class="video" onclick="newVideo(this)">视</li>'+
+                    '<li class="audios" onclick="newAudio(this)">音</li>'+
+                  '</ul>'+
+                '</div>'+
+              '</div>'
+      $("#articleForm .form-group:last-child").before(aud);
+      upLoadFile(segmentIndex);
+      segmentIndex++;
+    }
   }
 }
+//保存修改
+function saveModify(){
+  //点提交根据选中栏目的名称获取id
+  if($("#channelName li").length>0){
+    var channelids = "";
+    $("#channelName li").each(function(){
+      var c=$(this).attr("ncId");
+      if(channelids==""){
+        channelids=c;
+      }else{
+        channelids += ","+c;
+      } 
+    })
+  }else{
+    alert("栏目为空");
+    return;
+  }
+  $("#channelId").val(channelids);
+  var list=[];
+  var title={};//标题
+  title.PartId=1;
+  title.PartType="TITLE";
+  title.PartInfo=$("#titleName").val();
+  list.push(title);
+  var descn={};//摘要
+  descn.PartId=2;
+  descn.PartType="DESCN";
+  descn.PartInfo=$("#descnName").val();
+  list.push(descn);
+  var id = 3;
+  $("#articleForm").find("div.segment").each(function() {//文字或图片或视频或音频
+    id++;
+    var onePart={};
+    onePart.PartId=$(this).attr("id");
+    onePart.PartType=$(this).attr("type");
+    if(onePart.PartType=="WORD"){
+      onePart.PartInfo=$('#summernote'+$(this).attr("id")).summernote('code');
+    }
+    if(onePart.PartType=="PICTURE"){
+      onePart.PartName=$('#ContentImg'+onePart.PartId).val();
+      var obj = JSON.parse('['+$('#OldOrgPath'+onePart.PartId).html()+']');
+      onePart.ResouceList = obj;
+    }
+    if(onePart.PartType=="VIDEO"){
+      onePart.PartName=$('#ContentVideo'+onePart.PartId).val();
+      var obj = JSON.parse('['+$('#OldOrgPath'+onePart.PartId).html()+']');
+      onePart.ResouceList = obj;
+    }
+    if(onePart.PartType=="MEDIA"){
+      onePart.PartName=$('#ContentAudio'+onePart.PartId).val();
+      var obj = JSON.parse('['+$('#OldOrgPath'+onePart.PartId).html()+']');
+      onePart.ResouceList = obj;
+    }
+    onePart.PartId=id;
+    list.push(onePart);
+  });
+  var postData={};
+  postData.ChannelId=$("#channelId").val();
+  postData.ContentId=$("#contentid").val();
+  postData.ThemeImg=$("#themeImg").attr("value");
+  postData.MediaSrc=$("#media").attr("value");
+  postData.Source=$("#source").val();
+  postData.SourcePath=$("#website").val();
+  postData.ThirdPath=$("#thirdpath").val();
+  postData.ContentStatus=$("select").find("option:selected").text();
+  postData.UserName=$("#competitorName").val();
+  postData.List=list;
+  $.ajax({
+    url:rootPath+"content/updataContentInfo.do",
+    type:"POST",
+    data:JSON.stringify(postData),
+    dataType:"json",
+    success:function(jsonData){
+      if(jsonData.ReturnType="1001"){
+        alert("修改成功！");
+        $(".row,.shade").hide();
+      }else{
+        alert(jsonData.Message);
+      }
+    },
+    error:function(jqXHR){
+      alert("发生错误" + jqXHR.status);
+    }
+  });
+}
+
 </script>
 </html>

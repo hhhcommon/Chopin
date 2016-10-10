@@ -99,8 +99,7 @@ public class QueryService {
 		mapo.setLangDid("true");
 		String alltext = "##" + title + "####" + descn + "##";
 		mapo.setAllText(alltext);
-		String path = SystemCache.getCache(FConstants.APPOSPATH).getContent() + "dataCenter/mweb/" + mapo.getId()
-				+ ".html";
+		String path = SystemCache.getCache(FConstants.APPOSPATH).getContent() + "dataCenter/mweb/" + mapo.getId() + "/" + mapo.getId() + ".html";
 		FileUploadUtils.writeFile(htmlstr, path);
 		path = "http://www.wotingfm.com/Chopin/dataCenter/mweb/" + mapo.getId() + "/" + mapo.getId() + ".html";
 		mapo.setMaURL(path);
@@ -594,9 +593,9 @@ public class QueryService {
 						map.put("Message", "标题名为空");
 						return map;
 					}
-					if (mediaService.getMaInfoByTitle(m.get("PartInfo") + "") != null) {
+					if (mediaService.getMaInfoByTitle(m.get("PartInfo") + "") == null) {
 						map.put("ReturnType", "1015");
-						map.put("Message", "内容重名");
+						map.put("Message", "内容不存在");
 						return map;
 					}
 					ma.setMaTitle(m.get("PartInfo") + "");
