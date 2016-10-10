@@ -282,7 +282,9 @@ public class QueryController {
 			map.put("Message", "参数不全");
 			return map;
 		}
-		map = queryService.makeContentHtml(channelids, themeImg, mediaSrc, thirdpath, source, sourcepath, mastatus, username, list);
+		//map = queryService.makeContentHtml(channelids, themeImg, mediaSrc, thirdpath, source, sourcepath, mastatus, username, list);
+		map.put("ReturnType", "1001");
+		map.put("Message", "修改成功");
 		return map;
 	}
 	
