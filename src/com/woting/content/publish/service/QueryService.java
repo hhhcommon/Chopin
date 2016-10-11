@@ -47,9 +47,9 @@ public class QueryService {
 	private UserService userService;
 	private String html = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\">"
 			+ "<meta name=\"viewport\" content=\"width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;\">"
-			+ "<link href=\"../resources/css/contentapp.css\" rel=\"stylesheet\">"
-			+ "<script type=\"text/javascript\" src=\"../resources/plugins/hplus/js/jquery-2.1.1.min.js\"></script>"
-			+ "<script type=\"text/javascript\" src=\"../resources/js/contentapp.js\"></script>"
+			+ "<link href=\"/Chopin/resources/chopin/css/contentapp.css\" rel=\"stylesheet\">"
+			+ "<script type=\"text/javascript\" src=\"/Chopin/resources/plugins/hplus/js/jquery-2.1.1.min.js\"></script>"
+			+ "<script type=\"text/javascript\" src=\"/Chopin/resources/chopin/js/contentapp.js\"></script>"
 			+ "</head><body>#####CONTENT#####</body></html>";
 	private String word = "<div class=\"conpetitorContent\">" // 内容页文本内容
 			+ "<div class=\"word\">#####WORD#####</div>" + "</div>";
@@ -202,7 +202,7 @@ public class QueryService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Map<String, Object> makeContentHtml(String channelIds, String themeImg, String mediaSrc, String thirdpath,
+	public Map<String, Object> makeContentHtml(String channelIds, String pubimg, String themeImg, String isShow, String mediaSrc, String thirdpath,
 			String source, String sourcepath, String mastatus, String username, List<Map<String, Object>> list) {
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> statustype = new HashMap<>();
@@ -214,6 +214,13 @@ public class QueryService {
 		statustype.put("选手文章", 5);
 		MediaAssetPo ma = new MediaAssetPo();
 		ma.setId(SequenceUUID.getPureUUID());
+		if (pubimg!=null) {
+			String oldpath = pubimg.replace("http://www.wotingfm.com/Chopin/", SystemCache.getCache(FConstants.APPOSPATH).getContent()+"");
+			String newpath = SystemCache.getCache(FConstants.APPOSPATH).getContent()+"dataCenter/media/group03/"+"lunbotu_"+ma.getId()+".png";
+			FileUtils.copyFile(oldpath, newpath);
+			FileUploadUtils.deleteFile(oldpath);
+			System.out.println(oldpath+"     "+newpath);
+		}
 		if (username == null) {
 			ma.setMaPubId("0");
 			ma.setMaPubType(0);
@@ -242,7 +249,7 @@ public class QueryService {
 			ma.setSubjectWords(thirdpath);
 		ma.setCTime(new Timestamp(System.currentTimeMillis()));
 		ma.setMaPublishTime(ma.getCTime());
-		ma.setLangDid("false");
+		ma.setLangDid(isShow);
 		String allText = "";
 		String htmlstr = "";
 		if (list != null && list.size() > 0) {
@@ -436,6 +443,13 @@ public class QueryService {
 		String language = mapo.getLanguage(); // 文章来源和网站<a href='http://www.sin80.com/series/chopin-polonaises'>新芭网</a>
 		String sourcepath = "";
 		String source = "";
+		String pubimgpath = SystemCache.getCache(FConstants.APPOSPATH).getContent()+"dataCenter/media/group03/"+"lunbotu_"+mapo.getId()+".png";
+		File pubimgfile = new File(pubimgpath);
+		if (pubimgfile.exists()) {
+			map.put("ContentPubImg", "http://www.wotingfm.com/Chopin/dataCenter/media/group03/"+"lunbotu_"+mapo.getId()+".png");
+		} else {
+			map.put("ContentPubImg", "");
+		}
 		if (language!=null && !language.equals("null")) {
 			Document docm = Jsoup.parse(language);
 		    Element ee = docm.body().select("a").get(0);
@@ -448,6 +462,7 @@ public class QueryService {
 		map.put("ThemeImg", maimg);
 		map.put("Source", source);
 		map.put("SourcePath", sourcepath);
+		map.put("IsShow", isshow);
 		if (masrc != null) {
 			if (masrc.contains("wotingfm.com")) {
 				map.put("MediaSrc", masrc);
@@ -510,7 +525,7 @@ public class QueryService {
 							} else if (type.equals("video")) {
 								Document d1 = Jsoup.parse(html);
 								Element el = d1.body().select("source").get(0);
-								String path = el.attr("source");
+								String path = el.attr("src");
 								m.put("PartName", path.subSequence(path.lastIndexOf("/") + 1, path.length()));
 								List<Map<String, Object>> l = new ArrayList<>();
 								Map<String, Object> ms = new HashMap<>();
@@ -520,7 +535,7 @@ public class QueryService {
 							} else if (type.equals("audio")) {
 								Document d1 = Jsoup.parse(html);
 								Element el = d1.body().select("source").get(0);
-								String path = el.attr("source");
+								String path = el.attr("src");
 								m.put("PartName", path.subSequence(path.lastIndexOf("/") + 1, path.length()));
 								List<Map<String, Object>> l = new ArrayList<>();
 								Map<String, Object> ms = new HashMap<>();
@@ -541,7 +556,7 @@ public class QueryService {
 		return map;
 	}
 
-	public Map<String, Object> updateContentHtml(String contentid, String channelids, String themeImg, String mediaSrc, String thirdpath, String source, String sourcepath, String mastatus, String username,List<Map<String, Object>> list) {
+	public Map<String, Object> updateContentHtml(String contentid, String channelids, String pubimg, String themeImg, String isShow, String mediaSrc, String thirdpath, String source, String sourcepath, String mastatus, String username,List<Map<String, Object>> list) {
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> statustype = new HashMap<>();
 		statustype.put("一般文章", 0);
@@ -552,6 +567,14 @@ public class QueryService {
 		statustype.put("选手文章", 5);
 		MediaAsset me = mediaService.getMaInfoById(contentid);
 		MediaAssetPo ma = me.convert2Po();
+		if (pubimg!=null) {
+			String oldpath = pubimg.replace("http://www.wotingfm.com/Chopin/", SystemCache.getCache(FConstants.APPOSPATH).getContent()+"");
+			String newpath = SystemCache.getCache(FConstants.APPOSPATH).getContent()+"dataCenter/media/group03/"+"lunbotu_"+ma.getId()+".png";
+			if (!oldpath.equals(newpath)) {
+				FileUtils.copyFile(oldpath, newpath);
+			    FileUploadUtils.deleteFile(oldpath);
+			}
+		}
 		if (username == null) {
 			ma.setMaPubId("0");
 			ma.setMaPubType(0);
@@ -580,7 +603,7 @@ public class QueryService {
 			ma.setSubjectWords(thirdpath);
 		ma.setCTime(new Timestamp(System.currentTimeMillis()));
 		ma.setMaPublishTime(ma.getCTime());
-		ma.setLangDid("false");
+		ma.setLangDid(isShow);
 		String allText = "";
 		String htmlstr = "";
 		if (list != null && list.size() > 0) {
@@ -591,11 +614,6 @@ public class QueryService {
 					if (matitle.equals("null")) {
 						map.put("ReturnType", "1016");
 						map.put("Message", "标题名为空");
-						return map;
-					}
-					if (mediaService.getMaInfoByTitle(m.get("PartInfo") + "") == null) {
-						map.put("ReturnType", "1015");
-						map.put("Message", "内容不存在");
 						return map;
 					}
 					ma.setMaTitle(m.get("PartInfo") + "");
@@ -698,6 +716,12 @@ public class QueryService {
 			}
 		}
 		ma.setAllText(CacheUtils.cleanTag(allText));
+		htmlstr = html.replace("#####CONTENT#####", htmlstr);
+		String path = SystemCache.getCache(FConstants.APPOSPATH).getContent() + "dataCenter/mweb/" + ma.getId()
+				+ ".html";
+		FileUploadUtils.writeFile(htmlstr, path);
+		ma.setMaURL("http://www.wotingfm.com/Chopin/dataCenter/mweb/" + ma.getId() + ".html");
+		ma.setKeyWords("http://www.wotingfm.com/Chopin/dataCenter/mweb/" + ma.getId() + ".html");
 		mediaService.updateMa(ma);
 		String[] chass = channelids.split(",");
 		String chas = "";
@@ -730,7 +754,7 @@ public class QueryService {
 		}
 		chas = chas.substring(1);
 		Map<String, Object> m = new HashMap<>();
-		m.put("value", "channelId not in ("+chas+") and assetId = "+contentid);
+		m.put("value", "channelId not in ("+chas+") and assetId = '"+contentid+"'");
 		mediaService.removeChaByMap(m);
 		map.put("ReturnType", "1001");
 		map.put("Message", "修改成功");
