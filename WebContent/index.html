@@ -348,16 +348,15 @@ body{
   margin-left: 70px;
   padding-top: 6px;
 }
-.dropdown-menu{
-  width: 150px;
+.dropdown-menu {
+  width: 100px;
   background:#0E0E0E;
   color: #fff;
   z-index: 2000;
   cursor: pointer;
-  height: 125px;
+  height: 145px;
   position: fixed;
   top: 80px;
-  left: 1110px;
   display: none;
 }
 .center,.love,.upload,.exit{
@@ -365,7 +364,7 @@ body{
   line-height: 30px;
   font-family: vista_MS;
   font-size: 15px;
-  padding-left:15px;
+  padding-left:20px;
 }
 .qr_code{
   width: 400px;
@@ -435,11 +434,12 @@ body{
 
 <div id="menu_1" class="_menu" cid="1" style="display: none;width:135px;">
   <div id="68f72898" class="_menuItem" cid="68f72898" onclick="showChannelPage('68f72898')">组委会、评委会</div>
-  <div id="b306b31c" class="_menuItem" cid="b306b31c" onclick="showChannelPage('b306b31c')">关于比赛</div>
-  <div id="2ee1237a" class="_menuItem" cid="2ee1237a" onclick="showChannelPage('2ee1237a')">获奖者音乐会</div>
-  <div id="b625c7a3" class="_menuItem" cid="b625c7a3" onclick="showChannelPage('b625c7a3')">赛况报道</div>
   <div id="25138655" class="_menuItem" cid="25138655" onclick="showChannelPage('25138655')">参赛选手</div>
-  <div id="f0947314" class="_menuItem" cid="f0947314" onclick="showChannelPage('f0947314')">开幕音乐会</div>
+  <div id="b306b31c" class="_menuItem" cid="b306b31c" onclick="showChannelPage('b306b31c')">关于比赛</div>
+<!--  <div id="2ee1237a" class="_menuItem" cid="2ee1237a" onclick="showChannelPage('2ee1237a')">获奖者音乐会</div>
+  <div id="b625c7a3" class="_menuItem" cid="b625c7a3" onclick="showChannelPage('b625c7a3')">赛况报道</div> -->
+<!--  <div id="f0947314" class="_menuItem" cid="f0947314" onclick="showChannelPage('f0947314')">开幕音乐会</div> -->
+
 </div>
 <div id="menu_2" class="_menu" cid="2" style="display: none;width:110px;">
   <div id="6" class="_menuItem" cid="6" onclick="showChannelPage('6')">乐迷秀场</div>
@@ -447,27 +447,29 @@ body{
   <div id="27cae48d" class="_menuItem" cid="27cae48d" onclick="showChannelPage('27cae48d')">人气投票</div>
 </div>
 <div id="menu_3" class="_menu" cid="3" style="display: none;width:110px;">
-  <div id="5af8bbbd" class="_menuItem" cid="5af8bbbd" onclick="showChannelPage('5af8bbbd')">专家讲解</div>
   <div id="70e463b0" class="_menuItem" cid="70e463b0" onclick="showChannelPage('70e463b0')">大师经典</div>
   <div id="22558bad" class="_menuItem" cid="22558bad" onclick="showChannelPage('22558bad')">大肖作品</div>
+  <div id="5af8bbbd" class="_menuItem" cid="5af8bbbd" onclick="showChannelPage('5af8bbbd')">专家讲解</div>
 </div>
 <div id="menu_4" class="_menu" cid="4" style="display: none;width:110px;">
-  <div id="071f6a49" class="_menuItem" cid="071f6a49" onclick="showChannelPage('071f6a49')">博物馆</div>
-  <div id="6ac04ba9" class="_menuItem" cid="6ac04ba9" onclick="showChannelPage('6ac04ba9')">图书</div>
-  <div id="9a065d47" class="_menuItem" cid="9a065d47" onclick="showChannelPage('9a065d47')">作品</div>
   <div id="2501c236" class="_menuItem" cid="2501c236" onclick="showChannelPage('2501c236')">生平</div>
+  <div id="9a065d47" class="_menuItem" cid="9a065d47" onclick="showChannelPage('9a065d47')">作品</div>
+  <div id="6ac04ba9" class="_menuItem" cid="6ac04ba9" onclick="showChannelPage('6ac04ba9')">图书</div>
+<!--   <div id="071f6a49" class="_menuItem" cid="071f6a49" onclick="showChannelPage('071f6a49')">博物馆</div> -->
 </div>
 <div id="menu_5" class="_menu" cid="5" style="display: none;width:110px;">
-  <div id="8ab95c79" class="_menuItem" cid="8ab95c79" onclick="showChannelPage('8ab95c79')">美食</div>
-  <div id="998cdc33" class="_menuItem" cid="998cdc33" onclick="showChannelPage('998cdc33')">旅游</div>
-  <div id="64b4d375" class="_menuItem" cid="64b4d375" onclick="showChannelPage('64b4d375')">文化</div>
   <div id="6d0a1d3f" class="_menuItem" cid="6d0a1d3f" onclick="showChannelPage('6d0a1d3f')">历史</div>
+  <div id="64b4d375" class="_menuItem" cid="64b4d375" onclick="showChannelPage('64b4d375')">文化</div>
+  <div id="0505" class="_menuItem" cid="0505" onclick="showChannelPage('0505')">音乐</div>
+  <div id="998cdc33" class="_menuItem" cid="998cdc33" onclick="showChannelPage('998cdc33')">旅游</div>
+  <div id="8ab95c79" class="_menuItem" cid="8ab95c79" onclick="showChannelPage('8ab95c79')">美食</div>
 </div>
 <div class="dropdown-menu">
-  <div class="center" href="#" >我的作品</div>
-  <div class="upload" href="#" >上传作品</div>
-  <div class="love" href="#" >我喜欢的</div>
-  <div class="exit" href="#">安全退出</div>
+  <div class="upload">上传作品</div>
+  <div class="center">我的作品</div>
+  <div class="love">我喜欢的</div>
+  <div class="line" style="border-top:1px solid #5A5A5A;margin-top:10px; margin-bottom:5px;"></div>
+  <div class="exit">安全退出</div>
 </div>
 <iframe src="session.jsp" width="0" height="0" style="display:none"></iframe>
 <!--登陆界面遮罩层-->
@@ -759,32 +761,65 @@ $(document).on("click",".logined",function(){
     }
   });
 });
-function loginSuccess(logSuccess){
+
+var overUserCenter=false;
+function loginSuccess(logSuccess) {
   $("#logBtn,#regBtn").hide();
-  var userCenter='<div class="showUserCenter">'+logSuccess+'<span class="selArrow"></span></div>';
+  var userCenter='<div class="showUserCenter">我:'+logSuccess+'<span class="selArrow"></span></div>';
   $(".searchBtn").after(userCenter);
-  $(document).on("mouseover",".showUserCenter",function(){
+  $(document).on("mouseover",".showUserCenter",function() {
+    overUserCenter=true;
     $(".showUserCenter").css("color", "#FFA634");
     $(".showUserCenter").find("span").removeClass("selArrow").addClass("selArrow_hover");
-    $(".showUserCenter").find(".dropdown-menu").show();
+    $(".dropdown-menu").css({"left":$(".showUserCenter").offset().left-15});
     $(".dropdown-menu").show();
   });
-  $(document).on("mouseout",".showUserCenter",function(){
-    setTimeout(function(){
+  $(document).on("mouseout",".showUserCenter",function() {
+    overUserCenter=false;
+    setTimeout(function() {
+      if (overUserCenter) return;
       $(".showUserCenter").css("color", "#fff");
       $(".showUserCenter").find("span").removeClass("selArrow_hover").addClass("selArrow");
       $(".showUserCenter").find(".dropdown-menu").hide();
       $(".dropdown-menu").hide();
-    },3000);
+    }, 200);
+  });
+  $(".dropdown-menu").bind("mouseover", function() {
+  	overUserCenter=true;
+    //菜单显示处理
+    $(".showUserCenter").css("color", "#FFA634");
+    $(".showUserCenter").find("span").removeClass("selArrow").addClass("selArrow_hover");
   });
   $(".dropdown-menu").find("div").each(function() {
-    $(this).on("mouseover",function(){
-      $(this).css("color", "#FFA634");
+    $(this).bind("mouseover", function() {
+    	overUserCenter=true;
+    	$(this).css("color", "#FFA634");
+      //菜单显示处理
+      $(".showUserCenter").css("color", "#FFA634");
+      $(".showUserCenter").find("span").removeClass("selArrow").addClass("selArrow_hover");
     });
   });
+  $(".dropdown-menu").bind("mouseout", function() {
+  	overUserCenter=false;
+    setTimeout(function() {
+    	if (overUserCenter) return;
+      $(".dropdown-menu").hide();
+      //菜单显示处理
+      $(".showUserCenter").css("color", "#fff");
+      $(".showUserCenter").find("span").removeClass("selArrow_hover").addClass("selArrow");
+    }, 200);
+  });
   $(".dropdown-menu").find("div").each(function() {
-    $(this).on("mouseout",function(){
-      $(this).css("color", "#fff");
+    $(this).bind("mouseout", function() {
+    	overUserCenter=false;
+    	$(this).css("color", "#fff");
+      setTimeout(function() {
+      	if (overUserCenter) return;
+        $(".dropdown-menu").hide();
+        //菜单显示处理
+        $(".showUserCenter").css("color", "#fff");
+        $(".showUserCenter").find("span").removeClass("selArrow_hover").addClass("selArrow");
+      }, 200);
     });
   });
 }
@@ -792,12 +827,30 @@ function loginSuccess(logSuccess){
 //安全退出
 $(document).on("click",'.exit',function(){
   var sure=confirm("确定要退出登陆吗？");
-  if(sure==true){
-    $(".dropdown-menu,.showUserCenter").hide();
-    $("#logBtn,#regBtn").show();
-  }else{
-    return false;
-  }
+  if (!sure) return;
+
+  var _data={};
+  _data.IMEI=deviceId;
+  _data.PCDType=3;
+  alert(allFields(_data));
+  $.ajax({
+    type: "POST",
+    url: rootPath+"passport/user/mlogout.do",
+    dataType: "json",
+    data:_data,
+    success: function(jsonData) {
+    	alert(allFields(jsonData));
+      if(jsonData.ReturnType=="1001") {
+        $(".dropdown-menu,.showUserCenter").hide();
+        $("#logBtn,#regBtn").show();
+      }else{
+        alert(jsonData.Message);
+      }
+    },
+    error:function(jqXHR){
+      alert("发生错误" + jqXHR.status);
+    }
+  });
 });
 
 </script>

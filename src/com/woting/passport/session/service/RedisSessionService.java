@@ -88,8 +88,8 @@ public class RedisSessionService implements SessionService {
                             map.put("Msg", "请先登录");
                         }
                     }
-                } else {//不是User，也自动登录
-                    if (operDesc.equals("common/entryApp")) {//是进入也自动登录
+                } else {//不是User，自动登录
+                    if (operDesc.equals("common/entryApp")||udk.getPCDType()==3) {//自动登录
                         MobileUsedPo mup=muService.getUsedInfo(udk.getDeviceId(), udk.getPCDType());
                         if (mup.getStatus()==1) {//自动登录
                             rUdk.setUserId(mup.getUserId());
@@ -118,7 +118,6 @@ public class RedisSessionService implements SessionService {
         }
         return map;
     }
-
 
     @Override
     public void registUser(UserDeviceKey udk) {

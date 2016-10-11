@@ -259,7 +259,7 @@ public class PassportController {
                 if ((retM.get("ReturnType")+"").equals("2001")) {
                     map.put("ReturnType", "0000");
                     map.put("Message", "无法获取设备Id(IMEI)");
-                } else if ((retM.get("ReturnType")+"").equals("2003")) {
+                } else if ((retM.get("ReturnType")+"").equals("2003")||(retM.get("ReturnType")+"").equals("2002")) {
                     map.put("ReturnType", "200");
                     map.put("Message", "需要登录");
                 } else {
