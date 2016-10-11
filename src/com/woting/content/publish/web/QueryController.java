@@ -158,6 +158,13 @@ public class QueryController {
 			map.put("Message", "无法获得类型信息");
 			return map;
 		}
+		String isShow = m.get("IsShow")+"";
+		if (isShow.equals("null") || isShow.equals("")) {
+			isShow = "false";
+		}
+		String pubimg = m.get("ContentPubImg")+"";
+		if(pubimg.equals("null") || pubimg.equals("")) 
+			pubimg = null;
 		String themeImg = m.get("ThemeImg")+"";
 		if (themeImg.equals("null") || themeImg.equals("")) 
 			themeImg = null;
@@ -189,7 +196,7 @@ public class QueryController {
 			map.put("Message", "参数不全");
 			return map;
 		}
-		map = queryService.makeContentHtml(channelids, themeImg, mediaSrc, thirdpath, source, sourcepath, mastatus, username, list);
+		map = queryService.makeContentHtml(channelids, pubimg, themeImg, isShow, mediaSrc, thirdpath, source, sourcepath, mastatus, username, list);
 		return map;
 	}
 	
@@ -257,6 +264,13 @@ public class QueryController {
 			map.put("Message", "无法获得类型信息");
 			return map;
 		}
+		String isShow = m.get("IsShow")+"";
+		if (isShow.equals("null") || isShow.equals("")) {
+			isShow = "false";
+		}
+		String pubimg = m.get("ContentPubImg")+"";
+		if(pubimg.equals("null") || pubimg.equals("")) 
+			pubimg = null;
 		String themeImg = m.get("ThemeImg")+"";
 		if (themeImg.equals("null") || themeImg.equals("")) 
 			themeImg = null;
@@ -288,8 +302,7 @@ public class QueryController {
 			map.put("Message", "参数不全");
 			return map;
 		}
-		map.put("ReturnType", "1001");
-		map.put("Message", "修改成功");
+		map = queryService.updateContentHtml(contentid, channelids, pubimg, themeImg, isShow, mediaSrc, thirdpath, source, sourcepath, mastatus, username, list);
 		return map;
 	}
 	
