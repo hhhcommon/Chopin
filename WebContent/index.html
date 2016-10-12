@@ -339,7 +339,11 @@ body{
   display: none;
   z-index:1;
 }
+<<<<<<< HEAD
 .userCenter {
+=======
+.userCenter{
+>>>>>>> refs/remotes/origin/master
   width: 150px;
   height: 30px;
   color: #fff;
@@ -863,6 +867,7 @@ $(document).on("click",'.exit',function(){
     dataType: "json",
     data:_data,
     success: function(jsonData) {
+      alert(allFields(jsonData));
       if(jsonData.ReturnType=="1001") {
         $(".dropdown-menu,.userCenter").hide();
         $("#logBtn,#regBtn").show();
