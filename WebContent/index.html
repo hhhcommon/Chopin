@@ -339,12 +339,8 @@ body{
   display: none;
   z-index:1;
 }
-<<<<<<< HEAD
 .userCenter {
-=======
-.userCenter{
->>>>>>> refs/remotes/origin/master
-  width: 150px;
+  width: 200px;
   height: 30px;
   color: #fff;
   font-weight: bold;
@@ -354,9 +350,20 @@ body{
   position: absolute;
   margin-left: 70px;
   padding-top: 6px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.userCenter_un {
+  max-width: 140px;
+  font-size: 16px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  float:left;
 }
 .dropdown-menu{
-  width: 150px;
+  width: 110px;
   background:#0E0E0E;
   color: #fff;
   z-index: 2000;
@@ -364,13 +371,14 @@ body{
   position: fixed;
   top: 80px;
   display: none;
+  height:135px;
 }
 .center,.love,.upload,.exit{
   height: 30px;
   line-height: 30px;
   font-family: vista_MS;
   font-size: 15px;
-  padding-left:15px;
+  padding-left:20px;
 }
 .qr_code{
   width: 400px;
@@ -431,7 +439,7 @@ body{
   </div>
   <div id="oper" class="topBlock" style="width:198px;padding-top:12px;">
     <button class="searchBtn"></button>
-    <button  id="logBtn" class="operButton" style="margin-left:65px;cursor:pointer;" onclick="test()">登录</button>
+    <button  id="logBtn" class="operButton" style="margin-left:65px;cursor:pointer;" onclick="login()">登录</button>
     <button  id="regBtn"class="operButton" style="margin-left:5px;cursor:pointer;">注册</button>
   </div>
 </div>
@@ -474,10 +482,11 @@ body{
   <div id="8ab95c79" class="_menuItem" cid="8ab95c79" onclick="showChannelPage('8ab95c79')">美食</div>
 </div>
 <div class="dropdown-menu">
-  <div class="center" href="#" >我的作品</div>
-  <div class="upload" href="#" >上传作品</div>
-  <div class="love" href="#" >我喜欢的</div>
-  <div class="exit" href="#">安全退出</div>
+  <div class="upload">上传作品</div>
+  <div class="center">我的作品</div>
+  <div class="love">我喜欢的</div>
+  <div class="splitLine" style="border-top:1px solid #A5A5A5; margin-top:5px; margin-bottom:5px;"></div>
+  <div class="exit">安全退出</div>
 </div>
 <iframe src="session.jsp" width="0" height="0" style="display:none"></iframe>
 <!--登陆界面遮罩层-->
@@ -616,11 +625,11 @@ $(function() {
       }, 200);
     });
   });
-  showChannelPage('0');
   //尝试登录
   setTimeout(function(){
     entryWeb();
   }, 500);
+  showChannelPage('0');
 });
 //初始化界面
 function initPosition() {
@@ -715,8 +724,7 @@ function entryWeb() {
         }
       }
     },
-    error:function(jqXHR){
-      alert("发生错误" + jqXHR.status);
+    error:function(jqXHR) {
     }
   });
 }
@@ -760,7 +768,7 @@ $(document).on("click",".mask",function(){
 })
 
 /*登陆相关的方法*/
-function test(){
+function login() {
   $("#usernameInput").val("");
   $("#userpasswordInput").val("");
   $(".mask").show();
@@ -768,10 +776,10 @@ function test(){
 }
 $(document).on("click",".logined",function(){
   var data={
-            "IMEI":deviceId,
-            "PCDType":"3",
-            "UserName":$("#usernameInput").val(),
-            "Password":$("#userpasswordInput").val()
+    "IMEI":deviceId,
+    "PCDType":"3",
+    "UserName":$("#usernameInput").val(),
+    "Password":$("#userpasswordInput").val()
   };
   if($(".remember input[type='checkbox']").is(":checked")) data.remember="yes";
   else data.remember="no";
@@ -800,7 +808,7 @@ $(document).on("click",".logined",function(){
 var overUserCenter=false;
 function loginSuccess(logSuccess){
   $("#logBtn,#regBtn").hide();
-  var userCenters='<div class="userCenter">'+logSuccess+'<span class="selArrow"></span></div>';
+  var userCenters='<div class="userCenter"><div class="userCenter_un" title="'+logSuccess+'">我:'+logSuccess+'</div><span class="selArrow"></span></div>';
   $(".searchBtn").after(userCenters);
   $(document).on("mouseover",".userCenter",function(){
     overUserCenter=true;
@@ -867,7 +875,6 @@ $(document).on("click",'.exit',function(){
     dataType: "json",
     data:_data,
     success: function(jsonData) {
-      alert(allFields(jsonData));
       if(jsonData.ReturnType=="1001") {
         $(".dropdown-menu,.userCenter").hide();
         $("#logBtn,#regBtn").show();
