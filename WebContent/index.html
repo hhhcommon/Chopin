@@ -627,7 +627,7 @@ $(function() {
   });
   //尝试登录
   setTimeout(function(){
-    entryWeb();
+//  entryWeb();//原来存在，暂时先不要
   }, 500);
   showChannelPage('0');
 });
@@ -640,6 +640,10 @@ function myResize() {
 
 function showChannelPage(channelId) {
   var _cUrl=rootPath+"channels.html?ChannelId="+channelId;
+  showInIframe(_cUrl);
+}
+function showMyFavoritePage(userId) {
+  var _cUrl=rootPath+"myFavorite.html?UserId="+userId;
   showInIframe(_cUrl);
 }
 function showInIframe(iframeSrc) {
@@ -794,7 +798,8 @@ $(document).on("click",".logined",function(){
         $(".mask").hide();
         $(".login_modal").hide();
         var logSuccess=jsonData.UserInfo.UserName;
-        loginSuccess(logSuccess);
+        var logSuccessId=jsonData.UserInfo.UserId;
+        loginSuccess(logSuccess,logSuccessId);
       }else{
         alert(jsonData.Message);
       }
@@ -806,9 +811,9 @@ $(document).on("click",".logined",function(){
 });
 
 var overUserCenter=false;
-function loginSuccess(logSuccess){
+function loginSuccess(logSuccess,logSuccessId){
   $("#logBtn,#regBtn").hide();
-  var userCenters='<div class="userCenter"><div class="userCenter_un" title="'+logSuccess+'">我:'+logSuccess+'</div><span class="selArrow"></span></div>';
+  var userCenters='<div class="userCenter"><div class="userCenter_un" userId="'+logSuccessId+'" title="'+logSuccess+'">我:'+logSuccess+'</div><span class="selArrow"></span></div>';
   $(".searchBtn").after(userCenters);
   $(document).on("mouseover",".userCenter",function(){
     overUserCenter=true;
@@ -886,6 +891,12 @@ $(document).on("click",'.exit',function(){
       alert("发生错误" + jqXHR.status);
     }
   });
+});
+
+//我喜欢的
+$(".love").on("click",function(){
+  var userId=$(".userCenter_un").attr("userId");
+  showMyFavoritePage(userId);
 });
 </script>
 </html>
