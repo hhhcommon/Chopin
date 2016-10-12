@@ -9,10 +9,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.spiritdata.framework.util.RequestUtils;
+import com.spiritdata.framework.util.StringUtils;
 import com.woting.content.manage.media.service.MediaContentService;
+import com.woting.passport.mobile.MobileParam;
+import com.woting.passport.mobile.MobileUDKey;
+import com.woting.passport.session.SessionService;
 
 @Controller
 public class MediaContentController {
+    @Resource(name="redisSessionService")
+    private SessionService sessionService;
 	@Resource
 	private MediaContentService mediaContentService;
 
@@ -151,15 +157,38 @@ public class MediaContentController {
 	public Map<String, Object> getPlaySumCount(HttpServletRequest request) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
+            String userId="";
+		    MobileUDKey mUdk=null;
 			Map<String, Object> m = RequestUtils.getDataFromRequest(request);
-			String userId = null;
-			if (m != null && m.size() >= 0) {
-				userId = m.get("UserId") + "";
-				if (userId.equals("null"))
-					userId = null;
-			}
+            if (m==null||m.size()==0) {
+                map.put("ReturnType", "0000");
+                map.put("Message", "无法获取需要的参数");
+            } else {
+                mUdk=MobileParam.build(m).getUserDeviceKey();
+                if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
+                    mUdk.setDeviceId(request.getSession().getId());
+                }
+                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "clickFavorite");
+                if ((retM.get("ReturnType")+"").equals("2001")) {
+                    map.put("ReturnType", "0000");
+                    map.put("Message", "无法获取设备Id(IMEI)");
+                } else {
+                    //处理过客
+                    if ((retM.get("ReturnType")+"").equals("2003")||(retM.get("ReturnType")+"").equals("2002")) {
+                        mUdk.setUserId("0");
+                    }
+                    map.putAll(mUdk.toHashMapAsBean());
+                    userId=mUdk.getUserId();
+                    //注意这里可以写日志了
+                }
+                if (map.get("ReturnType")==null&&StringUtils.isNullOrEmptyOrSpace(userId)) {
+                    map.put("ReturnType", "1002");
+                    map.put("Message", "无法获取用户Id");
+                }
+            }
+            if (map.get("ReturnType")!=null) return map;
 
-			List<Map<String, Object>> l = mediaContentService.getPlaySumList(userId);
+			List<Map<String, Object>> l = mediaContentService.getPlaySumList(userId.equals("0")?null:userId);
 			if (l != null) {
 				map.put("ResultInfo", l);
 				map.put("AllCount", l.size());

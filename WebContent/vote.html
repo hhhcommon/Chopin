@@ -222,16 +222,22 @@ $(function() {
   $(".message").css("left",($(window).width()-$(".message").width())/2);
   $(".message").css("top",50);
   if (rootPath.length==1) rootPath="http://localhost:1108/Chopin/";
-  $.ajax({type:"post", async:true, url:rootPath+"playSumCount.do", dataType:"json",
-    timeout:10000,
-    success: function(jsonData) {
-      if (jsonData.ReturnType=='1001') drawPage(jsonData.ResultInfo);
-      else showNullPage();
-    },
-    error: function(jqXHR) {
-      showNullPage();
-    }
-  });
+
+  setTimeout(function() {
+    var _data={};
+    _data.IMEI=deviceId;
+    _data.PCDType=pcdType;
+    $.ajax({type:"post", async:true, url:rootPath+"playSumCount.do", dataType:"json", data:_data,
+      timeout:10000,
+      success: function(jsonData) {
+        if (jsonData.ReturnType=='1001') drawPage(jsonData.ResultInfo);
+        else showNullPage();
+      },
+      error: function(jqXHR) {
+        showNullPage();
+      }
+    });
+  }, 200);
 });
 function drawPage(_data) {
   if ($(window).width()<500) {
@@ -251,6 +257,7 @@ function drawPage(_data) {
         +"<div class='_progressBar progress progress-warning active'><div id='bar_"+_data[i].ContentId+"' class='bar' style='width: 0%'></div></div></td>"
         +"<td class='_vote _gray' title='投票' onclick='votePlayer(\""+_data[i].ContentId+"\")' id='vote_"+_data[i].ContentId+"'><div><img src='./resources/chopin/imgs/voteIcon.png'></img></div><div class='_voteText'>投1票</div></td></tr>");
     }
+    console.log(i+":"+_data[i].UserName+":"+_data[i].IsFavorate);
     if (_data[i].IsFavorate==1) {
       $(newLine).find("._vote").removeClass("_gray");
       $(newLine).find("._vote").attr("onclick", "");
@@ -293,22 +300,30 @@ function votePlayer(cId) {
   _data.ContentId=cId;
   _data.Flag=1;
   $.ajax({type:"post", async:true, url:rootPath+"clickFavorite.do", dataType:"json", data:_data,
-    timeout:2000,
+    timeout:5000,
     success: function(jsonData) {
       if (jsonData.ReturnType=='2003') {
         if (!isApp) {
-          alert("请先登录，弹出登录敞口");
+          alert("请先登录,再投票!");
+          try {
+            indexPage.login();
+          }catch(e){}
         } else {
           alert("请先登录，仅作为提示，然后登录进去");
         }
       } else if (jsonData.ReturnType=='2004') {
+        $("#vote_"+cId).removeClass("_gray");
+        $("#vote_"+cId).css("cursor","auto");
+        $("#vote_"+cId).attr("onclick", "");
+        $("#vote_"+cId).attr("title", "");
+        $("#vote_"+cId).find(".m_voteText").html("已投票");
         alert("您已投票，不能再投票了");
       } else if (jsonData.ReturnType=='1001') {
         voteOne();
       }
     },
     error: function(jqXHR) {
-    	alert("出现未知错误！");
+      alert("出现未知错误！");
     }
   });
 
