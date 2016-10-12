@@ -145,7 +145,7 @@ ul, ol {padding: 0;}
 }
 .oneContent .img {
   position:absolute;
-  height:200px;
+  height:283px;
   width:200px;
   cursor:pointer;
 }
@@ -200,7 +200,7 @@ ul, ol {padding: 0;}
 }
 .operButton {
   position:absolute;
-  right:132px;
+  right:116px;
   margin-top:20px;
   border-radius:4px;
   padding-top:1px;
@@ -316,8 +316,8 @@ $(function() {
         var isLeaf=!(jsonData.Data.children&&jsonData.Data.children.length>0);
         if (isLeaf) showListPage(channelId);
         else {//只有复合栏目页才有轮播图
-        	showLoopImg(channelId);
-        	showChannelPage(channelId);
+                showLoopImg(channelId);
+                showChannelPage(channelId);
         }
       } else {
         $.messager.alert("错误", "获得栏目信息：<br/>"+jsonData.message, "error");

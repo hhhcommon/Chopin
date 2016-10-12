@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,7 +43,7 @@ body{
   float:left;
 }
 #topSegment {
-  padding-left:113px;
+  padding-left:120px;
   padding-right:110px;
 }
 .topBlock {
@@ -437,9 +436,9 @@ body{
       波兰<span class="selArrow"></span>
     </div>
   </div>
-  <div id="oper" class="topBlock" style="width:198px;padding-top:12px;">
+  <div id="oper" class="topBlock" style="width:212px;padding-top:12px;">
     <button class="searchBtn"></button>
-    <button  id="logBtn" class="operButton" style="margin-left:65px;cursor:pointer;" onclick="login()">登录</button>
+    <button  id="logBtn" class="operButton" style="margin-left:75px;cursor:pointer;" onclick="login()">登录</button>
     <button  id="regBtn"class="operButton" style="margin-left:5px;cursor:pointer;">注册</button>
   </div>
 </div>
@@ -721,7 +720,7 @@ function entryWeb() {
     success: function(jsonData){
       if(jsonData.ReturnType=="1001") {
         if (jsonData.UserInfo&&jsonData.UserInfo.UserId) {
-        	loginSuccess(jsonData.UserInfo.UserId);
+                loginSuccess(jsonData.UserInfo.UserId);
         }
       }
     },
