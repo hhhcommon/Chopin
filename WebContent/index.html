@@ -372,7 +372,7 @@ body{
   display: none;
   height:135px;
 }
-.center,.love,.upload,.exit{
+.opus,.love,.upload,.exit{
   height: 30px;
   line-height: 30px;
   font-family: vista_MS;
@@ -436,7 +436,7 @@ body{
       波兰<span class="selArrow"></span>
     </div>
   </div>
-  <div id="oper" class="topBlock" style="width:212px;padding-top:12px;">
+  <div id="oper" class="topBlock" style="width:208px;padding-top:12px;">
     <button class="searchBtn"></button>
     <button  id="logBtn" class="operButton" style="margin-left:75px;cursor:pointer;" onclick="login()">登录</button>
     <button  id="regBtn"class="operButton" style="margin-left:5px;cursor:pointer;">注册</button>
@@ -483,7 +483,7 @@ body{
 </div>
 <div class="dropdown-menu">
   <div class="upload">上传作品</div>
-  <div class="center">我的作品</div>
+  <div class="opus">我的作品</div>
   <div class="love">我喜欢的</div>
   <div class="splitLine" style="border-top:1px solid #A5A5A5; margin-top:5px; margin-bottom:5px;"></div>
   <div class="exit">安全退出</div>
@@ -627,7 +627,7 @@ $(function() {
   });
   //尝试登录
   setTimeout(function(){
-    entryWeb();
+//  entryWeb();//暂时先不要
   }, 500);
   showChannelPage('0');
 });
@@ -644,6 +644,10 @@ function showChannelPage(channelId) {
 }
 function showMyFavoritePage(userId) {
   var _cUrl=rootPath+"myFavorite.html?UserId="+userId;
+  showInIframe(_cUrl);
+}
+function showMyOpusPage(userId) {
+  var _cUrl=rootPath+"myOpus.html?UserId="+userId;
   showInIframe(_cUrl);
 }
 function showInIframe(iframeSrc) {
@@ -798,7 +802,8 @@ $(document).on("click",".logined",function(){
         $(".mask").hide();
         $(".login_modal").hide();
         var logSuccess=jsonData.UserInfo.UserName;
-        loginSuccess(logSuccess);
+        var logSuccessId=jsonData.UserInfo.UserId;
+        loginSuccess(logSuccess,logSuccessId);
       }else{
         alert(jsonData.Message);
       }
@@ -810,9 +815,9 @@ $(document).on("click",".logined",function(){
 });
 
 var overUserCenter=false;
-function loginSuccess(logSuccess){
+function loginSuccess(logSuccess,logSuccessId){
   $("#logBtn,#regBtn").hide();
-  var userCenters='<div class="userCenter"><div class="userCenter_un" title="'+logSuccess+'">我:'+logSuccess+'</div><span class="selArrow"></span></div>';
+  var userCenters='<div class="userCenter"><div class="userCenter_un" userId="'+logSuccessId+'" title="'+logSuccess+'">我:'+logSuccess+'</div><span class="selArrow"></span></div>';
   $(".searchBtn").after(userCenters);
   $(document).on("mouseover",".userCenter",function(){
     overUserCenter=true;
@@ -895,6 +900,11 @@ $(document).on("click",'.exit',function(){
 $(".love").on("click",function(){
   var userId=$(".userCenter_un").attr("userId");
   showMyFavoritePage(userId);
+});
+//我的作品
+$(".opus").on("click",function(){
+  var userId=$(".userCenter_un").attr("userId");
+  showMyOpusPage(userId);
 });
 </script>
 </html>
