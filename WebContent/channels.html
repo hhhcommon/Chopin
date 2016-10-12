@@ -41,9 +41,9 @@ body {width: 1366px;}
   padding-right:120px;
 }
 #loopImgArea {
-  height:570px;
+  height:450px;
   width:100%;
-  background-color:yellow;
+  background-color:#0E0E0E;
 }
 #aboutArea {
   padding-top:47px;
@@ -99,7 +99,7 @@ ul, ol {padding: 0;}
 .banner {position: relative; overflow: auto; text-align: center;}
 .banner li {list-style: none;}
 .banner ul li {float: left;}
-#loopImgArea {height: 570px;}
+#loopImgArea {height: 450px;padding:0 120 0 120}
 #loopImgArea .dots {position: absolute; left: 0; right: 0; bottom: 20px;}
 #loopImgArea .dots li {
   display: inline-block; 
@@ -145,7 +145,7 @@ ul, ol {padding: 0;}
 }
 .oneContent .img {
   position:absolute;
-  height:200px;
+  height:283px;
   width:200px;
   cursor:pointer;
 }
@@ -200,7 +200,7 @@ ul, ol {padding: 0;}
 }
 .operButton {
   position:absolute;
-  right:132px;
+  right:116px;
   margin-top:20px;
   border-radius:4px;
   padding-top:1px;
@@ -282,7 +282,7 @@ ul, ol {padding: 0;}
   <div class="v_split"></div>
 </div>
 <div id="aboutArea" style="display:none;">
-  <p onclick="test(this.value)">京公网安备11002340234234号 | 京ICP备142023423号</p>
+  <p onclick="test(this.value)">京ICP备15064344号-1</p>
   <p>Copyright &copy; 2015-2016 Woting. All Rights Reserved.</p>
   <p>北京我听科技有限公司版权所有</p>
 </div>
@@ -313,10 +313,12 @@ $(function() {
   $.ajax({type:"post", async:true, url:rootPath+"/baseinfo/getChannelTree4View.do", dataType:"json", data:_data,
     success: function(jsonData) {
       if (jsonData.ReturnType=='1001') {
-        showLoopImg(channelId);
         var isLeaf=!(jsonData.Data.children&&jsonData.Data.children.length>0);
         if (isLeaf) showListPage(channelId);
-        else showChannelPage(channelId);
+        else {//只有复合栏目页才有轮播图
+                showLoopImg(channelId);
+                showChannelPage(channelId);
+        }
       } else {
         $.messager.alert("错误", "获得栏目信息：<br/>"+jsonData.message, "error");
       }
@@ -328,6 +330,7 @@ $(function() {
 });
 function showLoopImg(channelId) {
   var _data={};
+  _data.LimitCount=5;
   if (channelId!="0") _data.ChannelId=channelId;
   $.ajax({type:"post", async:true, url:rootPath+"directContent.do", dataType:"json", data:_data,
     timeout:3000,
@@ -336,7 +339,8 @@ function showLoopImg(channelId) {
       else {
         $("#loopUi").html("");
         for (var i=0; i<jsonData.AllCount; i++) {
-          var _img=$("<li><img src='"+jsonData.ResultInfo[i].ContentImg+"' width='100%' height='570'></li>");
+          var _img=$("<li><img src='"+jsonData.ResultInfo[i].ContentPubImg+"' width='1150' height='360'></li>");
+          $("#loopUi").append(_img);
           $("#loopUi").append(_img);
           if (jsonData.ResultInfo[i].ContentId&&jsonData.ResultInfo[i].ContentId.length>0) {
             _img.bind("click", function(){
@@ -349,7 +353,7 @@ function showLoopImg(channelId) {
           speed:700
         });
         $('#loopImgArea').css("display", "block");
-        var dd=570+$("#channelArea").height()+$("#linkedArea").height()+$("#aboutArea").height()+20;
+        var dd=450+$("#channelArea").height()+$("#linkedArea").height()+$("#aboutArea").height()+20;
         indexPage.setMainHeight(dd);
       }
     },
