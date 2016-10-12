@@ -65,6 +65,12 @@ public class RedisSessionService implements SessionService {
             if (_value!=null) {//已经登录
                 conn.set(rUdk.getKey_UserLoginStatus().getBytes(), (System.currentTimeMillis()+"::"+operDesc).getBytes());
                 conn.expire(rUdk.getKey_UserLoginStatus().getBytes(), 30*60);//30分钟后过期
+                try {//这里可能有问题，先这样
+                    conn.expire(rUdk.getKey_UserLoginDeviceType().getBytes(), 30*60);//30分钟后过期
+                    conn.expire(rUdk.getKey_DeviceType_UserId().getBytes(), 30*60);//30分钟后过期
+                    conn.expire(rUdk.getKey_DeviceType_UserInfo().getBytes(), 30*60);//30分钟后过期
+                } catch(Exception e) {
+                }
                 map.put("ReturnType", "1001");
                 map.put("UserId", rUdk.getUserId());
                 try {
@@ -88,6 +94,11 @@ public class RedisSessionService implements SessionService {
                             conn.expire(rUdk.getKey_UserLoginStatus().getBytes(), 30*60);//30分钟后过期
                             conn.set(rUdk.getKey_UserLoginDeviceType().getBytes(), rUdk.getValue_DeviceId().getBytes());
                             conn.expire(rUdk.getKey_UserLoginDeviceType().getBytes(), 30*60);//30分钟后过期
+                            UserPo upo=userService.getUserById(mup.getUserId());
+                            conn.set(rUdk.getKey_DeviceType_UserId().getBytes(), upo.getUserId().getBytes());
+                            conn.expire(rUdk.getKey_DeviceType_UserId().getBytes(), 30*60);//30分钟后过期
+                            conn.set(rUdk.getKey_DeviceType_UserInfo().getBytes(), (JsonUtils.objToJson(upo.toHashMap4Mobile())).getBytes());
+                            conn.expire(rUdk.getKey_DeviceType_UserInfo().getBytes(), 30*60);//30分钟后过期
                             map.put("ReturnType", "1001");
                             map.put("Msg", "设备自动登录成功");
                         } else {
@@ -98,7 +109,7 @@ public class RedisSessionService implements SessionService {
                 } else {//不是User，自动登录
                     if (operDesc.equals("common/entryApp")||udk.getPCDType()==3) {//自动登录
                         MobileUsedPo mup=muService.getUsedInfo(udk.getDeviceId(), udk.getPCDType());
-                        if (mup.getStatus()==1) {//自动登录
+                        if (mup!=null&&mup.getStatus()==1) {//自动登录
                             rUdk.setUserId(mup.getUserId());
                             udk.setUserId(mup.getUserId());
                             conn.set(rUdk.getKey_UserLoginStatus().getBytes(), (System.currentTimeMillis()+"::register").getBytes());

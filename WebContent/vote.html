@@ -295,7 +295,6 @@ function votePlayer(cId) {
   $.ajax({type:"post", async:true, url:rootPath+"clickFavorite.do", dataType:"json", data:_data,
     timeout:2000,
     success: function(jsonData) {
-    	alert(allFields(jsonData));
       if (jsonData.ReturnType=='2003') {
         if (!isApp) {
           alert("请先登录，弹出登录敞口");
