@@ -725,6 +725,7 @@ $(function(){
                   var jsonData=jsonData;
                   modifyArticle(jsonData,contentid);
                   $(".row,.shade").show();
+                  alert("欢迎修改！");
                 }
               },
               error:function(jqXHR){
@@ -1606,8 +1607,8 @@ function hiden(){
 
 //修改功能
 function modifyArticle(jsonData,contentid){
-  $("#titleName,#source,#website,#descnName,#uploadThemeImg").val(""); //标题 来源 网址 摘要 题图
-  $("#carousel,#thirdpath,#uploadMedia,.competitorName,#only").val(""); // 轮播图 引用 媒体 选手姓名 勾选框
+  $("#titleName,#source,#website,#descnName,#uploadThemeImg").val("");//标题 来源 网址 摘要 题图
+  $("#carousel,#thirdpath,#uploadMedia,.competitorName,#only").val("");// 轮播图 引用 媒体 选手姓名 勾选框 
   $("#contentid").remove();
   var contentids='<input type="text" id="contentid"  style="display:none;" value='+contentid+'>';
   $(".row").append(contentids);

@@ -47,8 +47,7 @@ public class MediaContentService {
 		mediaAssetDao.setNamespace("A_MEDIA");
 	}
 
-	public List<Map<String, Object>> getContents(String userId, String channelId, int perSize, int page, int pageSize,
-			String beginCatalogId) {
+	public List<Map<String, Object>> getContents(String userId, String channelId, int perSize, int page, int pageSize, String beginCatalogId) {
 		if (channelId == null) {
 			return getContentsByNoChannelId(userId, perSize, page, pageSize, beginCatalogId);
 		}
@@ -157,8 +156,7 @@ public class MediaContentService {
 		return l;
 	}
 
-	private List<Map<String, Object>> getContentsByNoChannelId(String userId, int perSize, int page, int pageSize,
-			String beginCatalogId) {
+	private List<Map<String, Object>> getContentsByNoChannelId(String userId, int perSize, int page, int pageSize, String beginCatalogId) {
 		List<Map<String, Object>> l = new ArrayList<>();
 		List<ChannelPo> chs = mediaService.getChannleByPcId("0");
 		List<ChannelPo> cs = new ArrayList<>();
@@ -421,8 +419,7 @@ public class MediaContentService {
 		}
 	}
 
-	private List<Map<String, Object>> getDirectContent(String userId, String channelId, String flowFlag,
-			boolean getone) {
+	private List<Map<String, Object>> getDirectContent(String userId, String channelId, String flowFlag, boolean getone) {
 		Map<String, Object> m = new HashMap<>();
 		m.put("flowFlag", flowFlag);
 		m.put("isValidate", 1);
@@ -465,21 +462,27 @@ public class MediaContentService {
 		m.put("maStatus", 1);
 		m.put("sortByClause", "pubCount desc");
 		List<MediaAssetPo> mas = mediaAssetDao.queryForList("getPlayMaListByIds", m);
-		if (mas != null && mas.size() > 0) {
-			String[] ids = new String[mas.size()];
+		if(mas!=null && mas.size()>0) {
+			String[] ids=new String[mas.size()];
+			List<String> userIds=new ArrayList<String>();
 			for (int i = 0; i < ids.length; i++) {
-				ids[i] = mas.get(i).getId();
+                ids[i] = mas.get(i).getId();
+                userIds.add(mas.get(i).getMaPubId());
 			}
-			List<Map<String, Object>> favs = favoriteService.getContentFavoriteInfo(ids, userId);
+			List<Map<String, Object>> favs=favoriteService.getContentFavoriteInfo(ids, userId);
+			List<UserPo> users=userService.getUserByIds(userIds);
 			for (MediaAssetPo ma : mas) {
 				for (Map<String, Object> mp : favs) {
 					if (mp.get("ContentId").equals(ma.getId())) {
-						UserPo user = userService.getUserById(ma.getMaPubId());
-						Map<String, Object> map = new HashMap<>();
-						map.put("UserId", user.getUserId());
-						map.put("UserName", user.getUserName());
-						map.put("UserBigImg", user.getPortraitBig());
-						map.put("UserSmallImg", user.getPortraitMini());
+                        Map<String, Object> map = new HashMap<>();
+					    for (UserPo upo: users) {
+					        if (upo.getUserId().equals(ma.getMaPubId())) {
+		                        map.put("UserId", upo.getUserId());
+		                        map.put("UserName", upo.getUserName());
+		                        map.put("UserBigImg", upo.getPortraitBig());
+		                        map.put("UserSmallImg", upo.getPortraitMini());
+					        }
+					    }
 						map.put("FavoSum", mp.get("FavoSum"));
 						map.put("IsFavorate", mp.get("IsFavorate"));
 						map.put("IsPlaying", ma.getPubCount());

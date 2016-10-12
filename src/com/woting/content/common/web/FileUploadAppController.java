@@ -45,7 +45,7 @@ public class FileUploadAppController extends AbstractFileUploadController {
             if ((retM.get("ReturnType")+"").equals("2001")) {
                 datamap.put("ReturnType", "0000");
                 datamap.put("Message", "无法获取设备Id(IMEI)");
-            } else if ((retM.get("ReturnType")+"").equals("2003")) {
+            } else if ((retM.get("ReturnType")+"").equals("2003")||(retM.get("ReturnType")+"").equals("2002")) {
                 datamap.put("ReturnType", "200");
                 datamap.put("Message", "需要登录");
             } else {
