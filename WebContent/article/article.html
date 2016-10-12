@@ -685,8 +685,9 @@ $(function(){
   $("#add").on("click",function(){
     type=1;
     $(".segment").remove();//清空数据
-    $("#titleName,#channelName,#descnName,#channelId,#source,#website,#competitorName,#uploadThemeImg,#uploadMedia,#thirdpath,#carousel").val("");//清空数据
+    $("#titleName,#descnName,#channelId,#source,#website,#competitorName,#uploadThemeImg,#uploadMedia,#thirdpath,#carousel").val("");//清空数据
     $("#only").removeAttr('checked');
+    $("#channelName").html(" ");
     $("#themeImg,#media").attr("value","");
     $("#channelName li").each(function(){
       $(this).remove();
@@ -699,7 +700,8 @@ $(function(){
     type=2;
     segmentIndex=3
     $(".segment").remove();//清空数据
-    $("#titleName,#channelName,#descnName,#channelId,#source,#website,#competitorName,#uploadThemeImg,#uploadMedia,#thirdpath").val("");//清空数据
+    $("#titleName,#descnName,#channelId,#source,#website,#competitorName,#uploadThemeImg,#uploadMedia,#thirdpath").val("");//清空数据
+    $("#channelName").html(" ");
     $("#themeImg,#media").attr("value","");
     $("#channelName li").each(function(){
       $(this).remove();
@@ -723,7 +725,6 @@ $(function(){
                   var jsonData=jsonData;
                   modifyArticle(jsonData,contentid);
                   $(".row,.shade").show();
-                  alert("欢迎修改！");
                 }
               },
               error:function(jqXHR){
@@ -1003,7 +1004,7 @@ function loadCatalog(selectedNode){
     },
     error: function(jqXHR){
       alert("发生错误" + jqXHR.status);
-    }
+    }     
   });
 }
 
@@ -1605,8 +1606,9 @@ function hiden(){
 
 //修改功能
 function modifyArticle(jsonData,contentid){
-  $("#titleName,#source,#website,#descnName,#uploadThemeImg").val("");
-  $("#carousel,#thirdpath,#uploadMedia,.competitorName,#only").val("");
+  $("#titleName,#source,#website,#descnName,#uploadThemeImg").val(""); //标题 来源 网址 摘要 题图
+  $("#carousel,#thirdpath,#uploadMedia,.competitorName,#only").val(""); // 轮播图 引用 媒体 选手姓名 勾选框
+  $("#contentid").remove();
   var contentids='<input type="text" id="contentid"  style="display:none;" value='+contentid+'>';
   $(".row").append(contentids);
   $("#titleName").val(jsonData.List[0].PartInfo);
@@ -1654,7 +1656,7 @@ function modifyArticle(jsonData,contentid){
       var str=jsonData.ChannelIds.split(",");
       for(var i=0;i<str.length;i++){
         var nowNode=zTreeObjs.getNodesByParam("id",str[i],null);
-        var ncli="<li ncId="+jsonData.ChannelIds+">"+nowNode[0].name+"</li>";
+        var ncli="<li ncId="+str[i]+">"+nowNode[0].name+"</li>";
         $("#channelName").append(ncli);
       }
     }else{//只选中了一个栏目
@@ -1840,7 +1842,7 @@ function saveModify(){
   postData.ChannelId=$("#channelId").val();
   postData.ContentId=$("#contentid").val();
   postData.ThemeImg=$("#themeImg").attr("value");
-  postData.ContentPubImg=$("#carousel").attr("value");
+  postData.ContentPubImg=$("#carouselImg").attr("value");
   postData.MediaSrc=$("#media").attr("value");
   if($('#only').is(':checked')) {//是否显示题图
     postData.IsShow="true";
