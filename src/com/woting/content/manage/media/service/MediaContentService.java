@@ -47,8 +47,7 @@ public class MediaContentService {
 		mediaAssetDao.setNamespace("A_MEDIA");
 	}
 
-	public List<Map<String, Object>> getContents(String userId, String channelId, int perSize, int page, int pageSize,
-			String beginCatalogId) {
+	public List<Map<String, Object>> getContents(String userId, String channelId, int perSize, int page, int pageSize, String beginCatalogId) {
 		if (channelId == null) {
 			return getContentsByNoChannelId(userId, perSize, page, pageSize, beginCatalogId);
 		}
@@ -157,8 +156,7 @@ public class MediaContentService {
 		return l;
 	}
 
-	private List<Map<String, Object>> getContentsByNoChannelId(String userId, int perSize, int page, int pageSize,
-			String beginCatalogId) {
+	private List<Map<String, Object>> getContentsByNoChannelId(String userId, int perSize, int page, int pageSize, String beginCatalogId) {
 		List<Map<String, Object>> l = new ArrayList<>();
 		List<ChannelPo> chs = mediaService.getChannleByPcId("0");
 		List<ChannelPo> cs = new ArrayList<>();
@@ -421,8 +419,7 @@ public class MediaContentService {
 		}
 	}
 
-	private List<Map<String, Object>> getDirectContent(String userId, String channelId, String flowFlag,
-			boolean getone) {
+	private List<Map<String, Object>> getDirectContent(String userId, String channelId, String flowFlag, boolean getone) {
 		Map<String, Object> m = new HashMap<>();
 		m.put("flowFlag", flowFlag);
 		m.put("isValidate", 1);

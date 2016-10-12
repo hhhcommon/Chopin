@@ -64,6 +64,4 @@ public class UserDeviceKey extends BaseObject implements Serializable {
     public String toString() {
         return this.deviceId+"::"+this.PCDType+"::"+this.userId;
     }
-
-    
 }

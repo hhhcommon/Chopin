@@ -129,7 +129,7 @@ public class PassportController {
             mUdk.setUserId(nu.getUserId());
             ExpirableBlockKey rLock=RedisBlockLock.lock(redisUdk.getKey_Lock(), rConn);
             try {
-                sessionService.registUser(mUdk);
+                sessionService.registUser(mUdk, nu);
                 MobileUsedPo mu=new MobileUsedPo();
                 mu.setImei(mUdk.getDeviceId());
                 mu.setStatus(1);
@@ -208,7 +208,7 @@ public class PassportController {
             RedisConnection rConn=redisConn.getConnection();
             ExpirableBlockKey rLock=RedisBlockLock.lock(redisUdk.getKey_Lock(), rConn);
             try {
-                sessionService.registUser(mUdk);
+                sessionService.registUser(mUdk, u);
                 MobileUsedPo mu=new MobileUsedPo();
                 mu.setImei(mUdk.getDeviceId());
                 mu.setStatus(1);
@@ -817,7 +817,7 @@ public class PassportController {
             RedisUserDeviceKey redisUdk=new RedisUserDeviceKey(mUdk);
             ExpirableBlockKey rLock=RedisBlockLock.lock(redisUdk.getKey_Lock(), rConn);
             try {
-                sessionService.registUser(mUdk);
+                sessionService.registUser(mUdk, (UserPo)rm.get("userInfo"));
                 //3.2-保存使用情况
                 MobileUsedPo mu=new MobileUsedPo();
                 mu.setImei(mUdk.getDeviceId());

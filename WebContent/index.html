@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -176,7 +177,7 @@ body{
   width:100%;
   height:45px;
   background:#0E0E0E;
-  color:white;
+  color:#fff;
   font-weight:bolder;
   line-height: 45px;
   position: absolute;
@@ -184,23 +185,25 @@ body{
   overflow: hidden;
 }
 .login_header1{
-  width:33.33%;
+  width:32.33%;
   height:100%;
   float:left;
   font-family: vista_MS;
   font-size: 15px;
   background:#0E0E0E;
+  border-right: 2px solid rgb(255, 166, 52);
 }
 .login_header2{
-  width:33.33%;
+  width:32.33%;
   height:100%;
   float:left;
   font-family: vista_MS;
   font-size: 15px;
   background:gray;
+  border-right: 2px solid rgb(255, 166, 52);
 }
 .login_header3{
-  width:33.33%;
+  width:34.33%;
   height:100%;
   float: left;
   font-family: vista_MS;
@@ -230,7 +233,7 @@ body{
   width: 60px;
   height: 35px;
   font-size: 16px;
-  color: white;
+  color: #fff;
   margin-top:12px;
   text-align: center;
   line-height: 35px;
@@ -253,7 +256,7 @@ body{
   text-align: center;
   font-size:16px;
   margin-left:60px;
-  color:white;
+  color:#fff;
   float: left;
 }
 .forget{
@@ -262,7 +265,7 @@ body{
   line-height: 35px;
   text-align: center;
   font-size:16px;
-  color:white;
+  color:#fff;
   margin-left:58px;
   float: left;
 }
@@ -271,7 +274,7 @@ body{
   line-height: 35px;
   text-align: center;
   font-size:16px;
-  color:white;
+  color:#fff;
   font-weight: bolder;
   background:#ff9426;
   margin-left:11px;
@@ -281,13 +284,13 @@ body{
   line-height: 50px;
   text-align: center;
   font-size:16px;
-  color:white;
+  color:#fff;
   overflow: hidden;
 }
 .tpl .line_left{
   width:55px;
   height:2px;
-  background:white;
+  background:#fff;
   margin-left: 12px;
   margin-top: 18px;
   float: left;
@@ -295,7 +298,7 @@ body{
 .tpl .line_right{
   width:55px;
   height:2px;
-  background:white;
+  background:#fff;
   margin-left: 242px;
   margin-top:-20px;
   float: left;
@@ -336,10 +339,10 @@ body{
   display: none;
   z-index:1;
 }
-.showUserCenter{
+.userCenter {
   width: 150px;
   height: 30px;
-  color: white;
+  color: #fff;
   font-weight: bold;
   font-family: vista_MS;
   font-size: 16px;
@@ -348,13 +351,12 @@ body{
   margin-left: 70px;
   padding-top: 6px;
 }
-.dropdown-menu {
-  width: 100px;
+.dropdown-menu{
+  width: 150px;
   background:#0E0E0E;
   color: #fff;
   z-index: 2000;
   cursor: pointer;
-  height: 145px;
   position: fixed;
   top: 80px;
   display: none;
@@ -364,13 +366,16 @@ body{
   line-height: 30px;
   font-family: vista_MS;
   font-size: 15px;
-  padding-left:20px;
+  padding-left:15px;
 }
 .qr_code{
   width: 400px;
   margin-top: 20px;
   height: 200px;
   background: #ddd;
+}
+.qr_code img{
+  background-size: 100% 100%;
 }
 .registeByApp{
   width: 400px;
@@ -382,7 +387,7 @@ body{
   background: #fafafa
 }
 .cancelLog{
-  color: white;
+  color: #fff;
   position: absolute;
   top: -13px;
   left: 384px;
@@ -465,11 +470,10 @@ body{
   <div id="8ab95c79" class="_menuItem" cid="8ab95c79" onclick="showChannelPage('8ab95c79')">美食</div>
 </div>
 <div class="dropdown-menu">
-  <div class="upload">上传作品</div>
-  <div class="center">我的作品</div>
-  <div class="love">我喜欢的</div>
-  <div class="line" style="border-top:1px solid #5A5A5A;margin-top:10px; margin-bottom:5px;"></div>
-  <div class="exit">安全退出</div>
+  <div class="center" href="#" >我的作品</div>
+  <div class="upload" href="#" >上传作品</div>
+  <div class="love" href="#" >我喜欢的</div>
+  <div class="exit" href="#">安全退出</div>
 </div>
 <iframe src="session.jsp" width="0" height="0" style="display:none"></iframe>
 <!--登陆界面遮罩层-->
@@ -497,11 +501,11 @@ body{
     </form>
   </div>
   <div class="register_content">
-    <div class="qr_code" style="top:145px;">放置二维码</div>
+    <div class="qr_code" style="top:145px;"><img src="./resources/chopin/imgs/scanCode.png" alt="" /></div>
     <div class="registeByApp">请通过扫码注册账号</div>
   </div>
   <div class="forget_content">
-    <div class="qr_code" style="top:145px;">放置二维码</div>
+    <div class="qr_code" style="top:145px;"><img src="./resources/chopin/imgs/scanCode.png" alt="" /></div>
     <div class="registeByApp">请通过扫码找回密码</div>
   </div>
 </div>
@@ -510,9 +514,10 @@ body{
 var rootPath=getRootPath();
 var curMenuId=0;
 var deviceId="";
+var pcdType=3;
 
 function setDeviceId(sessionId) {
-  deviceId=sessionId;
+  alert(deviceId);
 }
 //主窗口参数
 var INIT_PARAM={
@@ -547,7 +552,7 @@ $(function() {
     curMenuId=cid;
     if (!curMenuId) return ;
     $("#menu_"+cid).css({
-      "left":$("#nav_"+cid).offset().left-15,
+      "left":$("#nav_"+cid).offset().left-15
     });
     //菜单显示处理
     $("#nav_"+cid).css("color", "#FFA634");
@@ -608,6 +613,10 @@ $(function() {
     });
   });
   showChannelPage('0');
+  //尝试登录
+  setTimeout(function(){
+    entryWeb();
+  }, 500);
 });
 //初始化界面
 function initPosition() {
@@ -684,6 +693,28 @@ function showMask(message) {
 }
 function cleanMask(message) {
   
+}
+function entryWeb() {
+  var _data={};
+  _data.IMEI=deviceId;
+  _data.PCDType=pcdType;
+  $.ajax({
+    type: "POST",
+    url: rootPath+"/common/entryApp.do",
+    timeout:2000,
+    dataType: "json",
+    data: _data,
+    success: function(jsonData){
+      if(jsonData.ReturnType=="1001") {
+        if (jsonData.UserInfo&&jsonData.UserInfo.UserId) {
+        	loginSuccess(jsonData.UserInfo.UserId);
+        }
+      }
+    },
+    error:function(jqXHR){
+      alert("发生错误" + jqXHR.status);
+    }
+  });
 }
 
 /*
@@ -763,63 +794,58 @@ $(document).on("click",".logined",function(){
 });
 
 var overUserCenter=false;
-function loginSuccess(logSuccess) {
+function loginSuccess(logSuccess){
   $("#logBtn,#regBtn").hide();
-  var userCenter='<div class="showUserCenter">我:'+logSuccess+'<span class="selArrow"></span></div>';
-  $(".searchBtn").after(userCenter);
-  $(document).on("mouseover",".showUserCenter",function() {
+  var userCenters='<div class="userCenter">'+logSuccess+'<span class="selArrow"></span></div>';
+  $(".searchBtn").after(userCenters);
+  $(document).on("mouseover",".userCenter",function(){
     overUserCenter=true;
-    $(".showUserCenter").css("color", "#FFA634");
-    $(".showUserCenter").find("span").removeClass("selArrow").addClass("selArrow_hover");
-    $(".dropdown-menu").css({"left":$(".showUserCenter").offset().left-15});
+    $(".userCenter").css("color", "#FFA634");
+    $(".userCenter").find("span").removeClass("selArrow").addClass("selArrow_hover");
+    $(".dropdown-menu").css({"left":$(".userCenter").offset().left-15});
     $(".dropdown-menu").show();
   });
-  $(document).on("mouseout",".showUserCenter",function() {
+  $(document).on("mouseout",".userCenter",function(){
     overUserCenter=false;
-    setTimeout(function() {
+    setTimeout(function(){
       if (overUserCenter) return;
-      $(".showUserCenter").css("color", "#fff");
-      $(".showUserCenter").find("span").removeClass("selArrow_hover").addClass("selArrow");
-      $(".showUserCenter").find(".dropdown-menu").hide();
+      $(".userCenter").css("color", "#fff");
+      $(".userCenter").find("span").removeClass("selArrow_hover").addClass("selArrow");
       $(".dropdown-menu").hide();
-    }, 200);
+    },200);
   });
-  $(".dropdown-menu").bind("mouseover", function() {
-  	overUserCenter=true;
-    //菜单显示处理
-    $(".showUserCenter").css("color", "#FFA634");
-    $(".showUserCenter").find("span").removeClass("selArrow").addClass("selArrow_hover");
+  $(".dropdown-menu").on("mouseover",function(){
+    overUserCenter=true;
+    $(".userCenter").css("color", "#FFA634");
+    $(".userCenter").find("span").removeClass("selArrow").addClass("selArrow_hover");
   });
-  $(".dropdown-menu").find("div").each(function() {
-    $(this).bind("mouseover", function() {
-    	overUserCenter=true;
-    	$(this).css("color", "#FFA634");
-      //菜单显示处理
-      $(".showUserCenter").css("color", "#FFA634");
-      $(".showUserCenter").find("span").removeClass("selArrow").addClass("selArrow_hover");
+  $(".dropdown-menu").find("div").each(function(){
+    $(this).on("mouseover",function(){
+      overUserCenter=true;
+      $(this).css("color", "#FFA634");
+      $(".userCenter").css("color", "#FFA634");
+      $(".userCenter").find("span").removeClass("selArrow").addClass("selArrow_hover");
     });
   });
-  $(".dropdown-menu").bind("mouseout", function() {
-  	overUserCenter=false;
-    setTimeout(function() {
-    	if (overUserCenter) return;
-      $(".dropdown-menu").hide();
-      //菜单显示处理
-      $(".showUserCenter").css("color", "#fff");
-      $(".showUserCenter").find("span").removeClass("selArrow_hover").addClass("selArrow");
-    }, 200);
+  $(".dropdown-menu").on("mouseout",function(){
+    overUserCenter=false;
+    setTimeout(function(){
+      if (overUserCenter) return;
+      $(this).hide();
+      $(".userCenter").css("color", "#fff");
+      $(".userCenter").find("span").removeClass("selArrow_hover").addClass("selArrow");
+    },200);
   });
   $(".dropdown-menu").find("div").each(function() {
-    $(this).bind("mouseout", function() {
-    	overUserCenter=false;
-    	$(this).css("color", "#fff");
-      setTimeout(function() {
-      	if (overUserCenter) return;
+    $(this).on("mouseout",function(){
+      overUserCenter=false;
+      $(this).css("color", "#fff");
+      setTimeout(function(){
+        if (overUserCenter) return;
         $(".dropdown-menu").hide();
-        //菜单显示处理
-        $(".showUserCenter").css("color", "#fff");
-        $(".showUserCenter").find("span").removeClass("selArrow_hover").addClass("selArrow");
-      }, 200);
+        $(".userCenter").css("color", "#fff");
+        $(".userCenter").find("span").removeClass("selArrow_hover").addClass("selArrow");
+      },200);
     });
   });
 }
@@ -828,20 +854,17 @@ function loginSuccess(logSuccess) {
 $(document).on("click",'.exit',function(){
   var sure=confirm("确定要退出登陆吗？");
   if (!sure) return;
-
   var _data={};
   _data.IMEI=deviceId;
   _data.PCDType=3;
-  alert(allFields(_data));
   $.ajax({
     type: "POST",
     url: rootPath+"passport/user/mlogout.do",
     dataType: "json",
     data:_data,
     success: function(jsonData) {
-    	alert(allFields(jsonData));
       if(jsonData.ReturnType=="1001") {
-        $(".dropdown-menu,.showUserCenter").hide();
+        $(".dropdown-menu,.userCenter").hide();
         $("#logBtn,#regBtn").show();
       }else{
         alert(jsonData.Message);
@@ -852,6 +875,5 @@ $(document).on("click",'.exit',function(){
     }
   });
 });
-
 </script>
 </html>
