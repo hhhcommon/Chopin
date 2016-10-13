@@ -274,7 +274,6 @@ body { padding:0; }
 <%
     return;
   }
-
   //spring bean处理
   ServletContext sc=(SystemCache.getCache(FConstants.SERVLET_CONTEXT)==null?null:(ServletContext)SystemCache.getCache(FConstants.SERVLET_CONTEXT).getContent());
   ApplicationContext ctx=WebApplicationContextUtils.getWebApplicationContext(sc);
@@ -356,9 +355,17 @@ body { padding:0; }
       if (sourceImg.getWidth()<widthLimit) {
 %>
   <div id="a_img"><center><img src="<%=imgUrl%>"></img></center></div>
-<%    } else {%>
+<%    } else {
+        if (sourceImg.getWidth()<800) {
+%>
   <div id="a_img"><center><img class="_img" src="<%=imgUrl%>"></img></center></div>
-<%    }
+<%
+        } else {
+%>
+  <div id="a_img"><center><img style="width:800px" src="<%=imgUrl%>"></img></center></div>
+<%
+        }
+      }
     } catch(Exception e) {
     }
   }
@@ -420,7 +427,11 @@ body { padding:0; }
           if (sourceImg.getWidth()<widthLimit) {
             _img.parent().html("<img src='"+imgSrc+"'/>");
           } else {
-            _img.parent().html("<img src='"+imgSrc+"' class='_img'/>");
+            if (sourceImg.getWidth()<800) {
+              _img.parent().html("<img src='"+imgSrc+"' class='_img'/>");
+            } else {
+              _img.parent().html("<img src='"+imgSrc+"' style='width:800px'/>");
+            }
           }
         } catch(Exception e) {
           _img.parent().html("");
@@ -458,6 +469,7 @@ body { padding:0; }
 </div>
 </center></body>
 <script>
+var deviceId="<%=sid%>";
 //主函数
 $(function() {
   if ($(window).width()<<%=widthLimit%>) {
@@ -474,7 +486,7 @@ $(function() {
   window.setTimeout(function() {
     var sumH=$("body").height();
     try {
-      window.parent.setMainHeight(sumH);
+      window.parent.setMainHeight(document.body.scrollHeight);
     } catch(e) {}
   }, 100);
 });

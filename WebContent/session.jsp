@@ -14,6 +14,7 @@
 <body>
 </body>
 <script>
+var _deviceId="<%=sessionId%>";
 window.parent.setDeviceId("<%=sessionId%>");
 </script>
 </html>

@@ -10,7 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.spiritdata.framework.util.RequestUtils;
+import com.spiritdata.framework.util.StringUtils;
 import com.woting.content.publish.service.QueryService;
+import com.woting.passport.UGA.service.UserService;
+import com.woting.passport.mobile.MobileParam;
+import com.woting.passport.mobile.MobileUDKey;
+import com.woting.passport.session.SessionService;
 
 /**
  * 列表查询接口
@@ -23,6 +28,10 @@ import com.woting.content.publish.service.QueryService;
 public class QueryController {
 	@Resource
 	private QueryService queryService;
+    @Resource
+    private UserService userService;
+    @Resource(name="redisSessionService")
+    private SessionService sessionService;
 
 	/**
 	 * 移动端添加内容
@@ -68,7 +77,7 @@ public class QueryController {
 		}
 		return map;
 	}
-	
+
 	/**
 	 * 获得移动端用户内容列表
 	 * 
@@ -78,15 +87,47 @@ public class QueryController {
 	@RequestMapping(value = "getListByApp.do")
 	@ResponseBody
 	public Map<String, Object> getListByApp(HttpServletRequest request) {
-		Map<String, Object> map = new HashMap<>();
-		Map<String, Object> m = RequestUtils.getDataFromRequest(request);
-		String userId = m.get("UserId")+"";
-		if(userId.equals("null")) {
-			map.put("ReturnType", "1002");
-			map.put("Message", "无法获得用户Id");
-			return map;
-		}
-		List<Map<String, Object>> mm = queryService.getContentListByApp(userId);
+        //0-获取参数
+        Map<String,Object> map=new HashMap<String, Object>();
+        MobileUDKey mUdk=null;
+        String userId="";
+        Map<String, Object> m=RequestUtils.getDataFromRequest(request);
+        if (m==null||m.size()==0) {
+            map.put("ReturnType", "0000");
+            map.put("Message", "无法获取需要的参数");
+        } else {
+            mUdk=MobileParam.build(m).getUserDeviceKey();
+            if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
+                mUdk.setDeviceId(request.getSession().getId());
+            }
+            Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "discuss/article/getList");
+            if (!mUdk.isUser()||"0".equals(mUdk.getUserId())) {
+                map.put("ReturnType", "1002");
+                map.put("Message", "无法获得用户Id");
+            } else {
+                if (userService.getUserById(mUdk.getUserId())==null) {
+                    map.put("ReturnType", "1003");
+                    map.put("Message", "用户不存在");
+                }
+                if ((retM.get("ReturnType")+"").equals("2001")) {
+                    map.put("ReturnType", "0000");
+                    map.put("Message", "无法获取设备Id(IMEI)");
+                } else if ((retM.get("ReturnType")+"").equals("2003")||(retM.get("ReturnType")+"").equals("2002")) {
+                    map.put("ReturnType", "200");
+                    map.put("Message", "需要登录");
+                } else {
+                    if (mUdk.isUser()) userId=mUdk.getUserId();
+                }
+                if (map.get("ReturnType")==null&&StringUtils.isNullOrEmptyOrSpace(userId)) {
+                    map.put("ReturnType", "1002");
+                    map.put("Message", "无法获取用户Id");
+                }
+
+            }
+        }
+        if (map.get("ReturnType")!=null) return map;
+
+        List<Map<String, Object>> mm = queryService.getContentListByApp(userId);
 		if(mm!=null&&mm.size()>0) {
 			map.put("ReturnType", "1001");
 			map.put("ResultInfo", mm);

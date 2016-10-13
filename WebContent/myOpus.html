@@ -41,9 +41,9 @@ body {width: 1366px;}
   padding-right:120px;
 }
 #loopImgArea {
-  height:450px;
+  height:570px;
   width:100%;
-  background-color:#0E0E0E;
+  background-color:yellow;
 }
 #aboutArea {
   padding-top:47px;
@@ -99,7 +99,7 @@ ul, ol {padding: 0;}
 .banner {position: relative; overflow: auto; text-align: center;}
 .banner li {list-style: none;}
 .banner ul li {float: left;}
-#loopImgArea {height: 450px;padding:0 120 0 120}
+#loopImgArea {height: 570px;}
 #loopImgArea .dots {position: absolute; left: 0; right: 0; bottom: 20px;}
 #loopImgArea .dots li {
   display: inline-block; 
@@ -145,7 +145,7 @@ ul, ol {padding: 0;}
 }
 .oneContent .img {
   position:absolute;
-  height:283px;
+  height:200px;
   width:200px;
   cursor:pointer;
 }
@@ -154,6 +154,25 @@ ul, ol {padding: 0;}
   height:283px;
   width:200px;
   cursor:pointer;
+}
+.oneContent .delMask {
+  position:absolute;
+  height:283px;
+  width:200px;
+  cursor:pointer;
+  background: rgba(255,255,255,0.3);
+  display: none;
+}
+.oneContent .delMask .spanDel{
+  position:absolute;
+  top:0px;
+  right:4px;
+  height:20px;
+  width:20px;
+  cursor:pointer;
+  font-size:25px;
+  color:#000;
+  display: none;
 }
 .oneContent-mask {
   position:absolute;
@@ -200,7 +219,7 @@ ul, ol {padding: 0;}
 }
 .operButton {
   position:absolute;
-  right:116px;
+  right:132px;
   margin-top:20px;
   border-radius:4px;
   padding-top:1px;
@@ -258,6 +277,38 @@ ul, ol {padding: 0;}
   color:#fff;
   font-family:vista_MS;
 }
+.operUpload{
+  width: 85px;
+  position: absolute;
+  right: 227px;
+  margin-top: 20px;
+  border-radius: 4px;
+  padding-top: 1px;
+  border: 1px solid #fff;
+  height: 30px;
+  font-family: vista_MS;
+  font-weight: bold;
+  background-color: #0E0E0E;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+}
+.operDel{
+  position: absolute;
+  right: 132px;
+  margin-top: 20px;
+  border-radius: 4px;
+  padding-top: 1px;
+  border: 1px solid #fff;
+  height: 30px;
+  width: 85px;
+  font-family: vista_MS;
+  font-weight: bold;
+  background-color: #0E0E0E;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -282,11 +333,11 @@ ul, ol {padding: 0;}
   <div class="v_split"></div>
 </div>
 <div id="aboutArea" style="display:none;">
-  <p onclick="test(this.value)">京ICP备15064344号-1</p>
+  <p onclick="test(this.value)">京公网安备11002340234234号 | 京ICP备142023423号</p>
   <p>Copyright &copy; 2015-2016 Woting. All Rights Reserved.</p>
   <p>北京我听科技有限公司版权所有</p>
 </div>
-<iframe src="session.jsp" width="0" height="0" style="display:none"></iframe>
+<iframe id="_SESSION" src="session.jsp" width="0" height="0" style="display:none"></iframe>
 </body>
 
 <script>
@@ -297,166 +348,71 @@ function setDeviceId(sessionId) {
 
 var rootPath=getRootPath();
 if (rootPath.length<2) rootPath="http://www.wotingfm.com/Chopin/";
-var channelId=getUrlParam(window.location.href, "ChannelId");
+var userId=getUrlParam(window.location.href, "UserId");
 var indexPage=getMainPage();
 
 function test(t) {
 }
 //主函数
 $(function() {
-  if (channelId=="0") {
-    showChannelPage(0);
-    return;
+  //获得SessionId，很重要
+  var sfrm=document.getElementById("_SESSION");
+  if (sfrm.attachEvent) {
+    sfrm.attachEvent("onload", function() {
+      deviceId=sfrm.contentWindow._deviceId;
+      showMyOpusList(userId);
+    });
+  } else {
+    sfrm.onload = function() {
+      deviceId=sfrm.contentWindow._deviceId;
+      showMyOpusList(userId);
+    }; 
   }
-  var _data={};
-  _data.ChannelId=channelId;
-  $.ajax({type:"post", async:true, url:rootPath+"/baseinfo/getChannelTree4View.do", dataType:"json", data:_data,
-    success: function(jsonData) {
-      if (jsonData.ReturnType=='1001') {
-        var isLeaf=!(jsonData.Data.children&&jsonData.Data.children.length>0);
-        if (isLeaf) showListPage(channelId);
-        else {//只有复合栏目页才有轮播图
-          showLoopImg(channelId);
-          showChannelPage(channelId);
-        }
-      } else {
-        $.messager.alert("错误", "获得栏目信息：<br/>"+jsonData.message, "error");
-      }
-    },
-    error: function(jqXHR) {
-      $.messager.alert("错误", "获得栏目信息：<br/>"+jqXHR.status, "error");
-    }
-  });
 });
-function showLoopImg(channelId) {
+  
+function showMyOpusList(userId) {
   var _data={};
-  _data.LimitCount=5;
-  if (channelId!="0") _data.ChannelId=channelId;
-  $.ajax({type:"post", async:true, url:rootPath+"directContent.do", dataType:"json", data:_data,
-    timeout:3000,
-    success: function(jsonData) {
-      if (!jsonData.AllCount||jsonData.AllCount==0) $("#loopImgArea").hide();
-      else {
-        $("#loopUi").html("");
-        for (var i=0; i<jsonData.AllCount; i++) {
-          var _img=$("<li><img src='"+jsonData.ResultInfo[i].ContentPubImg+"' width='1150' height='360'></li>");
-          $("#loopUi").append(_img);
-          $("#loopUi").append(_img);
-          if (jsonData.ResultInfo[i].ContentId&&jsonData.ResultInfo[i].ContentId.length>0) {
-            _img.bind("click", function(){
-              indexPage.showInIframe(rootPath+"articleShell.html?ContentId="+jsonData.ResultInfo[i].ContentId);
-            });
-          }
-        }
-        $('#loopImgArea').unslider({
-          dots:true,
-          speed:700
-        });
-        $('#loopImgArea').css("display", "block");
-      }
-      resizeParent(1);
-    },
-    error: function(jqXHR) {
-      $("#loopImgArea").hide();
-    }
-  });
-}
-function showChannelPage(channelId) {
-  var _data={};
-  if (channelId!="0") _data.ChannelId=channelId;
-  _data.PerSize=5;
-  _data.PageSize=100;
-  $.ajax({type:"post", async:true, url:rootPath+"/content/getContents.do", dataType:"json", data:_data,
-    success: function(jsonData) {
-      if (jsonData.ReturnType=='1001') {
-        if (jsonData.ResultInfo.length>0) {
-          $("#channelArea").html("");
-          for (var i=0; i<jsonData.ResultInfo.length; i++) {
-            var channelBar=$('<div class="channelBar"><div class="channelBarTitle"><div class="barTitleArea"><div class="cName"></div>'
-                            +'<div class="eName"></div></div><button class="operButton">更多</button></div>'
-                            +'<div class="channelBarLine"></div></div>');
-            channelBar.find(".cName").html("<div class='h_split'></div>"+jsonData.ResultInfo[i].CatalogName);
-            if (jsonData.ResultInfo[i].CatalogEName) channelBar.find(".eName").html(jsonData.ResultInfo[i].CatalogEName);
-            $("#channelArea").append(channelBar);
-            channelBar.find(".operButton").attr("onclick", "showChannels('"+jsonData.ResultInfo[i].CatalogId+"')");
-            for (var j=0; j<jsonData.ResultInfo[i].List.length; j++) {
-              var oneContent=$('<div class="oneContent"><div class="img" id="cImg'+jsonData.ResultInfo[i].List[j].ContentId+'"></div><div class="oneContent-text"></div></div>');
-              var _img=jsonData.ResultInfo[i].List[j].ContentImg;
-              if (!_img||_img.length<5) {
-                var _r=Math.round(Math.random()*2)+2;
-                _img="./resources/chopin/imgs/card_default"+_r+".jpg";
-              }
-              var showFunc= "showArticle('"+jsonData.ResultInfo[i].List[j].ContentId+"')";
-              if (jsonData.ResultInfo[i].List[j].ContentStatus==99) showFunc="showVote()";
-              oneContent.find(".img").attr("title", jsonData.ResultInfo[i].List[j].ContentName);
-              oneContent.find(".img").attr("onclick", showFunc);
-              channelBar.find(".channelBarLine").append(oneContent);
-              var img=new Image();
-              img.id="Img"+jsonData.ResultInfo[i].List[j].ContentId;
-              img.onload=function() {resizeBgd(this);}
-              img.src=_img;
-              oneContent.find(".oneContent-text").html("<p>"+jsonData.ResultInfo[i].List[j].ContentName+"</p><p>"+(new Date(jsonData.ResultInfo[i].List[j].ContentPubTime)).format("yyyy-M-d")+"</p>");
-              oneContent.find(".oneContent-text").attr("title", jsonData.ResultInfo[i].List[j].ContentName);
-              oneContent.find(".oneContent-text").attr("onclick", showFunc);
-            }
-          }
-          $("#channelArea").css("height", i*390);
-          $("#linkedArea").css("display", "block");
-          $("#aboutArea").css("display", "block");
-          indexPage.setMainHeight(($("#loopImgArea").is(':visible')?$("#loopImgArea").height():0)+$("#channelArea").height()+$("#linkedArea").height()+$("#aboutArea").height()+20);
-        } else showNullPage();
-      } else showNullPage();
-      resizeParent();
-    },
-    error: function(jqXHR) {
-      showNullPage();
-    }
-  });
-}
-function showListPage(channelId) {
-  var _data={};
-  if (channelId!="0") _data.ChannelId=channelId;
-  _data.Page=1;
-  _data.PageSize=100;
-  $.ajax({type:"post", async:true, url:rootPath+"/content/getContents.do", dataType:"json", data:_data,
+  _data.IMEI=window.parent.deviceId;
+  _data.PCDType="3";
+  _data.UserId=userId;
+  _data.Flag="1";
+  $.ajax({type:"post", async:true, url:rootPath+"content/getListByApp.do", dataType:"json", data:_data,
     success: function(jsonData) {
       if (jsonData.ReturnType=='1001') {
         if (jsonData.ResultInfo.length>0) {
           $("#channelArea").html("");
           var k=0;
+          var channelBar=$('<div class="channelBar"><div class="channelBarTitle"><div class="barTitleArea"><div class="cName"></div>'
+                            +'<div class="eName"></div></div><button class="operUpload">上传作品</button><button class="operDel">删除作品</button></div>'
+                            +'</div>');
+          channelBar.find(".cName").html("<div class='h_split'></div>我的作品");
+          $("#channelArea").append(channelBar);
+          channelBar.find(".eName").html("myOpus");
           for (var i=0; i<jsonData.ResultInfo.length; i++) {
-            var channelBar=$('<div class="channelBar"><div class="channelBarTitle"><div class="barTitleArea"><div class="cName"></div>'
-                            +'<div class="eName"></div></div></div></div>');
-            channelBar.find(".cName").html("<div class='h_split'></div>"+jsonData.ResultInfo[i].CatalogName);
-            $("#channelArea").append(channelBar);
-            if (jsonData.ResultInfo[i].CatalogEName) channelBar.find(".eName").html(jsonData.ResultInfo[i].CatalogEName);
-            var channelBarLine;
-            for (var j=0; j<jsonData.ResultInfo[i].List.length; j++) {
-              if ((j%5)==0) {
+              var channelBarLine;
+              if ((i%5)==0) {
                 k++;
                 channelBarLine=$('<div class="channelBarLineList"></div>');
                 channelBar.append(channelBarLine);
               }
-              var oneContent=$('<div class="oneContent"><div class="imgl" id="cImg'+jsonData.ResultInfo[i].List[j].ContentId+'"></div><div class="oneContent-text"></div></div>');
-              var _img=jsonData.ResultInfo[i].List[j].ContentImg;
+              var oneContent=$('<div class="oneContent"><div class="imgl" id="cImg'+jsonData.ResultInfo[i].ContentId+'"></div><div class="delMask"><span class="spanDel">×</span></div><div class="oneContent-text"></div></div>');
+              var _img=jsonData.ResultInfo[i].ContentImg;
               if (!_img||_img.length<5) {
-                var _r=Math.round(Math.random()*2)+2;
-                _img="./resources/chopin/imgs/card_default"+_r+".jpg";
+                _img="./resources/chopin/imgs/card_default1.png";
               }
-              oneContent.find(".imgl").attr("title", jsonData.ResultInfo[i].List[j].ContentName);
-              var showFunc= "showArticle('"+jsonData.ResultInfo[i].List[j].ContentId+"')";
-              if (jsonData.ResultInfo[i].List[j].ContentStatus==99) showFunc="showVote()";
+              oneContent.find(".imgl").attr("title", jsonData.ResultInfo[i].ContentName);
+              var showFunc= "showArticle('"+jsonData.ResultInfo[i].ContentId+"')";
+              if (jsonData.ResultInfo[i].ContentStatus==99) showFunc="showVote()";
               oneContent.find(".imgl").attr("onclick", showFunc);
               oneContent.css("background", "url("+_img+") center no-repeat;");
               channelBarLine.append(oneContent);
               var img=new Image();
-              img.id="Img"+jsonData.ResultInfo[i].List[j].ContentId;
+              img.id="Img"+jsonData.ResultInfo[i].ContentId;
               img.onload=function() {resizeBgd(this);}
               img.src=_img;
-              oneContent.find(".oneContent-text").html("<p>"+jsonData.ResultInfo[i].List[j].ContentName+"</p><p>"+(new Date(jsonData.ResultInfo[i].List[j].ContentPubTime)).format("yyyy-M-d")+"</p>");
-              oneContent.find(".oneContent-text").attr("title", jsonData.ResultInfo[i].List[j].ContentName);
+              oneContent.find(".oneContent-text").html("<p>"+jsonData.ResultInfo[i].ContentName+"</p><p>"+(new Date(jsonData.ResultInfo[i].ContentPubTime)).format("yyyy-M-d")+"</p>");
+              oneContent.find(".oneContent-text").attr("title", jsonData.ResultInfo[i].ContentName);
               oneContent.find(".oneContent-text").attr("onclick", showFunc);
-            }
           }
           $("#channelArea").css("height", k*312+95);
           $("#linkedArea").css("display", "block");
@@ -474,6 +430,7 @@ function showListPage(channelId) {
     }
   });
 }
+
 function showArticle(cid) {
   indexPage.showInIframe(rootPath+"articleFrameShell.jsp?ContentId="+cid);
 }
@@ -494,10 +451,10 @@ function showNullPage() {
   $("#aboutArea").css("display", "block");
   indexPage.setMainHeight($("#channelArea").height()+$("#linkedArea").height()+$("#aboutArea").height()+20);
 }
-function resizeParent(_type) {
-  if (_type==1)  indexPage.setMainHeight(document.body.scrollHeight+360);
-  else indexPage.setMainHeight(document.body.scrollHeight);
+
+function resizeParent() {
 }
+
 function resizeBgd(img) {
   var divId="c"+img.id;
   var imgW=img.width;
@@ -519,5 +476,32 @@ function resizeBgd(img) {
   }
   $("#"+divId).attr("style", "background:url("+img.src+") no-repeat top; background-size:"+bsW+"px "+bsH+"px;"); 
 }
+
+//删除作品
+$(document).on("toggle",".operDel",function(){
+    $(".delMask,.spanDel").show();
+  },function(){
+    $(".delMask,.spanDel").hide();
+});
+$(document).on("click",".spanDel",function(){
+  var contentIds=$(this).parent().siblings(".imgl").attr("id");
+  var contentId=contentIds.substring(4);
+  var parent=$(this).parents(".oneContent");
+  var _data={};
+  _data.UserId=userId;
+  _data.ContentId=contentId;
+  $.ajax({type:"post", async:true, url:rootPath+"content/removeByApp.do", dataType:"json", data:_data,
+    success: function(jsonData) {
+      if (jsonData.ReturnType=='1001') {
+        $(parent).remove();
+        showMyOpusList(userId);
+      }
+    },
+    error: function(jqXHR) {
+      showNullPage();
+    }
+  });
+});
+
 </script>
 </html>
