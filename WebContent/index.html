@@ -822,7 +822,7 @@ $(document).on("click",".logined",function(){
 var overUserCenter=false;
 function loginSuccess(logSuccess){
   $("#logBtn,#regBtn").hide();
-  var userCenters='<div class="userCenter"><div class="userCenter_un" title="'+logSuccess+'">我:'+logSuccess+'</div><span class="selArrow"></span></div>';
+  var userCenters='<div class="userCenter"><div class="userCenter_un" userId="'+logSuccessId+'" title="'+logSuccess+'">我:'+logSuccess+'</div><span class="selArrow"></span></div>';
   $(".searchBtn").after(userCenters);
   $(document).on("mouseover",".userCenter",function(){
     overUserCenter=true;
@@ -901,7 +901,6 @@ $(document).on("click",'.exit',function(){
     }
   });
 });
-
 //我喜欢的
 $(".love").on("click",function(){
   var userId=$(".userCenter_un").attr("userId");
@@ -916,7 +915,6 @@ $(".opus").on("click",function(){
 $(".upload").on("click",function(){
   var userId=$(".userCenter_un").attr("userId");
 //showUploadOpusPage(userId);//暂时先不使用这个方法和uploadOpus页面
-
 })
 </script>
 </html>
