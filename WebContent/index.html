@@ -650,6 +650,10 @@ function showMyOpusPage(userId) {
   var _cUrl=rootPath+"myOpus.html?UserId="+userId;
   showInIframe(_cUrl);
 }
+function showUploadOpusPage(userId) {
+  var _cUrl=rootPath+"uploadOpus.html?UserId="+userId;
+  showInIframe(_cUrl);
+}
 function showInIframe(iframeSrc) {
   document.body.scrollTop = document.documentElement.scrollTop = 0;
   var ifm=$("#mainContent");
@@ -906,5 +910,11 @@ $(".opus").on("click",function(){
   var userId=$(".userCenter_un").attr("userId");
   showMyOpusPage(userId);
 });
+//上传作品
+$(".upload").on("click",function(){
+  var userId=$(".userCenter_un").attr("userId");
+//showUploadOpusPage(userId);//暂时先不使用这个方法和uploadOpus页面
+
+})
 </script>
 </html>
