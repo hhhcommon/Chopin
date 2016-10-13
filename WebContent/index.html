@@ -560,6 +560,19 @@ var INIT_PARAM={
 
 //主函数
 $(function() {
+  //获得SessionId，很重要
+  var sfrm=document.getElementById("_SESSION");
+  if (sfrm.attachEvent) {
+    sfrm.attachEvent("onload", function() {
+      deviceId=sfrm.contentWindow._deviceId;
+      entryWeb();
+    });
+  } else {
+    sfrm.onload = function() {
+      deviceId=sfrm.contentWindow._deviceId;
+      entryWeb();
+    }; 
+  }
   //设置主界面
   var initStr=$.spiritPageFrame(INIT_PARAM);
   if (initStr) {
@@ -634,10 +647,6 @@ $(function() {
       }, 200);
     });
   });
-  //尝试登录
-  setTimeout(function(){
-//  entryWeb();//暂时先不要
-  }, 500);
   showChannelPage('0');
 });
 //初始化界面
@@ -924,7 +933,6 @@ $(".opus").on("click",function(){
 $(".upload").on("click",function(){
   var userId=$(".userCenter_un").attr("userId");
 //showUploadOpusPage(userId);//暂时先不使用这个方法和uploadOpus页面
-
 })
 </script>
 </html>
