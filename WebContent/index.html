@@ -339,11 +339,8 @@ body{
   display: none;
   z-index:1;
 }
-<<<<<<< HEAD
+
 .userCenter {
-=======
-.userCenter{
->>>>>>> refs/remotes/origin/master
   width: 150px;
   height: 30px;
   color: #fff;
@@ -542,6 +539,21 @@ var INIT_PARAM={
 
 //主函数
 $(function() {
+	//获得SessionId，很重要
+  {
+    var sfrm=document.getElementById("_SESSION");
+    if (sfrm.attachEvent) {
+      sfrm.attachEvent("onload", function() {
+        deviceId=sfrm.contentWindow._deviceId;
+        entryWeb();
+      });
+    } else {
+      sfrm.onload = function() {
+        deviceId=sfrm.contentWindow._deviceId;
+        entryWeb();
+      }; 
+    }
+  }
   //设置主界面
   var initStr=$.spiritPageFrame(INIT_PARAM);
   if (initStr) {

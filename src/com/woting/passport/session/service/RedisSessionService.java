@@ -6,11 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.stereotype.Service;
-
 import com.spiritdata.framework.UGA.UgaUser;
 import com.spiritdata.framework.util.JsonUtils;
 import com.spiritdata.framework.util.StringUtils;
