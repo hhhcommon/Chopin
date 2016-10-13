@@ -901,5 +901,22 @@ $(document).on("click",'.exit',function(){
     }
   });
 });
+
+//我喜欢的
+$(".love").on("click",function(){
+  var userId=$(".userCenter_un").attr("userId");
+  showMyFavoritePage(userId);
+});
+//我的作品
+$(".opus").on("click",function(){
+  var userId=$(".userCenter_un").attr("userId");
+  showMyOpusPage(userId);
+});
+//上传作品
+$(".upload").on("click",function(){
+  var userId=$(".userCenter_un").attr("userId");
+//showUploadOpusPage(userId);//暂时先不使用这个方法和uploadOpus页面
+
+})
 </script>
 </html>

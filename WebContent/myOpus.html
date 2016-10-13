@@ -155,6 +155,25 @@ ul, ol {padding: 0;}
   width:200px;
   cursor:pointer;
 }
+.oneContent .delMask {
+  position:absolute;
+  height:283px;
+  width:200px;
+  cursor:pointer;
+  background: rgba(255,255,255,0.3);
+  display: none;
+}
+.oneContent .delMask .spanDel{
+  position:absolute;
+  top:0px;
+  right:4px;
+  height:20px;
+  width:20px;
+  cursor:pointer;
+  font-size:25px;
+  color:#fff;
+  display: none;
+}
 .oneContent-mask {
   position:absolute;
   height:380px;
@@ -258,6 +277,38 @@ ul, ol {padding: 0;}
   color:#fff;
   font-family:vista_MS;
 }
+.operUpload{
+  width: 85px;
+  position: absolute;
+  right: 227px;
+  margin-top: 20px;
+  border-radius: 4px;
+  padding-top: 1px;
+  border: 1px solid #fff;
+  height: 30px;
+  font-family: vista_MS;
+  font-weight: bold;
+  background-color: #0E0E0E;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+}
+.operDel{
+  position: absolute;
+  right: 132px;
+  margin-top: 20px;
+  border-radius: 4px;
+  padding-top: 1px;
+  border: 1px solid #fff;
+  height: 30px;
+  width: 85px;
+  font-family: vista_MS;
+  font-weight: bold;
+  background-color: #0E0E0E;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -282,7 +333,7 @@ ul, ol {padding: 0;}
   <div class="v_split"></div>
 </div>
 <div id="aboutArea" style="display:none;">
-  <p onclick="test(this.value)">京ICP备15064344号-1</p>
+  <p onclick="test(this.value)">京公网安备11002340234234号 | 京ICP备142023423号</p>
   <p>Copyright &copy; 2015-2016 Woting. All Rights Reserved.</p>
   <p>北京我听科技有限公司版权所有</p>
 </div>
@@ -300,6 +351,8 @@ if (rootPath.length<2) rootPath="http://www.wotingfm.com/Chopin/";
 var userId=getUrlParam(window.location.href, "UserId");
 var indexPage=getMainPage();
 
+function test(t) {
+}
 //主函数
 $(function() {
   //获得SessionId，很重要
@@ -307,57 +360,58 @@ $(function() {
   if (sfrm.attachEvent) {
     sfrm.attachEvent("onload", function() {
       deviceId=sfrm.contentWindow._deviceId;
-      showMyFavoriteList(userId);
+      showMyOpusList(userId);
     });
   } else {
     sfrm.onload = function() {
       deviceId=sfrm.contentWindow._deviceId;
-      showMyFavoriteList(userId);
+      showMyOpusList(userId);
     }; 
   }
 });
   
-function showMyFavoriteList(userId) {
+function showMyOpusList(userId) {
   var _data={};
   _data.IMEI=window.parent.deviceId;
   _data.PCDType="3";
   _data.UserId=userId;
   _data.Flag="1";
-  $.ajax({type:"post", async:true, url:rootPath+"user/getFavoriteList.do", dataType:"json", data:_data,
+  $.ajax({type:"post", async:true, url:rootPath+"content/getListByApp.do", dataType:"json", data:_data,
     success: function(jsonData) {
       if (jsonData.ReturnType=='1001') {
-        if (jsonData.ContentList.length>0) {
+        if (jsonData.ResultInfo.length>0) {
           $("#channelArea").html("");
           var k=0;
           var channelBar=$('<div class="channelBar"><div class="channelBarTitle"><div class="barTitleArea"><div class="cName"></div>'
-                          +'<div class="eName"></div></div></div></div>');
-          channelBar.find(".cName").html("<div class='h_split'></div>我喜欢的");
+                            +'<div class="eName"></div></div><button class="operUpload">上传作品</button><button class="operDel">删除作品</button></div>'
+                            +'</div>');
+          channelBar.find(".cName").html("<div class='h_split'></div>我的作品");
           $("#channelArea").append(channelBar);
-          channelBar.find(".eName").html("myFavorite");
-          for (var i=0; i<jsonData.ContentList.length; i++) {
+          channelBar.find(".eName").html("myOpus");
+          for (var i=0; i<jsonData.ResultInfo.length; i++) {
               var channelBarLine;
               if ((i%5)==0) {
                 k++;
                 channelBarLine=$('<div class="channelBarLineList"></div>');
                 channelBar.append(channelBarLine);
               }
-              var oneContent=$('<div class="oneContent"><div class="imgl" id="cImg'+jsonData.ContentList[i].ContentId+'"></div><div class="oneContent-text"></div></div>');
-              var _img=jsonData.ContentList[i].ContentImg;
+              var oneContent=$('<div class="oneContent"><div class="imgl" id="cImg'+jsonData.ResultInfo[i].ContentId+'"></div><div class="delMask"><span class="spanDel">×</span></div><div class="oneContent-text"></div></div>');
+              var _img=jsonData.ResultInfo[i].ContentImg;
               if (!_img||_img.length<5) {
                 _img="./resources/chopin/imgs/card_default1.png";
               }
-              oneContent.find(".imgl").attr("title", jsonData.ContentList[i].ContentName);
-              var showFunc= "showArticle('"+jsonData.ContentList[i].ContentId+"')";
-              if (jsonData.ContentList[i].ContentStatus==99) showFunc="showVote()";
+              oneContent.find(".imgl").attr("title", jsonData.ResultInfo[i].ContentName);
+              var showFunc= "showArticle('"+jsonData.ResultInfo[i].ContentId+"')";
+              if (jsonData.ResultInfo[i].ContentStatus==99) showFunc="showVote()";
               oneContent.find(".imgl").attr("onclick", showFunc);
               oneContent.css("background", "url("+_img+") center no-repeat;");
               channelBarLine.append(oneContent);
               var img=new Image();
-              img.id="Img"+jsonData.ContentList[i].ContentId;
+              img.id="Img"+jsonData.ResultInfo[i].ContentId;
               img.onload=function() {resizeBgd(this);}
               img.src=_img;
-              oneContent.find(".oneContent-text").html("<p>"+jsonData.ContentList[i].ContentName+"</p><p>"+(new Date(jsonData.ContentList[i].ContentPubTime)).format("yyyy-M-d")+"</p>");
-              oneContent.find(".oneContent-text").attr("title", jsonData.ContentList[i].ContentName);
+              oneContent.find(".oneContent-text").html("<p>"+jsonData.ResultInfo[i].ContentName+"</p><p>"+(new Date(jsonData.ResultInfo[i].ContentPubTime)).format("yyyy-M-d")+"</p>");
+              oneContent.find(".oneContent-text").attr("title", jsonData.ResultInfo[i].ContentName);
               oneContent.find(".oneContent-text").attr("onclick", showFunc);
           }
           $("#channelArea").css("height", k*312+95);
@@ -399,7 +453,6 @@ function showNullPage() {
 }
 
 function resizeParent() {
-  indexPage.setMainHeight(document.body.scrollHeight);
 }
 
 function resizeBgd(img) {
@@ -423,5 +476,30 @@ function resizeBgd(img) {
   }
   $("#"+divId).attr("style", "background:url("+img.src+") no-repeat top; background-size:"+bsW+"px "+bsH+"px;"); 
 }
+
+//删除作品
+$(document).on("click",".operDel",function(){
+  $(".delMask,.spanDel").show();
+});
+$(document).on("click",".spanDel",function(){
+  var contentIds=$(this).parent().siblings(".imgl").attr("id");
+  var contentId=contentIds.substring(4);
+  var parent=$(this).parents(".oneContent");
+  var _data={};
+  _data.UserId=userId;
+  _data.ContentId=contentId;
+  $.ajax({type:"post", async:true, url:rootPath+"content/removeByApp.do", dataType:"json", data:_data,
+    success: function(jsonData) {
+      if (jsonData.ReturnType=='1001') {
+        $(parent).remove();
+        showMyOpusList(userId);
+      }
+    },
+    error: function(jqXHR) {
+      showNullPage();
+    }
+  });
+});
+
 </script>
 </html>
