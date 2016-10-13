@@ -286,7 +286,7 @@ ul, ol {padding: 0;}
   <p>Copyright &copy; 2015-2016 Woting. All Rights Reserved.</p>
   <p>北京我听科技有限公司版权所有</p>
 </div>
-<iframe src="session.jsp" width="0" height="0" style="display:none"></iframe>
+<iframe id="_SESSION" src="session.jsp" width="0" height="0" style="display:none"></iframe>
 </body>
 
 <script>
@@ -300,11 +300,23 @@ if (rootPath.length<2) rootPath="http://www.wotingfm.com/Chopin/";
 var userId=getUrlParam(window.location.href, "UserId");
 var indexPage=getMainPage();
 
-function test(t) {
-}
 //主函数
 $(function() {
-  showMyFavoriteList(userId);
+  //获得SessionId，很重要
+  {
+    var sfrm=document.getElementById("_SESSION");
+    if (sfrm.attachEvent) {
+      sfrm.attachEvent("onload", function() {
+        deviceId=sfrm.contentWindow._deviceId;
+        showMyFavoriteList(userId);
+      });
+    } else {
+      sfrm.onload = function() {
+        deviceId=sfrm.contentWindow._deviceId;
+        showMyFavoriteList(userId);
+      }; 
+    }
+  }
 });
   
 function showMyFavoriteList(userId) {
@@ -389,6 +401,7 @@ function showNullPage() {
 }
 
 function resizeParent() {
+  indexPage.setMainHeight(document.body.scrollHeight);
 }
 
 function resizeBgd(img) {

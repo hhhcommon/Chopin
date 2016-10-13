@@ -353,9 +353,8 @@ function showLoopImg(channelId) {
           speed:700
         });
         $('#loopImgArea').css("display", "block");
-        var dd=450+$("#channelArea").height()+$("#linkedArea").height()+$("#aboutArea").height()+20;
-        indexPage.setMainHeight(dd);
       }
+      resizeParent(1);
     },
     error: function(jqXHR) {
       $("#loopImgArea").hide();
@@ -384,7 +383,8 @@ function showChannelPage(channelId) {
               var oneContent=$('<div class="oneContent"><div class="img" id="cImg'+jsonData.ResultInfo[i].List[j].ContentId+'"></div><div class="oneContent-text"></div></div>');
               var _img=jsonData.ResultInfo[i].List[j].ContentImg;
               if (!_img||_img.length<5) {
-                _img="./resources/chopin/imgs/card_default1.png";
+                var _r=Math.round(Math.random()*2)+2;
+                _img="./resources/chopin/imgs/card_default"+_r+".jpg";
               }
               var showFunc= "showArticle('"+jsonData.ResultInfo[i].List[j].ContentId+"')";
               if (jsonData.ResultInfo[i].List[j].ContentStatus==99) showFunc="showVote()";
@@ -440,7 +440,8 @@ function showListPage(channelId) {
               var oneContent=$('<div class="oneContent"><div class="imgl" id="cImg'+jsonData.ResultInfo[i].List[j].ContentId+'"></div><div class="oneContent-text"></div></div>');
               var _img=jsonData.ResultInfo[i].List[j].ContentImg;
               if (!_img||_img.length<5) {
-                _img="./resources/chopin/imgs/card_default1.png";
+                var _r=Math.round(Math.random()*2)+2;
+                _img="./resources/chopin/imgs/card_default"+_r+".jpg";
               }
               oneContent.find(".imgl").attr("title", jsonData.ResultInfo[i].List[j].ContentName);
               var showFunc= "showArticle('"+jsonData.ResultInfo[i].List[j].ContentId+"')";
@@ -493,10 +494,10 @@ function showNullPage() {
   $("#aboutArea").css("display", "block");
   indexPage.setMainHeight($("#channelArea").height()+$("#linkedArea").height()+$("#aboutArea").height()+20);
 }
-
-function resizeParent() {
+function resizeParent(_type) {
+  if (_type==1)  indexPage.setMainHeight(document.body.scrollHeight+360);
+  else indexPage.setMainHeight(document.body.scrollHeight);
 }
-
 function resizeBgd(img) {
   var divId="c"+img.id;
   var imgW=img.width;

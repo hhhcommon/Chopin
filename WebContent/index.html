@@ -372,7 +372,7 @@ body{
   display: none;
   height:135px;
 }
-.opus,.love,.upload,.exit{
+.center,.love,.upload,.exit{
   height: 30px;
   line-height: 30px;
   font-family: vista_MS;
@@ -483,12 +483,12 @@ body{
 </div>
 <div class="dropdown-menu">
   <div class="upload">上传作品</div>
-  <div class="opus">我的作品</div>
+  <div class="center">我的作品</div>
   <div class="love">我喜欢的</div>
   <div class="splitLine" style="border-top:1px solid #A5A5A5; margin-top:5px; margin-bottom:5px;"></div>
   <div class="exit">安全退出</div>
 </div>
-<iframe src="session.jsp" width="0" height="0" style="display:none"></iframe>
+<iframe id="_SESSION" src="session.jsp" width="0" height="0" style="display:none"></iframe>
 <!--登陆界面遮罩层-->
 <div class="mask"></div>
 <!--登录界面-->
@@ -551,6 +551,21 @@ var INIT_PARAM={
 
 //主函数
 $(function() {
+  //获得SessionId，很重要
+  {
+    var sfrm=document.getElementById("_SESSION");
+    if (sfrm.attachEvent) {
+      sfrm.attachEvent("onload", function() {
+        deviceId=sfrm.contentWindow._deviceId;
+        entryWeb();
+      });
+    } else {
+      sfrm.onload = function() {
+        deviceId=sfrm.contentWindow._deviceId;
+        entryWeb();
+      }; 
+    }
+  }
   //设置主界面
   var initStr=$.spiritPageFrame(INIT_PARAM);
   if (initStr) {
@@ -625,10 +640,6 @@ $(function() {
       }, 200);
     });
   });
-  //尝试登录
-  setTimeout(function(){
-//  entryWeb();//暂时先不要
-  }, 500);
   showChannelPage('0');
 });
 //初始化界面
@@ -642,16 +653,8 @@ function showChannelPage(channelId) {
   var _cUrl=rootPath+"channels.html?ChannelId="+channelId;
   showInIframe(_cUrl);
 }
-function showMyFavoritePage(userId) {
-  var _cUrl=rootPath+"myFavorite.html?UserId="+userId;
-  showInIframe(_cUrl);
-}
-function showMyOpusPage(userId) {
-  var _cUrl=rootPath+"myOpus.html?UserId="+userId;
-  showInIframe(_cUrl);
-}
 function showInIframe(iframeSrc) {
-  document.body.scrollTop = document.documentElement.scrollTop = 0;
+  document.body.scrollTop=document.documentElement.scrollTop = 0;
   var ifm=$("#mainContent");
   ifm.attr("src",iframeSrc);
   ifm.css("display","block");
@@ -802,8 +805,7 @@ $(document).on("click",".logined",function(){
         $(".mask").hide();
         $(".login_modal").hide();
         var logSuccess=jsonData.UserInfo.UserName;
-        var logSuccessId=jsonData.UserInfo.UserId;
-        loginSuccess(logSuccess,logSuccessId);
+        loginSuccess(logSuccess);
       }else{
         alert(jsonData.Message);
       }
@@ -815,9 +817,9 @@ $(document).on("click",".logined",function(){
 });
 
 var overUserCenter=false;
-function loginSuccess(logSuccess,logSuccessId){
+function loginSuccess(logSuccess){
   $("#logBtn,#regBtn").hide();
-  var userCenters='<div class="userCenter"><div class="userCenter_un" userId="'+logSuccessId+'" title="'+logSuccess+'">我:'+logSuccess+'</div><span class="selArrow"></span></div>';
+  var userCenters='<div class="userCenter"><div class="userCenter_un" title="'+logSuccess+'">我:'+logSuccess+'</div><span class="selArrow"></span></div>';
   $(".searchBtn").after(userCenters);
   $(document).on("mouseover",".userCenter",function(){
     overUserCenter=true;
@@ -895,16 +897,6 @@ $(document).on("click",'.exit',function(){
       alert("发生错误" + jqXHR.status);
     }
   });
-});
-//我喜欢的
-$(".love").on("click",function(){
-  var userId=$(".userCenter_un").attr("userId");
-  showMyFavoritePage(userId);
-});
-//我的作品
-$(".opus").on("click",function(){
-  var userId=$(".userCenter_un").attr("userId");
-  showMyOpusPage(userId);
 });
 </script>
 </html>
