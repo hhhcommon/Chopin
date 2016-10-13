@@ -171,7 +171,7 @@ ul, ol {padding: 0;}
   width:20px;
   cursor:pointer;
   font-size:25px;
-  color:#fff;
+  color:#000;
   display: none;
 }
 .oneContent-mask {
@@ -478,8 +478,10 @@ function resizeBgd(img) {
 }
 
 //删除作品
-$(document).on("click",".operDel",function(){
-  $(".delMask,.spanDel").show();
+$(document).on("toggle",".operDel",function(){
+    $(".delMask,.spanDel").show();
+  },function(){
+    $(".delMask,.spanDel").hide();
 });
 $(document).on("click",".spanDel",function(){
   var contentIds=$(this).parent().siblings(".imgl").attr("id");
