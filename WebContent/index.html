@@ -493,7 +493,7 @@ body{
   <div class="splitLine" style="border-top:1px solid #A5A5A5; margin-top:5px; margin-bottom:5px;"></div>
   <div class="exit">安全退出</div>
 </div>
-<iframe src="session.jsp" width="0" height="0" style="display:none"></iframe>
+<iframe id="_SESSION" src="session.jsp" width="0" height="0" style="display:none"></iframe>
 <!--登陆界面遮罩层-->
 <div class="mask"></div>
 <!--登录界面-->
@@ -561,18 +561,21 @@ var INIT_PARAM={
 //主函数
 $(function() {
   //获得SessionId，很重要
-  var sfrm=document.getElementById("_SESSION");
-  if (sfrm.attachEvent) {
-    sfrm.attachEvent("onload", function() {
-      deviceId=sfrm.contentWindow._deviceId;
-      entryWeb();
-    });
-  } else {
-    sfrm.onload = function() {
-      deviceId=sfrm.contentWindow._deviceId;
-      entryWeb();
-    }; 
+  {
+    var sfrm=document.getElementById("_SESSION");
+    if (sfrm.attachEvent) {
+      sfrm.attachEvent("onload", function() {
+        deviceId=sfrm.contentWindow._deviceId;
+        entryWeb();
+      });
+    } else {
+      sfrm.onload = function() {
+        deviceId=sfrm.contentWindow._deviceId;
+        entryWeb();
+      }; 
+    }
   }
+  
   //设置主界面
   var initStr=$.spiritPageFrame(INIT_PARAM);
   if (initStr) {

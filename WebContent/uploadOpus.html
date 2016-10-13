@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="cache-control" content="no-cache"/>
+<meta http-equiv="pragma" content="no-cache"/>
+<meta http-equiv="expires" content="0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--[if lt IE 8]>
+<script>
+  alert('本系统已不支持IE6-8，请使用谷歌、火狐等浏览器\n或360、QQ等国产浏览器的极速模式浏览本页面！');
+</script>
+<![endif]-->
+
+<script src="./resources/plugins/hplus/js/jquery-2.1.1.min.js"></script>
+<script src="./resources/plugins/easyui-1.3.4/jquery.easyui.min.js"></script>
+<script src="./resources/js/common.utils.js"></script>
+<script src="./resources/js/context.utils.js"></script>
+<script src="./resources/js/framework.utils.js"></script>
+<script src="./resources/plugins/spiritui/jq.spirit.utils.js"></script>
+<script src="http://www.jq22.com/demo/unslider-150203225543/unslider.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="./resources/plugins/easyui-1.3.4/themes/default/easyui.css"/>
+<link rel="stylesheet" type="text/css" href="./resources/plugins/easyui-1.3.4/themes/icon.css"/>
+<link rel="stylesheet" type="text/css" href="./resources/plugins/easyui-1.3.4/demo.css"/>
+
+<link rel="stylesheet" type="text/css" href="./resources/chopin/css/font.css"/>
+<link rel="stylesheet" type="text/css" href="./resources/css/common.css"/>
+<link rel="stylesheet" type="text/css" href="./resources/plugins/spiritui/themes/default/all.css"/>
+
+<title></title>
+
+<style>
+html {color:#000; background:#0E0E0E;}
+body {width: 1366px;}
+
+.hasPadding {
+  padding-left:120px;
+  padding-right:120px;
+}
+#loopImgArea {
+  height:570px;
+  width:100%;
+  background-color:yellow;
+}
+#aboutArea {
+  padding-top:47px;
+  width:100%;
+  height:160px;
+  text-align:center;
+  align:center;
+  line-height:130px;
+  font-family:vista_MS;
+  font-weight:bold;
+  color:#fff;
+}
+#aboutArea p {
+  height:18px;
+  text-align:center;
+  align:center;
+  line-height:18px;
+  font-size:14px;
+  margin-top:4px;
+  margin-bottom:2px;
+}
+.v_split {
+  background:url(./resources/chopin/imgs/v_split.png) repeat;
+  width:1166px;
+  height:16px;
+}
+#linkedArea {
+  margin-top:70px;
+  height:234px;
+}
+.linkedTitleBar {
+  height:30px;
+  line-height:30px;
+  font-family: vista_MS;
+  font-weight:bold;
+  background-color:#0E0E0E;
+  color:#fff;
+  font-size:20px;
+  margin-bottom:3px;
+}
+._link {
+  height:192px;
+  padding-top:31px;
+}
+._link img {
+  width:250px;
+  height:110px;
+  margin-right:41px;
+  border-radius:6px;
+}
+/*轮播图*/
+ul, ol {padding: 0;}
+.banner {position: relative; overflow: auto; text-align: center;}
+.banner li {list-style: none;}
+.banner ul li {float: left;}
+#loopImgArea {height: 570px;}
+#loopImgArea .dots {position: absolute; left: 0; right: 0; bottom: 20px;}
+#loopImgArea .dots li {
+  display: inline-block; 
+  width: 10px; 
+  height: 10px; 
+  margin: 0 4px; 
+  text-indent: -999em; 
+  border: 2px solid #FFA634; 
+  border-radius: 7px; 
+  cursor: pointer; 
+  opacity: .4; 
+  -webkit-transition: background .5s, opacity .5s; 
+  -moz-transition: background .5s, opacity .5s; 
+  transition: background .5s, opacity .5s;
+}
+#loopImgArea .dots li.active {
+  background: #FFA634;
+  opacity: 1;
+}
+.channelBar {
+  height:350px;
+  margin-top:40px;
+}
+.channelBarTitle {
+  height:55px;
+}
+.channelBarLine {
+  margin-top:12px;
+  height:283px;
+}
+.channelBarLineList {
+  margin-top:30px;
+  height:283px;
+}
+.oneContent {
+  height:283px;
+  width:200px;
+  margin-left:31px;
+  float:left;
+  position:relative;
+  background-size:cover;
+  background-color:black;
+}
+.oneContent .img {
+  position:absolute;
+  height:200px;
+  width:200px;
+  cursor:pointer;
+}
+.oneContent .imgl {
+  position:absolute;
+  height:283px;
+  width:200px;
+  cursor:pointer;
+}
+.oneContent .delMask {
+  position:absolute;
+  height:283px;
+  width:200px;
+  cursor:pointer;
+  background: rgba(255,255,255,0.3);
+  display: none;
+}
+.oneContent .delMask .spanDel{
+  position:absolute;
+  top:0px;
+  right:4px;
+  height:20px;
+  width:20px;
+  cursor:pointer;
+  font-size:25px;
+  color:#fff;
+  display: none;
+}
+.oneContent-mask {
+  position:absolute;
+  height:380px;
+  width:270px;
+  background: -webkit-linear-gradient(white , white, black 100%); /* Safari 5.1 - 6.0 */
+  background: -o-linear-gradient(white , whit, black  100%); /* Opera 11.1 - 12.0 */
+  background: -moz-linear-gradient(white, whit, black  100%); /* Firefox 3.6 - 15 */
+  background: linear-gradient(white, whit, black 100%); /* 标准的语法（必须放在最后） */
+  filter:alpha(opacity=30);  
+  -moz-opacity:0.3;  
+  -khtml-opacity:0.3;  
+  opacity:0.3;
+  bottom:0px;
+}
+.oneContent-text {
+  position:absolute;
+  top:200px;
+  height:83px;
+  width:200px;
+  position:relative;
+  cursor:pointer;
+  bottom:0px;
+}
+.oneContent-text p {
+  position:absolute;
+  bottom:18px;
+  margin-left:20px;
+  font-family: vista_MS;
+  font-size:14px;
+  color:#fefefe;
+}
+.oneContent-text p:first-child {
+  bottom:45px;
+  width:170px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:16px;
+  font-weight:bold;
+}
+.oneContent:first-child {
+  margin-left:0px;
+}
+.operButton {
+  position:absolute;
+  right:132px;
+  margin-top:20px;
+  border-radius:4px;
+  padding-top:1px;
+  border:1px solid #fff;
+  height:30px;
+  width:60px;
+  font-family: vista_MS;
+  font-weight:bold;
+  background-color:#0E0E0E;
+  color:#fff;
+  font-size:15px;
+}
+.barTitleArea {
+  float:left;
+  height:55px;
+  width:200px;
+}
+.h_split {
+  float:left;
+  margin-left:-12px;
+  margin-top:2px;
+  border-radius:6px;
+  padding-top:1px;
+  height:28px;
+  width:5px;
+  margin-top:2px;
+  background-color:#FFA634;
+}
+.cName {
+  height:28px;
+  width:260px;
+  font-family:vista_MS;
+  font-weight:bold;
+  color:#FFA634;
+  font-size:28px;
+  padding-left:12px;
+}
+.eName {
+  margin-top:7px;
+  height:20px;
+  width:200px;
+  color:#fff;
+  font-size:20px;
+  padding-left:12px;
+  font-style:italic;
+}
+.nullBack {
+  display: inline-block; 
+  width: 100%; 
+  height: 500; 
+  text-height:500;
+  valign:center;
+  align:center;
+  font-size:36;
+  color:#fff;
+  font-family:vista_MS;
+}
+.operUpload{
+  width: 85px;
+  position: absolute;
+  right: 227px;
+  margin-top: 20px;
+  border-radius: 4px;
+  padding-top: 1px;
+  border: 1px solid #fff;
+  height: 30px;
+  font-family: vista_MS;
+  font-weight: bold;
+  background-color: #0E0E0E;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+}
+.operDel{
+  position: absolute;
+  right: 132px;
+  margin-top: 20px;
+  border-radius: 4px;
+  padding-top: 1px;
+  border: 1px solid #fff;
+  height: 30px;
+  width: 85px;
+  font-family: vista_MS;
+  font-weight: bold;
+  background-color: #0E0E0E;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+  
+<iframe src="session.jsp" width="0" height="0" style="display:none"></iframe>
+</body>
+
+<script>
+var deviceId="";
+function setDeviceId(sessionId) {
+  deviceId=sessionId;
+}
+
+var rootPath=getRootPath();
+if (rootPath.length<2) rootPath="http://www.wotingfm.com/Chopin/";
+var userId=getUrlParam(window.location.href, "UserId");
+var indexPage=getMainPage();
+
+function test(t) {
+}
+//主函数
+$(function() {
+//showMyOpusList(userId);
+});
+  
+function showMyOpusList(userId) {
+  var _data={};
+  _data.IMEI=window.parent.deviceId;
+  _data.PCDType="3";
+  _data.UserId=userId;
+  _data.Flag="1";
+  $.ajax({type:"post", async:true, url:rootPath+"content/getListByApp.do", dataType:"json", data:_data,
+    success: function(jsonData) {
+      if (jsonData.ReturnType=='1001') {
+        if (jsonData.ResultInfo.length>0) {
+          $("#channelArea").html("");
+          var k=0;
+          var channelBar=$('<div class="channelBar"><div class="channelBarTitle"><div class="barTitleArea"><div class="cName"></div>'
+                            +'<div class="eName"></div></div><button class="operUpload">上传作品</button><button class="operDel">删除作品</button></div>'
+                            +'</div>');
+          channelBar.find(".cName").html("<div class='h_split'></div>我的作品");
+          $("#channelArea").append(channelBar);
+          channelBar.find(".eName").html("myOpus");
+          for (var i=0; i<jsonData.ResultInfo.length; i++) {
+              var channelBarLine;
+              if ((i%5)==0) {
+                k++;
+                channelBarLine=$('<div class="channelBarLineList"></div>');
+                channelBar.append(channelBarLine);
+              }
+              var oneContent=$('<div class="oneContent"><div class="imgl" id="cImg'+jsonData.ResultInfo[i].ContentId+'"></div><div class="delMask"><span class="spanDel">×</span></div><div class="oneContent-text"></div></div>');
+              var _img=jsonData.ResultInfo[i].ContentImg;
+              if (!_img||_img.length<5) {
+                _img="./resources/chopin/imgs/card_default1.png";
+              }
+              oneContent.find(".imgl").attr("title", jsonData.ResultInfo[i].ContentName);
+              var showFunc= "showArticle('"+jsonData.ResultInfo[i].ContentId+"')";
+              if (jsonData.ResultInfo[i].ContentStatus==99) showFunc="showVote()";
+              oneContent.find(".imgl").attr("onclick", showFunc);
+              oneContent.css("background", "url("+_img+") center no-repeat;");
+              channelBarLine.append(oneContent);
+              var img=new Image();
+              img.id="Img"+jsonData.ResultInfo[i].ContentId;
+              img.onload=function() {resizeBgd(this);}
+              img.src=_img;
+              oneContent.find(".oneContent-text").html("<p>"+jsonData.ResultInfo[i].ContentName+"</p><p>"+(new Date(jsonData.ResultInfo[i].ContentPubTime)).format("yyyy-M-d")+"</p>");
+              oneContent.find(".oneContent-text").attr("title", jsonData.ResultInfo[i].ContentName);
+              oneContent.find(".oneContent-text").attr("onclick", showFunc);
+          }
+          $("#channelArea").css("height", k*312+95);
+          $("#linkedArea").css("display", "block");
+          $("#aboutArea").css("display", "block");
+          try {
+            indexPage.setMainHeight(($("#loopImgArea").is(':visible')?$("#loopImgArea").height():0)+$("#channelArea").height()+$("#linkedArea").height()+$("#aboutArea").height()+20);
+           } catch(e) {
+           }
+        } else showNullPage();
+      } else showNullPage();
+      resizeParent();
+    },
+    error: function(jqXHR) {
+      showNullPage();
+    }
+  });
+}
+
+function showArticle(cid) {
+  indexPage.showInIframe(rootPath+"articleFrameShell.jsp?ContentId="+cid);
+}
+function showChannels(cid) {
+  indexPage.showInIframe(rootPath+"channels.html?ChannelId="+cid);
+}
+function showVote() {
+  indexPage.showInIframe(rootPath+"vote.html?PCDType=3&IMEI="+deviceId);
+}
+function showNullPage() {
+  $("#channelArea").css({
+    "height":"500px",
+    "background":"url(./resources/chopin/imgs/nullBack.jpg)",
+    "display":"block"
+  });
+  $("#channelArea").addClass("nullBack");
+  $("#linkedArea").css("display", "block");
+  $("#aboutArea").css("display", "block");
+  indexPage.setMainHeight($("#channelArea").height()+$("#linkedArea").height()+$("#aboutArea").height()+20);
+}
+
+function resizeParent() {
+}
+
+function resizeBgd(img) {
+  var divId="c"+img.id;
+  var imgW=img.width;
+  var imgH=img.height;
+  var imgRatio=imgW/imgH;
+  var containerW=$("#"+divId).width();
+  var containerH=$("#"+divId).height();
+  var containerRatio=containerW/containerH;
+  var bsW=containerW, bsH=containerH;
+  var rr=imgRatio/containerRatio;
+  if (!(rr<1.25&&rr>0.8)) {
+    if (imgRatio>containerRatio) {
+      bsW=containerH*imgRatio;
+      bsH=containerH;
+    } else {
+      bsW=containerW;
+      bsH=containerW/imgRatio;
+    }
+  }
+  $("#"+divId).attr("style", "background:url("+img.src+") no-repeat top; background-size:"+bsW+"px "+bsH+"px;"); 
+}
+
+//删除作品
+$(document).on("click",".operDel",function(){
+  $(".delMask,.spanDel").show();
+});
+$(document).on("click",".spanDel",function(){
+  var contentIds=$(this).parent().siblings(".imgl").attr("id");
+  var contentId=contentIds.substring(4);
+  var parent=$(this).parents(".oneContent");
+  var _data={};
+  _data.UserId=userId;
+  _data.ContentId=contentId;
+  $.ajax({type:"post", async:true, url:rootPath+"content/removeByApp.do", dataType:"json", data:_data,
+    success: function(jsonData) {
+      if (jsonData.ReturnType=='1001') {
+        $(parent).remove();
+        showMyOpusList(userId);
+      }
+    },
+    error: function(jqXHR) {
+      showNullPage();
+    }
+  });
+});
+
+</script>
+</html>
