@@ -77,7 +77,7 @@ public class QueryController {
 		}
 		return map;
 	}
-	
+
 	/**
 	 * 获得移动端用户内容列表
 	 * 

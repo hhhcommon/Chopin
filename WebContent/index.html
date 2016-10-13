@@ -734,7 +734,7 @@ function entryWeb() {
     success: function(jsonData){
       if(jsonData.ReturnType=="1001") {
         if (jsonData.UserInfo&&jsonData.UserInfo.UserId) {
-                loginSuccess(jsonData.UserInfo.UserId);
+          loginSuccess(jsonData.UserInfo.UserId);
         }
       }
     },
