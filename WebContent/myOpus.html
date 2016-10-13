@@ -355,7 +355,19 @@ function test(t) {
 }
 //主函数
 $(function() {
-  showMyOpusList(userId);
+  //获得SessionId，很重要
+  var sfrm=document.getElementById("_SESSION");
+  if (sfrm.attachEvent) {
+    sfrm.attachEvent("onload", function() {
+      deviceId=sfrm.contentWindow._deviceId;
+      showMyOpusList(userId);
+    });
+  } else {
+    sfrm.onload = function() {
+      deviceId=sfrm.contentWindow._deviceId;
+      showMyOpusList(userId);
+    }; 
+  }
 });
   
 function showMyOpusList(userId) {
