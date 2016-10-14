@@ -13,12 +13,14 @@
 
 	<body>
 		<div class="commentSection mgT30">
-			<div class="tagTab">
-				<span>评论</span>
+			<div class="commentTab">
 			</div>
 			<div class="commentSection_body">
 				<div class="commentSend">
 					<div class="commentBox mgT20">
+						<div class="tagTab">
+				      <span style="font-weight:bold;font-size: 18px;">评论</span>
+			      </div>
 						<div class="commentBox_middle">
 							<div class="right">
 								<div class="commentBox_inputBox">
@@ -31,7 +33,7 @@
 								<div class="cl">
 									<div class="fr">
 										<span class="charCount count-tip">
-											还剩&nbsp;<em style="font-size: 18px;color: #ff0011;">140</em>&nbsp;字
+											还剩&nbsp;<em id="textnum" style="font-size: 14px;color: #FFA634;">140</em>&nbsp;字
 										</span>
 										<a href="javascript:;" class="submitBtn"><span>评论</span></a>
 									</div>
@@ -102,9 +104,8 @@
 					data: JSON.stringify(_data),
 					success: function(jsonData) {
 						if(jsonData.ReturnType == "1001") {
-							alert("添加成功");
-							var comlist = $(".commentList");
-							comlist.find("li").remove();
+							$("#commenttext").val("");
+							$("#textnum").html("140");
 							loadCommentList(contentid);
 						}
 					},
@@ -133,6 +134,7 @@
 					"ContentId": contentId
 				}
 				var comdiv = $("#comment_list_wrap");
+				
 				$.ajax({
 					type: "POST",
 					url: _url,
@@ -140,7 +142,9 @@
 					data: JSON.stringify(_data),
 					success: function(jsonData) {
 						if(jsonData.ReturnType == "1001") {
-							var comdivstr = '<span>全部评论</span><ul class="commentList"></ul><div class="pagingBar mgT30"></div>';
+							comdiv.find("span").remove();
+				      comdiv.find("ul").remove();
+							var comdivstr = '<span style="padding: 10px;">全部评论</span><ul class="commentList"></ul>';
 							comdiv.append(comdivstr);
 							var comlist = $(".commentList");
 							for(var i = 0; i < jsonData.OpinionList.length; i++) {
@@ -161,7 +165,7 @@
 							}
 						} else {
 							if(jsonData.ReturnType == "1011") {
-								var comdivstr = '<span>暂无评论</span>';
+								var comdivstr = '<span style="padding: 10px;">暂无评论</span>';
 							  comdiv.append(comdivstr);
 							}
 						}
@@ -208,7 +212,7 @@
 			if((second + "").length == 1) {
 				second = "0" + second;
 			}
-			return month + "-" + date + "" + hour + ":" + minute + ":" + second;
+			return month + "-" + date + "&nbsp;&nbsp;" + hour + ":" + minute + ":" + second;
 		}
 		//year +"-" +
 		function makeUserImg(userpath) {

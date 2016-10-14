@@ -264,14 +264,14 @@ body { padding:0; }
 }
 }
 .a_comment {
-	width: 800px;
-  padding-left: 10px;
-  padding-right: 10px;
+  width: 100%;
+  max-width:800px;
   margin-top: 8px;
   position:relative;
 }
 ._comment {
-	width: 100%;
+  width: 100%;
+  max-width:800px;
 }
 </style>
 </head>
@@ -466,9 +466,9 @@ body { padding:0; }
 %>
   <div class="a_html"><%=htmlUrl%><p style="height:20px;">&nbsp;</p></div>
 <%
-	String commentpath = "http://123.56.254.75:1108/Chopin/article/comment.html?ContentId="+contentId;
+  String commentpath = "http://123.56.254.75:1108/Chopin/article/comment.html?ContentId="+contentId;
 %>
-   <div class="a_comment"><iframe id="comment" class='_comment' frameborder='no' scrolling='no' src='<%=commentpath%>'></iframe></div>
+  <div class="a_comment"><iframe id="comment" class='_comment' frameborder='no' scrolling='no' src='<%=commentpath%>'></iframe></div>
 <%
   } else {
     String nullHtml="";
@@ -480,6 +480,10 @@ body { padding:0; }
 %>
   <div class="a_nullhtml"><div class="word"><%=nullHtml%></div></div>
 <%
+  String commentpath = "http://123.56.254.75:1108/Chopin/article/comment.html?ContentId="+contentId;
+%>
+  <div class="a_comment"><iframe id="comment" class='_comment' frameborder='no' scrolling='no' src='<%=commentpath%>'></iframe></div>
+<%
   }
 %>
 </div>
@@ -488,6 +492,7 @@ body { padding:0; }
 var deviceId="<%=sid%>";
 //主函数
 $(function() {
+  window.parent.setMainHeight(400);
   if ($(window).width()<<%=widthLimit%>) {
     $("._video").attr("width", $(window).width());
     $("._video").attr("height", ($(window).width()-10)*0.6);
