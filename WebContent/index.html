@@ -459,31 +459,46 @@ body{
 }
 .channelBarConetent{
   width: 100%;
-  height: 580px;
+  height: 685px;
   border: 1px solid black;
   margin-top: 20px;
 }
 .uploadBtn{
-  width: 200px;
-  height: 50px;
-  border: 1px solid #000;
+  width: 240px;
+  height: 80px;
   margin: auto;
+  cursor: pointer;
   background:url(./resources/chopin/imgs/uploadBtn.png) no-repeat;
+  background-size: 100% 100%;
+}
+.bgmask{
+  width: 710px;
+  height: 485px;
+  margin: auto;
+  position:absolute;
+  top:204px;
+  left:120px;
+  cursor: pointer;
+  background:url(./resources/chopin/imgs/maskUpload.png) no-repeat;
   background-size: 100% 100%;
 }
 .changeFile{
   width: 64%;
-  height: 30px;
-  background: yellow;
-  margin-left: 15%;
+  height: 40px;
+  display: none;
+  top:34%;
+  left: 19%;
   position: absolute;
+  cursor: pointer;
 }
-#ul_File{
+#ul_File,.ulFile{
   width: 100%;
-  height: 28px;
+  height: 40px;
   position: absolute;
-  top: 0px;
+  top: -60px;
   left: -4px;
+  font-family: vista_MS;
+  font-size: 15px;
 }
 .form-group{
   width: 92%;
@@ -492,24 +507,111 @@ body{
 }
 .control-label{
   width: 50px;
-  height: 30px;
-  font-size: 15px;
-  line-height: 30px;
-  padding-left: 5px;
+  height: 40px;
+  font-size: 20px;
+  line-height: 40px;
+  padding-left: 25px;
+  color:#fff;
+  font-family: vista_MS;
 }
 #titleName{
-  width: 68%;
-  height: 28px;
+  width: 510px;
+  height: 40px;
   position: absolute;
+  margin-left:40px;
+  font-size:15px;
 }
 #abstractName{
-  width: 68%;
-  height: 28px;
+  width: 510px;
+  height: 40px;
   position: absolute;
+  margin-left:40px;
+  font-size:15px;
+}
+#descName{
+  width: 510px;
+  position: absolute;
+  margin-left:40px;
+  font-size:15px;
+}
+.channelBarFooter{
+  width: 250px;
+  height: 40px;
+  position: absolute;
+  margin-top: 155px;
+  margin-left: 230px;
 }
 .commit,.cancel{
-  width: 50px;
-  height: 30px;
+  width: 80px;
+  height: 40px;
+  border: 1px solid transparent;
+  background: rgba(255,166,52,1);
+  float: left;
+  color:#fff;
+  font-size: 15px;
+  font-family:vista_MS;
+  font-weight: bolder;
+  cursor: pointer;
+}
+.cancel{
+  margin-left:55px;
+}
+/*搜索样式*/
+.cancelSearch{
+  width: 23%;
+  text-align: center;
+  display: block;
+  top: 3%;
+  border: 1px solid white;
+  border-radius: 2px;
+  color: white;
+  float: left;
+  margin-left:3px;
+  display: none;
+}
+.header-search-slide{
+  position: absolute;
+  z-index: 3;
+  right: 0;
+  display: none;
+  clear: both;
+  width: 100%;
+  background: rgba(255,255,255,.9);
+  box-shadow: 0 0 3px 0 rgba(0,0,0,.2);
+}
+.header-search-slide form{
+  overflow: hidden;
+  padding: 25px 25%;
+}
+.header-search-slide form input[type=search]{
+  font-size: 20px;
+  line-height: 30px;
+  float: left;
+  width: 90%;
+  height: 50px;
+  margin: 0 auto;
+  padding-right: 10px;
+  padding-left: 20px;
+  border: 0;
+  border: 2px solid #ddd;
+  border-right: none;
+  border-radius: 2px;
+}
+.header-search-slide form .search-btn {
+  font-size: 16px;
+  width: 10%;
+  height: 50px;
+  padding: 0 12px;
+  cursor: pointer;
+  -webkit-transition: all .25s;
+  -moz-transition: all .25s;
+  -ms-transition: all .25s;
+  -o-transition: all .25s;
+  transition: all .25s;
+  color: #fff;
+  border: none;
+  border-radius: 0 2px 2px 0;
+  background: #45b6f7;
 }
 </style>
 </head>
@@ -546,6 +648,7 @@ body{
   </div>
   <div id="oper" class="topBlock" style="width:208px;padding-top:12px;">
     <button class="searchBtn"></button>
+    <button class="cancelSearch">×</button>
     <button  id="logBtn" class="operButton" style="margin-left:75px;cursor:pointer;" onclick="login()">登录</button>
     <button  id="regBtn"class="operButton" style="margin-left:5px;cursor:pointer;">注册</button>
   </div>
@@ -596,6 +699,21 @@ body{
   <div class="splitLine" style="border-top:1px solid #A5A5A5; margin-top:5px; margin-bottom:5px;"></div>
   <div class="exit">安全退出</div>
 </div>
+<div class="header-search-slide">
+  <form method="get" id="searchform-slide" class="searchform" action="" role="search">
+    <input class="field" name="s" value="" placeholder="输入关键词并回车" type="search">
+    <button class="search-btn" type="submit"><a href="#">搜索</a></button>
+    <label>热门搜索：</label>
+    <ul>
+      <li><a href="#">肖邦音乐</a></li>
+      <li><a href="#">肖邦故乡</a></li>
+      <li><a href="#">肖邦生平</a></li>
+      <li><a href="#">肖邦作品集</a></li>
+      <li><a href="#">肖邦成就</a></li>
+      <li><a href="#">肖邦作曲</a></li>
+    </ul>
+  </form>
+</div>
 <iframe id="_SESSION" src="session.jsp" width="0" height="0" style="display:none"></iframe>
 <!--登陆界面遮罩层-->
 <div class="mask"></div>
@@ -633,36 +751,37 @@ body{
 <!--上传作品界面-->
 <div class="uploadOpus_modal">
   <div class="modal-dialog">
-  <div class="channelBarTitle">
-    <div class="barTitleArea">
-      <div class="cName"><div class="h_split"></div>上传作品</div>
-      <div class="eName">uploadOpus</div>
+    <div class="channelBarTitle">
+      <div class="barTitleArea">
+        <div class="cName"><div class="h_split"></div>上传作品</div>
+        <div class="eName">uploadOpus</div>
+      </div>
     </div>
-  </div>
-  <div class="channelBarConetent">
-    <input type="text" value="6" style="display: none;" />
-    <div class="uploadBtn">上传文件</div>
-    <div class="changeFile">
-      <input id="ul_File" name="ul_File"  type="text"  placeholder="点击，选择文件上传"  readonly />
-      <input class="ulFile" name="ulFile" type="file" style="display:none;" value="" />
+    <div class="channelBarConetent">
+      <div class="uploadBtn"></div>
+      <div class="changeFile">
+        <input id="ul_File" name="ul_File"  type="text"  placeholder="点击，选择文件上传"  readonly />
+        <input class="ulFile" name="ulFile" type="file" style="display:none;" value="" />
+      </div>
+      <div class="bgmask">
+        <div class="form-group">
+          <label class="control-label">标 题</label>
+          <input id="titleName" name="titleName"  type="text" aria-required="true">
+        </div>
+        <div class="form-group">
+          <label class="control-label">摘 要</label>
+          <input id="abstractName" name="abstractName"  type="text" aria-required="true">
+        </div>
+        <div class="form-group">
+          <label class="control-label">描 述</label>
+          <textarea name="descName" id="descName" cols="30" rows="10"></textarea>
+        </div>
+        <div class="channelBarFooter">
+          <button class="commit" type="button" class="btn btn-primary">提交</button>
+          <button class="cancel" type="button" class="btn btn-white" data-dismiss="modal">取消</button>
+        </div>
+      </div>
     </div>
-    <div class="form-group">
-      <label class="control-label">标题：</label>
-      <input id="titleName" name="titleName"  type="text" aria-required="true">
-    </div>
-    <div class="form-group">
-      <label class="control-label">摘要：</label>
-      <input id="abstractName" name="abstractName"  type="text" aria-required="true">
-    </div>
-    <div class="form-group">
-      <label class="control-label">描述：</label>
-      <textarea name="descName" id="descName" cols="30" rows="10"></textarea>
-    </div>
-    <div class="channelBarFooter form-group">
-      <button class="commit" type="button" class="btn btn-primary">提交</button>
-      <button class="cancel" type="button" class="btn btn-white" data-dismiss="modal">取消</button>
-    </div>
-  </div>
   </div>
 </div>
 </body>
@@ -1060,18 +1179,126 @@ $(document).on("click",'.exit',function(){
 
 //我喜欢的
 $(".love").on("click",function(){
+  $(".mask,.uploadOpus_modal").hide();
   var userId=$(".userCenter_un").attr("userId");
   showMyFavoritePage(userId);
 });
 //我的作品
 $(".opus").on("click",function(){
+  $(".mask,.uploadOpus_modal").hide();
   var userId=$(".userCenter_un").attr("userId");
   showMyOpusPage(userId);
 });
-//上传作品
+
+/*
+ * 
+ * 上传作品*/
 $(".upload").on("click",function(){
   var userId=$(".userCenter_un").attr("userId");
+  $("#ul_File,#titleName,#abstractName,#descName").val(" ");
   $(".mask,.uploadOpus_modal").show();
+});
+$(".uploadBtn").on("click",function(){
+  $(".changeFile").show();
+  $(this).hide();
+});
+$("#ul_File").on("click", function() {
+  $(".ulFile").click();
+});
+var oMyForm = new FormData();
+var _this;
+$(".ulFile").change(function() {
+  var filePath=$(this).val();
+  _this=$(this);
+  var arr=filePath.split('\\');
+  var fileName=arr[arr.length-1];
+  $("#ul_File").val(fileName);
+  oMyForm.append("ContentFile", $(this)[0].files[0]);
+});
+//点击提交按钮，上传作品
+$(".commit").on("click",function(){
+   $.ajax({
+    url:rootPath+"common/uploadCM.do",
+    type:"POST",
+    data:oMyForm,
+    cache: false,
+    processData: false,
+    contentType: false,
+    dataType:"json",
+    //表单提交前进行验证
+    success: function (opeResult){
+      if(opeResult.ful[0].success=="TRUE"){
+        alert("文件上传成功");
+        var filePath=opeResult.ful[0].storeFilepath;
+        _this.attr("value",filePath);
+        uploadMyOpus(filePath);
+      }
+    },
+    error: function(jqXHR){
+      alert("发生错误" + jqXHR.status);
+    }
+  });
 })
+function uploadMyOpus(filePath){
+  var userId=$(".userCenter_un").attr("userId");
+  var data={};
+  data.UserId=userId;
+  data.ContentTitle=$("#titleName").val();
+  data.FilePath=filePath;
+  data.ChannelId="6";
+  data.ContentDecsn=$("#descName").val();
+  console.log(JSON.stringify(data));
+  $.ajax({
+    url:rootPath+"content/addByApp.do",
+    type:"POST",
+    data:JSON.stringify(data),
+    cache: false,
+    processData: false,
+    contentType: false,
+    dataType:"json",
+    //表单提交前进行验证
+    success: function (jsonData){
+      alert(allFields(jsonData));
+      if(jsonData.ReturnType=="1001"){
+        alert("作品上传成功");
+        $(".mask,.uploadOpus_modal").hide();
+      }
+    },
+    error:function(jqXHR){
+      alert("发生错误" + jqXHR.status);
+    }
+  });
+}
+
+//点击取消上传
+$(".cancel").on("click",function(){
+  $(".mask,.uploadOpus_modal").hide();
+})
+
+/*
+* 
+*
+* 搜索的相关操作和方法*/
+//点击导航栏的搜索按钮
+$(".searchBtn").on("click",function(){
+  $(".header-search-slide").slideDown(100);
+  $(".searchBtn").css({"display":"none"});
+  $(".cancelSearch").css({"display":"block"});
+});
+//点击取消搜索
+$(".cancelSearch").on("click",function(){
+  $(".search").css({"display":"block"});
+  $(".cancelSearch").css({"display":"none"});
+  $(".header-search-slide").slideUp(100);
+});
+//点击搜索栏里的搜索按钮
+$(".header-search-slide .search-btn").on("click",function(){
+  if($(".field").val()){
+   aler("搜索");
+    return false;
+  }else{
+    alert("请输入您要查询的内容!");
+  }
+});
 </script>
 </html>

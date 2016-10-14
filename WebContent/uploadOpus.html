@@ -171,7 +171,7 @@ ul, ol {padding: 0;}
   width:20px;
   cursor:pointer;
   font-size:25px;
-  color:#000;
+  color:#fff;
   display: none;
 }
 .oneContent-mask {
@@ -309,235 +309,11 @@ ul, ol {padding: 0;}
   font-size: 15px;
   cursor: pointer;
 }
-/*遮罩层样式*/
-.mask{
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.9);
-  position: fixed;
-  display: none;
-  z-index:1;
-}
-/*上传作品样式*/
-.uploadOpus_modal{
-  width:950px;
-  height:560px;
-  position: fixed;
-  margin-top: 145px;
-  margin-left: 15%;
-  z-index: 1948;
-  background:url(./resources/chopin/imgs/uploadOpus.png) no-repeat;
-  background-size: 100% 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-  display: none;
-}
-.channelBarTitle {
-  height: 55px;
-  margin-top:40px;
-}
-.barTitleArea {
-  float: left;
-  height: 55px;
-  width: 200px;
-  margin-left:60px;
-}
-.cName {
-  height: 28px;
-  width: 260px;
-  font-family: vista_MS;
-  font-weight: bold;
-  color: #FFA634;
-  font-size: 28px;
-  padding-left: 12px;
-}
-
-.h_split {
-  float: left;
-  margin-left: -12px;
-  margin-top: 2px;
-  border-radius: 6px;
-  padding-top: 1px;
-  height: 28px;
-  width: 5px;
-  margin-top: 2px;
-  background-color: #FFA634;
-}
-.eName {
-  margin-top: 7px;
-  height: 20px;
-  width: 200px;
-  color: #fff;
-  font-size: 20px;
-  padding-left: 12px;
-  font-style: italic;
-}
-.channelBarConetent{
-  width: 100%;
-  height: 685px;
-  border: 1px solid black;
-  margin-top: 20px;
-}
-.uploadBtn{
-  width: 240px;
-  height: 80px;
-  margin: auto;
-  cursor: pointer;
-  background:url(./resources/chopin/imgs/uploadBtn.png) no-repeat;
-  background-size: 100% 100%;
-}
-.bgmask{
-  width: 710px;
-  height: 485px;
-  margin: auto;
-  position:absolute;
-  top:204px;
-  left:120px;
-  cursor: pointer;
-  background:url(./resources/chopin/imgs/maskUpload.png) no-repeat;
-  background-size: 100% 100%;
-}
-.changeFile{
-  width: 64%;
-  height: 40px;
-  display: none;
-  top:34%;
-  left: 19%;
-  position: absolute;
-  cursor: pointer;
-}
-#ul_File,.ulFile{
-  width: 100%;
-  height: 40px;
-  position: absolute;
-  top: -60px;
-  left: -4px;
-  font-family: vista_MS;
-  font-size: 15px;
-}
-.form-group{
-  width: 92%;
-  margin-top: 40px;
-  margin-left: 3.4%;
-}
-.control-label{
-  width: 50px;
-  height: 40px;
-  font-size: 20px;
-  line-height: 40px;
-  padding-left: 25px;
-  color:#fff;
-  font-family: vista_MS;
-}
-#titleName{
-  width: 510px;
-  height: 40px;
-  position: absolute;
-  margin-left:40px;
-  font-size:15px;
-}
-#abstractName{
-  width: 510px;
-  height: 40px;
-  position: absolute;
-  margin-left:40px;
-  font-size:15px;
-}
-#descName{
-  width: 510px;
-  position: absolute;
-  margin-left:40px;
-  font-size:15px;
-}
-.channelBarFooter{
-  width: 250px;
-  height: 40px;
-  position: absolute;
-  margin-top: 180px;
-  margin-left: 230px;
-}
-.commit,.cancel{
-  width: 80px;
-  height: 40px;
-  border: 1px solid transparent;
-  background: rgba(255,166,52,1);
-  float: left;
-  color:#fff;
-  font-size: 15px;
-  font-family:vista_MS;
-  font-weight: bolder;
-  cursor: pointer;
-}
-.cancel{
-  margin-left:55px;
-}
 </style>
 </head>
 <body>
-<div id="loopImgArea" class="banner" style="display:none;"><ul id="loopUi"></ul></div>
-<div id="channelArea" class="hasPadding" style="display:yes;"></div>
-<div id="linkedArea" class="hasPadding" style="display:none;">
-  <div class="linkedTitleBar">相关链接</div>
-  <div class="v_split"></div>
-  <div class="_link" style="float:left">
-    <a target="_black" alt="中央音乐学院" href="http://www.ccom.edu.cn/">
-      <img src="./resources/chopin/imgs/linked1.png"></img>
-    </a>
-    <a target="_black" alt="波兰肖邦研究院" href="http://en.chopin.nifc.pl/institute/">
-      <img src="./resources/chopin/imgs/linked2.png"></img>
-    </a>
-    <a target="_black" alt="中国肖邦网" href="http://www.chopin.com.cn/html/class/cn/index.html">
-      <img src="./resources/chopin/imgs/linked3.png"></img>
-    </a>
-  </div>
-</div>
-<div class="hasPadding" style="width:100%;height:16px;">
-  <div class="v_split"></div>
-</div>
-<div id="aboutArea" style="display:none;">
-  <p onclick="test(this.value)">京公网安备11002340234234号 | 京ICP备142023423号</p>
-  <p>Copyright &copy; 2015-2016 Woting. All Rights Reserved.</p>
-  <p>北京我听科技有限公司版权所有</p>
-</div>
-<!--上传界面遮罩层-->
-<div class="mask"></div>
-<!--上传作品界面-->
-<div class="uploadOpus_modal">
-  <div class="modal-dialog">
-    <div class="channelBarTitle">
-      <div class="barTitleArea">
-        <div class="cName"><div class="h_split"></div>上传作品</div>
-        <div class="eName">uploadOpus</div>
-      </div>
-    </div>
-    <div class="channelBarConetent">
-      <div class="uploadBtn"></div>
-      <div class="changeFile">
-        <input id="ul_File" name="ul_File"  type="text"  placeholder="点击，选择文件上传"  readonly />
-        <input class="ulFile" name="ulFile" type="file" style="display:none;" value="" />
-      </div>
-      <div class="bgmask">
-        <div class="form-group">
-          <label class="control-label">标 题</label>
-          <input id="titleName" name="titleName"  type="text" aria-required="true">
-        </div>
-        <div class="form-group">
-          <label class="control-label">摘 要</label>
-          <input id="abstractName" name="abstractName"  type="text" aria-required="true">
-        </div>
-        <div class="form-group">
-          <label class="control-label">描 述</label>
-          <textarea name="descName" id="descName" cols="30" rows="10"></textarea>
-        </div>
-        <div class="channelBarFooter">
-          <button class="commit" type="button" class="btn btn-primary">提交</button>
-          <button class="cancel" type="button" class="btn btn-white" data-dismiss="modal">取消</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<iframe id="_SESSION" src="session.jsp" width="0" height="0" style="display:none"></iframe>
+  
+<iframe src="session.jsp" width="0" height="0" style="display:none"></iframe>
 </body>
 
 <script>
@@ -555,19 +331,7 @@ function test(t) {
 }
 //主函数
 $(function() {
-  //获得SessionId，很重要
-  var sfrm=document.getElementById("_SESSION");
-  if (sfrm.attachEvent) {
-    sfrm.attachEvent("onload", function() {
-      deviceId=sfrm.contentWindow._deviceId;
-      showMyOpusList(userId);
-    });
-  } else {
-    sfrm.onload = function() {
-      deviceId=sfrm.contentWindow._deviceId;
-      showMyOpusList(userId);
-    }; 
-  }
+//showMyOpusList(userId);
 });
   
 function showMyOpusList(userId) {
@@ -679,11 +443,7 @@ function resizeBgd(img) {
 
 //删除作品
 $(document).on("click",".operDel",function(){
-  if($(".delMask,.spanDel").is(":hidden")){
-    $(".delMask,.spanDel").show();
-  }else{
-    $(".delMask,.spanDel").hide();
-  }
+  $(".delMask,.spanDel").show();
 });
 $(document).on("click",".spanDel",function(){
   var contentIds=$(this).parent().siblings(".imgl").attr("id");
@@ -705,88 +465,5 @@ $(document).on("click",".spanDel",function(){
   });
 });
 
-/*
- * 
- * 上传作品*/
-$(document).on("click",".operUpload",function(){
-  $("#ul_File,#titleName,#abstractName,#descName").val(" ");
-  $(window.parent.document).find(".mask,.uploadOpus_modal").show();
-});
-$(".uploadBtn").on("click",function(){
-  $(".changeFile").show();
-  $(this).hide();
-});
-$("#ul_File").on("click",function() {
-  $(".ulFile").click();
-});
-var oMyForm = new FormData();
-var _this;
-$(".ulFile").change(function() {
-  var filePath=$(this).val();
-  _this=$(this);
-  var arr=filePath.split('\\');
-  var fileName=arr[arr.length-1];
-  $("#ul_File").val(fileName);
-  oMyForm.append("ContentFile", $(this)[0].files[0]);
-  console.log(oMyForm);
-});
-//点击提交按钮，上传作品
-$(".commit").on("click",function(){
-  console.log(oMyForm);
-   $.ajax({
-    url:rootPath+"common/uploadCM.do",
-    type:"POST",
-    data:oMyForm,
-    cache: false,
-    processData: false,
-    contentType: false,
-    dataType:"json",
-    //表单提交前进行验证
-    success: function (opeResult){
-      if(opeResult.ful[0].success=="TRUE"){
-        alert("文件上传成功");
-        var filePath=opeResult.ful[0].storeFilepath;
-        _this.attr("value",filePath);
-        uploadMyOpus(filePath);
-      }
-    },
-    error: function(jqXHR){
-      alert("发生错误" + jqXHR.status);
-    }
-  });
-})
-function uploadMyOpus(filePath){
-  var userId=$(".userCenter_un").attr("userId");
-  var data={};
-  data.UserId=userId;
-  data.ContentTitle=$("#titleName").val();
-  data.FilePath=filePath;
-  data.ChannelId="6";
-  data.ContentDecsn=$("#descName").val();
-  $.ajax({
-    url:rootPath+"content/addByApp.do",
-    type:"POST",
-    data:JSON.stringify(data),
-    cache: false,
-    processData: false,
-    contentType: false,
-    dataType:"json",
-    //表单提交前进行验证
-    success: function (jsonData){
-      if(jsonData.ReturnType=="1001"){
-        alert("作品上传成功");
-        $(".mask,.uploadOpus_modal").hide();
-      }
-    },
-    error:function(jqXHR){
-      alert("发生错误" + jqXHR.status);
-    }
-  });
-}
-
-//点击取消上传
-$(".cancel").on("click",function(){
-  $(".mask,.uploadOpus_modal").hide();
-})
 </script>
 </html>
