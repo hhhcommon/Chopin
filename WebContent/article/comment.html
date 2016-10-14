@@ -151,7 +151,7 @@
 								var userinfo = jsonData.OpinionList[i].UserInfo;
 								var commentinfo = '<li class="listItem"><div class="comment2">' +
 									'<div class="left">' +
-									'<img src=" ' + makeUserImg(isOrNull(userinfo) == null ? "http://123.56.254.75:1108/Chopin/article/comment_default.png" : userinfo.PortraitBig) + '" data-options="defaultImg:person_60" style="width: 50px;height: 50px;border-radius: 50%;">' +
+									'<img src=" ' + makeUserImg(isOrNull(userinfo) == null ? "http://www.wotingfm.com/Chopin/article/comment_default.png" : userinfo.PortraitBig) + '" data-options="defaultImg:person_60" style="width: 50px;height: 50px;border-radius: 50%;">' +
 									'</div>' +
 									'<div class="right">' +
 									'<div><span style="color:#699;">' + (isOrNull(userinfo) == null ? "游客" : userinfo.UserName) + '</span></div>' +
@@ -214,7 +214,6 @@
 			}
 			return month + "-" + date + "&nbsp;&nbsp;" + hour + ":" + minute + ":" + second;
 		}
-		//year +"-" +
 		function makeUserImg(userpath) {
 			//			if(userpath.indexOf("http://") < 0) {
 			//				userpath = rootPath + userpath;
