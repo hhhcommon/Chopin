@@ -10,6 +10,8 @@ fs-config
 
 /WebContent/log
 /WebContent/article
+/WebContent/media
+/WebContent/dataCenter
 /WebContent/tempUpload
 /WebContent/asset
 /WebContent/uploadFiles
