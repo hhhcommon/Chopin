@@ -223,7 +223,9 @@ body { padding:0; }
   height:100%;
 }
 }
-
+._img {
+  width:800;
+}
 @media screen and (max-width:<%=widthLimit%>px){
 ._img {
   width:100%;
@@ -260,6 +262,16 @@ body { padding:0; }
 .pl_img img {
   width:100%;
 }
+}
+.a_comment {
+	width: 800px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-top: 8px;
+  position:relative;
+}
+._comment {
+	width: 100%;
 }
 </style>
 </head>
@@ -454,6 +466,10 @@ body { padding:0; }
 %>
   <div class="a_html"><%=htmlUrl%><p style="height:20px;">&nbsp;</p></div>
 <%
+	String commentpath = "http://123.56.254.75:1108/Chopin/article/comment.html?ContentId="+contentId;
+%>
+   <div class="a_comment"><iframe id="comment" class='_comment' frameborder='no' scrolling='no' src='<%=commentpath%>'></iframe></div>
+<%
   } else {
     String nullHtml="";
     String contentPub=contents.get("ContentPub")==null?null:contents.get("ContentPub")+"";
@@ -472,12 +488,31 @@ body { padding:0; }
 var deviceId="<%=sid%>";
 //主函数
 $(function() {
+  
+	$("#comment").load(function() {
+		var iframe=document.getElementById("comment");
+		win = iframe.contentWindow,
+    doc = win.document,
+    html = doc.documentElement,
+    body = doc.body;
+    // 获取高度 
+    var height = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight ); 
+    iframe.setAttribute('height', height);
+//		var subWeb=iframe.contentWindow.document.body;
+//		debugger;
+//		console.log(subWeb.clientHeight);
+//		console.log(subWeb.scrollHeight);
+//  if (subWeb) $("#comment").attr("height", subWeb.scrollHeight);
+    $(".a_comment").height($("#comment").height());
+	});
   if ($(window).width()<<%=widthLimit%>) {
+  	console.log($('._comment'));
     $("._video").attr("width", $(window).width());
     $("._video").attr("height", ($(window).width()-10)*0.6);
     $(".video").height($("._video").height());
     $(".a_media").height($("._video").height());
   } else {
+  	console.log($('._comment'));
     $("._video").attr("width", "500px");
     $("._video").attr("height", "300px");
     $(".video").height($("._video").height());

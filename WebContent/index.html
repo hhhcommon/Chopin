@@ -403,10 +403,113 @@ body{
   top: -13px;
   left: 384px;
 }
+/*上传作品样式*/
 .uploadOpus_modal{
- width:200px;
- height:200px;
- background: red;
+  width:950px;
+  height:560px;
+  position: fixed;
+  margin-top: 145px;
+  margin-left: 15%;
+  z-index: 1948;
+  background:url(./resources/chopin/imgs/uploadOpus.png) no-repeat;
+  background-size: 100% 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: none;
+}
+.channelBarTitle {
+  height: 55px;
+  margin-top:40px;
+}
+.barTitleArea {
+  float: left;
+  height: 55px;
+  width: 200px;
+  margin-left:60px;
+}
+.cName {
+  height: 28px;
+  width: 260px;
+  font-family: vista_MS;
+  font-weight: bold;
+  color: #FFA634;
+  font-size: 28px;
+  padding-left: 12px;
+}
+
+.h_split {
+  float: left;
+  margin-left: -12px;
+  margin-top: 2px;
+  border-radius: 6px;
+  padding-top: 1px;
+  height: 28px;
+  width: 5px;
+  margin-top: 2px;
+  background-color: #FFA634;
+}
+.eName {
+  margin-top: 7px;
+  height: 20px;
+  width: 200px;
+  color: #fff;
+  font-size: 20px;
+  padding-left: 12px;
+  font-style: italic;
+}
+.channelBarConetent{
+  width: 100%;
+  height: 580px;
+  border: 1px solid black;
+  margin-top: 20px;
+}
+.uploadBtn{
+  width: 200px;
+  height: 50px;
+  border: 1px solid #000;
+  margin: auto;
+  background:url(./resources/chopin/imgs/uploadBtn.png) no-repeat;
+  background-size: 100% 100%;
+}
+.changeFile{
+  width: 64%;
+  height: 30px;
+  background: yellow;
+  margin-left: 15%;
+  position: absolute;
+}
+#ul_File{
+  width: 100%;
+  height: 28px;
+  position: absolute;
+  top: 0px;
+  left: -4px;
+}
+.form-group{
+  width: 92%;
+  margin-top: 40px;
+  margin-left: 3.4%;
+}
+.control-label{
+  width: 50px;
+  height: 30px;
+  font-size: 15px;
+  line-height: 30px;
+  padding-left: 5px;
+}
+#titleName{
+  width: 68%;
+  height: 28px;
+  position: absolute;
+}
+#abstractName{
+  width: 68%;
+  height: 28px;
+  position: absolute;
+}
+.commit,.cancel{
+  width: 50px;
+  height: 30px;
 }
 </style>
 </head>
@@ -529,7 +632,38 @@ body{
 </div>
 <!--上传作品界面-->
 <div class="uploadOpus_modal">
-   上传作品
+  <div class="modal-dialog">
+  <div class="channelBarTitle">
+    <div class="barTitleArea">
+      <div class="cName"><div class="h_split"></div>上传作品</div>
+      <div class="eName">uploadOpus</div>
+    </div>
+  </div>
+  <div class="channelBarConetent">
+    <input type="text" value="6" style="display: none;" />
+    <div class="uploadBtn">上传文件</div>
+    <div class="changeFile">
+      <input id="ul_File" name="ul_File"  type="text"  placeholder="点击，选择文件上传"  readonly />
+      <input class="ulFile" name="ulFile" type="file" style="display:none;" value="" />
+    </div>
+    <div class="form-group">
+      <label class="control-label">标题：</label>
+      <input id="titleName" name="titleName"  type="text" aria-required="true">
+    </div>
+    <div class="form-group">
+      <label class="control-label">摘要：</label>
+      <input id="abstractName" name="abstractName"  type="text" aria-required="true">
+    </div>
+    <div class="form-group">
+      <label class="control-label">描述：</label>
+      <textarea name="descName" id="descName" cols="30" rows="10"></textarea>
+    </div>
+    <div class="channelBarFooter form-group">
+      <button class="commit" type="button" class="btn btn-primary">提交</button>
+      <button class="cancel" type="button" class="btn btn-white" data-dismiss="modal">取消</button>
+    </div>
+  </div>
+  </div>
 </div>
 </body>
 <script>
@@ -937,7 +1071,7 @@ $(".opus").on("click",function(){
 //上传作品
 $(".upload").on("click",function(){
   var userId=$(".userCenter_un").attr("userId");
-//showUploadOpusPage(userId);//暂时先不使用这个方法和uploadOpus页面
+  $(".mask,.uploadOpus_modal").show();
 })
 </script>
 </html>

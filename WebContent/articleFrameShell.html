@@ -121,6 +121,7 @@ body { padding:0; }
   <div id="a_html"><iframe frameborder="no" style="display:none;width:100%;" id="mainContent" scrolling="no"></iframe></div>
   <div id="a_nullhtml"></div>
   <div id="a_competitor"></div>
+  <div id="a_comment"><iframe frameborder="no" style="display:none;width:100%;" id="mainComment" scrolling="no"></iframe></div>
 </div>
 </center></body>
 
@@ -154,6 +155,7 @@ $(function() {
 });
 
 function showArticle(artData) {
+	debugger
   $("#a_title").html(artData.ContentName);
   $("#_time").html((new Date(artData.ContentPubTime)).format("yyyy-M-d"));
   if (artData.ContentSource&&artData.ContentSource.length>0) $("#_source").html("来源:"+artData.ContentSource);
@@ -171,6 +173,11 @@ function showArticle(artData) {
   } else showNullHtml();
   //组织选手页面
   //if (artData.ContentStatus==1) showCompetitor();
+  //处理评论页面
+  if(artData.ContentPlay&&artData.ContentPlay.length>0&&artData.ContentId.length>0) {
+  	var commenthtml = "http://123.56.254.75:1108/Chopin/article/comment.html?ContentId="+artData.ContentId;
+  	window.setTimeout(function(){showHtml("a_comment",commenthtml)});
+  } else showNullHtml();
 }
 function showImg(docEleId, imgSrc) {
   //判断文件是否存在
