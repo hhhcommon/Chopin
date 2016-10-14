@@ -443,12 +443,11 @@ body { padding:0; }
   <div class="a_html"><%=htmlUrl%><p style="height:20px;">&nbsp;</p></div>
 <%
   } else {
-    String nullHtml="";
-    String contentPub=contents.get("ContentPub")==null?null:contents.get("ContentPub")+"";
-    if (!StringUtils.isNullOrEmptyOrSpace(contentPub)) nullHtml+="<p>感谢本内容的提供者："+(contentPub.equals("admin")?"我听科技":contentPub)+"</p>";
-
-    String cTime=contents.get("CTime")==null?null:contents.get("CTime")+"";
-    if (!StringUtils.isNullOrEmptyOrSpace(cTime)) nullHtml+="<p>提供时间："+cTime.substring(0, 10)+"</p>";
+    String nullHtml="<p>&nbsp;</p>";
+//    String contentPub=contents.get("ContentPub")==null?null:contents.get("ContentPub")+"";
+//    if (!StringUtils.isNullOrEmptyOrSpace(contentPub)) nullHtml+="<p>感谢本内容的提供者："+(contentPub.equals("admin")?"我听科技":contentPub)+"</p>";
+//    String cTime=contents.get("CTime")==null?null:contents.get("CTime")+"";
+//    if (!StringUtils.isNullOrEmptyOrSpace(cTime)) nullHtml+="<p>提供时间："+cTime.substring(0, 10)+"</p>";
 %>
   <div class="a_nullhtml"><div class="word"><%=nullHtml%></div></div>
 <%

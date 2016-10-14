@@ -108,7 +108,9 @@ public abstract class ContentUtils {
         retM.put("ContentPubTime", one.get("maPublishTime")==null?null:Timestamp.valueOf(one.get("maPublishTime")+""));//P06-公共：发布时间
         retM.put("ContentImg", one.get("maImg"));//P07-公共：相关图片
         retM.put("ContentPlay", one.get("maURL"));//P08-公共：主播放Url，这个应该从其他地方来，现在先这样//TODO
-        retM.put("ContentURI", "http://www.wotingfm.com/Chopin/articleShell.html?ContentId="+retM.get("ContentId"));//P08-公共：主播放Url，这个应该从其他地方来，现在先这样//TODO
+        String contenturi = "http://www.wotingfm.com/Chopin/articleShell.html?ContentId="+retM.get("ContentId");
+        int mastatus = Integer.valueOf(one.get("maStatus")+"");
+        retM.put("ContentURI", mastatus==99?one.get("maURL"):contenturi);//P08-公共：主播放Url，这个应该从其他地方来，现在先这样//TODO
         retM.put("ContentShareURL", "http://www.wotingfm.com/Chopin/articleFrameShell.html?ContentId="+retM.get("ContentId"));//分享地址
         retM.put("ContentPubImg", "http://www.wotingfm.com/Chopin/dataCenter/media/group03/lunbotu_"+one.get("id")+".png");//轮播图内容图片
         retM.put("ContentDesc", one.get("descn"));//P11-公共：说明

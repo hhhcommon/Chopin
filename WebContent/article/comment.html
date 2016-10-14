@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>评论</title>
+		<link href="../article/comment.css" rel="stylesheet" type="text/css" />
+		<script src="../resources/plugins/hplus/js/jquery-2.1.1.min.js"></script>
+		<script src="../resources/js/common.utils.js"></script>
+		<script src="../resources/js/context.utils.js"></script>
+	</head>
+
+	<body>
+		<div class="commentSection mgT30">
+			<div class="commentTab">
+			</div>
+			<div class="commentSection_body">
+				<div class="commentSend">
+					<div class="commentBox mgT20">
+						<div class="tagTab">
+				      <span style="font-weight:bold;font-size: 18px;">评论</span>
+			      </div>
+						<div class="commentBox_middle">
+							<div class="right">
+								<div class="commentBox_inputBox">
+									<div class="effect_borderHover"></div>
+									<div class="effect_borderDefault"></div>
+									<div class="comment_input">
+										<textarea id="commenttext" onpropertychange="textnum()" oninput="textnum()" maxlength="140"></textarea>
+									</div>
+								</div>
+								<div class="cl">
+									<div class="fr">
+										<span class="charCount count-tip">
+											还剩&nbsp;<em id="textnum" style="font-size: 14px;color: #FFA634;">140</em>&nbsp;字
+										</span>
+										<a href="javascript:;" class="submitBtn"><span>评论</span></a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="comment_list_wrap">
+				</div>
+				<div class="pagingBar mgT30">
+					<div class="pagingBar">
+						<div class="pagingBar_wrapper" theme="explore">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="aboutArea" style="display: block;">
+			<p onclick="test(this.value)">京ICP备15064344号-1</p>
+			<p>Copyright © 2015-2016 Woting. All Rights Reserved.</p>
+			<p>北京我听科技有限公司版权所有</p>
+		</div>
+		<iframe id="_SESSION" src="/Chopin/session.jsp" width="0" height="0" style="display:none"></iframe>
+	</body>
+	<script>
+		var rootPath = getRootPath();
+		if(rootPath.indexOf("/Chopin/") < 0) {
+			rootPath = "/Chopin/"
+		}
+		var contentid = getParamsFromUrl("ContentId");
+		var deviceId = "";
+		var pcdType=3;
+		$(function() {
+			//获得SessionId，很重要
+			{
+				var sfrm = document.getElementById("_SESSION");
+				if(sfrm.attachEvent) {
+					sfrm.attachEvent("onload", function() {
+						deviceId = sfrm.contentWindow._deviceId;
+			      loadCommentList(contentid);//1.1加载评论内容
+					});
+				} else {
+					sfrm.onload = function() {
+						deviceId = sfrm.contentWindow._deviceId;
+			      loadCommentList(contentid);//1.1加载评论内容
+					};
+				}
+			}
+			
+			//1.2提交评论
+			$(".submitBtn").on("click", function() {
+				var cominfo = $("#commenttext").val();
+				if(cominfo=="" || cominfo.length==0) {
+					alert("评论内容为空");
+					return ;
+				}
+				var _data = {
+					"IMEI": deviceId,
+					"PCDType": "3",
+					"Opinion": cominfo,
+					"ContentId": contentid
+				}
+				$.ajax({
+					type: "POST",
+					url: rootPath + "discuss/add.do",
+					dataType: "json",
+					data: JSON.stringify(_data),
+					success: function(jsonData) {
+						if(jsonData.ReturnType == "1001") {
+							$("#commenttext").val("");
+							$("#textnum").html("140");
+							loadCommentList(contentid);
+						}
+					},
+					error: function(jqXHR) {
+						alert("发生错误" + jqXHR.status);
+					}
+				});
+			});
+		})
+
+		//评论框剩余可输入文字计算
+		function textnum() {
+			var num = $("#commenttext").val().length;
+			num = 140 - num;
+			$(".count-tip").find("em").each(function() {
+				$(this).html(num);
+			})
+		}
+
+		function loadCommentList(contentId) {
+			if(contentId != "" || contentId != "undefined" || !contentId) {
+				var _url = rootPath + "discuss/article/getList.do";
+				var _data = {
+					"IMEI": deviceId,
+					"PCDType": "3",
+					"ContentId": contentId
+				}
+				var comdiv = $("#comment_list_wrap");
+				
+				$.ajax({
+					type: "POST",
+					url: _url,
+					dataType: "json",
+					data: JSON.stringify(_data),
+					success: function(jsonData) {
+						if(jsonData.ReturnType == "1001") {
+							comdiv.find("span").remove();
+				      comdiv.find("ul").remove();
+							var comdivstr = '<span style="padding-left: 10px;">全部评论</span><ul class="commentList"></ul>';
+							comdiv.append(comdivstr);
+							var comlist = $(".commentList");
+							for(var i = 0; i < jsonData.OpinionList.length; i++) {
+								var userinfo = jsonData.OpinionList[i].UserInfo;
+								var commentinfo = '<li class="listItem"><div class="comment2">' +
+									'<div class="left">' +
+									'<img src=" ' + makeUserImg(isOrNull(userinfo) == null ? "/Chopin/article/comment_default.png" : userinfo.PortraitBig) + '" data-options="defaultImg:person_60" style="width: 50px;height: 50px;border-radius: 50%;">' +
+									'</div>' +
+									'<div class="right">' +
+									'<div><span style="color:#699;">' + (isOrNull(userinfo) == null ? "游客" : userinfo.UserName) + '</span></div>' +
+									'<div class="comment_content">' + makeCommentInfo(jsonData.OpinionList[i].Discuss) + '</div><div class="comment_bottom"><span class="comment_createtime">' + getLocalTime(jsonData.OpinionList[i].Time) + '</span>' +
+									'</div>' +
+									'<div class="reply_box_entry"></div>' +
+									'</div>' +
+									'</div>' +
+									'</li>';
+								comlist.append(commentinfo);
+							}
+						} else {
+							if(jsonData.ReturnType == "1011") {
+								var comdivstr = '<span style="padding-left: 10px;">暂无评论</span>';
+							  comdiv.append(comdivstr);
+							}
+						}
+					setParentHeight();
+					},
+					error: function(jqXHR) {
+						alert("发生错误测试" + jqXHR.status);
+					}
+					
+				});
+			}
+		}
+
+		function isOrNull(userinfo) {
+			if(typeof(userinfo) == 'undefined' || !userinfo) return null;
+			else return userinfo;
+		}
+
+		function getParamsFromUrl(paramname) {
+			var thisURL = document.URL;
+			return getUrlParam(thisURL, paramname);
+		}
+
+		function getLocalTime(nS) {
+			var now = new Date(parseInt(nS));
+			var year = now.getYear() + 1900;
+			var month = now.getMonth() + 1;
+			if((month + "").length == 1) {
+				month = "0" + month;
+			}
+			var date = now.getDate();
+			if((date + "").length == 1) {
+				date = "0" + date;
+			}
+			var hour = now.getHours();
+			if((hour + "").length == 1) {
+				hour = "0" + hour;
+			}
+			var minute = now.getMinutes();
+			if((minute + "").length == 1) {
+				minute = "0" + minute;
+			}
+			var second = now.getSeconds();
+			if((second + "").length == 1) {
+				second = "0" + second;
+			}
+			return month + "-" + date + "&nbsp;&nbsp;" + hour + ":" + minute + ":" + second;
+		}
+		function makeUserImg(userpath) {
+			//			if(userpath.indexOf("http://") < 0) {
+			//				userpath = rootPath + userpath;
+			//			}
+			return userpath;
+		}
+
+		function makeCommentInfo(commentstr) {
+			return commentstr.replace(/#\[/g, '<img style="width: 18px;height: 18px;" src=" ').replace(/\]#/g, '">').replace(/face/g, rootPath + "asset/members");
+		}
+		
+		function setParentHeight() {
+			var h = document.body.scrollHeight;
+			window.parent.setCommentHeight(h);
+		}
+	</script>
+
+</html>

@@ -387,7 +387,7 @@ function showChannelPage(channelId) {
                 _img="./resources/chopin/imgs/card_default"+_r+".jpg";
               }
               var showFunc= "showArticle('"+jsonData.ResultInfo[i].List[j].ContentId+"')";
-              if (jsonData.ResultInfo[i].List[j].ContentStatus==99) showFunc="showVote()";
+              if (jsonData.ResultInfo[i].List[j].ContentStatus==99) showFunc="showVote('"+jsonData.ResultInfo[i].List[j].ContentURI+"')";
               oneContent.find(".img").attr("title", jsonData.ResultInfo[i].List[j].ContentName);
               oneContent.find(".img").attr("onclick", showFunc);
               channelBar.find(".channelBarLine").append(oneContent);
@@ -445,7 +445,7 @@ function showListPage(channelId) {
               }
               oneContent.find(".imgl").attr("title", jsonData.ResultInfo[i].List[j].ContentName);
               var showFunc= "showArticle('"+jsonData.ResultInfo[i].List[j].ContentId+"')";
-              if (jsonData.ResultInfo[i].List[j].ContentStatus==99) showFunc="showVote()";
+              if (jsonData.ResultInfo[i].List[j].ContentStatus==99) showFunc="showVote('"+jsonData.ResultInfo[i].List[j].ContentURI+"')";
               oneContent.find(".imgl").attr("onclick", showFunc);
               oneContent.css("background", "url("+_img+") center no-repeat;");
               channelBarLine.append(oneContent);
@@ -480,8 +480,8 @@ function showArticle(cid) {
 function showChannels(cid) {
   indexPage.showInIframe(rootPath+"channels.html?ChannelId="+cid);
 }
-function showVote() {
-  indexPage.showInIframe(rootPath+"vote.html?PCDType=3&IMEI="+deviceId);
+function showVote(voteUrl) {
+  indexPage.showInIframe(voteUrl+"&PCDType=3&IMEI="+deviceId);
 }
 function showNullPage() {
   $("#channelArea").css({

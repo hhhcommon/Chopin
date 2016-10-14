@@ -9,8 +9,8 @@ fs-config
 /src/test
 
 /WebContent/log
-/WebContent/media
 /WebContent/article
+/WebContent/media
 /WebContent/tempUpload
 /WebContent/dataCenter
 /WebContent/asset
