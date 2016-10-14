@@ -96,7 +96,7 @@ public class QueryService {
 		if (info != null) {
 			info = "<p>" + info + "</p>";
 			info = word.replace("#####WORD#####", info);
-			htmlstr = htmlstr.replace("#####CONTENT#####", info);
+			htmlstr = html.replace("#####CONTENT#####", info);
 		}
 		String path = SystemCache.getCache(FConstants.APPOSPATH).getContent() + "dataCenter/mweb/" + mapo.getId() + "/" + mapo.getId() + ".html";
 		FileUploadUtils.writeFile(htmlstr, path);
