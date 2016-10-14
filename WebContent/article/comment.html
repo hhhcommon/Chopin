@@ -144,14 +144,14 @@
 						if(jsonData.ReturnType == "1001") {
 							comdiv.find("span").remove();
 				      comdiv.find("ul").remove();
-							var comdivstr = '<span style="padding: 10px;">全部评论</span><ul class="commentList"></ul>';
+							var comdivstr = '<span style="padding-left: 10px;">全部评论</span><ul class="commentList"></ul>';
 							comdiv.append(comdivstr);
 							var comlist = $(".commentList");
 							for(var i = 0; i < jsonData.OpinionList.length; i++) {
 								var userinfo = jsonData.OpinionList[i].UserInfo;
 								var commentinfo = '<li class="listItem"><div class="comment2">' +
 									'<div class="left">' +
-									'<img src=" ' + makeUserImg(isOrNull(userinfo) == null ? "http://www.wotingfm.com/Chopin/article/comment_default.png" : userinfo.PortraitBig) + '" data-options="defaultImg:person_60" style="width: 50px;height: 50px;border-radius: 50%;">' +
+									'<img src=" ' + makeUserImg(isOrNull(userinfo) == null ? "/Chopin/article/comment_default.png" : userinfo.PortraitBig) + '" data-options="defaultImg:person_60" style="width: 50px;height: 50px;border-radius: 50%;">' +
 									'</div>' +
 									'<div class="right">' +
 									'<div><span style="color:#699;">' + (isOrNull(userinfo) == null ? "游客" : userinfo.UserName) + '</span></div>' +
@@ -165,7 +165,7 @@
 							}
 						} else {
 							if(jsonData.ReturnType == "1011") {
-								var comdivstr = '<span style="padding: 10px;">暂无评论</span>';
+								var comdivstr = '<span style="padding-left: 10px;">暂无评论</span>';
 							  comdiv.append(comdivstr);
 							}
 						}
