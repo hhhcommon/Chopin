@@ -47,6 +47,21 @@ body {margin:0;}
 #mainTable tr:first-child {
   border-top:0;
 }
+#a_title {
+  height:40px;
+  padding-top:10px;
+  text-align:center;
+  text-valign:bottom;
+  align:center;
+  line-height:34px;
+  font-size:20px;
+  font-family:"黑体";
+  font-weight:bold;
+  display:none;
+  width:80%;
+  margin-bottom:10px;
+}
+
 ._tr {
   height:100px;
   border-top:1px solid #D9D9D9;
@@ -176,33 +191,64 @@ body {margin:0;}
   color:#fff;
   font-family:vista_MS;
 }
-.message {
+
+.msgWin {
+  z-index:1000;
   border:1px solid #FFA634;
   width:200px;
   height:120px;
   position: fixed;
   background-color:#fff;
-  z-index:1000;
-  font-size:16px;
-  color:#FFA634;
   line-height:120px;
   text-align:center;
   text-valign:middle;
   display:none;
 }
-._close {
-  z-index:1001;
-  border:1px solid #FFA634;
-  width:40px;
-  height:40px;
-  border-radius:20px;
+._c_dw {
+  z-index:999;
+  position: fixed;
+  background-color:#FFA634;
+  width:20px;
+  height:20px;
+  border-radius:10px;
+  display:none;
 }
+._c_up {
+  z-index:1001;
+  position: fixed;
+  background-color:#fff;
+  width:18px;
+  height:18px;
+  border-radius:9px;
+  display:none;
+}
+._c_cross {
+  z-index:1002;
+  position: fixed;
+  background-color:#fff;
+  width:14px;
+  height:14px;
+  border-radius:7px;
+  display:none;
+}
+._message {
+  padding:20px;
+  color:#FFA634;
+  line-height:20px;
+  text-align:left;
+  text-valign:middle;
+  font-size:16px;
+}
+._cross{display: inline-block; width: 10px;height:2px; background:#FFA634;line-height: 0;font-size:0;vertical-align: middle;-webkit-transform: rotate(45deg);}
+._cross:after{content:'/';display:block;width: 10px;height:2px; background:#FFA634;-webkit-transform: rotate(-90deg);}
 </style>
 </head>
 <body><center>
-<div class="message"><div class="_close">测试错误</div></div>
+  <input id="msg" type="text" style="width:200px;"></input><input type="button" value="测试" onclick="test()"></input>
+
 <div id="vote_main" style="display:yes;">
-<table id="mainTable"></table>
+  <div id="a_title"></div>
+  <table id="mainTable"></table>
 </div>
 <iframe id="_SESSION" src="session.jsp" width="0" height="0" style="display:none"></iframe>
 </center></body>
@@ -222,13 +268,17 @@ var indexPage=getMainPage();
 var deviceId="";
 var deviceId=(isApp?getUrlParam(window.location.href, "IMEI"):"");
 var pcdType=(isApp?1:3);
+var userTeam=getUrlParam(window.location.href, "UserTeam");
+userTeam=decodeURIComponent(userTeam);
 
 //主函数
 $(function() {
-  $(".message").css("left",($(window).width()-$(".message").width())/2);
-  $(".message").css("top",50);
+return;
   if (rootPath.length==1) rootPath="http://123.56.254.75:1108/Chopin/";
-
+  if (userTeam&&userTeam!='null') {
+    $("#a_title").html(userTeam+" 人气投票");
+    $("#a_title").show();
+  }
   if (isApp) showPage();
   else  {//获得SessionId，很重要
     var sfrm=document.getElementById("_SESSION");
@@ -249,7 +299,7 @@ $(function() {
     _data.IMEI=deviceId;
     _data.PCDType=pcdType;
     $.ajax({type:"post", async:true, url:rootPath+"playSumCount.do", dataType:"json", data:_data,
-      timeout:2000,
+      timeout:10000,
       success: function(jsonData) {
         if (jsonData.ReturnType=='1001') drawPage(jsonData.ResultInfo);
         else showNullPage();
@@ -265,6 +315,9 @@ function drawPage(_data) {
   if ($(window).width()<500) $("#vote_main").css("padding","0");
   var i=0;
   for (; i<_data.length; i++) {
+    if (userTeam&&userTeam!='null') {
+      if (userTeam!=_data[i].UserTeam) continue;
+    }
     _data[i].FavoSum=_data[i].FavoSum==-1?0:_data[i].FavoSum;
     if ($(window).width()<500) {
       var newLine=$("<tr class='m_tr' id='tr_"+_data[i].ContentId+"'><td class='m_portrait' onclick='showPlayer(\""+_data[i].ContentId+"\")'><img src='./asset/members/portrait/"+_data[i].UserName+".jpg'></img></td>"
@@ -277,7 +330,6 @@ function drawPage(_data) {
         +"<div class='_progressBar progress progress-warning active'><div id='bar_"+_data[i].ContentId+"' class='bar' style='width: 0%'></div></div></td>"
         +"<td class='_vote _gray' title='投票' onclick='votePlayer(\""+_data[i].ContentId+"\")' id='vote_"+_data[i].ContentId+"'><div><img src='./resources/chopin/imgs/voteIcon.png'></img></div><div class='_voteText'>投1票</div></td></tr>");
     }
-    console.log(i+":"+_data[i].UserName+":"+_data[i].IsFavorate);
     if (_data[i].IsFavorate==1) {
       $(newLine).find("._vote").removeClass("_gray");
       $(newLine).find("._vote").attr("onclick", "");
@@ -298,6 +350,9 @@ function drawPage(_data) {
     }
     bars.push({"barId":"bar_"+_data[i].ContentId, "favoSum":_data[i].FavoSum==-1?0:_data[i].FavoSum, "percent":"0%"});
     $("#mainTable").append(newLine);
+  }
+  if (userTeam&&userTeam!='null') { //给第一个行加入上画线
+    $("#mainTable").find("tr").first().css("border-top","1px solid #D9D9D9");
   }
   maxVoteAll=(maxVote/4)*5;
   for (i=0; i<bars.length; i++) {
@@ -398,6 +453,58 @@ function showNullPage() {
 }
 function resizeParent() {
   indexPage.setMainHeight(document.body.scrollHeight);
+}
+
+function test() {
+  showMessage({
+    "message":$("#msg").val(),
+    "afterClose":function() {
+      alert("测试测试！");
+    }
+  });
+}
+
+function showMessage(opt) {
+  if (!(opt&&opt.message&&opt.message.length>0)) return;
+  var _top=100;
+  var _offset=2;
+  var _maxWidth=300;
+
+  var _jqHtmlMsgObj=$("<div class='_c_dw'></div><div class='_c_up'></div><div class='_c_cross'><div class='_cross'></div></div><div class='msgWin'><div class='_message'></div></div>");
+  $("body").append(_jqHtmlMsgObj);
+  //根据文字判断宽高
+  alert($("._message").css("font-size"));
+  //得到文字长度
+  alert((opt.message).cnLength));
+  
+  $(".msgWin").css("left",($(window).width()-$(".msgWin").width())/2);
+  $(".msgWin").css("top",_top);
+  $("._c_dw").css("left",($(window).width()-$("._c_dw").width())/2+$(".msgWin").width()/2-_offset);
+  $("._c_dw").css("top",_top-$("._c_dw").width()/2+_offset);
+  $("._c_up").css("left",($(window).width()-$("._c_up").width())/2+$(".msgWin").width()/2-_offset);
+  $("._c_up").css("top",_top-$("._c_up").width()/2+_offset);
+  $("._c_cross").css("left",($(window).width()-$("._c_cross").width())/2+$(".msgWin").width()/2-1);
+  $("._c_cross").css("top",_top-$("._c_cross").width()/2+1);
+
+  $(".msgWin ._message").html(opt.message);
+
+  $(".msgWin").css("display","inline-block");
+  $("._c_dw").css("display","inline-block");
+  $("._c_up").css("display","inline-block");
+  $("._c_cross").css("display","inline-block");
+
+  $(".msgWin").click(function(){_close();});
+  $("._c_dw").click(function(){_close();});
+  $("._c_up").click(function(){_close();});
+  $("._c_cross").click(function(){_close();});
+
+  function _close() {
+    $(".msgWin").remove();
+    $("._c_dw").remove();
+    $("._c_up").remove();
+    $("._c_cross").remove();
+    if (opt$$opt.afterClose)opt.afterClose();
+  }
 }
 </script>
 </html>
