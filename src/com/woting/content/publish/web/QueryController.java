@@ -76,9 +76,6 @@ public class QueryController {
 			info = null;
 		}
 		map = queryService.addContentByApp(userId,title,filePath,descn,info,channelId);
-		if (map==null) {
-			
-		}
 		return map;
 	}
 
