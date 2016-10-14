@@ -111,7 +111,6 @@ public abstract class ContentUtils {
         retM.put("ContentImg", one.get("maImg"));//P07-公共：相关图片
         retM.put("ContentPlay", one.get("maURL"));//P08-公共：主播放Url，这个应该从其他地方来，现在先这样//TODO
         String contenturi = "http://www.wotingfm.com/Chopin/articleShell.html?ContentId="+retM.get("ContentId");
-        System.out.println(JsonUtils.objToJson(one));
         int mastatus = Integer.valueOf(one.get("maStatus")+"");
         retM.put("ContentURI", mastatus==99?one.get("maURL"):contenturi);//P08-公共：主播放Url，这个应该从其他地方来，现在先这样//TODO
         retM.put("ContentShareURL", "http://www.wotingfm.com/Chopin/articleFrameShell.html?ContentId="+retM.get("ContentId"));//分享地址

@@ -488,31 +488,12 @@ body { padding:0; }
 var deviceId="<%=sid%>";
 //主函数
 $(function() {
-  
-//	$("#comment").load(function() {
-//		var iframe=document.getElementById("comment");
-//		win = iframe.contentWindow,
-//  doc = win.document,
-//  html = doc.documentElement,
-//  body = doc.body;
-//  // 获取高度 
-//  var height = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight ); 
-//  iframe.setAttribute('height', height);
-////		var subWeb=iframe.contentWindow.document.body;
-////		debugger;
-////		console.log(subWeb.clientHeight);
-////		console.log(subWeb.scrollHeight);
-////  if (subWeb) $("#comment").attr("height", subWeb.scrollHeight);
-//  $(".a_comment").height($("#comment").height());
-//	});
   if ($(window).width()<<%=widthLimit%>) {
-  	console.log($('._comment'));
     $("._video").attr("width", $(window).width());
     $("._video").attr("height", ($(window).width()-10)*0.6);
     $(".video").height($("._video").height());
     $(".a_media").height($("._video").height());
   } else {
-  	console.log($('._comment'));
     $("._video").attr("width", "500px");
     $("._video").attr("height", "300px");
     $(".video").height($("._video").height());
@@ -528,6 +509,7 @@ $(function() {
 function setCommentHeight(height) {
   $("#comment").attr("height", height);
   $(".a_comment").height($("#comment").height());
+  window.parent.setMainHeight(document.body.scrollHeight);
 }
 </script>
 </html>
