@@ -70,8 +70,12 @@ public class QueryController {
 		}
 		String descn = m.get("ContentDecsn")+"";
 		if (descn.equals("null") || descn.equals("")) 
-			return null;
-		map = queryService.addContentByApp(userId,title,filePath,descn,channelId);
+			descn = null;
+		String info = m.get("ContentInfo")+"";
+		if (info.equals("null") || info.equals("")) {
+			info = null;
+		}
+		map = queryService.addContentByApp(userId,title,filePath,descn,info,channelId);
 		if (map==null) {
 			
 		}

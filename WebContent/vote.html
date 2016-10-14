@@ -190,10 +190,17 @@ body {margin:0;}
   text-valign:middle;
   display:none;
 }
+._close {
+  z-index:1001;
+  border:1px solid #FFA634;
+  width:40px;
+  height:40px;
+  border-radius:20px;
+}
 </style>
 </head>
 <body><center>
-<div class="message">测试错误</div>
+<div class="message"><div class="_close">测试错误</div></div>
 <div id="vote_main" style="display:yes;">
 <table id="mainTable"></table>
 </div>
@@ -203,10 +210,9 @@ body {margin:0;}
 <script>
 var deviceId="";
 function setDeviceId(sessionId) {
-  deviceId=sessionId;
+  deviceId=isApp?deviceId:sessionId;
 }
-var isApp=getUrlParam(window.location.href, "isApp");//如果是App就有这个值
-isApp=!(!isApp);
+var isApp=((window.location.href).indexOf("isApp")!=-1);//如果是App就有这个值
 var rootPath=getRootPath();
 var bars=[];
 var maxVote=0;
@@ -221,19 +227,19 @@ var pcdType=(isApp?1:3);
 $(function() {
   $(".message").css("left",($(window).width()-$(".message").width())/2);
   $(".message").css("top",50);
-  if (rootPath.length==1) rootPath="http://www.wotingfm/Chopin/";
+  if (rootPath.length==1) rootPath="http://123.56.254.75:1108/Chopin/";
 
-  //获得SessionId，很重要
-  {
+  if (isApp) showPage();
+  else  {//获得SessionId，很重要
     var sfrm=document.getElementById("_SESSION");
     if (sfrm.attachEvent) {
       sfrm.attachEvent("onload", function() {
-        deviceId=sfrm.contentWindow._deviceId;
+        deviceId=isApp?deviceId:sfrm.contentWindow._deviceId;
         showPage();
       });
     } else {
       sfrm.onload = function() {
-        deviceId=sfrm.contentWindow._deviceId;
+        deviceId=isApp?deviceId:sfrm.contentWindow._deviceId;
         showPage();
       }; 
     }

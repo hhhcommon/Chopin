@@ -481,6 +481,7 @@ public class MediaContentService {
 		                        map.put("UserName", upo.getUserName());
 		                        map.put("UserBigImg", upo.getPortraitBig());
 		                        map.put("UserSmallImg", upo.getPortraitMini());
+		                        map.put("UserTeam", upo.getTeam());
 					        }
 					    }
 						map.put("FavoSum", mp.get("FavoSum"));
