@@ -466,17 +466,16 @@ body { padding:0; }
 %>
   <div class="a_html"><%=htmlUrl%><p style="height:20px;">&nbsp;</p></div>
 <%
-	String commentpath = "http://123.56.254.75:1108/Chopin/article/comment.html?ContentId="+contentId;
+	  String commentpath = "http://123.56.254.75:1108/Chopin/article/comment.html?ContentId="+contentId;
 %>
-   <div class="a_comment"><iframe id="comment" class='_comment' frameborder='no' scrolling='no' src='<%=commentpath%>'></iframe></div>
+  <div class="a_comment"><iframe id="comment" class='_comment' frameborder='no' scrolling='no' src='<%=commentpath%>'></iframe></div>
 <%
   } else {
-    String nullHtml="";
-    String contentPub=contents.get("ContentPub")==null?null:contents.get("ContentPub")+"";
-    if (!StringUtils.isNullOrEmptyOrSpace(contentPub)) nullHtml+="<p>感谢本内容的提供者："+(contentPub.equals("admin")?"我听科技":contentPub)+"</p>";
-
-    String cTime=contents.get("CTime")==null?null:contents.get("CTime")+"";
-    if (!StringUtils.isNullOrEmptyOrSpace(cTime)) nullHtml+="<p>提供时间："+cTime.substring(0, 10)+"</p>";
+    String nullHtml="<p>&nbsp;</p>";
+//    String contentPub=contents.get("ContentPub")==null?null:contents.get("ContentPub")+"";
+//    if (!StringUtils.isNullOrEmptyOrSpace(contentPub)) nullHtml+="<p>感谢本内容的提供者："+(contentPub.equals("admin")?"我听科技":contentPub)+"</p>";
+//    String cTime=contents.get("CTime")==null?null:contents.get("CTime")+"";
+//    if (!StringUtils.isNullOrEmptyOrSpace(cTime)) nullHtml+="<p>提供时间："+cTime.substring(0, 10)+"</p>";
 %>
   <div class="a_nullhtml"><div class="word"><%=nullHtml%></div></div>
 <%
@@ -488,7 +487,6 @@ body { padding:0; }
 var deviceId="<%=sid%>";
 //主函数
 $(function() {
-  
 	$("#comment").load(function() {
 		var iframe=document.getElementById("comment");
 		win = iframe.contentWindow,

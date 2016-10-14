@@ -101,32 +101,40 @@ public class QueryController {
             map.put("Message", "无法获取需要的参数");
         } else {
             mUdk=MobileParam.build(m).getUserDeviceKey();
-            if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
-                mUdk.setDeviceId(request.getSession().getId());
-            }
-            Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "discuss/article/getList");
-            if (!mUdk.isUser()||"0".equals(mUdk.getUserId())) {
-                map.put("ReturnType", "1002");
-                map.put("Message", "无法获得用户Id");
-            } else {
-                if (userService.getUserById(mUdk.getUserId())==null) {
-                    map.put("ReturnType", "1003");
-                    map.put("Message", "用户不存在");
+            if (mUdk!=null) {
+                if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
+                    mUdk.setDeviceId(request.getSession().getId());
                 }
-                if ((retM.get("ReturnType")+"").equals("2001")) {
-                    map.put("ReturnType", "0000");
-                    map.put("Message", "无法获取设备Id(IMEI)");
-                } else if ((retM.get("ReturnType")+"").equals("2003")||(retM.get("ReturnType")+"").equals("2002")) {
-                    map.put("ReturnType", "200");
-                    map.put("Message", "需要登录");
-                } else {
-                    if (mUdk.isUser()) userId=mUdk.getUserId();
-                }
-                if (map.get("ReturnType")==null&&StringUtils.isNullOrEmptyOrSpace(userId)) {
+                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "discuss/article/getList");
+                if (!mUdk.isUser()||"0".equals(mUdk.getUserId())) {
                     map.put("ReturnType", "1002");
-                    map.put("Message", "无法获取用户Id");
+                    map.put("Message", "无法获得用户Id");
+                } else {
+                    if (userService.getUserById(mUdk.getUserId())==null) {
+                        map.put("ReturnType", "1003");
+                        map.put("Message", "用户不存在");
+                    }
+                    if ((retM.get("ReturnType")+"").equals("2001")) {
+                        map.put("ReturnType", "0000");
+                        map.put("Message", "无法获取设备Id(IMEI)");
+                    } else if ((retM.get("ReturnType")+"").equals("2003")||(retM.get("ReturnType")+"").equals("2002")) {
+                        map.put("ReturnType", "200");
+                        map.put("Message", "需要登录");
+                    } else {
+                        if (mUdk.isUser()) userId=mUdk.getUserId();
+                    }
+                    if (map.get("ReturnType")==null&&StringUtils.isNullOrEmptyOrSpace(userId)) {
+                        map.put("ReturnType", "1002");
+                        map.put("Message", "无法获取用户Id");
+                    }
                 }
-
+            } else {
+                userId = m.get("UserId")+"";
+                if(userId.equals("null")) {
+                    map.put("ReturnType", "1002");
+                    map.put("Message", "无法获得用户Id");
+                    return map;
+                }                
             }
         }
         if (map.get("ReturnType")!=null) return map;
