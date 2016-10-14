@@ -62,21 +62,14 @@ public class QueryService {
 			+ "<audio id=\"myAudio\" controls>" + "<source src=\"#####AUDIO#####\" type=\"audio/mpeg\">" + "</audio>"
 			+ "</div>" + "</div>";
 
-	public Map<String, Object> addContentByApp(String userId, String title, String filePath, String descn,
-			String channelId) {
+	public Map<String, Object> addContentByApp(String userId, String title, String filePath, String descn, String info, String channelId) {
 		Map<String, Object> map = new HashMap<>();
 		if (mediaService.getMaInfoByTitle(title) != null) {
 			map.put("ReturnType", "1016");
 			map.put("Message", "内容重名");
 			return map;
 		}
-		String htmlstr = "";
-		if (descn != null) {
-			descn = "<p>" + descn + "</p>";
-			descn = word.replace("#####WORD#####", descn);
-			htmlstr = htmlstr.replace("#####CONTENT#####", descn);
-		}
-
+		
 		UserPo userPo = userService.getUserById(userId);
 		MediaAssetPo mapo = new MediaAssetPo();
 		mapo.setId(SequenceUUID.getPureUUID());
@@ -97,8 +90,14 @@ public class QueryService {
 		mapo.setMaPublishTime(new Timestamp(System.currentTimeMillis()));
 		mapo.setPubCount(1);
 		mapo.setLangDid("true");
-		String alltext = "##" + title + "####" + descn + "##";
+		String alltext = "##" + title + "####" + descn + "####"+ info +"##";
 		mapo.setAllText(alltext);
+		String htmlstr = "";
+		if (info != null) {
+			info = "<p>" + info + "</p>";
+			info = word.replace("#####WORD#####", info);
+			htmlstr = htmlstr.replace("#####CONTENT#####", info);
+		}
 		String path = SystemCache.getCache(FConstants.APPOSPATH).getContent() + "dataCenter/mweb/" + mapo.getId() + "/" + mapo.getId() + ".html";
 		FileUploadUtils.writeFile(htmlstr, path);
 		path = "http://www.wotingfm.com/Chopin/dataCenter/mweb/" + mapo.getId() + "/" + mapo.getId() + ".html";
