@@ -101,7 +101,7 @@
   <servlet>
     <servlet-name>springMvc</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-      <init-param>
+    <init-param>
       <param-name>contextConfigLocation</param-name>
       <param-value>classpath*:springMvcConfig/*Mvc.xml</param-value>
     </init-param>
@@ -114,6 +114,6 @@
   <!-- end Servlet设置 -->
 
   <welcome-file-list>
-    <welcome-file>/broadcast/list.jsp</welcome-file>
+    <welcome-file>/index.html</welcome-file>
   </welcome-file-list>
 </web-app>

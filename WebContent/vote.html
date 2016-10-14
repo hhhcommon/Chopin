@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<!-- 内容页的壳子，为web使用 -->
+<html>
+<head>
+<meta charset="UTF-8">
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="cache-control" content="no-cache"/>
+<meta http-equiv="pragma" content="no-cache"/>
+<meta http-equiv="expires" content="0"/>
+
+<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--[if lt IE 8]>
+<script>
+  alert('本系统已不支持IE6-8，请使用谷歌、火狐等浏览器\n或360、QQ等国产浏览器的极速模式浏览本页面！');
+</script>
+<![endif]-->
+
+<script src="./resources/plugins/hplus/js/jquery-2.1.1.min.js"></script>
+<script src="./resources/js/common.utils.js"></script>
+<script src="./resources/js/context.utils.js"></script>
+<script src="./resources/js/framework.utils.js"></script>
+<script src="./resources/plugins/spiritui/jq.spirit.utils.js"></script>
+<script src="./resources/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" media="screen" href="./resources/plugins/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="./resources/chopin/css/font.css"/>
+<link rel="stylesheet" type="text/css" href="./resources/css/common.css"/>
+<link rel="stylesheet" type="text/css" href="./resources/css/mainPage.css"/>
+<link rel="stylesheet" type="text/css" href="./resources/plugins/spiritui/themes/default/all.css"/>
+
+<title></title>
+<style>
+html { color:#000; background:#fff; }
+body {margin:0;}
+
+#vote_main {
+  padding: 0 20px;
+}
+#mainTable {
+  width:100%;
+}
+#mainTable tr:first-child {
+  border-top:0;
+}
+#a_title {
+  height:40px;
+  padding-top:10px;
+  text-align:center;
+  text-valign:bottom;
+  align:center;
+  line-height:34px;
+  font-size:20px;
+  font-family:"黑体";
+  font-weight:bold;
+  display:none;
+  width:80%;
+  margin-bottom:10px;
+}
+
+._tr {
+  height:100px;
+  border-top:1px solid #D9D9D9;
+  padding: 20px 7px 19px 7px;
+}
+._portrait {
+  width:105px;
+  padding-left:5px;
+}
+._portrait img {
+  height:80px;
+  width:80px;
+  border-radius:40px;
+  border: 1px solid #FFA634;
+  cursor:pointer;
+}
+._progress {
+  width:*;
+}
+._progressBar {
+  width:*;
+  margin-top:8px;
+}
+._vote {
+  cursor:pointer;
+  width:100px;
+  padding-left:35px;
+}
+._vote img {
+  height:50px;
+  width:50px;
+}
+._voteText {
+  color:#FFA634;
+  font-size:18px;
+}
+._gray {
+  filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+  -webkit-filter: grayscale(100%);
+}
+._desc {
+  position:relative;
+  width:100%;
+  height:30px;
+  color:#000;
+  font-size:20px;
+  font-weight:block;
+  font-family: vista_MS;
+  margin-top:25px;
+}
+._desc_name {
+  position:absolute;
+  left:0px;
+}
+._desc_score {
+  position:absolute;
+  right:0px;
+}
+
+.m_tr {
+  height:80px;
+  border-top:1px solid #D9D9D9;
+}
+.m_portrait {
+  width:75px;
+  padding-left:15px;
+}
+.m_portrait img {
+  height:60px;
+  width:60px;
+  border-radius:30px;
+  border:1px solid #FFA634;
+  cursor:pointer;
+}
+.m_progress {
+  width:*;
+}
+.m_progressBar {
+  width:*;
+  height:15px;
+  margin-top:7px;
+}
+.m_vote {
+  cursor:pointer;
+  width:60px;
+  padding-left:10px;
+}
+.m_vote img {
+  height:40px;
+  width:40px;
+}
+.m_voteText {
+  color:#FFA634;
+  font-size:15px;
+}
+._gray {
+  filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+  -webkit-filter: grayscale(100%);
+}
+.m_desc {
+  position:relative;
+  width:100%;
+  height:25px;
+  color:#000;
+  font-size:18px;
+  font-weight:800;
+  padding-top:20px;
+  margin-top:8px;
+}
+.m_desc_name {
+  position:absolute;
+  left:0px;
+}
+.m_desc_score {
+  font-weight:400;
+  position:absolute;
+  right:0px;
+}
+.nullBack {
+  display: inline-block; 
+  width: 100%; 
+  height: 500; 
+  text-height:500;
+  valign:center;
+  align:center;
+  font-size:36;
+  color:#fff;
+  font-family:vista_MS;
+}
+.msgWin {
+  z-index:1000;
+  border:1px solid #FFA634;
+  width:200px;
+  height:120px;
+  position:fixed;
+  background-color:#fff;
+  line-height:120px;
+  text-align:center;
+  text-valign:middle;
+  display:none;
+}
+._c_dw {
+  z-index:999;
+  position:fixed;
+  background-color:#FFA634;
+  width:20px;
+  height:20px;
+  border-radius:10px;
+  display:none;
+}
+._c_up {
+  z-index:1001;
+  position:fixed;
+  background-color:#fff;
+  width:18px;
+  height:18px;
+  border-radius:9px;
+  display:none;
+}
+._c_cross {
+  z-index:1002;
+  position:fixed;
+  background-color:#fff;
+  width:14px;
+  height:14px;
+  border-radius:7px;
+  display:none;
+}
+._message {
+  padding:20px;
+  color:#FFA634;
+  margin-top:20px;
+  line-height:20px;
+  text-align:left;
+  text-valign:middle;
+  font-size:16px;
+}
+._cross{display: inline-block; width: 10px;height:2px; background:#FFA634;line-height: 0;font-size:0;vertical-align: middle;-webkit-transform: rotate(45deg);}
+._cross:after{content:'/';display:block;width: 10px;height:2px; background:#FFA634;-webkit-transform: rotate(-90deg);}
+._prsbar {
+  height:3px;
+  background-color:#e3e3e3;
+  position:absolute;
+  left:20px;
+  bottom:15px;
+}
+._prsbar_u {
+  height:3px;
+  background-color:#FFA634;
+  position:absolute;
+  right:20px;
+  bottom:15px;
+}
+</style>
+</head>
+<body><center>
+<div id="vote_main" style="display:yes;">
+  <div id="a_title"></div>
+  <table id="mainTable"></table>
+</div>
+<iframe id="_SESSION" src="session.jsp" width="0" height="0" style="display:none"></iframe>
+</center></body>
+
+<script>alert("in123");
+var deviceId="";
+function setDeviceId(sessionId) {
+  deviceId=isApp?deviceId:sessionId;
+}
+var isApp=((window.location.href).indexOf("isApp")!=-1);//如果是App就有这个值
+var rootPath=getRootPath();
+var bars=[];
+var maxVote=0;
+var maxVoteAll=0;
+var maxId="";
+var indexPage=getMainPage();
+var deviceId="";
+var deviceId=(isApp?getUrlParam(window.location.href, "IMEI"):"");
+var pcdType=(isApp?1:3);
+var userTeam=getUrlParam(window.location.href, "UserTeam");
+userTeam=decodeURIComponent(userTeam);
+
+//主函数
+$(function() {
+  if (rootPath.length==1) rootPath="http://123.56.254.75:1108/Chopin/";
+  if (userTeam&&userTeam!='null') {
+    $("#a_title").html(userTeam+" 人气投票");
+    $("#a_title").show();
+  }
+  if (isApp) showPage();
+  else  {//获得SessionId，很重要
+    var sfrm=document.getElementById("_SESSION");
+    if (sfrm.attachEvent) {
+      sfrm.attachEvent("onload", function() {
+        deviceId=isApp?deviceId:sfrm.contentWindow._deviceId;
+        showPage();
+      });
+    } else {
+      sfrm.onload = function() {
+        deviceId=isApp?deviceId:sfrm.contentWindow._deviceId;
+        showPage();
+      }; 
+    }
+  }
+  function showPage() {
+    var _data={};
+    _data.IMEI=deviceId;
+    _data.PCDType=pcdType;
+    $.ajax({type:"post", async:true, url:rootPath+"playSumCount.do", dataType:"json", data:_data,
+      timeout:10000,
+      success: function(jsonData) {
+        if (jsonData.ReturnType=='1001') drawPage(jsonData.ResultInfo);
+        else showNullPage();
+        resizeParent();
+      },
+      error: function(jqXHR) {
+        showNullPage();
+      }
+    });
+  }
+});
+function drawPage(_data) {
+  if ($(window).width()<500) $("#vote_main").css("padding","0");
+  var i=0;
+  for (; i<_data.length; i++) {
+    if (userTeam&&userTeam!='null') {
+      if (userTeam!=_data[i].UserTeam) continue;
+    }
+    _data[i].FavoSum=_data[i].FavoSum==-1?0:_data[i].FavoSum;
+    if ($(window).width()<500) {
+      var newLine=$("<tr class='m_tr' id='tr_"+_data[i].ContentId+"'><td class='m_portrait' onclick='showPlayer(\""+_data[i].ContentId+"\")'><img src='./asset/members/portrait/"+_data[i].UserName+".jpg'></img></td>"
+        +"<td class='m_progress'><div class='m_desc'><div class='m_desc_name'>"+_data[i].UserName+"</div><div class='m_desc_score'>"+_data[i].FavoSum+"票</div></div>"
+        +"<div class='m_progressBar progress progress-warning active'><div id='bar_"+_data[i].ContentId+"' class='bar' style='width: 0%'></div></div></td>"
+        +"<td class='m_vote _gray' title='投票' onclick='votePlayer(\""+_data[i].ContentId+"\")' id='vote_"+_data[i].ContentId+"'><div><img src='./resources/chopin/imgs/voteIcon.png'></img></div><div class='m_voteText'>投1票</div></td></tr>");
+    } else {
+      var newLine=$("<tr class='_tr' id='tr_"+_data[i].ContentId+"'><td class='_portrait' onclick='showPlayer(\""+_data[i].ContentId+"\")'><img src='./asset/members/portrait/"+_data[i].UserName+".jpg'></img></td>"
+        +"<td class='_progress'><div class='_desc'><div class='_desc_name'>"+_data[i].UserName+"</div><div class='_desc_score'>"+_data[i].FavoSum+"票</div></div>"
+        +"<div class='_progressBar progress progress-warning active'><div id='bar_"+_data[i].ContentId+"' class='bar' style='width: 0%'></div></div></td>"
+        +"<td class='_vote _gray' title='投票' onclick='votePlayer(\""+_data[i].ContentId+"\")' id='vote_"+_data[i].ContentId+"'><div><img src='./resources/chopin/imgs/voteIcon.png'></img></div><div class='_voteText'>投1票</div></td></tr>");
+    }
+    if (_data[i].IsFavorate==1) {
+      $(newLine).find("._vote").removeClass("_gray");
+      $(newLine).find("._vote").attr("onclick", "");
+      $(newLine).find("._vote").css("cursor","auto");
+      $(newLine).find("._vote").attr("title", "");
+      $(newLine).find("._voteText").html("已投票");
+      $(newLine).find(".m_vote").removeClass("_gray");
+      $(newLine).find(".m_vote").attr("onclick", "");
+      $(newLine).find(".m_vote").css("cursor","auto");
+      $(newLine).find(".m_vote").attr("title", "");
+      $(newLine).find(".m_voteText").html("已投票");
+    }
+    if (maxVote==_data[i].FavoSum) {
+      maxId+=_data[i].ContentId+",";
+    } else if (maxVote<_data[i].FavoSum) {
+      maxVote=_data[i].FavoSum;
+      maxId=_data[i].ContentId;
+    }
+    bars.push({"barId":"bar_"+_data[i].ContentId, "favoSum":_data[i].FavoSum==-1?0:_data[i].FavoSum, "percent":"0%"});
+    $("#mainTable").append(newLine);
+  }
+  if (userTeam&&userTeam!='null') { //给第一个行加入上画线
+    $("#mainTable").find("tr").first().css("border-top","1px solid #D9D9D9");
+  }
+  maxVoteAll=(maxVote/4)*5;
+  for (i=0; i<bars.length; i++) {
+    bars[i].percent=((bars[i].favoSum/maxVoteAll)*100)+"%";
+  }
+  setTimeout(function(){
+    for (var i=0; i<bars.length; i++) {
+      $("#"+bars[i].barId).attr("style", "width:"+bars[i].percent);
+    }
+  }, 200);
+}
+function showPlayer(cId) {
+  if (isApp) window.open(rootPath+"articleShell.jsp?ContentId="+cId, "_blank");
+  else window.open(rootPath+"articleFrameShell.jsp?ContentId="+cId, "_self");
+}
+function votePlayer(cId) {
+  var _data={};
+  _data.IMEI=deviceId;
+  _data.PCDType=pcdType;
+  _data.ContentId=cId;
+  _data.Flag=1;
+  $.ajax({type:"post", async:true, url:rootPath+"clickFavorite.do", dataType:"json", data:_data,
+    timeout:5000,
+    success: function(jsonData) {
+      if (jsonData.ReturnType=='2003') {
+        if (!isApp) {
+          showMessage({
+            "message":"请先登录,再投票!",
+            "afterClose":function() {
+              try {
+                indexPage.login();
+              }catch(e){}
+            }
+          });
+        } else {
+          try {
+            window.vote.openLogin();
+          }catch(e){}
+        }
+      } else if (jsonData.ReturnType=='2004') {
+        $("#vote_"+cId).removeClass("_gray");
+        $("#vote_"+cId).css("cursor","auto");
+        $("#vote_"+cId).attr("onclick", "");
+        $("#vote_"+cId).attr("title", "");
+        $("#vote_"+cId).find(".m_voteText").html("已投票");
+        showMessage({
+          "message":"您已投票，不能再投票了!"
+        });
+      } else if (jsonData.ReturnType=='1001') {
+        voteOne();
+      }
+    },
+    error: function(jqXHR) {
+      showMessage({
+        "message":"出现未知错误!"
+      });
+    }
+  });
+
+  function voteOne() {
+    var _maxChange=(maxId.indexOf(cId)!=-1);
+    if (_maxChange) {
+      maxVote++;
+      maxVoteAll=(maxVote/5)*6;
+      maxId=cId;
+    }
+    for (var i=0; i<bars.length; i++) {
+      if (bars[i].barId=="bar_"+cId) {
+        bars[i].favoSum=bars[i].favoSum+1;
+        $("#tr_"+cId).find("._desc_score").html(bars[i].favoSum+"票");
+        $("#tr_"+cId).find(".m_desc_score").html(bars[i].favoSum+"票");
+        $("#vote_"+cId).find("._voteText").html("已投票");
+        $("#vote_"+cId).find(".m_voteText").html("已投票");
+        $("#vote_"+cId).removeClass("_gray");
+        $("#vote_"+cId).attr("title","");
+        $("#vote_"+cId).attr("onclick", "");
+        $("#vote_"+cId).css("cursor","auto");
+      }
+      if (_maxChange) {
+        bars[i].percent=((bars[i].favoSum/maxVoteAll)*100)+"%";
+        $("#"+bars[i].barId).attr("style", "width:"+bars[i].percent);
+      } else {
+        if (bars[i].barId=="bar_"+cId) {
+          bars[i].percent=((bars[i].favoSum/maxVoteAll)*100)+"%";
+          $("#"+bars[i].barId).attr("style", "width:"+bars[i].percent);
+        }
+      }
+    }
+  }
+}
+function showNullPage() {
+  $("html").css("background-color", "#A8A8A8");
+  $("#vote_main").css("background-color", "#A8A8A8");
+  $("#vote_main").html("");
+  $("#vote_main").css("align", "center");
+  var nullImg=$("<img src='./resources/chopin/imgs/nullPage.png'></img>");
+  $("#vote_main").append(nullImg);
+  var minWidth=607;
+  if ($(window).width()<minWidth) {
+    $(nullImg).css({"width":($(window).width()-20)});
+    $(nullImg).css({"height":function(){return ($(window).width()-20)*(411/minWidth);}});
+  } else {
+    $(nullImg).css({"width":minWidth, "height":411});
+  }
+}
+function resizeParent() {
+  indexPage.setMainHeight(document.body.scrollHeight);
+}
+function showMessage(opt) {
+  if (!(opt&&opt.message&&opt.message.length>0&&($.trim(opt.message)).length>0)) return;
+  var _top=100;
+  var _offset=2;
+  var _maxWidth=300;
+  var _minWidth=200;
+  var _minHeight=120;
+  var _perWordSpeed=150;//每隔字的毫秒数字
+
+  var _jqHtmlMsgObj=$("<div class='_c_dw'></div><div class='_c_up'></div><div class='_c_cross'><div class='_cross'></div></div><div class='msgWin'><div class='_message'></div><div class='_prsbar'></div><div class='_prsbar_u'></div></div>");
+  $("body").append(_jqHtmlMsgObj);
+
+  var _msgPaddingTop=parseInt($("._message").css("padding-top")?$("._message").css("padding-top"):($("._message").css("padding")?$("._message").css("padding"):0));
+  var _msgPaddingLeft=parseInt($("._message").css("padding-left")?$("._message").css("padding-left"):($("._message").css("padding")?$("._message").css("padding"):0));
+  var _msgPaddingRight=parseInt($("._message").css("padding-right")?$("._message").css("padding-right"):($("._message").css("padding")?$("._message").css("padding"):0));
+  var __width=_minWidth,   //窗口实际宽度
+      __height=_minHeight, //窗口实际高度
+      __duration;                     //进度条时长
+
+  //根据文字判断宽高
+  var fontSize=parseInt($("._message").css("font-size"));
+  var _maxLineText=(Math.ceil(2*(_maxWidth-_msgPaddingLeft-_msgPaddingLeft)/fontSize))-1;
+  var _msg=$.trim(opt.message);
+  //得到文字长度
+  var _textLength=_msg.cnLength();
+  var _textWidth=_textLength*fontSize/2;
+  __duration=(_textLength<5?5:_textLength)*_perWordSpeed/2+500;
+  //宽度高度
+  $(".msgWin").height(_minHeight);
+  $("._message").css("margin-top","20px");
+  if (_textWidth<_minWidth-_msgPaddingLeft-_msgPaddingRight) {
+    __width=_minWidth;
+  } else if (_textWidth>=_minWidth-_msgPaddingLeft-_msgPaddingRight&&_textWidth<_maxWidth-_msgPaddingLeft-_msgPaddingRight) __width=_textWidth+_msgPaddingLeft+_msgPaddingRight;
+  else {
+    __width=_maxWidth;
+    var _line=Math.ceil(_textLength/_maxLineText);
+    if (_line==2) $("._message").css("margin-top","10px");
+    else if (_line==3) $("._message").css("margin-top","0px");
+    else {
+      $("._message").css("margin-top","0px");
+      console.log($("._message").css("line-height"));
+      var _lineHeight=parseInt($("._message").css("line-height")?$("._message").css("line-height"):fontSize+2);
+      console.log(_lineHeight);
+      __height=_line*_lineHeight+_msgPaddingTop+35;
+    }
+  }
+  $(".msgWin").width(__width);
+  $(".msgWin").height(__height);
+  $(".msgWin").css("left",($(window).width()-$(".msgWin").width())/2);
+  $(".msgWin").css("top",_top);
+  $("._c_dw").css("left",($(window).width()-$("._c_dw").width())/2+$(".msgWin").width()/2-_offset);
+  $("._c_dw").css("top",_top-$("._c_dw").width()/2+_offset);
+  $("._c_up").css("left",($(window).width()-$("._c_up").width())/2+$(".msgWin").width()/2-_offset);
+  $("._c_up").css("top",_top-$("._c_up").width()/2+_offset);
+  $("._c_cross").css("left",($(window).width()-$("._c_cross").width())/2+$(".msgWin").width()/2-1);
+  $("._c_cross").css("top",_top-$("._c_cross").width()/2+1);
+
+  $(".msgWin ._message").html(opt.message);
+
+  $("._prsbar,._prsbar_u").css({"width":__width-_msgPaddingLeft-_msgPaddingRight});
+  $("._prsbar").css({"left":_msgPaddingLeft});
+  $("._prsbar_u").css({"right":_msgPaddingRight});
+
+  $(".msgWin").css("display","inline-block");
+  $("._c_dw").css("display","inline-block");
+  $("._c_up").css("display","inline-block");
+  $("._c_cross").css("display","inline-block");
+  _isClose=false;
+
+  $(".msgWin").click(function(){_close();});
+  $("._c_dw").click(function(){_close();});
+  $("._c_up").click(function(){_close();});
+  $("._c_cross").click(function(){_close();});
+
+  $("._prsbar_u").animate({"width":0}, __duration, function(){_close();});
+  function _close() {
+    $(".msgWin").remove();
+    $("._c_dw").remove();
+    $("._c_up").remove();
+    $("._c_cross").remove();
+    if (opt&&opt.afterClose&&!_isClose)opt.afterClose();
+    _isClose=true;
+  }
+}
+var _isClose=false;
+</script>
+</html>

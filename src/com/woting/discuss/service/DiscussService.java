@@ -106,11 +106,13 @@ public class DiscussService {
      * @param pageSize 每页条数
      * @return 文章评论列表
      */
-    public List<Discuss> getArticleDiscusses(String articleId, int page, int pageSize) {
+    public Map<String, Object> getArticleDiscusses(String articleId, int page, int pageSize) {
         try {
-            Map<String, String> param=new HashMap<String, String>();
+            Map<String, Object> param=new HashMap<String, Object>();
             param.put("articleId", articleId);
+            param.put("sortByClause", " cTime desc");
             List<DiscussPo> ol=null;
+            long allCount=0;
             if (page>=0) { //分页
                 if (page==0) page=1;
                 if (pageSize<0) pageSize=10;
@@ -119,6 +121,7 @@ public class DiscussService {
                     ol=new ArrayList<DiscussPo>();
                     ol.addAll(p.getResult());
                 }
+                allCount=p.getDataCount();
             } else { //获得所有
                 ol=this.discussDao.queryForList(param);
             }
@@ -131,7 +134,10 @@ public class DiscussService {
                         ret.add(ele);
                     }
                 }
-                return ret;
+                param.clear();
+                param.put("AllCount", allCount);
+                param.put("List", ret);
+                return param;
             }
             return null;
         } catch (Exception e) {
@@ -147,13 +153,14 @@ public class DiscussService {
      * @param pageSize 每页条数
      * @return 文章列表
      */
-    public List<Map<String, Object>> getUserDiscusses(String userId, int page, int pageSize) {
+    public Map<String, Object> getUserDiscusses(String userId, int page, int pageSize) {
         if (StringUtils.isNullOrEmptyOrSpace(userId)) return null;
         try {
             //获得列表
-            Map<String, String> param=new HashMap<String, String>();
+            Map<String, Object> param=new HashMap<String, Object>();
             param.put("whereByClause", "e.userId='"+userId+"'");
             param.put("sortByClause", "d.cTime desc");
+            long allCount=0;
             List<MediaAssetPo> mas=null;
             if (page==-1) {
                 mas=mediaAssetDao.queryForList("getUserDiscussContents", param);
@@ -165,6 +172,7 @@ public class DiscussService {
                     mas=new ArrayList<MediaAssetPo>();
                     mas.addAll(p.getResult());
                 }
+                allCount=p.getDataCount();
             }
 
             if (!mas.isEmpty()) {
@@ -192,12 +200,29 @@ public class DiscussService {
                     Map<String, Object> mam=ContentUtils.convert2Ma(mediaAsset.toHashMap(), null, null, chasm, fsm);
                     rl.add(mam);
                 }
-                return rl;
+                param.clear();
+                param.put("AllCount", allCount);
+                param.put("List", rl);
+                return param;
             }
             return null;
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * 删除某文章的所有评论
+     * @param articleId 文章Id
+     * @param channelId 文章的Id
+     * @return 返回删除的数目
+     */
+    public int delArticleFavorite(String articleId, String channelId) {
+        //获得列表
+        Map<String, String> param=new HashMap<String, String>();
+        param.put("resId", articleId);
+
+        return discussDao.delete("delArticle", param);
     }
 }

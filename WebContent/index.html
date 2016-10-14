@@ -14,13 +14,15 @@
 <![endif]-->
 
 <script src="./resources/plugins/hplus/js/jquery-2.1.1.min.js"></script>
+
 <script src="./resources/plugins/easyui-1.3.4/jquery.easyui.min.js"></script>
-<script src="./resources/js/mainPage.js"></script>
+<script src="./resources/js/mainPageWeb.js"></script>
 <script src="./resources/js/common.utils.js"></script>
 <script src="./resources/js/context.utils.js"></script>
 <script src="./resources/js/framework.utils.js"></script>
 <script src="./resources/plugins/spiritui/jq.spirit.utils.js"></script>
 <script src="./resources/plugins/spiritui/jq.spirit.pageFrame.js"></script>
+<!--<script src="./channelData.json"></script>-->
 
 <link rel="stylesheet" type="text/css" href="./resources/plugins/easyui-1.3.4/themes/default/easyui.css"/>
 <link rel="stylesheet" type="text/css" href="./resources/plugins/easyui-1.3.4/themes/icon.css"/>
@@ -34,11 +36,14 @@
 <title>我听肖邦</title>
 
 <style>
+body{
+  font-family: vista_MS;
+}
 .lineDiv {
   float:left;
 }
 #topSegment {
-  padding-left:113px;
+  padding-left:120px;
   padding-right:110px;
 }
 .topBlock {
@@ -51,9 +56,13 @@
 .logoImg {
   width:43px;
   height:43px;
-  background-color:#FFA634;
-  border-radius:21px;
   float:left;
+}
+.logoImg img {
+  width:auto;  
+  height:auto;  
+  max-width:100%;  
+  max-height:100%;   
 }
 .logoWord {
   width:110px;
@@ -129,16 +138,17 @@
   overflow:hidden;height:0;
 }
 ._menu {
+  top:80px;
   padding-top:3px;
   display:none;
   z-index:2000;
-  width:110px;
-  position:absolute;
+  width:125px;
+  position:fixed;
   background-color:#0E0E0E ;
 }
 ._menuItem {
   padding-left:15px;
-  width:110px;
+  width:130px;
   height:30px;
   font-family: vista_MS;
   color:#fff;
@@ -148,6 +158,460 @@
   cursor:pointer;
   color:#FFA634;
   font-weight:bold;
+}
+/*登陆界面样式*/
+.login_modal{
+  width:400px;
+  height:300px;
+  position:fixed;
+  top:120px;
+  left:35%;
+  background:#0E0E0E;
+  display: none;
+  font-family: vista_MS;
+  cursor:pointer;
+  z-index:10;
+}
+.login_header{
+  width:100%;
+  height:45px;
+  background:#0E0E0E;
+  color:#fff;
+  font-weight:bolder;
+  line-height: 45px;
+  position: absolute;
+  text-align:center;
+  overflow: hidden;
+}
+.login_header1{
+  width:32.33%;
+  height:100%;
+  float:left;
+  font-family: vista_MS;
+  font-size: 15px;
+  background:#0E0E0E;
+  border-right: 2px solid rgb(255, 166, 52);
+}
+.login_header2{
+  width:32.33%;
+  height:100%;
+  float:left;
+  font-family: vista_MS;
+  font-size: 15px;
+  background:gray;
+  border-right: 2px solid rgb(255, 166, 52);
+}
+.login_header3{
+  width:34.33%;
+  height:100%;
+  float: left;
+  font-family: vista_MS;
+  font-size: 15px;
+  background: gray;
+}
+.login_content,.register_content,.forget_content{
+  width:100%;
+  height:250px;
+  position: absolute;
+  margin-top: 25px;
+}
+.register_content,.forget_content{
+  display: none;
+}
+#loginform{
+  width:75%;
+  height:100%;
+  margin:auto;
+}
+.input_group {
+  width:75%;
+  height:50px;
+  position: absolute;
+}
+.usernameSpan,.userpasswordSpan{
+  width: 60px;
+  height: 35px;
+  font-size: 16px;
+  color: #fff;
+  margin-top:12px;
+  text-align: center;
+  line-height: 35px;
+  display: block;
+}
+#usernameInput,#userpasswordInput{
+  width: 232px;
+  height: 35px;
+  position: absolute;
+  top: 10px;
+  left: 60px;
+  overflow: hidden;
+  border-radius: 0px;
+  font-size: 16px;
+}
+.remember{
+  width: 90px;
+  height: 35px;
+  line-height: 35px;
+  text-align: center;
+  font-size:16px;
+  margin-left:60px;
+  color:#fff;
+  float: left;
+}
+.forget{
+  width: 90px;
+  height: 35px;
+  line-height: 35px;
+  text-align: center;
+  font-size:16px;
+  color:#fff;
+  margin-left:58px;
+  float: left;
+}
+.logined{
+  width:96%;
+  line-height: 35px;
+  text-align: center;
+  font-size:16px;
+  color:#fff;
+  font-weight: bolder;
+  background:#ff9426;
+  margin-left:11px;
+}
+.tpl{
+  width:100%;
+  line-height: 50px;
+  text-align: center;
+  font-size:16px;
+  color:#fff;
+  overflow: hidden;
+}
+.tpl .line_left{
+  width:55px;
+  height:2px;
+  background:#fff;
+  margin-left: 12px;
+  margin-top: 18px;
+  float: left;
+}
+.tpl .line_right{
+  width:55px;
+  height:2px;
+  background:#fff;
+  margin-left: 242px;
+  margin-top:-20px;
+  float: left;
+}
+.tpl .weChat{
+  width: 35px;
+  height: 35px;
+  background: url(./resources/chopin/imgs/weChat.png) top left no-repeat;
+  margin-left: 18px;
+  margin-top: 2px;
+  background-size: 100% 100%;
+  float: left;
+}
+.tpl .blog{
+  width: 35px;
+  height: 35px;
+  background: url(./resources/chopin/imgs/blog.png) top left no-repeat;
+  margin-left: 18px;
+  margin-top: 2px;
+  background-size: 100% 100%;
+  float: left;
+}
+.tpl .qq{
+  width: 35px;
+  height: 35px;
+  background: url(./resources/chopin/imgs/qq.png) top left no-repeat;
+  margin-left: 18px;
+  margin-top: 2px;
+  background-size: 100% 100%;
+  float: left;
+}
+/*遮罩层样式*/
+.mask{
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.9);
+  position: fixed;
+  display: none;
+  z-index:1;
+}
+.userCenter {
+  width: 200px;
+  height: 30px;
+  color: #fff;
+  font-weight: bold;
+  font-family: vista_MS;
+  font-size: 16px;
+  cursor: pointer;
+  position: absolute;
+  margin-left: 70px;
+  padding-top: 6px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.userCenter_un {
+  max-width: 140px;
+  font-size: 16px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  float:left;
+}
+.dropdown-menu{
+  width: 110px;
+  background:#0E0E0E;
+  color: #fff;
+  z-index: 2000;
+  cursor: pointer;
+  position: fixed;
+  top: 80px;
+  display: none;
+  height:135px;
+}
+.opus,.love,.upload,.exit{
+  height: 30px;
+  line-height: 30px;
+  font-family: vista_MS;
+  font-size: 15px;
+  padding-left:20px;
+}
+.qr_code{
+  width: 400px;
+  margin-top: 20px;
+  height: 200px;
+  background: #ddd;
+}
+.qr_code img{
+  background-size: 100% 100%;
+}
+.registeByApp{
+  width: 400px;
+  text-align: center;
+  line-height: 55px;
+  font-size: 20px;
+  height: 55px;
+  font-family: vista_MS;
+  background: #fafafa
+}
+.cancelLog{
+  color: #fff;
+  position: absolute;
+  top: -13px;
+  left: 384px;
+}
+/*上传作品样式*/
+.uploadOpus_modal{
+  width:950px;
+  height:560px;
+  position: fixed;
+  margin-top: 145px;
+  margin-left: 15%;
+  z-index: 1948;
+  background:url(./resources/chopin/imgs/uploadOpus.png) no-repeat;
+  background-size: 100% 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: none;
+}
+.channelBarTitle {
+  height: 55px;
+  margin-top:40px;
+}
+.barTitleArea {
+  float: left;
+  height: 55px;
+  width: 200px;
+  margin-left:60px;
+}
+.cName {
+  height: 28px;
+  width: 260px;
+  font-family: vista_MS;
+  font-weight: bold;
+  color: #FFA634;
+  font-size: 28px;
+  padding-left: 12px;
+}
+
+.h_split {
+  float: left;
+  margin-left: -12px;
+  margin-top: 2px;
+  border-radius: 6px;
+  padding-top: 1px;
+  height: 28px;
+  width: 5px;
+  margin-top: 2px;
+  background-color: #FFA634;
+}
+.eName {
+  margin-top: 7px;
+  height: 20px;
+  width: 200px;
+  color: #fff;
+  font-size: 20px;
+  padding-left: 12px;
+  font-style: italic;
+}
+.channelBarConetent{
+  width: 100%;
+  height: 685px;
+  border: 1px solid black;
+  margin-top: 20px;
+}
+.uploadBtn{
+  width: 240px;
+  height: 80px;
+  margin: auto;
+  cursor: pointer;
+  background:url(./resources/chopin/imgs/uploadBtn.png) no-repeat;
+  background-size: 100% 100%;
+}
+.bgmask{
+  width: 710px;
+  height: 485px;
+  margin: auto;
+  position:absolute;
+  top:204px;
+  left:120px;
+  cursor: pointer;
+  background:url(./resources/chopin/imgs/maskUpload.png) no-repeat;
+  background-size: 100% 100%;
+}
+.changeFile{
+  width: 64%;
+  height: 40px;
+  display: none;
+  top:34%;
+  left: 19%;
+  position: absolute;
+  cursor: pointer;
+}
+#ul_File,.ulFile{
+  width: 100%;
+  height: 40px;
+  position: absolute;
+  top: -60px;
+  left: -4px;
+  font-family: vista_MS;
+  font-size: 15px;
+}
+.form-group{
+  width: 92%;
+  margin-top: 40px;
+  margin-left: 3.4%;
+}
+.control-label{
+  width: 50px;
+  height: 40px;
+  font-size: 20px;
+  line-height: 40px;
+  padding-left: 25px;
+  color:#fff;
+  font-family: vista_MS;
+}
+#titleName{
+  width: 510px;
+  height: 40px;
+  position: absolute;
+  margin-left:40px;
+  font-size:15px;
+}
+#abstractName{
+  width: 510px;
+  height: 40px;
+  position: absolute;
+  margin-left:40px;
+  font-size:15px;
+}
+#descName{
+  width: 510px;
+  position: absolute;
+  margin-left:40px;
+  font-size:15px;
+}
+.channelBarFooter{
+  width: 250px;
+  height: 40px;
+  position: absolute;
+  margin-top: 155px;
+  margin-left: 230px;
+}
+.commit,.cancel{
+  width: 80px;
+  height: 40px;
+  border: 1px solid transparent;
+  background: rgba(255,166,52,1);
+  float: left;
+  color:#fff;
+  font-size: 15px;
+  font-family:vista_MS;
+  font-weight: bolder;
+  cursor: pointer;
+}
+.cancel{
+  margin-left:55px;
+}
+/*搜索样式*/
+.cancelSearch{
+  width: 23%;
+  text-align: center;
+  display: block;
+  top: 3%;
+  border: 1px solid white;
+  border-radius: 2px;
+  color: white;
+  float: left;
+  margin-left:3px;
+  display: none;
+}
+.header-search-slide{
+  position: absolute;
+  z-index: 3;
+  right: 0;
+  display: none;
+  clear: both;
+  width: 100%;
+  background: rgba(255,255,255,.9);
+  box-shadow: 0 0 3px 0 rgba(0,0,0,.2);
+}
+.header-search-slide form{
+  overflow: hidden;
+  padding: 25px 25%;
+}
+.header-search-slide form input[type=search]{
+  font-size: 20px;
+  line-height: 30px;
+  float: left;
+  width: 90%;
+  height: 50px;
+  margin: 0 auto;
+  padding-right: 10px;
+  padding-left: 20px;
+  border: 0;
+  border: 2px solid #ddd;
+  border-right: none;
+  border-radius: 2px;
+}
+.header-search-slide form .search-btn {
+  font-size: 16px;
+  width: 10%;
+  height: 50px;
+  padding: 0 12px;
+  cursor: pointer;
+  -webkit-transition: all .25s;
+  -moz-transition: all .25s;
+  -ms-transition: all .25s;
+  -o-transition: all .25s;
+  transition: all .25s;
+  color: #fff;
+  border: none;
+  border-radius: 0 2px 2px 0;
+  background: #45b6f7;
 }
 </style>
 </head>
@@ -161,26 +625,175 @@
 <!-- 头部:悬浮 -->
 <div id="topSegment">
   <div id="logo" class="topBlock" style="width:172px; float:left;">
-    <div id="logo-img" class="logoImg"></div>
+    <div id="logo-img" class="logoImg"><img src="./resources/chopin/imgs/logo_yellow.png"></img></div>
     <div id="logo-word" class="logoWord"></div>
   </div>
-  <div id="navi" class="topBlock" style="width:755px;padding-top:15px;"></div>
-  <div id="oper" class="topBlock" style="width:198px;padding-top:12px;">
+  <div id="navi" class="topBlock" style="width:755px;padding-top:15px;">
+    <div id="0" class="nav lineDiv" style="width:60px" onclick="showChannelPage('0')">首页</div>
+    <div id="nav_1" class="nav lineDiv" cid="1" style="color: rgb(255, 255, 255);" onclick="showChannelPage('1')">
+      比赛<span class="selArrow"></span>
+    </div>
+    <div id="nav_2" class="nav lineDiv" cid="2" style="color: rgb(255, 255, 255);" onclick="showChannelPage('2')">
+      活动<span class="selArrow"></span>
+    </div>
+    <div id="nav_3" class="nav lineDiv" cid="3" style="color: rgb(255, 255, 255);" onclick="showChannelPage('3')">
+      大师<span class="selArrow"></span>
+    </div>
+    <div id="nav_4" class="nav lineDiv" cid="4" style="color: rgb(255, 255, 255);" onclick="showChannelPage('4')">
+      肖邦<span class="selArrow"></span>
+    </div>
+    <div id="nav_5" class="nav lineDiv" cid="5" style="color: rgb(255, 255, 255);" onclick="showChannelPage('5')">
+      波兰<span class="selArrow"></span>
+    </div>
+  </div>
+  <div id="oper" class="topBlock" style="width:208px;padding-top:12px;">
     <button class="searchBtn"></button>
-    <button class="operButton" style="margin-left:65px">登录</button>
-    <button class="operButton" style="margin-left:5px">注册</button>
+    <button class="cancelSearch">×</button>
+    <button  id="logBtn" class="operButton" style="margin-left:75px;cursor:pointer;" onclick="login()">登录</button>
+    <button  id="regBtn"class="operButton" style="margin-left:5px;cursor:pointer;">注册</button>
   </div>
 </div>
 
 <!-- 中间主框架 -->
 <div id="mainSegment">
-  <iframe frameborder="no" style="display:none;width:1366px;" id="mainContent" _src="/channels.html"></iframe>
+  <iframe frameborder="no" style="display:none;width:1366px;height:500;" id="mainContent" scrolling="no"></iframe>
+</div>
+
+<div id="menu_1" class="_menu" cid="1" style="display: none;width:135px;">
+  <div id="b625c7a3" class="_menuItem" cid="b625c7a3" onclick="showChannelPage('b625c7a3')">赛况报道</div>
+  <div id="68f72898" class="_menuItem" cid="68f72898" onclick="showChannelPage('68f72898')">组委会、评委会</div>
+  <div id="25138655" class="_menuItem" cid="25138655" onclick="showChannelPage('25138655')">参赛选手</div>
+  <div id="b306b31c" class="_menuItem" cid="b306b31c" onclick="showChannelPage('b306b31c')">关于比赛</div>
+<!--  <div id="2ee1237a" class="_menuItem" cid="2ee1237a" onclick="showChannelPage('2ee1237a')">获奖者音乐会</div>
+  <div id="b625c7a3" class="_menuItem" cid="b625c7a3" onclick="showChannelPage('b625c7a3')">赛况报道</div> -->
+<!--  <div id="f0947314" class="_menuItem" cid="f0947314" onclick="showChannelPage('f0947314')">开幕音乐会</div> -->
+
+</div>
+<div id="menu_2" class="_menu" cid="2" style="display: none;width:110px;">
+  <div id="6" class="_menuItem" cid="6" onclick="showChannelPage('6')">乐迷秀场</div>
+  <div id="f0527db3" class="_menuItem" cid="f0527db3" onclick="showChannelPage('f0527db3')">演出信息</div>
+  <div id="27cae48d" class="_menuItem" cid="27cae48d" onclick="showChannelPage('27cae48d')">人气投票</div>
+</div>
+<div id="menu_3" class="_menu" cid="3" style="display: none;width:110px;">
+  <div id="70e463b0" class="_menuItem" cid="70e463b0" onclick="showChannelPage('70e463b0')">大师经典</div>
+  <div id="22558bad" class="_menuItem" cid="22558bad" onclick="showChannelPage('22558bad')">大肖作品</div>
+  <div id="5af8bbbd" class="_menuItem" cid="5af8bbbd" onclick="showChannelPage('5af8bbbd')">专家讲解</div>
+</div>
+<div id="menu_4" class="_menu" cid="4" style="display: none;width:110px;">
+  <div id="2501c236" class="_menuItem" cid="2501c236" onclick="showChannelPage('2501c236')">生平</div>
+  <div id="9a065d47" class="_menuItem" cid="9a065d47" onclick="showChannelPage('9a065d47')">作品</div>
+  <div id="6ac04ba9" class="_menuItem" cid="6ac04ba9" onclick="showChannelPage('6ac04ba9')">图书</div>
+<!--   <div id="071f6a49" class="_menuItem" cid="071f6a49" onclick="showChannelPage('071f6a49')">博物馆</div> -->
+</div>
+<div id="menu_5" class="_menu" cid="5" style="display: none;width:110px;">
+  <div id="6d0a1d3f" class="_menuItem" cid="6d0a1d3f" onclick="showChannelPage('6d0a1d3f')">历史</div>
+  <div id="64b4d375" class="_menuItem" cid="64b4d375" onclick="showChannelPage('64b4d375')">文化</div>
+  <div id="0505" class="_menuItem" cid="0505" onclick="showChannelPage('0505')">音乐</div>
+  <div id="998cdc33" class="_menuItem" cid="998cdc33" onclick="showChannelPage('998cdc33')">旅游</div>
+  <div id="8ab95c79" class="_menuItem" cid="8ab95c79" onclick="showChannelPage('8ab95c79')">美食</div>
+</div>
+<div class="dropdown-menu">
+  <div class="upload">上传作品</div>
+  <div class="opus">我的作品</div>
+  <div class="love">我喜欢的</div>
+  <div class="splitLine" style="border-top:1px solid #A5A5A5; margin-top:5px; margin-bottom:5px;"></div>
+  <div class="exit">安全退出</div>
+</div>
+<div class="header-search-slide">
+  <form method="get" id="searchform-slide" class="searchform" action="" role="search">
+    <input class="field" name="s" value="" placeholder="输入关键词并回车" type="search">
+    <button class="search-btn" type="submit"><a href="#">搜索</a></button>
+    <label>热门搜索：</label>
+    <ul>
+      <li><a href="#">肖邦音乐</a></li>
+      <li><a href="#">肖邦故乡</a></li>
+      <li><a href="#">肖邦生平</a></li>
+      <li><a href="#">肖邦作品集</a></li>
+      <li><a href="#">肖邦成就</a></li>
+      <li><a href="#">肖邦作曲</a></li>
+    </ul>
+  </form>
+</div>
+<iframe id="_SESSION" src="session.jsp" width="0" height="0" style="display:none"></iframe>
+<!--登陆界面遮罩层-->
+<div class="mask"></div>
+<!--登录界面-->
+<div class="login_modal">
+  <ul class="login_header">
+    <li class="login_header2">注册账号</li>
+    <li class="login_header1">登录账号</li>
+    <li class="login_header3">忘记密码</li>
+  </ul>
+  <div class="login_content">
+    <form action="" name="loginform" id="loginform" style="margin-left:47px">
+      <div class="input_group "style="top:50px;">
+        <span class="usernameSpan">账号</span>
+        <input class="form-control required" id="usernameInput" name="usernameInput" type="text" placeholder="手机号/用户名" aria-invalid="true" minlength="15">
+      </div>
+      <div class="input_group" style="top:110px;">
+        <span class="userpasswordSpan">密码</span>
+        <input class="form-control required" id="userpasswordInput" name="userpasswordInput" type="password" placeholder="登录密码" aria-invalid="true" minlength="15">
+      </div>
+      <div class="input_group" style="top:195px;">
+        <div class="logined">登 录</div>
+      </div>
+    </form>
+  </div>
+  <div class="register_content">
+    <div class="qr_code" style="top:145px;"><img src="./resources/chopin/imgs/scanCode.png" alt="" /></div>
+    <div class="registeByApp">请通过扫码安装APP注册账号</div>
+  </div>
+  <div class="forget_content">
+    <div class="qr_code" style="top:145px;"><img src="./resources/chopin/imgs/scanCode.png" alt="" /></div>
+    <div class="registeByApp">请通过扫码安装APP找回密码</div>
+  </div>
+</div>
+<!--上传作品界面-->
+<div class="uploadOpus_modal">
+  <div class="modal-dialog">
+    <div class="channelBarTitle">
+      <div class="barTitleArea">
+        <div class="cName"><div class="h_split"></div>上传作品</div>
+        <div class="eName">uploadOpus</div>
+      </div>
+    </div>
+    <div class="channelBarConetent">
+      <div class="uploadBtn"></div>
+      <div class="changeFile">
+        <input id="ul_File" name="ul_File"  type="text"  placeholder="点击，选择文件上传"  readonly />
+        <input class="ulFile" name="ulFile" type="file" style="display:none;" value="" />
+      </div>
+      <div class="bgmask">
+        <div class="form-group">
+          <label class="control-label">标 题</label>
+          <input id="titleName" name="titleName"  type="text" aria-required="true">
+        </div>
+        <div class="form-group">
+          <label class="control-label">摘 要</label>
+          <input id="abstractName" name="abstractName"  type="text" aria-required="true">
+        </div>
+        <div class="form-group">
+          <label class="control-label">描 述</label>
+          <textarea name="descName" id="descName" cols="30" rows="10"></textarea>
+        </div>
+        <div class="channelBarFooter">
+          <button class="commit" type="button" class="btn btn-primary">提交</button>
+          <button class="cancel" type="button" class="btn btn-white" data-dismiss="modal">取消</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 </body>
-
 <script>
 var rootPath=getRootPath();
 var curMenuId=0;
+var deviceId="";
+var pcdType=3;
+
+function setDeviceId(sessionId) {
+  deviceId=sessionId;
+}
 //主窗口参数
 var INIT_PARAM={
   pageObjs: {
@@ -189,7 +802,6 @@ var INIT_PARAM={
     mainId: "mainSegment"
   },
   page_width: 1366,
-  page_height: 1000,
   top_shadow_color:"#FFA735",
   top_height: 82,
   top_peg: false,
@@ -201,144 +813,492 @@ var INIT_PARAM={
 
 //主函数
 $(function() {
+  //获得SessionId，很重要
+  {
+    var sfrm=document.getElementById("_SESSION");
+    if (sfrm.attachEvent) {
+      sfrm.attachEvent("onload", function() {
+        deviceId=sfrm.contentWindow._deviceId;
+        entryWeb();
+      });
+    } else {
+      sfrm.onload = function() {
+        deviceId=sfrm.contentWindow._deviceId;
+        entryWeb();
+      }; 
+    }
+  }
+  
   //设置主界面
   var initStr=$.spiritPageFrame(INIT_PARAM);
   if (initStr) {
     $.messager.alert("错误", "页面初始化失败<br/>"+initStr, "error");
     return ;
   };
-  //加载导航菜单
-  loadNavigateMenu();
+  window.setTimeout(function(){$(".selArrow").show(0);}, 50);
+  //导航菜单处理
+  $(".nav").bind("mouseover", function() {
+    //定位menue的位置
+    var cid=$(this).attr("cid");
+    curMenuId=cid;
+    if (!curMenuId) return ;
+    $("#menu_"+cid).css({
+      "left":$("#nav_"+cid).offset().left-15
+    });
+    //菜单显示处理
+    $("#nav_"+cid).css("color", "#FFA634");
+    $("#nav_"+cid).find("span").removeClass("selArrow").addClass("selArrow_hover");
+    $("#menu_"+cid).show();
+  });
+  $(".nav").bind("mouseout", function() {
+    var cid=$(this).attr("cid");
+    curMenuId=0;
+    setTimeout(function(){
+      if (cid!=curMenuId) {
+        $("#menu_"+cid).hide();
+        $("#nav_"+cid).css("color", "#fff");
+        $("#nav_"+cid).find("span").removeClass("selArrow_hover").addClass("selArrow");
+      }
+    }, 200);
+  });
+  $("._menu").bind("mouseover", function() {
+    var cid=$(this).attr("cid");
+    curMenuId=cid;
+    //菜单显示处理
+    $("#nav_"+cid).css("color", "#FFA634");
+    $("#nav_"+cid).find("span").removeClass("selArrow").addClass("selArrow_hover");
+  });
+  $("._menu").find("div").each(function() {
+    $(this).bind("mouseover", function() {
+      var cid=$(this).parent().attr("cid");
+      curMenuId=cid;
+      //菜单显示处理
+      $("#nav_"+cid).css("color", "#FFA634");
+      $("#nav_"+cid).find("span").removeClass("selArrow").addClass("selArrow_hover");
+    });
+  });
+  $("._menu").bind("mouseout", function() {
+    var cid=$(this).attr("cid");
+    curMenuId=0;
+    setTimeout(function(){
+      if (cid!=curMenuId) {
+        $("#menu_"+cid).hide();
+        //菜单显示处理
+        $("#nav_"+cid).css("color", "#fff");
+        $("#nav_"+cid).find("span").removeClass("selArrow_hover").addClass("selArrow");
+      }
+    }, 200);
+  });
+  $("._menu").find("div").each(function() {
+    $(this).bind("mouseout", function() {
+      var cid=$(this).parent().attr("cid");
+      curMenuId=0;
+      setTimeout(function(){
+        if (cid!=curMenuId) {
+          $("#menu_"+cid).hide();
+          //菜单显示处理
+          $("#nav_"+cid).css("color", "#fff");
+          $("#nav_"+cid).find("span").removeClass("selArrow_hover").addClass("selArrow");
+        }
+      }, 200);
+    });
+  });
+  showChannelPage('0');
 });
-
 //初始化界面
 function initPosition() {
 }
 //当界面尺寸改变
 function myResize() {
 }
-//加载导航菜单
-function loadNavigateMenu() {
-  $.ajax({type:"post", async:true, url:rootPath+"/baseinfo/getChannelTree4View.do", dataType:"json",
-    success: function(jsonData) {
-      if (jsonData.ReturnType=='1001') {
-        var i=0;
-        var nav=$("<div id='0' class='nav lineDiv' style='width:60px'>首页</div>");
-        $("#navi").append(nav);
-        $(nav).click(function() {
-          showChannelPage($(this).attr("id"));
-        });
-        for (;i<jsonData.Data.children.length; i++) {
-          var oneNav=jsonData.Data.children[i];
-          if (oneNav.children&&oneNav.children.length>0) {
-            nav=$("<div id='nav_"+oneNav.id+"' class='nav lineDiv' cid='"+oneNav.id+"'>"+oneNav.name+"<span class='selArrow'></span></div>");
-            //创建新的divMenu
-            var divMenu=$("<div id='menu_"+oneNav.id+"' class='_menu' cid='"+oneNav.id+"'></div>");
-            var j=0;
-            for (;j<oneNav.children.length;j++) {
-              var oneMenuItem=$("<div id='"+oneNav.children[j].id+"' class='_menuItem' cid='"+oneNav.children[j].id+"'>"+oneNav.children[j].name+"</div>");
-              $(divMenu).append(oneMenuItem);
-              $(oneMenuItem).click(function() {
-                showChannelPage($(this).attr("cid"));
-              });
-            }
-            $("body").append(divMenu);
-            $(divMenu).bind("mouseover", function() {
-              var cid=$(this).attr("cid");
-              curMenuId=cid;
-              //菜单显示处理
-              $("#nav_"+cid).css("color", "#FFA634");
-              $("#nav_"+cid).find("span").removeClass("selArrow").addClass("selArrow_hover");
-            });
-            $(divMenu).find("div").each(function() {
-              $(this).bind("mouseover", function() {
-                var cid=$(this).parent().attr("cid");
-                curMenuId=cid;
-                //菜单显示处理
-                $("#nav_"+cid).css("color", "#FFA634");
-                $("#nav_"+cid).find("span").removeClass("selArrow").addClass("selArrow_hover");
-              });
-            });
-            $(divMenu).bind("mouseout", function() {
-              var cid=$(this).attr("cid");
-              curMenuId=0;
-              setTimeout(function(){
-                if (cid!=curMenuId) {
-                  $("#menu_"+cid).hide();
-                  //菜单显示处理
-                  $("#nav_"+cid).css("color", "#fff");
-                  $("#nav_"+cid).find("span").removeClass("selArrow_hover").addClass("selArrow");
-                }
-              }, 200);
-            });
-            $(divMenu).find("div").each(function() {
-              $(this).bind("mouseout", function() {
-                var cid=$(this).parent().attr("cid");
-                curMenuId=0;
-                setTimeout(function(){
-                  if (cid!=curMenuId) {
-                    $("#menu_"+cid).hide();
-                    //菜单显示处理
-                    $("#nav_"+cid).css("color", "#fff");
-                    $("#nav_"+cid).find("span").removeClass("selArrow_hover").addClass("selArrow");
-                  }
-                }, 200);
-              });
-            });
-          } else nav=$("<div id='nav_"+oneNav.id+"' class='nav lineDiv'>"+oneNav.name+"</div>");
-          $("#navi").append(nav);
-          $(nav).click(function() {
-            showChannelPage($(this).attr("cid"));
-          });
-          if (oneNav.children&&oneNav.children.length>0) {
-            $("#nav_"+oneNav.id).bind("mouseover", function() {
-              //定位menue的位置
-              var cid=$(this).attr("cid");
-              curMenuId=cid;
-              $("#menu_"+cid).css({
-                "left":$("#nav_"+cid).offset().left-15,
-                "top":$("#nav_"+cid).offset().top+47
-              });
-              //菜单显示处理
-              $("#nav_"+cid).css("color", "#FFA634");
-              $("#nav_"+cid).find("span").removeClass("selArrow").addClass("selArrow_hover");
-              $("#menu_"+cid).show();
-            });
-            $("#nav_"+oneNav.id).bind("mouseout", function() {
-              var cid=$(this).attr("cid");
-              curMenuId=0;
-              setTimeout(function(){
-                if (cid!=curMenuId) {
-                  $("#menu_"+cid).hide();
-                  $("#nav_"+cid).css("color", "#fff");
-                  $("#nav_"+cid).find("span").removeClass("selArrow_hover").addClass("selArrow");
-                }
-              }, 200);
-            });
-          }
-        }
-      } else {
-        $.messager.alert("错误", "加载导航菜单：<br/>"+jsonData.message, "error");
-      }
-    },
-    error: function(jqXHR) {
-      $.messager.alert("错误", "加载导航菜单：<br/>"+jqXHR.status, "error");
-    }
-  });
-}
 
 function showChannelPage(channelId) {
-  var ifm=$("#mainContent");
-  var _url=ifm.attr("_src");
-  ifm.attr("src",rootPath+_url+"?ChannelId="+channelId);
-  if (ifm.attr("src")) ifm.css("display","block");
+  var _cUrl=rootPath+"channels.html?ChannelId="+channelId;
+  showInIframe(_cUrl);
 }
-
+function showMyFavoritePage(userId) {
+  var _cUrl=rootPath+"myFavorite.html?UserId="+userId;
+  showInIframe(_cUrl);
+}
+function showMyOpusPage(userId) {
+  var _cUrl=rootPath+"myOpus.html?UserId="+userId;
+  showInIframe(_cUrl);
+}
+function showUploadOpusPage(userId) {
+  var _cUrl=rootPath+"uploadOpus.html?UserId="+userId;
+  showInIframe(_cUrl);
+}
+function showInIframe(iframeSrc) {
+  document.body.scrollTop = document.documentElement.scrollTop = 0;
+  var ifm=$("#mainContent");
+  ifm.attr("src",iframeSrc);
+  ifm.css("display","block");
+  var iframe=document.getElementById("mainContent");
+  var oldHeight=0;
+  var timer1=setInterval(function() {
+  var subHeight=0;
+  var subWeb=iframe.contentWindow.document.body;
+  if (subWeb) {
+    $("#mainContent").attr("height", subWeb.scrollHeight);
+      subHeight=subWeb.scrollHeight;
+    }
+    $("#a_html").height(subHeight);
+    if (subHeight==oldHeight&&subHeight!=0) {
+      window.clearInterval(timer1);
+    }
+  },200);
+  if (iframe.attachEvent) {
+    iframe.attachEvent("onload", function(){
+      var subHeight=0;
+      var subWeb=iframe.contentWindow.document.body;
+      if (subWeb) {
+        $("#mainContent").attr("height", subWeb.scrollHeight);
+        subHeight=subWeb.scrollHeight;
+      }
+      $("#a_html").height($("#mainContent").height());
+      if (subHeight>50) window.clearInterval(timer1);
+    });
+  } else {
+    iframe.onload=function(){
+      var subHeight=0;
+      var subWeb=iframe.contentWindow.document.body;
+      if (subWeb) {
+        $("#mainContent").attr("height", subWeb.scrollHeight);
+        subHeight=subWeb.scrollHeight;
+      }
+      $("#a_html").height($("#mainContent").height());
+      if (subHeight>50) window.clearInterval(timer1);
+    };
+  }
+  setTimeout(function() {
+    window.clearInterval(timer1);
+    var subWeb=iframe.contentWindow.document.body;
+    if (subWeb) $("#mainContent").attr("height", subWeb.scrollHeight);
+    $("#a_html").height($("#mainContent").height());
+  }, 4000);
+}
+function setMainHeight(height) {
+  if (height==-1) {
+    var defaultHeight=500;
+    if ($(window).height()>500) defaultHeight=$(window).height();
+    $("#mainContent").attr("height", defaultHeight);
+  } else {
+    $("#mainContent").attr("height", height);
+  }
+  $("#a_html").height($("#mainContent").height());
+}
 function showMask(message) {
-  alert("");
+
 }
 function cleanMask(message) {
   
 }
+function entryWeb() {
+  var _data={};
+  _data.IMEI=deviceId;
+  _data.PCDType=pcdType;
+  $.ajax({
+    type: "POST",
+    url: rootPath+"/common/entryApp.do",
+    timeout:2000,
+    dataType: "json",
+    data: _data,
+    success: function(jsonData){
+      if(jsonData.ReturnType=="1001") {
+        if (jsonData.UserInfo&&jsonData.UserInfo.UserId) {
+          var logSuccess=jsonData.UserInfo.UserName;
+          var logSuccessId=jsonData.UserInfo.UserId;
+          loginSuccess(logSuccess,logSuccessId);
+        }
+      }
+    },
+    error:function(jqXHR) {
+    }
+  });
+}
+
+/*
+ * 登陆界面
+*/
+
+//登录账号
+$(".login_header1").on("click",function(){
+  $(this).css({"background":"#0E0E0E"});
+  $(".login_header2,.login_header3").css({"background":"gray"});
+  $(".register_content,.forget_content").hide();
+  $(".login_content").show();
+})
+
+//注册账号
+$(".login_header2").on("click",function(){
+  $(this).css({"background":"#0E0E0E"});
+  $(".login_header1,.login_header3").css({"background":"gray"});
+  $(".login_content,.forget_content").hide();
+  $(".register_content").show();
+})
+
+//修改密码
+$(".login_header3").on("click",function(){
+  $(this).css({"background":"#0E0E0E"});
+  $(".login_header1,.login_header2").css({"background":"gray"});
+  $(".login_content,.register_content").hide();
+  $(".forget_content").show();
+})
+
+//取消登陆
+$(document).on("click",".mask",function(){
+  var sure=confirm("确定要取消登陆吗？");
+  if(sure==true){
+    $(".login_modal,.mask").hide();
+  }else{
+    return false;
+  }
+})
+
+/*登陆相关的方法*/
+function login() {
+  $("#usernameInput").val("");
+  $("#userpasswordInput").val("");
+  $(".mask").show();
+  $(".login_modal").show();
+}
+$(document).on("click",".logined",function(){
+  var data={
+    "IMEI":deviceId,
+    "PCDType":"3",
+    "UserName":$("#usernameInput").val(),
+    "Password":$("#userpasswordInput").val()
+  };
+  if($(".remember input[type='checkbox']").is(":checked")) data.remember="yes";
+  else data.remember="no";
+  $.ajax({
+    type: "POST",
+    url: rootPath+"passport/user/mlogin.do",
+    dataType: "json",
+    data: JSON.stringify(data),
+    success: function(jsonData){
+      if(jsonData.ReturnType=="1001") {
+        alert("登陆成功！");
+        $(".mask").hide();
+        $(".login_modal").hide();
+        var logSuccess=jsonData.UserInfo.UserName;
+        var logSuccessId=jsonData.UserInfo.UserId;
+        loginSuccess(logSuccess,logSuccessId);
+      }else{
+        alert(jsonData.Message);
+      }
+    },
+    error:function(jqXHR){
+      alert("发生错误" + jqXHR.status);
+    }
+  });
+});
+
+var overUserCenter=false;
+function loginSuccess(logSuccess,logSuccessId){
+  $("#logBtn,#regBtn").hide();
+  var userCenters='<div class="userCenter"><div class="userCenter_un" userId="'+logSuccessId+'" title="'+logSuccess+'">我:'+logSuccess+'</div><span class="selArrow"></span></div>';
+  $(".searchBtn").after(userCenters);
+  $(document).on("mouseover",".userCenter",function(){
+    overUserCenter=true;
+    $(".userCenter").css("color", "#FFA634");
+    $(".userCenter").find("span").removeClass("selArrow").addClass("selArrow_hover");
+    $(".dropdown-menu").css({"left":$(".userCenter").offset().left-15});
+    $(".dropdown-menu").show();
+  });
+  $(document).on("mouseout",".userCenter",function(){
+    overUserCenter=false;
+    setTimeout(function(){
+      if (overUserCenter) return;
+      $(".userCenter").css("color", "#fff");
+      $(".userCenter").find("span").removeClass("selArrow_hover").addClass("selArrow");
+      $(".dropdown-menu").hide();
+    },200);
+  });
+  $(".dropdown-menu").on("mouseover",function(){
+    overUserCenter=true;
+    $(".userCenter").css("color", "#FFA634");
+    $(".userCenter").find("span").removeClass("selArrow").addClass("selArrow_hover");
+  });
+  $(".dropdown-menu").find("div").each(function(){
+    $(this).on("mouseover",function(){
+      overUserCenter=true;
+      $(this).css("color", "#FFA634");
+      $(".userCenter").css("color", "#FFA634");
+      $(".userCenter").find("span").removeClass("selArrow").addClass("selArrow_hover");
+    });
+  });
+  $(".dropdown-menu").on("mouseout",function(){
+    overUserCenter=false;
+    setTimeout(function(){
+      if (overUserCenter) return;
+      $(this).hide();
+      $(".userCenter").css("color", "#fff");
+      $(".userCenter").find("span").removeClass("selArrow_hover").addClass("selArrow");
+    },200);
+  });
+  $(".dropdown-menu").find("div").each(function() {
+    $(this).on("mouseout",function(){
+      overUserCenter=false;
+      $(this).css("color", "#fff");
+      setTimeout(function(){
+        if (overUserCenter) return;
+        $(".dropdown-menu").hide();
+        $(".userCenter").css("color", "#fff");
+        $(".userCenter").find("span").removeClass("selArrow_hover").addClass("selArrow");
+      },200);
+    });
+  });
+}
+
+//安全退出
+$(document).on("click",'.exit',function(){
+  var sure=confirm("确定要退出登陆吗？");
+  if (!sure) return;
+  var _data={};
+  _data.IMEI=deviceId;
+  _data.PCDType=3;
+  $.ajax({
+    type: "POST",
+    url: rootPath+"passport/user/mlogout.do",
+    dataType: "json",
+    data:_data,
+    success: function(jsonData) {
+      if(jsonData.ReturnType=="1001") {
+        $(".dropdown-menu,.userCenter").hide();
+        $("#logBtn,#regBtn").show();
+      }else{
+        alert(jsonData.Message);
+      }
+    },
+    error:function(jqXHR){
+      alert("发生错误" + jqXHR.status);
+    }
+  });
+});
+
+//我喜欢的
+$(".love").on("click",function(){
+  $(".mask,.uploadOpus_modal").hide();
+  var userId=$(".userCenter_un").attr("userId");
+  showMyFavoritePage(userId);
+});
+//我的作品
+$(".opus").on("click",function(){
+  $(".mask,.uploadOpus_modal").hide();
+  var userId=$(".userCenter_un").attr("userId");
+  showMyOpusPage(userId);
+});
+
+/*
+ * 
+ * 上传作品*/
+$(".upload").on("click",function(){
+  var userId=$(".userCenter_un").attr("userId");
+  $("#ul_File,#titleName,#abstractName,#descName").val(" ");
+  $(".mask,.uploadOpus_modal").show();
+});
+$(".uploadBtn").on("click",function(){
+  $(".changeFile").show();
+  $(this).hide();
+});
+$("#ul_File").on("click", function() {
+  $(".ulFile").click();
+});
+var oMyForm = new FormData();
+var _this;
+$(".ulFile").change(function() {
+  var filePath=$(this).val();
+  _this=$(this);
+  var arr=filePath.split('\\');
+  var fileName=arr[arr.length-1];
+  $("#ul_File").val(fileName);
+  oMyForm.append("ContentFile", $(this)[0].files[0]);
+});
+//点击提交按钮，上传作品
+$(".commit").on("click",function(){
+   $.ajax({
+    url:rootPath+"common/uploadCM.do",
+    type:"POST",
+    data:oMyForm,
+    cache: false,
+    processData: false,
+    contentType: false,
+    dataType:"json",
+    //表单提交前进行验证
+    success: function (opeResult){
+      if(opeResult.ful[0].success=="TRUE"){
+        alert("文件上传成功");
+        var filePath=opeResult.ful[0].storeFilepath;
+        _this.attr("value",filePath);
+        uploadMyOpus(filePath);
+      }
+    },
+    error: function(jqXHR){
+      alert("发生错误" + jqXHR.status);
+    }
+  });
+})
+function uploadMyOpus(filePath){
+  var userId=$(".userCenter_un").attr("userId");
+  var data={};
+  data.UserId=userId;
+  data.ContentTitle=$("#titleName").val();
+  data.FilePath=filePath;
+  data.ChannelId="6";
+  data.ContentDecsn=$("#descName").val();
+  console.log(JSON.stringify(data));
+  $.ajax({
+    url:rootPath+"content/addByApp.do",
+    type:"POST",
+    data:JSON.stringify(data),
+    cache: false,
+    processData: false,
+    contentType: false,
+    dataType:"json",
+    //表单提交前进行验证
+    success: function (jsonData){
+      alert(allFields(jsonData));
+      if(jsonData.ReturnType=="1001"){
+        alert("作品上传成功");
+        $(".mask,.uploadOpus_modal").hide();
+      }
+    },
+    error:function(jqXHR){
+      alert("发生错误" + jqXHR.status);
+    }
+  });
+}
+
+//点击取消上传
+$(".cancel").on("click",function(){
+  $(".mask,.uploadOpus_modal").hide();
+})
+
+/*
+* 
+*
+* 搜索的相关操作和方法*/
+//点击导航栏的搜索按钮
+$(".searchBtn").on("click",function(){
+  $(".header-search-slide").slideDown(100);
+  $(".searchBtn").css({"display":"none"});
+  $(".cancelSearch").css({"display":"block"});
+});
+//点击取消搜索
+$(".cancelSearch").on("click",function(){
+  $(".search").css({"display":"block"});
+  $(".cancelSearch").css({"display":"none"});
+  $(".header-search-slide").slideUp(100);
+});
+//点击搜索栏里的搜索按钮
+$(".header-search-slide .search-btn").on("click",function(){
+  if($(".field").val()){
+   aler("搜索");
+    return false;
+  }else{
+    alert("请输入您要查询的内容!");
+  }
+});
 </script>
 </html>

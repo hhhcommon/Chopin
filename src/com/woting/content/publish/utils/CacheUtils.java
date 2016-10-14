@@ -13,6 +13,7 @@ import java.util.Map;
 import com.spiritdata.framework.FConstants;
 import com.spiritdata.framework.core.cache.SystemCache;
 import com.spiritdata.framework.util.JsonUtils;
+import com.spiritdata.framework.util.StringUtils;
 
 /**
  * 静态数据生成工具
@@ -24,13 +25,14 @@ public abstract class CacheUtils {
 	private static String zjpath = "mweb/zj/";
 	private static String jmpath = "mweb/jm/";
 	private static String templetpath = "mweb/templet/";
-	private static String jmurlrootpath = "http://123.56.254.75:908/CM/"; // 静态节目content.html路径头信息
+	private static String jmurlrootpath = "http://www.wotingfm.com:1108/Chopin/"; // 静态节目content.html路径头信息
 	private static String rootpath = SystemCache.getCache(FConstants.APPOSPATH).getContent()+""; // 静态文件根路径
 
 	/**
 	 * 专辑静态文件发布(info.json,P*.json和content.html)
 	 * @param map
 	 */
+	@SuppressWarnings("unchecked")
 	public static void publishZJ(Map<String, Object> map) {
 		Map<String, Object> mapsequ = (Map<String, Object>) map.get("ContentDetail");
 		List<Map<String, Object>> listaudio = (List<Map<String, Object>>) map.get("SubList");
@@ -178,5 +180,25 @@ public abstract class CacheUtils {
 			e.printStackTrace();
 		}
 		return sb.toString();
+	}
+	
+	/**
+	 * 清除搜索到页面文本里标签
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public static String cleanTag(String str) {
+		if (StringUtils.isNullOrEmptyOrSpace(str)) return "";
+		while (true) {
+			int tagbegin = str.indexOf("<");
+			int tagend = str.indexOf(">", tagbegin);
+			if (tagbegin != -1 && tagend != -1) {
+				String constr = str.substring(tagbegin, tagend + 1);
+				str = str.replace(constr, "");
+			} else {
+				return str.replace("\n", "").replace("　", "").replace("&nbsp;", " ").trim();
+			}
+		}
 	}
 }

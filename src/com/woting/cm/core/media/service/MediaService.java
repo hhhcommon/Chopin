@@ -8,24 +8,18 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import com.spiritdata.framework.core.dao.mybatis.MybatisDAO;
 import com.spiritdata.framework.util.JsonUtils;
-import com.spiritdata.framework.util.SequenceUUID;
-import com.spiritdata.framework.util.StringUtils;
 import com.woting.cm.core.channel.model.Channel;
 import com.woting.cm.core.channel.model.ChannelAsset;
 import com.woting.cm.core.channel.persis.po.ChannelAssetPo;
 import com.woting.cm.core.channel.persis.po.ChannelPo;
-import com.woting.cm.core.dict.model.DictRefRes;
 import com.woting.cm.core.dict.persis.po.DictRefResPo;
-import com.woting.cm.core.media.model.MaSource;
 import com.woting.cm.core.media.model.MediaAsset;
-import com.woting.cm.core.media.model.SeqMediaAsset;
 import com.woting.cm.core.media.persis.po.MaSourcePo;
 import com.woting.cm.core.media.persis.po.MediaAssetPo;
 import com.woting.cm.core.media.persis.po.SeqMaRefPo;
 import com.woting.cm.core.media.persis.po.SeqMediaAssetPo;
 import com.woting.cm.core.utils.ContentUtils;
 import com.woting.content.manage.channel.service.ChannelContentService;
-import com.woting.exceptionC.Wtcm0101CException;
 import com.woting.favorite.service.FavoriteService;
 
 public class MediaService {
@@ -101,6 +95,8 @@ public class MediaService {
         	    MediaAsset ma=new MediaAsset();
 			    ma.buildFromPo(mediaAssetPo);
 			    Map<String, Object> mam = ContentUtils.convert2Ma(ma.toHashMap(), null, null, chsm, fm);
+			    String img = mam.get("ContentImg")+"";
+			    mam.put("ContentSmallImg", img.replace("group03/", "group04/small"));
 			    list.add(mam);
 		    }
         }
@@ -178,7 +174,7 @@ public class MediaService {
     public List<MediaAssetPo> getMaListByIds(String ids) {
     	Map<String, Object> m = new HashMap<>();
     	m.put("ids", ids);
-    	m.put("sortByClause", "cTime");
+    	m.put("sortByClause", "cTime desc");
 		return mediaAssetDao.queryForList("getMaListByIds", m);
     }
     
@@ -205,17 +201,29 @@ public class MediaService {
         mediaAssetDao.update("updateMa", ma.convert2Po());
     }
     
+    public void updateMa(MediaAssetPo ma) {
+    	mediaAssetDao.update("updateMa", ma);
+    }
+    
     public int  updateCha(ChannelAsset cha) {
     	return channelAssetDao.update("update", cha.convert2Po().toHashMap());
     }
 
     public boolean removeMa(String id){
-    	if (mediaAssetDao.delete("multiMaById", id)>0) 
-    		return true;
-    	return false;
+    	try {
+			mediaAssetDao.delete("multiMaById", id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+    	return true; 
     }
     
     public void removeCha(String assetId){
     	channelAssetDao.delete("deleteByAssetId", assetId);
+    }
+    
+    public void removeChaByMap(Map<String, Object> m) {
+    	channelAssetDao.delete("delByChannels", m);
     }
 }

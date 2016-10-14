@@ -10,14 +10,20 @@
   <link href="../resources/plugins/hplus/css/bootstrap.min.css" rel="stylesheet">
   <link href="../resources/plugins/hplus/css/font-awesome.min.css" rel="stylesheet">
   <link href="../resources/plugins/hplus/css/animate.min.css" rel="stylesheet">
-  <!--<link href="../resources/plugins/hplus/css/style.min.css" rel="stylesheet">-->
-  <!--<link href="../resources/css/article.css" rel="stylesheet">-->
+  <link href="../resources/plugins/hplus/css/style.min.css" rel="stylesheet">
+  <link href="../resources/css/catalog.css" rel="stylesheet">
+  <link href="../resources/plugins/zTree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet"/>
+  <link href="../resources/plugins/hplus/css/plugins/jqpagination/fy.css" rel="stylesheet"/>
   <link href="../resources/plugins/summernote/summernote.css" rel="stylesheet">
   <link href="../resources/plugins/uploadimg/css/zyUpload.css" rel="stylesheet">
-  <!-- 全局js -->
   <script src="../resources/plugins/hplus/js/jquery-2.1.1.min.js"></script>
+  <script src="../resources/plugins/zTree/js/jquery.ztree.core-3.5.js"></script>
+  <script src="../resources/plugins/zTree/js/jquery.ztree.excheck-3.5.js"></script>
+  <script src="../resources/plugins/zTree/js/jquery.ztree.exedit-3.5.js"></script>
   <script src="../resources/plugins/hplus/js/bootstrap.min.js"></script>
+  <script src="../resources/plugins/hplus/js/content.min.js"></script>
   <script src="../resources/js/context.utils.js"></script>
+  <script src="../resources/js/common.utils.js"></script>
   <!-- 自定义js -->
   <script src="../resources/plugins/hplus/js/content.min(1).js"></script>
   <!-- jQuery Validation plugin javascript-->
@@ -25,38 +31,91 @@
   <!--编辑文字-->
   <script src="../resources/plugins/summernote/summernote.min.js"></script>
   <script src="../resources/plugins/summernote/lang/summernote-zh-CN.js"></script>
-  <!--上传图片-->
-  <script src="../resources/plugins/uploadimg/js/jq22.js"></script>
-  <script src="../resources/plugins/uploadimg/js/zyFile.js"></script>
-  <script src="../resources/plugins/uploadimg/js/zyUpload.js"></script>
+  
 <style>
 *{margin:0;padding:0;}
 li{list-style: none;}
+/*工具条区域样式*/
+.toobarArea{
+  height:40px;
+  width:100%;
+  line-height:30px;
+  background:#eff3f6;
+  border-top:1px solid #ccc;
+  border-bottom:1px solid #ccc;
+  padding-left:15px;
+  padding-top:5px;
+  overflow:hidden;
+}
+/*按钮*/
+.toobarArea button{
+  width:60px;
+  height:24px;
+  margin-top:-4px;
+  background:#0077c7;
+  color:white;
+  text-align:center;
+  padding:2px;
+  font-size:12px;
+  border-radius: 0px;
+}
+/*主区域*/
+.mainArea{
+  height: calc(100% - 40px);
+  width: 100%;
+  position: absolute;
+  overflow: auto;
+}
+/*分类列表*/
+.catListArea{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 420px;
+  height: 100%;
+  border-right: 1px solid #ccc;
+  overflow: hidden;
+  padding-bottom: 30px;
+}
+.ztree{
+  width:290px;
+  height:430px;
+  margin-left:35px;
+  margin-top:35px;
+  border: 1px solid #3370b7;
+  overflow:auto;
+}
+/*内容详情*/
+.catDetailArea{
+  position:absolute;
+  right:0;
+  top:0;
+  height:100%;
+  width:calc(100% - 420px);
+  background:white;
+}
+.detail{
+  height:240px;
+  border:1px solid black;
+}
+/*弹出框的样式*/
+.opeBox{
+  height: auto;
+  position: absolute;
+  top: 10%;
+  left: 20%;
+  width: 680px;
+  background: white;
+  border-radius: 4px;
+  font-size: 14px;
+  z-index: 10000;
+}
 .opeBox .col-sm-11{
   border: 1px solid black;
   border-radius: 7px;
-  margin-top: 70px;
-  margin-left:35px;
-}
-.ibox .addContent{
-  width: 240px;
-  height: 40px;
-  overflow: hidden;
-  padding: 8px 1px 1px 1px;
-}
-.ibox .addContent li{
-  width: 50px;
-  height: 30px;
-  float: left;
-  margin-left: 4px;
-  font-weight: border;
-  margin-top: 1px;
-  cursor: pointer;
-  line-height: 30px;
-  text-align: center;
-  border-radius: 3px;
-  background: #f0ad4e;
-  color: white;
+  margin-top: 25px;
+  margin-left:22px;
+  margin-bottom:35px;
 }
 .opeBox .form-group {
   margin: 25px auto;
@@ -67,20 +126,105 @@ li{list-style: none;}
 }
 .form-group .control-label{
   position: absolute;
-  top: 50%;
+  top: 56%;
   transform: translate(0,-59%);
-  font-size: 16px;
-  left: 14px;
+  font-size: 14px;
+  left: -50px;
+}
+.segment .btn-group-sm>.btn, .btn-sm {
+    padding: 3px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+.segment .panel-default>.panel-heading{
+  background-color: #f5f5f5;
 }
 .form-group #titleName{
   position: relative;
   top: 4px;
-  left:35px;
+}
+.first{
+  width:207px;
+  height: 27px;
+}
+.second{
+  width:217px;
+  height: 27px;
+}
+#channelId,#channelName{
+  width: 297px;
+  height: 30px;
+  position: absolute;
+  margin-top: -3%;
+}
+.chooseChannel{
+  width: 128px;
+  height: 32px;
+  position: absolute;
+  left:69%;
+  margin-top: -3%;
+  font-size: 15px;
+  line-height: 32px;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid #ccc;
+}
+.ibox .channel .actions {
+  width: 143px;
+  height: 35px;
+  position: absolute;
+  left: 85%;
+  margin-top: -3%;
+  cursor: pointer;
+}
+.ibox .actions .toggle {
+  margin-top: 4%;
+  position: absolute;
+  margin-left: 0%;
+}
+.ibox .actions .toggle img{
+  margin-left: 11%;
+  margin-top:46%;
+}
+.ibox .addContent{
+  width:100%;
+  display: none;
+  margin-top: -1px;
+  margin-left: 13px;
+}
+.ibox .addContent li{
+  width: 20px;
+  height: 20px;
+  border: 1px solid #999;
+  float: left;
+  margin-left: 4px;
+  margin-top:5px;
+  cursor:pointer;
+  line-height:20px;
+  text-align:center;
+  border-radius: 14px;
+}
+.ibox .words .actions {
+  width: 143px;
+  height: 35px;
+  position: absolute;
+  left: 85%;
+  margin-top: 17%;
+  cursor: pointer;
+}
+.ibox .pic .actions {
+  width: 143px;
+  height: 35px;
+  position: absolute;
+  left: 85%;
+  margin-top: 1%;
+  cursor: pointer;
 }
 .previewImg {
   width: 100px;
   height: 100px;
-  border: 1px solid #e5e6e7;
+  border: 1px solid #ccc;
   border-radius: 2px;
   margin-bottom: 5px;
 }
@@ -91,59 +235,120 @@ li{list-style: none;}
 li, a, input {
   outline: 0;
 }
-.first{
-  width:100px;
-  height: 27px;
-  margin-left: 225px;
-}
-.second{
-  width:100px;
-  height: 27px;
-}
-.red{
-  display: inline-block;
-  font-weight:bolder;
-  color:red;
-}
-#checkStatus{
-  width: 20px;
-  height: 16px;
-  position: absolute;
-  top: 49%;
-  transform: translate(0,-59%);
-  font-size: 16px;
-  left: 14px;
-}
+
 </style>
 </head>
-<body>
-  <div class="row opeBox">
+<body style="overflow: auto;">
+  <div style="height:100%;">
+    <!--显示主区域-->
+    <div class="mainArea">
+      <!--左侧列表-->
+      <div id="catListArea" class="catListArea">
+        <!--动态加载栏目列表-->
+        <ul id="cataTree" class="ztree"></ul>
+      </div>
+      <!--右侧详情-->
+      <div id="catDetailArea" class="catDetailArea">
+        <!--动态加载栏目详情-->
+        <div class="col-sm-12">
+          <div class="ibox float-e-margins">
+            <!--菜单栏-->
+            <div class="toobarArea">
+              <button type="button" id="add" opeType="claAdd" class="btn" style="margin-right:3px;">添加</button>
+              <button type="button" id="mod" opeType="claMod" class="btn" style="margin-right:3px;">修改</button>
+              <button type="button" id="del" opeType="claDel" class="btn" style="margin-right:3px;">删除</button>
+            </div>
+            <div class="ibox-content">
+              <ul class="detail">这里面放栏目里的文章</ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 遮罩 -->
+    <div id="shade"></div>
+    <!--弹出内容:添加分类-->
+    <div class="row opeBox" style="display:none;">
     <div class="col-sm-11 ">
       <div class="ibox float-e-margins">
-        <ul class="addContent">
-            <li class="word">文字</li>
-            <li class="picture">图片</li>
-            <li class="vedio">视频</li>
-            <li class="radio">音频</li>
-        </ul>
+        <div class="ibox-tools">
+            <a class="close-link">
+              <i class="fa fa-times"></i>
+            </a>
+        </div>
         <div class="ibox-content">
           <form class="form-horizontal m-t" id="articleForm" onsubmit="return false;">
             <input id="orgName" name="orgName" class="form-control" type="hidden" value="" />
             <input id="orgPath" name="orgPath" class="form-control" type="hidden" value="" />
             <input id="smallName" name="smallName" class="form-control" type="hidden" value="" />
             <input id="smallPath" name="smallPath" class="form-control" type="hidden" value="" />
-            <div class="form-group" style="width:430px;margin-top:-40px;margin-left:255px;">
-              <label class="col-sm-6 control-label">选择栏目(<span class="red">必选</span>)：</label>
-              <select class="first"></select>
-              <select class="second"></select>
-            </div>
+            <input id="fileOrgPath" name="fileOrgPath" class="form-control" type="hidden" value="" />
+            <input id="fileSmallPath" name="fileSmallPath" class="form-control" type="hidden" value="" />
             <div class="form-group" id="1">
-              <label class="col-sm-2 control-label">文章标题：</label>
-              <div class="col-sm-10" style="margin-left: 63px;">
+              <label class="col-sm-2 control-label">标题：</label>
+              <div class="col-sm-10" style="margin-left: 19px;">
                 <input id="titleName" name="titleName" class="form-control" type="text" aria-required="true">
               </div>
             </div>
-            <div class="addForm"></div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">分类：</label>
+              <div class="col-sm-10" style="margin-left: 19px;">
+                <select class="first"></select>
+                <select class="second"></select>
+              </div>
+            </div>
+            <div class="form-group channel" id="0">
+              <label class="col-sm-2 control-label">栏目：</label>
+              <div class="col-sm-10" style="margin-left: 19px;">
+                <input id="channelId" name="channelId" class="form-control" placeholder="栏目id" type="hidden" aria-required="true" value="">
+                <input id="channelName" name="channelName" class="form-control" placeholder="栏目名称" type="text" aria-required="true">
+                <div class='chooseChannel'>选择栏目</div>
+                <ul id="cataTrees" class="ztree"></ul>
+              </div>
+              <div class="actions">
+                <div class="toggle"><img src="../resources/images/off.png" alt="" onclick="show(this)"/></div>
+                <ul class="addContent" style="display: none;">
+                  <li class="word" onclick="newSummernote(this)">文</li>
+                  <li class="picture" onclick="newPicture(this)">图</li>
+                  <li class="vedio">视</li>
+                  <li class="radios">音</li>
+                </ul>
+              </div>
+            </div>
+            <div id="addForm"></div>
+            <!--<div class="form-group segment" type="WORD">
+              <label class="col-sm-2 control-label">描述：</label>
+              <div class="col-sm-10" style="margin-left: 19px;">
+                <div id="summernote" class="summernote"></div>
+              </div>
+              <div class="action">
+                <div class="toggle"><img src="../resources/images/off.png" alt="" /></div>
+                <ul class="addContent" style="display: none;">
+                  <li class="word">文</li>
+                  <li class="picture">图</li>
+                  <li class="vedio">视</li>
+                  <li class="radios">音</li>
+                </ul>
+              </div>
+            </div>
+            <div id="addForm"></div>
+            <div class="form-group pic">
+              <label class="col-sm-2 control-label">图片：</label>
+              <div class="col-sm-10"style="margin-left: 19px;">
+                <input id="uploadImg" name="uploadImg" class="form-control" type="file" accept=".png,.jpg" />
+                <input id="ContentImg" name="ContentImg" type="hidden" value="" />
+                <span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大1M，支持JPG、PNG格式</span>
+              </div>
+              <div class="action">
+                <div class="toggle"><img src="../resources/images/off.png" alt="" /></div>
+                <ul class="addContent" style="display: none;">
+                  <li class="word">文</li>
+                  <li class="picture">图</li>
+                  <li class="vedio">视</li>
+                  <li class="radios">音</li>
+                </ul>
+              </div>
+            </div>-->
             <div class="form-group" style="margin-top: 20px;">
               <div class="col-sm-6 text-right">
                 <button class="btn btn-warning" id="submitBtn" type="submit">预览</button>
@@ -157,135 +362,232 @@ li, a, input {
       </div>
     </div>
   </div>
+  </div>
 </body> 
 <script>
+var zTreeObj,zTreeObjs,des;
 var rootPath=getRootPath();
-var _jsonData,channelId;
-var i=1;
-var segmentIndex=2;
-//页面加载的时候请求获取栏目内容
-firstChannel();
-
+var segmentIndex=1;
+window.picstr;//图片字符串
+//需要加载的分类树的数据，以list方式给出
+var loadTreeData=[{ChannelId:"",TreeViewType:"zTree"}];
+//初始化方法：页面加载完成后执行
 $(function(){
-  window.picstr;//图片字符串
-  //1初始化点击事件
-  //1.0-一级栏目改变显示对应的二级栏目
-  $(".first").on("change",function(){
-    channelId=$(this).children('option:selected').val();
-    loadSecondChannel();
-  })
-  
-  //1.1-点击文字
-  $(".word").on("click",function(){
-    i++;
-    loadWord(i);
-    $('.summernote').summernote({
-      lang:'zh-CN',
-      height:80,
-      minHeight:80,
-      maxHeight:80,
-      focus:false,
-      toolbar: [
-        // [groupName, [list of button]]
-        ['style', ['bold', 'italic', 'underline', 'clear']],
-        ['font', ['strikethrough', 'superscript', 'subscript']],
-        ['fontsize', ['fontsize']],
-        ['color', ['color']],
-        ['para', ['ul', 'ol', 'paragraph']],
-        ['height', ['height']]
-      ]
-    });
+  //0-初始化页面
+  //0.1-初始化页面树样式
+  zTreeObj=$.fn.zTree.init($("#cataTree"), {
+    view:{
+      selectedMulti: false//是否允许同时选中多个节点
+    },
+    edit:{
+      enable: true,//是否开启异步模式
+      showRemoveBtn: false,//是否显示删除按钮
+      showRenameBtn: false//是否显示编辑名称按钮
+    },
+    check:{
+      enable: false//设置 zTree的节点上是否显示 checkbox / radio
+    },
+    data:{
+      simpleData:{
+        enable: true
+      }
+    }
   });
-  
-  //1.2-点击图片
-  $(".picture").on("click",function(){
-    i++;
-    loadPic(i);
-  });
-  
-  //1.3点击保存
-  $(".commit").on("click",function() {
-    createArticle();
-  });
-  
-})
-
-/*
- *方法集
- * */
-
-//加载一级栏目
-function firstChannel(){
-  $.ajax({
-    url: rootPath+"baseinfo/getChannelTree4View.do",
-//  url: "http://localhost:1108/Chopin/baseinfo/getChannelTree4View.do",
-    type: "POST", 
-    dataType: "json",
-    success: function(jsonData){
-      if(jsonData.ReturnType=="1001") {
-        loadFirstChannel(jsonData);
-        _jsonData = jsonData;
-        loadSecondChannel();
+  //0.2--初始化弹出框的树
+  zTreeObjs=$.fn.zTree.init($("#cataTrees"), {
+    view:{
+      selectedMulti: false//是否允许同时选中多个节点
+    },
+    edit:{
+      enable: true,//是否开启异步模式
+      showRemoveBtn: false,//是否显示删除按钮
+      showRenameBtn: false//是否显示编辑名称按钮
+    },
+    check:{
+      enable: false//设置 zTree的节点上是否显示 checkbox / radio
+    },
+    data:{
+      simpleData:{
+        enable: true
       }
     },
-    error:function(jqXHR){
-      alert("发生错误" + jqXHR.status);
+    callback:{
+      onClick:onClick
     }
+});
+  
+  //1-加载数据
+  //1.1-加载树
+  loadTree(loadTreeData);
+  
+  //2-初始化页面按钮
+  //2.1-点击添加按钮，增加新的分类
+  $("#add").on("click",function(){
+    $("#shade").css({"display":"block"});
+    $(".row").show();
   });
-}
-function loadFirstChannel(jsonData){
-  var listLength=jsonData.Data.children.length;
-  var opt;
-  for(var k=0;k<listLength;k++){
-    opt=$("<option></option>");
-    opt.val(jsonData.Data.children[k].id);
-    opt.text(jsonData.Data.children[k].name);
-    $(".first").append(opt);
-  }
-  channelId=$(".first").find("option:selected").val();
-}
+  //2.2-点击修改按钮，修改已有的分类
+  $("#mod").on("click",function(){
+    $("#shade").css({"display":"block"});
+    $(".row").show();
+  });
+  //2.3-点击删除按钮，删除已有的分类
+  $("#del").on("click",function(){
+    
+  });
+  //2.4-点击提交按钮，提交表单
+  $(".commit").on("click",function(){
+   createArticle();
+  })
+  //2.5-点击遮罩层,确定,取消按钮，遮罩层和弹出层消失
+  $(".commit,.close-link").on("click",function(){
+    $(".row").hide();
+    $("#shade").css({"display":"none"});
+  });
+  
+  //3初始弹出框点击事件
+  //3.1-点击选择栏目,弹出界面出现树
+  $(".chooseChannel").on("click",function(){
+    hiden();
+    $("#cataTrees").slideDown("slow");
+  })
+});
 
-//当一级栏目改变加载对应的二级栏目
-function loadSecondChannel(){
-  $(".second").text("");//每次加载前先清空
-  for(var j=0;j<_jsonData.Data.children.length;j++){
-//  alert(channelId+"##"+_jsonData.Data.children[j].id);
-    if(channelId==_jsonData.Data.children[j].id){
-      var listLength=_jsonData.Data.children[j].children.length;
-      var opt;
-      for(var k=0;k<listLength;k++){
-        opt=$("<option></option>");
-        opt.val(_jsonData.Data.children[j].children[k].id);
-        opt.text(_jsonData.Data.children[j].children[k].name);
-        $(".second").append(opt);
+/**
+ * 加载树
+ */
+function loadTree(loadData) {
+  var _url=rootPath+"baseinfo/getChannelTree4View.do";
+  var i=0;
+  loadRecursion(0);
+  function loadRecursion(index) {
+    if (index==loadTreeData.length) return;
+    $.ajax({
+      type: "POST",    
+      url: _url,
+      dataType: "json",
+      data: loadData[index++],
+      success: function(jsonData){
+        if(jsonData.ReturnType=="1001") {
+          zTreeObj.addNodes(null,jsonData.Data,false);
+          zTreeObjs.addNodes(null,jsonData.Data,false);
+        }
+        loadRecursion(index);
+      },
+      error:function(jqXHR){
+        alert("发生错误" + jqXHR.status);
       }
-      return;
-    }
+    });
   }
 }
 
-//加载文字
-function loadWord(i){
-  var dom='<div class="form-group segment" id='+i+' type="WORD">'+
-              '<input id="checkStatus" name="checkStatus" type="checkbox"/>'+
-              '<label class="col-sm-2 control-label">编辑文字：</label>'+
-              '<div class="col-sm-10" style="margin-left: 100px;">'+
-                '<div id="summernote'+i+'" class="summernote"></div>'+
+//选择弹出框上面树的栏目
+function onClick(event, treeId, treeNode) {
+  var node=zTreeObjs.getSelectedNodes();//获取 模态框里zTree当前被选中的节点数据集合
+  var modalNode=node[0]; //当前选中的节点
+  $("#channelId").val(modalNode.id);
+  $("#channelName").val(modalNode.name);
+  $("#cataTrees").slideUp("slow");
+};
+
+//点击栏目边上的“加号”
+function show(plus){
+  hiden();
+  $(plus).parent().parent().find(".addContent").css({"display":"block"});
+}
+
+//生成summernote编辑框
+function newSummernote(news) {
+  var nowId=$(news).parents(".form-group").prop("id");
+  alert(nowId);
+  if(nowId==0){
+    $(des).appendTo($("#addForm"));
+  }else{
+    var nextId=$(news).parents(".form-group").next().prop("id");
+    alert(nextId);
+  }
+  return;
+  segmentIndex++;
+  description(segmentIndex);
+  //初始summernote
+  $('.summernote').summernote({
+    lang:'zh-CN',
+    height:80,
+    minHeight:80,
+    maxHeight:80,
+    focus:false,
+    toolbar: [
+      // [groupName, [list of button]]
+      ['style', ['bold', 'italic', 'underline', 'clear']],
+      ['font', ['strikethrough', 'superscript', 'subscript']],
+      ['fontsize', ['fontsize']],
+      ['color', ['color']],
+      ['para', ['ul', 'ol', 'paragraph']],
+      ['height', ['height']]
+    ]
+  });
+  hiden();
+}
+/*设置描述样式*/
+function description(segmentIndex){
+  alert("des"+segmentIndex)
+  des='<div class="form-group segment words" id='+segmentIndex+' type="WORD">'+
+        '<label class="col-sm-2 control-label">描述：</label>'+
+        '<div class="col-sm-10" style="margin-left: 19px;">'+
+          '<div id="summernote'+segmentIndex+'" class="summernote"></div>'+
+        '</div>'+
+        '<div class="actions">'+
+          '<div class="toggle"><img src="../resources/images/off.png" alt=""  onclick="show(this)"/></div>'+
+          '<ul class="addContent" style="display: none;">'+
+            '<li class="word" onclick="newSummernote(this)">文</li>'+
+            '<li class="picture" onclick="newPicture(this)">图</li>'+
+            '<li class="vedio">视</li>'+
+            '<li class="radios">音</li>'+
+          '</ul>'+
+        '</div>'+
+      '</div>'
+//$(des).appendTo($("#addForm"));
+}
+
+//生成图片编辑框
+function newPicture(){
+  segmentIndex++;
+  picture(segmentIndex);
+  hiden();
+  upLoadPicture();
+}
+
+/*设置图片样式*/
+function picture(segmentIndex){
+  alert("pic"+segmentIndex);
+  var pict='<div class="form-group segment pic" id='+segmentIndex+' type="PICTURE">'+
+              '<label class="col-sm-2 control-label">图片：</label>'+
+              '<div class="col-sm-10"style="margin-left: 19px;">'+
+                '<input id="uploadImg" name="uploadImg" class="form-control" type="file" accept=".png,.jpg" />'+
+                '<input id="ContentImg" name="ContentImg" type="hidden" value="" />'+
+                '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大1M，支持JPG、PNG格式</span>'+
+              '</div>'+
+              '<div class="actions">'+
+                '<div class="toggle"><img src="../resources/images/off.png" alt=""  onclick="show(this)"/></div>'+
+                '<ul class="addContent" style="display: none;">'+
+                  '<li class="word" onclick="newSummernote(this)">文</li>'+
+                  '<li class="picture" onclick="newPicture(this)">图</li>'+
+                  '<li class="vedio">视</li>'+
+                  '<li class="radios">音</li>'+
+                '</ul>'+
               '</div>'+
             '</div>'
-  $(dom).appendTo($(".addForm"));
+  $(pict).appendTo($("#addForm"));
 }
 
-
 //上传图片
-function loadPicDOM(){
+function upLoadPicture(){
   $("input[type='file']").change(function(){
     var _this=$(this);
     var oMyForm = new FormData();
     oMyForm.append("ContentFile", $(this)[0].files[0]);
     $.ajax({
       url:rootPath+"common/uploadCM.do",
-//    url:"http://localhost:1108/Chopin/common/uploadCM.do",
       type:"POST",
       data:oMyForm,
       cache: false,
@@ -326,30 +628,15 @@ function loadPicDOM(){
   });
 }
 
-//加载图片
-function loadPic(i){
-  var dom='<div class="form-group segment" id='+i+' type="PICTURE">'+
-              '<input id="checkStatus" name="checkStatus" type="checkbox"/>'+
-              '<label class="col-sm-2 control-label">文章图片：</label>'+
-              '<div class="col-sm-10" style="margin-left:100px;">'+
-                '<input id="uploadImg" name="uploadImg" class="form-control" type="file" accept=".png,.jpg" />'+
-                '<input id="ContentImg" name="ContentImg" type="hidden" value="" />'+
-                '<span class="help-block m-b-none"><i class="fa fa-info-circle"></i>文件最大1M，支持JPG、PNG格式</span>'+
-              '</div>'+
-            '</div>'
-  $(dom).appendTo($(".addForm"));
-  loadPicDOM();
-}
-
-//提交图片和文字
-function createArticle() {
+//生成文章内容
+function createArticle(){
   var list=[];
   var title={};//标题
   title.PartId=1;
   title.PartType="TITLE";
   title.PartInfo=$("#titleName").val();
   list.push(title);
-  $(".addForm").find("div.segment").each(function() {//文字或图片或视频或音频
+  $("#addForm").find("div.segment").each(function() {//文字或图片或视频或音频
     var onePart={};
     onePart.PartId=$(this).attr("id");
     onePart.PartType=$(this).attr("type");
@@ -361,20 +648,19 @@ function createArticle() {
       onePart.PartOrgPath=$("#orgPath").val;
       onePart.PartSmallName=$("#smallName").val;
       onePart.PartSmallPath=$("#smallPath").val;
+      onePart.FileOrgPath=$().val;
     }
     list.push(onePart);
   });
-  
   var postData={};
-  postData.ChannelId=$(".second").val();
+  postData.ChannelId=$("#channelId").val();
   postData.List=list;
   console.log(postData);
-  return;
   $.ajax({
     //url:"http://localhost:908/CM/common/uploadCM.do",
     url:rootPath+"content/addByWeb.do",
     type:"POST",
-    data:JSON.stringify(_data),
+    data:postData,
     dataType:"json",
     //表单提交前进行验证
     success: function (returnData){
@@ -388,7 +674,13 @@ function createArticle() {
       alert("发生错误" + jqXHR.status);
     }     
   });
-  
-}    
+}
+
+//隐藏所有的addContent  但是现在仍然还有一个存在
+function hiden(){
+  $(".addContent").css("display", "none");
+}
+
+
 </script>
 </html>

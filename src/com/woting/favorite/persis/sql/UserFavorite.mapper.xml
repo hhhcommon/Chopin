@@ -18,7 +18,7 @@
 
   <!-- 所有列 -->
   <sql id="Base_Column_List">
-    id, ownerType, ownerId, resTableName, resId, cTime
+    id, ownerType, ownerId, resTableName, resId, sumNum, cTime
   </sql>
 
   <!-- 条件子句 -->
@@ -112,5 +112,8 @@
   </delete>
   <delete id="deleteByEntity" parameterType="java.util.Map">
     delete from da_UserFavorite <if test="_parameter!=null"><include refid="WhereClauseByEntiey"/></if>
+  </delete>
+  <delete id="delArticle" parameterType="java.util.Map">
+    delete from da_UserFavorite where resId=#{resId,jdbcType=VARCHAR}
   </delete>
 </mapper>

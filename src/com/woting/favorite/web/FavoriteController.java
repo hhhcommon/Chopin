@@ -53,7 +53,7 @@ public class FavoriteController {
                     map.put("Message", "无法获取设备Id(IMEI)");
                 } else {
                     //处理过客
-                    if ((retM.get("ReturnType")+"").equals("2003")) {
+                    if ((retM.get("ReturnType")+"").equals("2003")||(retM.get("ReturnType")+"").equals("2002")) {
                         mUdk.setUserId("0");
                     }
                     map.putAll(mUdk.toHashMapAsBean());
@@ -180,7 +180,7 @@ public class FavoriteController {
                 if ((retM.get("ReturnType")+"").equals("2001")) {
                     map.put("ReturnType", "0000");
                     map.put("Message", "无法获取设备Id(IMEI)");
-                } else if ((retM.get("ReturnType")+"").equals("2003")) {
+                } else if ((retM.get("ReturnType")+"").equals("2003")||(retM.get("ReturnType")+"").equals("2002")) {
                     map.put("ReturnType", "200");
                     map.put("Message", "需要登录");
                 } else {
@@ -201,7 +201,7 @@ public class FavoriteController {
             }
             int pageSize=10;
             try {
-                page=Integer.parseInt(m.get("PageSize")==null?null:m.get("PageSize")+"");
+                pageSize=Integer.parseInt(m.get("PageSize")==null?null:m.get("PageSize")+"");
             } catch(Exception e) {
             }
 

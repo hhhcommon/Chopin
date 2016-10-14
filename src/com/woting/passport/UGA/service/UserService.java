@@ -40,6 +40,22 @@ public class UserService implements UgaUserService {
     }
     
     /**
+     * 根据选手
+     * @param username
+     * @return
+     */
+    public UserPo getUserByUserName(String username) {
+    	try {
+    		Map<String, Object> m = new HashMap<>();
+    		m.put("whereByClause", "userName='"+username+"' and team is not null limit 1");
+			return userDao.getInfoObject("getListByWhere",m);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	return null;
+    }
+    
+    /**
      * 根据绑定手机号，获得用户信息
      * @param userNum 用户号码
      * @return 用户信息
@@ -133,6 +149,7 @@ public class UserService implements UgaUserService {
         //查看是否已经存在了
         ThirdUserPo tuPo=thirdUserDao.getInfoObject("getInfoByThirdUserId", thirdUserId);
         UserPo uPo=null;
+        System.out.println("==============================================================================234=======");
 
         if (tuPo==null) {
             //若没有存在：1-加入新的用户
@@ -155,8 +172,8 @@ public class UserService implements UgaUserService {
             tuPo.setThirdLoginCount(1);
             tuPo.setThirdUserInfo(JsonUtils.objToJson(tuserData));
             //保存到数据库
-            thirdUserDao.insert(tuPo);
             this.insertUser(uPo);
+            thirdUserDao.insert(tuPo);
         } else {
             //若存在：加一次登录数
             Map<String, Object> paramM=new HashMap<String, Object>();

@@ -78,6 +78,11 @@
   <!-- 获得列表 -->
   <select id="getList" resultMap="channelMap" parameterType="java.util.Map">
     select <include refid="Base_Column_List"/>from wt_Channel <if test="_parameter!=null"><include refid="WhereClauseByEntiey"/></if>
+    <if test="sortByClause!=null">order by ${sortByClause}</if>
+  </select>
+  
+  <select id="getListAll" resultMap="channelMap">
+    select <include refid="Base_Column_List"/>from wt_Channel
   </select>
 
   <!-- 获得一条数据 -->

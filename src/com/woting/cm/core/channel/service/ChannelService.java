@@ -5,12 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
-
 import com.spiritdata.framework.core.cache.CacheEle;
 import com.spiritdata.framework.core.cache.SystemCache;
 import com.spiritdata.framework.core.dao.mybatis.MybatisDAO;
@@ -302,6 +299,7 @@ public class ChannelService {
     public List<ChannelPo> getChannelsByPcId(String pcId) {
     	Map<String, Object> m = new HashMap<>();
     	m.put("pcId", pcId);
+    	m.put("sortByClause", "sort desc ,cTime desc");
 		return channelDao.queryForList("getList", m);
     }
 
@@ -327,7 +325,6 @@ public class ChannelService {
     	Map<String, Object> m = new HashMap<>();
 		m.put("pcId", channelId);
     	m.put("assetType", "wt_MediaAsset");
-    	m.put("flowFlag", 2);
     	m.put("sortByClause", "sort desc ,pubTime desc");
     	m.put("isValidate", 1);
     	m.put("page", page-1);
@@ -339,10 +336,9 @@ public class ChannelService {
     	Map<String, Object> m = new HashMap<>();
     	m.put("channelId", channelId);
     	m.put("assetType", "wt_MediaAsset");
-    	m.put("flowFlag", flowFlag);
     	m.put("sortByClause", "sort desc ,pubTime desc");
     	m.put("isValidate", 1);
-    	m.put("page", page-1);
+    	m.put("page", (page-1)*pageSize);
     	m.put("pageSize", pageSize);
 		return channelAssetDao.queryForList("getListByLimit", m);
     }
@@ -350,11 +346,33 @@ public class ChannelService {
     public int getChannelAssetsNum(String channelId, int flowFlag) {
     	Map<String, Object> m = new HashMap<>();
     	m.put("channelId", channelId);
-    	m.put("flowFlag", "2");
+    	m.put("isValidate", "1");
 		return channelAssetDao.queryForList("getListByWhere", m).size();
     }
 
+    public List<ChannelAssetPo> getChannelAssetList(String channelIds) {
+    	Map<String, Object> m = new HashMap<>();
+    	m.put("isValidate", "2");
+    	m.put("whereByClause", "channelId in ("+channelIds+")");
+    	m.put("sortByClause", "sort desc");
+		return channelAssetDao.queryForList("getList", m);
+    }
+    
     public void removeChannelAsset(String contentId) {
     	channelAssetDao.delete("deleteByAssetId", contentId);
+    }
+    
+    public boolean removeChannelAssetByEntity(Map<String, Object> m) {
+    	try {
+			channelAssetDao.delete("deleteByEntity", m);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+    }
+    
+    public void removeChannelAssetByMap(Map<String, Object> m) {
+    	channelAssetDao.delete("delByChannels", m);
     }
 }

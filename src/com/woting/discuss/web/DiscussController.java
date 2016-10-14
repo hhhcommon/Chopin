@@ -60,7 +60,7 @@ public class DiscussController {
                     map.put("Message", "无法获取设备Id(IMEI)");
                 } else {
                     //处理过客
-                    if ((retM.get("ReturnType")+"").equals("2003")) {
+                    if ((retM.get("ReturnType")+"").equals("2003")||(retM.get("ReturnType")+"").equals("2002")) {
                         mUdk.setUserId("0");
                     }
                     map.putAll(mUdk.toHashMapAsBean());
@@ -147,7 +147,7 @@ public class DiscussController {
                     map.put("Message", "无法获取设备Id(IMEI)");
                 } else {
                     //处理过客
-                    if ((retM.get("ReturnType")+"").equals("2003")) {
+                    if ((retM.get("ReturnType")+"").equals("2003")||(retM.get("ReturnType")+"").equals("2002")) {
                         mUdk.setUserId("0");
                     }
                     map.putAll(mUdk.toHashMapAsBean());
@@ -214,6 +214,7 @@ public class DiscussController {
             if (m==null||m.size()==0) {
                 map.put("ReturnType", "0000");
                 map.put("Message", "无法获取需要的参数");
+                return map;
             } else {
                 mUdk=MobileParam.build(m).getUserDeviceKey();
                 if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
@@ -237,14 +238,15 @@ public class DiscussController {
             }
             int pageSize=10;
             try {
-                page=Integer.parseInt(m.get("PageSize")==null?null:m.get("PageSize")+"");
+                pageSize=Integer.parseInt(m.get("PageSize")==null?null:m.get("PageSize")+"");
             } catch(Exception e) {
             }
 
-            List<Discuss> ol=discussService.getArticleDiscusses(articleId, page, pageSize);
+            Map<String, Object> ol=discussService.getArticleDiscusses(articleId, page, pageSize);
             if (ol!=null&&ol.size()>0) {
                 map.put("ReturnType", "1001");
-                map.put("OpinionList", convertDiscissView(ol));
+                map.put("AllCount", ol.get("AllCount"));
+                map.put("OpinionList", convertDiscissView((List<Discuss>)(ol.get("List"))));
             } else {
                 map.put("ReturnType", "1011");
                 map.put("Message", "无评论信息");
@@ -328,7 +330,7 @@ public class DiscussController {
                     if ((retM.get("ReturnType")+"").equals("2001")) {
                         map.put("ReturnType", "0000");
                         map.put("Message", "无法获取设备Id(IMEI)");
-                    } else if ((retM.get("ReturnType")+"").equals("2003")) {
+                    } else if ((retM.get("ReturnType")+"").equals("2003")||(retM.get("ReturnType")+"").equals("2002")) {
                         map.put("ReturnType", "200");
                         map.put("Message", "需要登录");
                     } else {
@@ -355,11 +357,12 @@ public class DiscussController {
             } catch(Exception e) {
             }
 
-            List<Map<String, Object>> al=discussService.getUserDiscusses(mUdk.getUserId(), page, pageSize);
+            Map<String, Object> al=discussService.getUserDiscusses(mUdk.getUserId(), page, pageSize);
 
             if (al!=null&&al.size()>0) {
                 map.put("ReturnType", "1001");
-                map.put("ContentList", al);
+                map.put("AllCount", al.get("AllCount"));
+                map.put("ContentList", al.get("List"));
             } else {
                 map.put("ReturnType", "1011");
                 map.put("Message", "无用户评论列表");

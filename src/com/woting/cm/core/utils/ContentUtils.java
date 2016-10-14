@@ -1,5 +1,6 @@
 package com.woting.cm.core.utils;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -97,31 +98,32 @@ public abstract class ContentUtils {
                                                   List<Map<String, Object>> cataList,
                                                   List<Map<String, Object>> pubChannelList,
                                                   List<Map<String, Object>> favoriteList) {
-        Map<String, Object> retM=new HashMap<String, Object>();
-
-        retM.put("MediaType", "AUDIO");
+        Map<String, Object> retM=new HashMap<String, Object>();;
+        retM.put("MediaType", "Content");
 
         retM.put("ContentId", one.get("id"));//P01-公共：ID
         retM.put("ContentName", one.get("maTitle"));//P02-公共：名称
-        retM.put("ContentSubjectWord", one.get("subjectWord"));//P03-公共：主题词
-        retM.put("ContentKeyWord", one.get("keyWord"));//P04-公共：关键字
+        retM.put("ContentSubjectWord", one.get("subjectWords"));//P03-公共：主题词
         retM.put("ContentPub", one.get("maPublisher"));//P05-公共：发布者，集团名称
-        retM.put("ContentPubTime", one.get("maPublishTime"));//P06-公共：发布时间
+        retM.put("ContentPubTime", one.get("maPublishTime")==null?null:Timestamp.valueOf(one.get("maPublishTime")+""));//P06-公共：发布时间
         retM.put("ContentImg", one.get("maImg"));//P07-公共：相关图片
         retM.put("ContentPlay", one.get("maURL"));//P08-公共：主播放Url，这个应该从其他地方来，现在先这样//TODO
-        retM.put("ContentURI", "content/getContentInfo.do?MediaType=AUDIO&ContentId="+retM.get("ContentId"));//P08-公共：主播放Url，这个应该从其他地方来，现在先这样//TODO
-        retM.put("ContentShareURL", getShareUrl_JM(preAddr, one.get("id")+""));//分享地址
-//        retM.put("ContentSource", one.get("maSource"));//P09-公共：来源名称
-//        retM.put("ContentURIS", null);//P10-公共：其他播放地址列表，目前为空
+        String contenturi = "http://www.wotingfm.com/Chopin/articleShell.html?ContentId="+retM.get("ContentId");
+        int mastatus = Integer.valueOf(one.get("maStatus")+"");
+        retM.put("ContentURI", mastatus==99?one.get("maURL"):contenturi);//P08-公共：主播放Url，这个应该从其他地方来，现在先这样//TODO
+        retM.put("ContentShareURL", "http://www.wotingfm.com/Chopin/articleFrameShell.html?ContentId="+retM.get("ContentId"));//分享地址
+        retM.put("ContentPubImg", "http://www.wotingfm.com/Chopin/dataCenter/media/group03/lunbotu_"+one.get("id")+".png");//轮播图内容图片
         retM.put("ContentDesc", one.get("descn"));//P11-公共：说明
         retM.put("ContentStatus", one.get("maStatus"));
-
+        retM.put("ContentSource",one.get("language"));
+        retM.put("LangDid", one.get("langDid"));
+        String imgpath = one.get("maImg")+"";
+        retM.put("ContentSmallImg",imgpath.replace("group03/", "group04/small"));
         fillExtInfo(retM, "AUDIO", personList, cataList, pubChannelList, favoriteList);//填充扩展信息
-
 
         retM.put("ContentTimes", one.get("timeLong"));//S01-特有：播放时长
 
-        retM.put("CTime", one.get("CTime"));//A1-管控：节目创建时间，目前以此进行排序
+        retM.put("CTime", one.get("CTime")==null?null:Timestamp.valueOf(one.get("CTime")+""));//A1-管控：节目创建时间，目前以此进行排序
 
         return retM;
     }
@@ -205,7 +207,7 @@ public abstract class ContentUtils {
             if ((_c.get("assetType")+"").equals(resTableName)&&(_c.get("assetId")+"").equals(resId)) {
                 oneChn=new HashMap<String, Object>();
                 oneChn.put("ChannelName", _c.get("channelName"));
-                oneChn.put("PubTime", _c.get("pubTime"));
+                oneChn.put("PubTime", _c.get("pubTime")==null?null:Timestamp.valueOf(_c.get("pubTime")+""));
                 oneChn.put("FlowFlag", _c.get("flowFlag"));
                 oneChn.put("ChannelId", _c.get("channelId"));
                 ret.add(oneChn);

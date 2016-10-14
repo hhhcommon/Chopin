@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>参赛选手</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="renderer" content="webkit">
+  <meta name="applicable-device" content="pc,mobile">
+  <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+<style>
+/*全局样式*/
+*{margin:0;padding:0;}
+li{list-style: none;}
+html{font-size:62.5%;}
+.container{
+  width:100%;
+  height:auto;
+  margin:0px auto;
+  overflow: hidden; 
+}
+/*选手类别样式*/
+.header{
+  width:100%;
+  height:30px;
+  margin-top: 20px;
+}
+.header .line{
+  width: 5px;
+  height: 20px;
+  border-radius: 6px;
+  margin-top: 4px;
+  margin-left: 10px;
+  display: block;
+  float: left;
+  background: gray;
+} 
+.header .category{
+  width: 10%;
+  height: 20px;
+  color: gray;
+  font-size: 1.7rem;
+  margin-top: 3px;
+  margin-left: 8px;
+  float: left;
+  display: block;
+} 
+/*标题内容样式*/
+.titleContent{
+  width:100%;
+  height:auto;
+}
+.titleContent h2{
+  width:100%;
+  font-size:3rem;
+  text-align:center;
+  color:black;
+}
+.webSource{
+  width:17%;
+  font-size:14px;
+  color: rgba(0, 0, 0, 0.39);
+  margin:10px auto;
+}
+.webSource .time{
+  width:50%;
+}
+.webSource .source{
+  width:50%;
+  margin-left:3%;
+}
+/*选手内容*/
+.conpetitorContent{
+  width:100%;
+  height:auto;
+  margin-top:10px;
+}
+.conpetitorContent .word{
+  width:84%;
+  height:97%;
+  margin:0px auto;
+  color:rgba(0,0,0,0.64);
+  line-height:31px;
+}
+.conpetitorContent .pic{
+  width:90%;
+  /*height:100%;*/
+  /*position: relative;*/
+  margin:0px auto;
+  border:1px solid green;
+}
+.conpetitorContent .pic img{
+  position:absolute;
+  background-size:100% 100%;
+}
+.conpetitorContent .video{
+  width:94%;
+  height:100%;
+  margin:0px auto;
+  border:1px solid red;
+}
+.conpetitorContent .video div{
+  width:100%;
+  height:100%;
+}
+.conpetitorContent .audio{
+  width:94%;
+  height:100%;
+  margin:0px auto;
+  border:1px solid green;
+}
+.conpetitorContent .audio div{
+  width:100%;
+  height:100%;
+}
+
+/*分割线*/
+.splitLine{
+  width:100%;
+  height:3px;
+  background:rgba(0,0,0,0.64);
+  margin-top:40px;
+}
+/*为选手投票*/
+.voteContent{
+  width:84%;
+  height:auto;
+  margin:0 auto;
+}
+.voteContent .vote{
+  width:100%;
+  height:auto;
+  overflow: hidden;
+}
+.voteContent .vote h2{
+  width:18%;
+  height:35px;
+  line-height:35px;
+  font-size:2rem;
+  color:#333;
+}
+.voteContent .vote span{
+  width:50%;
+  height:25px;
+  line-height:25px;
+  font-size:1.5rem;
+  margin-left:25px;
+  color: rgba(0,0,0,0.39);
+}
+.voteContent .vote .voteNum{
+  width:8%;
+  height:25px;
+  font-size:1.5rem;
+  line-height:25px;
+  float:right;
+ }
+.voteContent #ckepop{
+  width:100%;
+  height:auto;
+  margin-top:10px;
+  /*border:1px solid orange;*/
+} 
+.voteContent #ckepop h2{
+  width:18%;
+  height:35px;
+  line-height:35px;
+  font-size:19px;
+  color:#333;
+}
+.voteContent  .shareFirends ul{
+  width:90%;
+  height:42px;
+  overflow:hidden;
+  margin-top:15px;
+  margin-left:1%;
+}
+.voteContent .shareFirends ul li{
+  width:40px;
+  height:40px;
+  line-height:40px;
+  border:1px solid gray;
+  border-radius:57%;
+  float:left;
+  margin-left: 15px;
+  text-align: center;
+}
+
+</style>
+</head>
+	<body>
+	  <div class="container">
+	    <div class="header">
+	      <span class="line"></span>
+	      <span class="category">参赛选手</span>
+	    </div>
+	    <div class="titleContent">
+	      <h2>李瑞琦</h2>
+	    </div>
+	    <div class="webSource">
+	      <span class="time">2016.09.23</span>
+	      <a href="http://baike.baidu.com/link?url=aDBvi2rsdPHgRKfcNUjC0NlpTw5z_89Btb9BMakQeiqEetN8wnzz-z3XcuMCilzLz0REY8-WSZHrHjNRivOnadFatWnyprzBqeNLqkarTffzsvpXVIKzeg-RZk64kiqa" class="source">百度百科</a>
+	    </div>
+	    <div class="conpetitorContent">
+	      <div class="pic">
+	        <img src="1.jpg"/>
+	      </div>
+	    </div>
+	    <div class="conpetitorContent">
+	      <div class="word">
+	        <div class="para" label-module="para" style="font-size: 14px; word-wrap: break-word; color: rgb(51, 51, 51); margin-bottom: 15px; text-indent: 2em; line-height: 24px; zoom: 1; font-family: arial, 宋体, sans-serif;"><div class="lemma-summary" label-module="lemmaSummary" style="clear: both; word-wrap: break-word; margin-bottom: 15px; text-indent: 2em; line-height: 24px; zoom: 1;"><div class="para" label-module="para" style="word-wrap: break-word; margin-bottom: 15px; text-indent: 2em; line-height: 24px; zoom: 1;">李瑞琦，1970年9月生，博士，<a target="_blank" href="http://baike.baidu.com/view/1381942.htm" style="color: rgb(19, 110, 194);">副教授</a>，应用化学专业硕士研究生导师。研究方向：导电聚合物的合成及性能控制，手性材料合成及分离技术</div></div>
+	        <div class="basic-info cmn-clearfix" style="margin-top: 20px; margin-bottom: 35px; clear: both; font-size: 12px; line-height: 18px; text-indent: 0px; background-image: url(&quot;http://baike.bdimg.com/static/wiki-lemma/widget/lemma_content/mainContent/basicInfo/img/basicInfo-bg_7819f20.png&quot;); background-attachment: initial; background-size: initial; background-origin: initial; background-clip: initial; background-position: initial; background-repeat: initial;"><dl class="basicInfo-block basicInfo-left" style="margin-bottom: 0px; width: 395px; float: left;"></dl></div></div>
+	        <div class="para" label-module="para" style="font-size: 14px; word-wrap: break-word; color: rgb(51, 51, 51); margin-bottom: 15px; text-indent: 2em; line-height: 24px; zoom: 1; font-family: arial, 宋体, sans-serif;">国家重点实验室开放课题 一项</div><div class="para" label-module="para" style="font-size: 14px; word-wrap: break-word; color: rgb(51, 51, 51); margin-bottom: 15px; text-indent: 2em; line-height: 24px; zoom: 1; font-family: arial, 宋体, sans-serif;">黑龙江省博士后基金项目 一项<span style="font-size: 12px; line-height: 0; position: relative; vertical-align: baseline; top: -0.5em; white-space: nowrap; margin-left: 2px; color: rgb(51, 102, 204); cursor: default; padding-right: 2px; padding-left: 2px;">[1]</span>
+	        <a class="sup-anchor" name="ref_[1]_17714077" style="color: rgb(19, 110, 194); position: relative; top: -50px; font-size: 0px; line-height: 0;">&nbsp;</a></div><div class="para" label-module="para" style="font-size: 14px; word-wrap: break-word; color: rgb(51, 51, 51); margin-bottom: 15px; text-indent: 2em; line-height: 24px; zoom: 1; font-family: arial, 宋体, sans-serif;">哈尔滨市科技创新专项基金 一项</div>
+	        <div class="para" label-module="para" style="font-size: 14px; word-wrap: break-word; color: rgb(51, 51, 51); margin-bottom: 15px; text-indent: 2em; line-height: 24px; zoom: 1; font-family: arial, 宋体, sans-serif;">承担军工配套项目2项，参加国家973课题1项，参加“九五”攻关课题1项。</div></div>
+	    </div>
+      <div class="conpetitorContent">
+        <div class="video">
+          <video  id="myVideo" controls="controls" width="100%" height="100%">
+            <source src="test.mp4" type="video/mp4"></source>
+          </video>
+        </div>
+      </div>
+      <div class="conpetitorContent">
+        <div class="audio">
+          <audio  id="myAudio" width="320" height="240" controls="controls">
+            <source src="audio.mp3"></source>
+          </audio>
+        </div>
+      </div>
+      <!--<div class="contentTab">
+        <ul class="navSwitch" >
+          <li>照片</li>
+          <li>视频</li>
+          <li>音频</li>
+        </ul>
+        <div class="conSwitch">
+          <div class="conSwitch1"><img src="111.jpg" alt="照片"/></div>
+          <div class="conSwitch2"><img src="333.jpg" alt="视频"/></div>
+          <div class="conSwitch2"><img src="444.jpg" alt="音频"/></div>
+        </div>
+      </div>-->
+      <div class="splitLine"></div>
+      <div class="voteContent">
+        <div class="vote">
+          <h2>为选手投票</h2>
+          <span>喜欢他（她）就支持他（她）吧！O(∩_∩)O~</span>
+          <div class="voteNum">1230票</div>
+        </div>
+        <div id="ckepop" class="shareFriends">
+          <h2 class="jiathis_txt">分享到：</h2>
+          <a class="jiathis_button_weixin">微信</a> 
+          <a class="jiathis_button_qzone">QQ空间</a>
+          <a class="jiathis_button_tsina">新浪微博</a>
+          <!--分享-->
+          <script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1" charset="utf-8"></script>
+        </div> 
+      </div>
+	    <!--<div class="splitLine"></div>
+	    <div class="comment">
+	      <h3>评论</h3>
+	      <div class="writeComment">
+	        <textarea name="" rows="" cols="" placeholder="我来说两句....."></textarea>
+	        <div class="commenting"><button >发表评论</button></div>
+	      </div>
+	      <div class="allComment">
+	        <span class="allc">全部评论</span>
+	        <div class="personComment">
+	          <div class="person">
+	            <div class="headPic"><img src="" alt="" /></div>
+	            <div class="remark">
+	              <span class="remark1">麦克</span>
+	              <span class="remark2">12:15</span>
+	              <p class="remark3"><span>你在演奏肖邦音乐的时候表现出卓越的风格。真诚的祝贺！！</span></p>
+	            </div>
+	          </div>
+	          <div class="person">
+              <div class="headPic"><img src="" alt="" /></div>
+              <div class="remark">
+                <span class="remark1">麦克</span>
+                <span class="remark2">12:15</span>
+                <p class="remark3"><span>你在演奏肖邦音乐的时候表现出卓越的风格。真诚的祝贺！！</span></p>
+              </div>
+            </div>
+	        </div>
+	      </div>
+	    </div>
+	    <div class="copyright">
+        <ul class="copyright1">
+          <li><a href="#">关于我们|</a></li>
+          <li><a href="#">服务条款|</a></li>
+          <li><a href="#">广告服务|</a></li>
+          <li><a href="#">网站导航</a></li>
+        </ul>
+        <ul class="copyright2">
+          <li><a href="#">京公安备案11000002000019号|</a></li>
+          <li><a href="#">京ICP备14026958号</a></li>
+        </ul>
+        <ul class="copyright3">
+          <li><a href="#">Copyright<span>&copy;</span>2016 - 2016 Woting. All Rights Reserved</a></li>
+        </ul>
+        <ul class="copyright4">
+          <li><a href="#">北京我听科技有限公司版权所有</a></li>
+        </ul>
+      </div>-->
+	  </div>
+	</body>
+	<script>
+	$(document).ready(function(){
+    //图片
+//  var parentWidth=$(".pic").width();  
+//  var minWidth=500;
+//  if (parentWidth>minWidth+10) {
+//    h=parentWidth*0.6;
+//    $(".pic").height(h);
+//    $(".pic img").width(parentWidth-10);
+//    $(".pic img").height(h-10);
+//    $(".pic img").css({"margin-top":"5px"});
+//    var imgLeft=$(".pic img").offset().left;
+//    console.log(parentWidth,h,imgLeft);
+//    $(".pic img").css({"margin-left":function(){return ((parentWidth-imgLeft)/2);}});
+//  } else {
+//    var h=parentWidth*0.6;
+//    $(".pic").height(h);
+//    $(".pic img").width(parentWidth-10);
+//    $(".pic img").height($(".pic").height()-10);
+//    $(".pic img").css({"margin-top":"5px", "margin-left":"5px"});
+//  }
+   
+  });
+//$(window).resize(function(){
+//  //图片
+//  var parentWidth=$(".pic").width();  
+//  var minWidth=500;
+//  if (parentWidth>minWidth+10) {
+//    h=(minWidth+10)*0.6;
+//    $(".pic").height(h);
+//    $(".pic img").width(parentWidth);
+//    $(".pic img").height(h-10);
+//    $(".pic img").css({"margin-top":"5px"});
+//    $(".pic img").css({"margin-left":function(){return ((parentWidth-minWidth)/2);}});
+//  } else {
+//    var h=parentWidth*0.6;
+//    $(".pic").height(h);
+//    $(".pic img").width(parentWidth-10);
+//    $(".pic img").height($(".pic").height()-10);
+//    $(".pic img").css({"margin-top":"5px", "margin-left":"5px"});
+//  }
+//  //视频
+//    var parentWidth=$(".video").width();  
+//    var minWidth=500;
+//    if (parentWidth>minWidth+10) {
+//    h=(minWidth+10)*0.6;
+//    $(".video").height(h);
+//    $(".video video").width(minWidth);
+//    $(".video video").height(h-10);
+//    $(".video video").css({"margin-top":"5px"});
+//    $(".video video").css({"margin-left":function(){return ((parentWidth-minWidth)/2);}});
+//  } else {
+//    var h=parentWidth*0.6;
+//    $(".video").height(h);
+//    $(".video video").width(parentWidth-10);
+//    $(".video video").height($(".pic").height()-10);
+//    $(".video video").css({"margin-top":"5px", "margin-left":"5px"});
+//  }
+//});
+  
+ 
+	</script>
+</html>

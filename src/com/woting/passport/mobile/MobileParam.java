@@ -27,7 +27,6 @@ public class MobileParam extends BaseObject implements GetUserDeviceKey {
     private String gpsLongitude;//GPS信息-经度
     private String gpsLatitude;//GPS信息-纬度
     private String screenSize;//屏幕尺寸
-    private String sessionId;//会话ID，或UserId
 
     public String getImei() {
         return imei;
@@ -70,12 +69,6 @@ public class MobileParam extends BaseObject implements GetUserDeviceKey {
     }
     public void setScreenSize(String screenSize) {
         this.screenSize=screenSize;
-    }
-    public String getSessionId() {
-        return sessionId;
-    }
-    public void setSessionId(String sessionId) {
-        this.sessionId=sessionId;
     }
 
     /**
@@ -131,9 +124,6 @@ public class MobileParam extends BaseObject implements GetUserDeviceKey {
         o=m.get("ScreenSize");
         __tmp=o==null?"":o+"";
         if (!StringUtils.isNullOrEmptyOrSpace(__tmp)) mp.setScreenSize(__tmp);
-        o=m.get("SessionId");
-        __tmp=o==null?"":o+"";
-        if (!StringUtils.isNullOrEmptyOrSpace(__tmp)) mp.setSessionId(__tmp);
         o=m.get("UserId");
         __tmp=o==null?"":o+"";
         if (!StringUtils.isNullOrEmptyOrSpace(__tmp)) mp.setUserId(__tmp);
@@ -143,11 +133,8 @@ public class MobileParam extends BaseObject implements GetUserDeviceKey {
             StringUtils.isNullOrEmptyOrSpace(mp.getGpsLongitude())&&
             StringUtils.isNullOrEmptyOrSpace(mp.getGpsLatitude())&&
             StringUtils.isNullOrEmptyOrSpace(mp.getScreenSize())&&
-            StringUtils.isNullOrEmptyOrSpace(mp.getSessionId())&&
             StringUtils.isNullOrEmptyOrSpace(mp.getUserId())) {
             return null;
-        } else {
-           
         }
         return mp;
     }

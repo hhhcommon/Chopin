@@ -116,4 +116,7 @@
   <delete id="deleteByEntity" parameterType="java.util.Map">
     delete from wt_Discuss <if test="_parameter!=null"><include refid="WhereClauseByEntiey"/></if>
   </delete>
+  <delete id="delArticle" parameterType="java.util.Map">
+    delete from wt_Discuss where articleId=#{resId,jdbcType=VARCHAR}
+  </delete>
 </mapper>

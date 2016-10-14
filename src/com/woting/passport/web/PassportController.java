@@ -31,7 +31,6 @@ import com.woting.passport.session.SessionService;
 import com.woting.passport.session.redis.RedisUserDeviceKey;
 import com.woting.plugins.sms.SendSMS;
 
-
 @Controller
 @RequestMapping(value="/passport/")
 public class PassportController {
@@ -111,7 +110,7 @@ public class PassportController {
             if (usePhone!=null&&usePhone.equals("1")) {
                 //1.5-手机号码注册
                 byte[] getValue=rConn.get(redisUdk.getKey_UserPhoneCheck().getBytes());
-                String info=getValue==null?"":new String(getValue);
+                String info=getValue==null?"":new String(rConn.get(getValue));
                 if (info.startsWith("OK")) {
                     nu.setMainPhoneNum(info.substring(4));
                 }
@@ -130,7 +129,7 @@ public class PassportController {
             mUdk.setUserId(nu.getUserId());
             ExpirableBlockKey rLock=RedisBlockLock.lock(redisUdk.getKey_Lock(), rConn);
             try {
-                sessionService.registUser(mUdk);
+                sessionService.registUser(mUdk, nu);
                 MobileUsedPo mu=new MobileUsedPo();
                 mu.setImei(mUdk.getDeviceId());
                 mu.setStatus(1);
@@ -209,7 +208,7 @@ public class PassportController {
             RedisConnection rConn=redisConn.getConnection();
             ExpirableBlockKey rLock=RedisBlockLock.lock(redisUdk.getKey_Lock(), rConn);
             try {
-                sessionService.registUser(mUdk);
+                sessionService.registUser(mUdk, u);
                 MobileUsedPo mu=new MobileUsedPo();
                 mu.setImei(mUdk.getDeviceId());
                 mu.setStatus(1);
@@ -260,7 +259,7 @@ public class PassportController {
                 if ((retM.get("ReturnType")+"").equals("2001")) {
                     map.put("ReturnType", "0000");
                     map.put("Message", "无法获取设备Id(IMEI)");
-                } else if ((retM.get("ReturnType")+"").equals("2003")) {
+                } else if ((retM.get("ReturnType")+"").equals("2003")||(retM.get("ReturnType")+"").equals("2002")) {
                     map.put("ReturnType", "200");
                     map.put("Message", "需要登录");
                 } else {
@@ -546,7 +545,8 @@ public class PassportController {
 
             RedisConnection rConn=redisConn.getConnection();
             RedisUserDeviceKey redisUdk=new RedisUserDeviceKey(mUdk);
-            String info=new String(rConn.get(redisUdk.getKey_UserPhoneCheck().getBytes()));
+            byte[] getValue=redisUdk.getKey_UserPhoneCheck().getBytes();
+            String info=(getValue==null?null:new String(rConn.get(getValue)));
 
             if (info==null||info.equals("null")||info.startsWith("OK")) {//错误
                 map.put("ReturnType", "1002");
@@ -722,7 +722,7 @@ public class PassportController {
             RedisUserDeviceKey redisUdk=new RedisUserDeviceKey(mUdk);
             try {
                 byte[] getValue=redisUdk.getKey_UserPhoneCheck().getBytes();
-                info=getValue==null?"":new String(getValue);
+                info=getValue==null?"":new String(rConn.get(getValue));
             } finally {
                 rConn.close();
                 rConn=null;
@@ -806,14 +806,18 @@ public class PassportController {
             Map<String, Object> rm=userService.thirdLogin(thirdType, tuserId, tuserName, tuserImg, tuserData);
 
             //3-成功后，自动登陆，处理Redis
+            if ((UserPo)rm.get("userInfo")==null) {
+                map.put("ReturnType", "1003");
+                map.put("Message", "第三方登录失败！");
+                return map;
+            }
             String _userId=((UserPo)rm.get("userInfo")).getUserId();
             mUdk.setUserId(_userId);
-            RedisConnection rConn=null;
+            RedisConnection rConn=redisConn.getConnection();
             RedisUserDeviceKey redisUdk=new RedisUserDeviceKey(mUdk);
             ExpirableBlockKey rLock=RedisBlockLock.lock(redisUdk.getKey_Lock(), rConn);
             try {
-                rConn=redisConn.getConnection();
-                sessionService.registUser(mUdk);
+                sessionService.registUser(mUdk, (UserPo)rm.get("userInfo"));
                 //3.2-保存使用情况
                 MobileUsedPo mu=new MobileUsedPo();
                 mu.setImei(mUdk.getDeviceId());

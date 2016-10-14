@@ -219,8 +219,8 @@
     select <include refid="Base_Media_List"/>from wt_MediaAsset where maTitle=#{maTitle,jdbcType=VARCHAR} limit 1
   </select>
   
-  <select id="getMaListBySmaId" parameterType="java.lang.String" resultMap="mediaAssetMap">
-    select <include refid="Base_Media_List"/>from wt_MediaAsset where id in (select mId from wt_SeqMA_Ref where sId=#{sId,jdbcType=VARCHAR})
+  <select id="getMaListByContentId" parameterType="java.lang.String" resultMap="mediaAssetMap">
+    select <include refid="Base_Media_List"/>from wt_MediaAsset where maPubId in (select maPubId from wt_MediaAsset where id=#{id,jdbcType=VARCHAR})
   </select>
   
   <select id="getMaListByIds" parameterType="java.util.Map" resultMap="mediaAssetMap">
@@ -310,7 +310,7 @@
       <if test="descn!=null">descn=#{descn,jdbcType=VARCHAR},</if>
       <if test="pubCount!=null and pubCount>0">pubCount=#{pubCount,jdbcType=VARCHAR},</if>
       <if test="maStatus!=null and maStatus>0">maStatus=#{maStatus,jdbcType=INTEGER},</if>
-      <if test="allText!=null">maStatus=#{allText,jdbcType=VARCHAR},</if>
+      <if test="allText!=null">allText=#{allText,jdbcType=VARCHAR},</if>
     </set>
     where id=#{id,jdbcType=VARCHAR}
   </update>
