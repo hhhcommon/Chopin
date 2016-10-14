@@ -233,7 +233,6 @@ public class CommonController {
                 }
             }
             map.put("ReturnType", "1001");
-//            map.put("KeyList", "逻辑思维,郭德纲,芈月传奇,数学,恐怖主义,鬼吹灯,盗墓笔记,老梁说事");
             return map;
         } catch(Exception e) {
             e.printStackTrace();
