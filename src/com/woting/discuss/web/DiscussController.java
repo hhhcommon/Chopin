@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.spiritdata.framework.util.StringUtils;
 import com.woting.discuss.model.Discuss;
 import com.woting.discuss.service.DiscussService;
+import com.woting.gather.GatherUtils;
 import com.woting.passport.UGA.service.UserService;
+import com.spiritdata.framework.util.JsonUtils;
 import com.spiritdata.framework.util.RequestUtils;
 import com.woting.passport.UGA.persistence.pojo.UserPo;
 import com.woting.passport.mobile.MobileParam;
@@ -72,6 +74,14 @@ public class DiscussController {
                     map.put("Message", "无法获取用户Id");
                 }
             }
+            //收集数据
+            m.put("ApiType", "discuss/add");
+            m.put("ObjType", 6);//评论
+            //m.put("ObjId", request.getRequestURL().toString());//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            GatherUtils.SaveLogFromAPI(mUdk, m);
+
             if (map.get("ReturnType")!=null) return map;
 
             //2-获取意见
@@ -115,6 +125,16 @@ public class DiscussController {
             map.put("ReturnType", "T");
             map.put("TClass", e.getClass().getName());
             map.put("Message", e.getMessage());
+            //收集数据
+            Map<String, Object> m=new HashMap<String, Object>();
+            m.put("ApiType", "discuss/add");
+            m.put("ObjType", 6);//评论
+            //m.put("ObjId", request.getRequestURL().toString());//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            try {
+                GatherUtils.SaveLogFromAPI(null, m);
+            } catch(Exception _e){}
             return map;
         }
     }
@@ -159,6 +179,14 @@ public class DiscussController {
                     map.put("Message", "无法获取用户Id");
                 }
             }
+            //收集数据
+            m.put("ApiType", "discuss/del");
+            m.put("ObjType", 6);//评论
+            m.put("ObjId", m.get("DiscussId"));//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            GatherUtils.SaveLogFromAPI(mUdk, m);
+
             if (map.get("ReturnType")!=null) return map;
 
             //2-评论Id
@@ -199,6 +227,15 @@ public class DiscussController {
             map.put("ReturnType", "T");
             map.put("TClass", e.getClass().getName());
             map.put("Message", e.getMessage());
+            //收集数据
+            Map<String, Object> m=new HashMap<String, Object>();
+            m.put("ApiType", "discuss/del");
+            m.put("ObjType", 6);//评论
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            try {
+                GatherUtils.SaveLogFromAPI(null, m);
+            } catch(Exception _e){}
             return map;
         }
     }
@@ -222,6 +259,13 @@ public class DiscussController {
                 }
                 sessionService.dealUDkeyEntry(mUdk, "discuss/article/getList");
             }
+            //收集数据
+            m.put("ApiType", "discuss/article/getList");
+            m.put("ObjType", 1);//文章
+            //m.put("ObjId", request.getRequestURL().toString());//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            GatherUtils.SaveLogFromAPI(mUdk, m);
 
             //1-获取文章Id
             String articleId=(m.get("ContentId")==null?null:m.get("ContentId")+"");
@@ -257,6 +301,15 @@ public class DiscussController {
             map.put("ReturnType", "T");
             map.put("TClass", e.getClass().getName());
             map.put("Message", e.getMessage());
+            //收集数据
+            Map<String, Object> m=new HashMap<String, Object>();
+            m.put("ApiType", "discuss/article/getList");
+            m.put("ObjType", 1);//文章
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            try {
+                GatherUtils.SaveLogFromAPI(null, m);
+            } catch(Exception _e){}
             return map;
         }
     }
@@ -318,7 +371,7 @@ public class DiscussController {
                 if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
                     mUdk.setDeviceId(request.getSession().getId());
                 }
-                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "discuss/article/getList");
+                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "discuss/user/getList");
                 if (!mUdk.isUser()||"0".equals(mUdk.getUserId())) {
                     map.put("ReturnType", "1002");
                     map.put("Message", "无法获得用户Id");
@@ -343,6 +396,13 @@ public class DiscussController {
 
                 }
             }
+            //收集数据
+            m.put("ApiType", "discuss/user/getList");
+            m.put("ObjType", 1);//文章
+            //m.put("ObjId", request.getRequestURL().toString());//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            GatherUtils.SaveLogFromAPI(mUdk, m);
             if (map.get("ReturnType")!=null) return map;
 
             //1-获取分页信息
@@ -373,6 +433,15 @@ public class DiscussController {
             map.put("ReturnType", "T");
             map.put("TClass", e.getClass().getName());
             map.put("Message", e.getMessage());
+            //收集数据
+            Map<String, Object> m=new HashMap<String, Object>();
+            m.put("ApiType", "discuss/user/getList");
+            m.put("ObjType", 1);//文章
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            try {
+                GatherUtils.SaveLogFromAPI(null, m);
+            } catch(Exception _e){}
             return map;
         }
     }

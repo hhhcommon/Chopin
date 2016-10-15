@@ -83,12 +83,29 @@ public class CommonController {
                 map.put("ServerStatus", "1"); //服务器状态
                 map.put("IsExtension", "0"); //是否推广
             }
+            //收集数据
+            m.put("ApiType", "common/entryApp");
+            m.put("ObjType", 0);//没有任何对应对象
+            //m.put("ObjId", request.getRequestURL().toString());//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            GatherUtils.SaveLogFromAPI(mUdk, m);
             return map;
         } catch(Exception e) {
             e.printStackTrace();
             map.put("ReturnType", "T");
             map.put("TClass", e.getClass().getName());
             map.put("Message", e.getMessage());
+
+            //收集数据
+            Map<String, Object> m=new HashMap<String, Object>();
+            m.put("ApiType", "common/entryApp");
+            m.put("ObjType", 0);//没有任何对应对象
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            try {
+                GatherUtils.SaveLogFromAPI(null, m);
+            } catch(Exception _e){}
             return map;
         }
     }
@@ -120,6 +137,13 @@ public class CommonController {
                     }
                 }
             }
+            //收集数据
+            m.put("ApiType", "searchByText");
+            m.put("ObjType", 11);//搜索
+            m.put("ObjId", m.get("SearchStr"));//搜索字符串
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            GatherUtils.SaveLogFromAPI(mUdk, m);
             if (map.get("ReturnType")!=null) return map;
             
             //获得查询串
@@ -164,6 +188,15 @@ public class CommonController {
             map.put("ReturnType", "T");
             map.put("TClass", e.getClass().getName());
             map.put("Message", e.getMessage());
+            //收集数据
+            Map<String, Object> m=new HashMap<String, Object>();
+            m.put("ApiType", "searchByText");
+            m.put("ObjType", 11);//搜索
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            try {
+                GatherUtils.SaveLogFromAPI(null, m);
+            } catch(Exception _e){}
             return map;
         }
     }
@@ -195,7 +228,9 @@ public class CommonController {
                     map.put("Message", "无法获取设备Id(IMEI)");
                 }
             }
+            //收集数据
             m.put("ObjType", 10);//敏感词
+            m.put("ApiType", "getHotKeys");
             //m.put("ObjId", request.getRequestURL().toString());//id
             m.put("V_Url", request.getRequestURL().toString());//URL
             m.put("AllParam", JsonUtils.objToJson(m));
@@ -251,6 +286,15 @@ public class CommonController {
             map.put("ReturnType", "T");
             map.put("TClass", e.getClass().getName());
             map.put("Message", e.getMessage());
+            //收集数据
+            Map<String, Object> m=new HashMap<String, Object>();
+            m.put("ApiType", "getHotKeys");
+            m.put("ObjType", 10);//敏感词
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            try {
+                GatherUtils.SaveLogFromAPI(null, m);
+            } catch(Exception _e){}
             return map;
         }
     }
@@ -281,6 +325,13 @@ public class CommonController {
                     map.put("Message", "无法获取设备Id(IMEI)");
                 }
             }
+            //收集数据
+            m.put("ObjType", 10);//敏感词
+            m.put("ApiType", "searchHotKeys");
+            //m.put("ObjId", request.getRequestURL().toString());//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            GatherUtils.SaveLogFromAPI(mUdk, m);
             if (map.get("ReturnType")!=null) return map;
 
             //获得查找词
@@ -339,6 +390,15 @@ public class CommonController {
             map.put("ReturnType", "T");
             map.put("TClass", e.getClass().getName());
             map.put("Message", e.getMessage());
+            //收集数据
+            Map<String, Object> m=new HashMap<String, Object>();
+            m.put("ApiType", "searchHotKeys");
+            m.put("ObjType", 10);//敏感词
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            try {
+                GatherUtils.SaveLogFromAPI(null, m);
+            } catch(Exception _e){}
             return map;
         }
     }

@@ -17,6 +17,7 @@ import com.spiritdata.framework.core.model.Page;
 import com.spiritdata.framework.util.JsonUtils;
 import com.spiritdata.framework.util.StringUtils;
 import com.spiritdata.framework.util.RequestUtils;
+import com.woting.gather.GatherUtils;
 import com.woting.passport.mobile.MobileParam;
 import com.woting.passport.mobile.MobileUDKey;
 import com.woting.version.core.model.Version;
@@ -613,6 +614,12 @@ public class VersionController {
             if (m!=null&&m.size()>0) {
                 MobileUDKey mUdk=MobileParam.build(m).getUserDeviceKey();
                 if (mUdk!=null) map.putAll(mUdk.toHashMapAsBean());
+                //收集数据
+                m.put("ApiType", "judgeVersion");
+                m.put("ObjType", 0);//无具体对象
+                m.put("V_Url", request.getRequestURL().toString());//URL
+                m.put("AllParam", JsonUtils.objToJson(m));
+                GatherUtils.SaveLogFromAPI(null, m);
 
                 //1-获取App版本号
                 String version=m.get("Version")==null?null:(m.get("Version")+"");
@@ -639,6 +646,15 @@ public class VersionController {
             map.put("ReturnType", "T");
             map.put("TClass", e.getClass().getName());
             map.put("Message", e.getMessage());
+            //收集数据
+            Map<String, Object> m=new HashMap<String, Object>();
+            m.put("ApiType", "judgeVersion");
+            m.put("ObjType", 0);//无具体对象
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            try {
+                GatherUtils.SaveLogFromAPI(null, m);
+            } catch(Exception _e){}
             return map;
         }
     }

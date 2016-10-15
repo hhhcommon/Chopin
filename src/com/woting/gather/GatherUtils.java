@@ -21,7 +21,7 @@ public abstract class GatherUtils {
     public static void SaveLogFromAPI(MobileUDKey udk, Map<String, Object> data) throws InterruptedException {
         VisitLogPo vlp=new VisitLogPo();
 
-        vlp.setOwnerId(udk.getUserId());
+        vlp.setOwnerId(udk==null?(data.get("UserId")==null?"err":data.get("UserId")+""):udk.getUserId());
         vlp.setOwnerType(201);
         //1-GPS信息
         String temp=data.get("pointInfo")==null?null:data.get("pointInfo")+"";
@@ -30,14 +30,16 @@ public abstract class GatherUtils {
         temp=data.get("clientIp")==null?null:data.get("clientIp")+"";
         vlp.setClientIp(StringUtils.isNullOrEmptyOrSpace(temp)?null:temp);
         //3-客户端网卡地址：目前是设备Id(IMEI)
-        vlp.setClientMac(udk.getDeviceId());
+        vlp.setClientMac(udk==null?"err":udk.getDeviceId());
         //4-设备名称：目前是设备分类号
-        vlp.setEquipName(udk.getPCDType()+"");
+        vlp.setEquipName(udk==null?"err":udk.getPCDType()+"");
         //5-设备型号：目前是设备型号(MobileClass)
         temp=data.get("MobileClass")==null?null:data.get("MobileClass")+"";
         vlp.setEquipVer(StringUtils.isNullOrEmptyOrSpace(temp)?null:temp);
         //7-浏览器名称
-        //8-浏览器版本
+        //8-浏览器版本:目前作为API分类
+        temp=data.get("ApiType")==null?null:data.get("ApiType")+"";
+        vlp.setExploreVer(StringUtils.isNullOrEmptyOrSpace(temp)?null:temp);
         //9-访问实体的类型
         temp=data.get("ObjType")==null?null:data.get("ObjType")+"";
         vlp.setObjType(StringUtils.isNullOrEmptyOrSpace(temp)?null:Integer.parseInt(temp));
