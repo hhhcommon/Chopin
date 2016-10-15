@@ -16,11 +16,13 @@ import com.spiritdata.framework.util.StringUtils;
 import com.woting.cm.core.channel.service.ChannelService;
 import com.woting.cm.core.common.model.Owner;
 import com.woting.content.manage.media.service.MediaContentService;
+import com.woting.gather.GatherUtils;
 import com.woting.passport.UGA.service.UserService;
 import com.woting.passport.mobile.MobileParam;
 import com.woting.passport.mobile.MobileUDKey;
 import com.woting.passport.session.SessionService;
 import com.woting.searchword.service.WordService;
+import com.spiritdata.framework.util.JsonUtils;
 import com.spiritdata.framework.util.RequestUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.Connection;
@@ -120,7 +122,6 @@ public class CommonController {
             }
             if (map.get("ReturnType")!=null) return map;
             
-
             //获得查询串
             String searchStr=(m.get("SearchStr")==null?null:m.get("SearchStr")+"");
             if (StringUtils.isNullOrEmptyOrSpace(searchStr)) {
@@ -194,6 +195,11 @@ public class CommonController {
                     map.put("Message", "无法获取设备Id(IMEI)");
                 }
             }
+            m.put("ObjType", 10);//敏感词
+            //m.put("ObjId", request.getRequestURL().toString());//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            GatherUtils.SaveLogFromAPI(mUdk, m);
             if (map.get("ReturnType")!=null) return map;
 
             //1-获取功能类型，目前只有1内容搜索
@@ -239,7 +245,6 @@ public class CommonController {
                 }
             }
             map.put("ReturnType", "1001");
-//            map.put("KeyList", "逻辑思维,郭德纲,芈月传奇,数学,恐怖主义,鬼吹灯,盗墓笔记,老梁说事");
             return map;
         } catch(Exception e) {
             e.printStackTrace();

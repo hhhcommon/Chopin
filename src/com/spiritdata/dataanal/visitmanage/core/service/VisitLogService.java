@@ -5,16 +5,12 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import javax.servlet.ServletContext;
 
-import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.stereotype.Service;
 
-import com.spiritdata.dataanal.exceptionC.Dtal1201CException;
 import com.spiritdata.dataanal.visitmanage.core.enumeration.ObjType;
 import com.spiritdata.dataanal.visitmanage.core.persistence.pojo.VisitLogPo;
 import com.spiritdata.dataanal.visitmanage.run.mem.VisitMemoryService;
-import com.spiritdata.framework.FConstants;
-import com.spiritdata.framework.core.cache.SystemCache;
 import com.spiritdata.framework.core.dao.mybatis.MybatisDAO;
 import com.spiritdata.framework.util.SequenceUUID;
 
@@ -27,7 +23,8 @@ import com.spiritdata.framework.util.SequenceUUID;
  * </pre>
  * @author wh
  */
-public abstract class VisitLogService {
+@Service
+public class VisitLogService {
     @Resource(name="defaultDAO")
     private MybatisDAO<VisitLogPo> visitLogDao; //任务组
 
@@ -67,5 +64,7 @@ public abstract class VisitLogService {
      * @param vlp 日志访问数据
      * @return 服务类
      */
-    public abstract VL_CategoryService getCategoryServiceByObjType(ObjType ot);
+    public VL_CategoryService getCategoryServiceByObjType(ObjType ot) {
+        return null;
+    }
 }
