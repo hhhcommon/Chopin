@@ -351,59 +351,6 @@ body {
   font-size: 18px!important;
 }
 
-/*base/layout*/
-
-.mainbox {
-  width: 950px;
-  *zoom: 1;
-  margin: 0 auto;
-  min-height: 740px;
-}
-
-.mainbox:before,
-.mainbox:after {
-  display: table;
-  content: "";
-  border-spacing: 0;
-  line-height: 0;
-}
-
-.mainbox:after {
-  clear: both;
-}
-
-.mainbox .mainbox_bg {
-  background: url("img/base/bg-line.png") repeat-y right 0px;
-}
-
-.mainbox .mainbox_wrapper {
-  margin: 30px 0 50px;
-  min-height: 740px;
-  *zoom: 1;
-}
-
-.mainbox .mainbox_wrapper:before,
-.mainbox .mainbox_wrapper:after {
-  display: table;
-  content: "";
-  border-spacing: 0;
-  line-height: 0;
-}
-
-.mainbox .mainbox_wrapper:after {
-  clear: both;
-}
-
-.mainbox_left {
-  width: 710px;
-  float: left!important;
-}
-
-.mainbox_right {
-  width: 200px;
-  float: right;
-}
-
 .mg10 {
   margin: 10px;
 }
@@ -595,46 +542,6 @@ body {
   right: 40px;
   margin-left: 490px;
   z-index: 999;
-}
-
-.weixin_download {
-  width: 152px;
-  height: 172px;
-  position: absolute;
-  display: none;
-  top: 0px;
-  left: -153px;
-  background-image: url("img/ximalaya.jpg?v=20160114");
-  background-position: 0 0;
-  background-repeat: no-repeat;
-}
-
-.weixin_download1 {
-  width: 152px;
-  height: 172px;
-  background-image: url("img/ximalaya.jpg?v=20160114");
-  background-position: 0 0;
-  background-repeat: no-repeat;
-}
-
-.code_qq {
-  width: 152px;
-  height: 172px;
-  background-image: url("img/code_xmly_qq.jpg");
-  background-position: 0 0;
-  background-repeat: no-repeat;
-}
-
-.app_download {
-  width: 152px;
-  height: 172px;
-  position: absolute;
-  display: none;
-  top: -44px;
-  left: -153px;
-  background-image: url("img/ting.jpg");
-  background-position: 0 0;
-  background-repeat: no-repeat;
 }
 
 .backToTop {
