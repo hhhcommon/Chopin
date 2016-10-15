@@ -7,8 +7,10 @@
     <typeAlias alias="favorite"   type="com.woting.favorite.persis.po.UserFavoritePo"/>
     <typeAlias alias="DaUserWord" type="com.woting.searchword.persis.po.UserWordPo"/>
     <!-- 版本管理 -->
-    <typeAlias alias="PVersion"     type="com.woting.version.core.model.Version"/>
-    <typeAlias alias="PVerConfig"   type="com.woting.version.core.model.VersionConfig"/>
+    <typeAlias alias="PVersion"   type="com.woting.version.core.model.Version"/>
+    <typeAlias alias="PVerConfig" type="com.woting.version.core.model.VersionConfig"/>
+    <!-- 数据收集 -->
+    <typeAlias alias="visitLog"    type="com.spiritdata.dataanal.visitmanage.core.persistence.pojo.VisitLogPo"/>
   </typeAliases>
   <mappers>
     <mapper resource="com/woting/discuss/persis/sql/Discuss.mapper.xml"/>
@@ -16,5 +18,7 @@
     <mapper resource="com/woting/searchword/persis/sql/UserWord.mapper.xml"/>
     <!-- 版本管理 -->
     <mapper resource="com/woting/version/core/persis/sql/Version.mapper.xml"/>
+    <!-- 数据收集 -->
+    <mapper resource="com/spiritdata/dataanal/visitmanage/core/persistence/sql/Visit.mapper.xml"/>
   </mappers>
 </configuration>

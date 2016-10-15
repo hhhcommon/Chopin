@@ -5,6 +5,7 @@ import javax.servlet.ServletContextListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.spiritdata.dataanal.visitmanage.run.VisitLogRunning;
 import com.woting.searchword.SearchWordListener;
 
 public class WebRunningListener implements ServletContextListener {
@@ -16,6 +17,8 @@ public class WebRunningListener implements ServletContextListener {
         try {
             //启动搜索词服务
             SearchWordListener.begin();
+            //访问日志框架启动
+            VisitLogRunning.Beginning();
         } catch(Exception e) {
             logger.error("Web运行时监听启动异常：",e);
         }

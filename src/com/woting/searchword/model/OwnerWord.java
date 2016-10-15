@@ -163,8 +163,16 @@ public class OwnerWord implements Serializable {
         if (searchWordSortList==null||searchWordSortList.isEmpty()) return null;
         if (topSize<1) return null;
         List<Word> ret=new ArrayList<Word>();
-        for (int i=0; i<(topSize>searchWordSortList.size()?searchWordSortList.size():topSize); i++) {
-            ret.add(searchWordSortList.get(i));
+        for (int i=0; i<searchWordSortList.size(); i++) {
+            if (ret.size()>=topSize) break;
+            boolean canInsert=true;
+            for (Word _w: ret) {
+                if (_w.equals(searchWordSortList.get(i))) {
+                    canInsert=false;
+                    break;
+                }
+            }
+            if (canInsert) ret.add(searchWordSortList.get(i));
         }
         return ret;
     }
