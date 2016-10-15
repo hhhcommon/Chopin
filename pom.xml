@@ -8,7 +8,7 @@
   <!-- D:\workIDE\projects\Chopin || D:\workIDE\Chopin || D:\WBWorkDir\Chopin -->
 
   <properties>
-    <projectDir>D:\workIDE\projects\Chopin</projectDir>
+    <projectDir>D:\WBWorkDir\Chopin</projectDir>
   </properties>
 
   <parent>
