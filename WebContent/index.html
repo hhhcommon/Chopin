@@ -658,12 +658,10 @@ body{
   float: left;
   padding-top: 0px;
   padding-right: 10px;
-}
-.header-search-slide form ul li a{
   color: #fff;
   font-size: 15px;
-  text-decoration: none;
   font-family:vista_MS;
+  cursor: pointer;
 }
 /*自动联想样式*/
 #append{
@@ -979,18 +977,28 @@ function myResize() {
 }
 
 function showChannelPage(channelId) {
+  $(".mask,.login_modal,.header-search-slide").hide();
   var _cUrl=rootPath+"channels.html?ChannelId="+channelId;
   showInIframe(_cUrl);
 }
 function showMyFavoritePage(userId) {
+  $(".cancelSearch").css({"display":"none"});
+  $(".searchBtn").css({"display":"block"});
+  $(".mask,.login_modal,.header-search-slide").hide();
   var _cUrl=rootPath+"myFavorite.html?UserId="+userId;
   showInIframe(_cUrl);
 }
 function showMyOpusPage(userId) {
+  $(".cancelSearch").css({"display":"none"});
+  $(".searchBtn").css({"display":"block"});
+  $(".mask,.login_modal,.header-search-slide").hide();
   var _cUrl=rootPath+"myOpus.html?UserId="+userId;
   showInIframe(_cUrl);
 }
 function showMySearchPage(searchStr){
+  $(".cancelSearch").css({"display":"none"});
+  $(".searchBtn").css({"display":"block"});
+  $(".mask,.login_modal,.header-search-slide").hide();
   var _cUrl=rootPath+"mySearch.html?SearchStr="+searchStr;
   showInIframe(_cUrl);
 }
@@ -1123,6 +1131,9 @@ $(document).on("click",".mask",function(){
 
 //点击注册按钮
 function regist(){
+  $(".header-search-slide").hide().slideUp(100);
+  $(".searchBtn").css({"display":"block"});
+  $(".cancelSearch").css({"display":"none"});
   $("#usernameInput").val("");
   $("#userpasswordInput").val("");
   $(".mask").show();
@@ -1134,9 +1145,15 @@ function regist(){
 
 /*登陆相关的方法*/
 function login() {
+  $(".header-search-slide").hide().slideUp(100);
+  $(".searchBtn").css({"display":"block"});
+  $(".cancelSearch").css({"display":"none"});
   $("#usernameInput").val("");
   $("#userpasswordInput").val("");
   $(".mask").show();
+  $(".login_header1,.login_header2,.login_header3").css({"background":"gray"});
+  $(".login_header1").css({"background":"rgb(14, 14, 14)"});
+  $(".login_content").show();
   $(".login_modal").show();
 }
 $(document).on("click",".logined",function(){
@@ -1360,6 +1377,7 @@ $(".searchBtn").on("click",function(){
   $(".field").val("");
   $(".header-search-slide form ul").html("");
   $(".mask").show();
+  $(".login_modal").hide();
   $(".header-search-slide").slideDown(100);
   $(".searchBtn").css({"display":"none"});
   $(".cancelSearch").css({"display":"block"});
@@ -1389,7 +1407,8 @@ $(".searchBtn").on("click",function(){
         var hotKeyList=jsonData.KeyList;
         var arr=hotKeyList.split('\,');
         for(var i=0;i<arr.length;i++){
-          var nli='<li><a href="#">'+arr[i]+'</a></li>';
+          var str = "'"+arr[i]+"'";
+          var nli='<li onclick="showMySearchPage('+str+')">'+arr[i]+'</li>';
           $(".header-search-slide form ul").append(nli);
         }
       }else{
@@ -1404,6 +1423,7 @@ $(".searchBtn").on("click",function(){
 
 //点击取消搜索
 $(".cancelSearch").on("click",function(){
+  $(".login_modal").hide();
   $(".searchBtn").css({"display":"block"});
   $(".cancelSearch").css({"display":"none"});
   $(".header-search-slide").slideUp(100);
