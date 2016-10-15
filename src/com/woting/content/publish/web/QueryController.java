@@ -54,7 +54,10 @@ public class QueryController {
         m.put("ObjType", 1);//文章
         m.put("V_Url", request.getRequestURL().toString());//URL
         m.put("AllParam", JsonUtils.objToJson(m));
-        MobileUDKey mUdk=MobileParam.build(m).getUserDeviceKey();
+        MobileUDKey mUdk=null;
+        try {
+            mUdk=MobileParam.build(m).getUserDeviceKey();
+        }catch(Exception e) {}
         try {
             GatherUtils.SaveLogFromAPI(mUdk, m);
         } catch(Exception _e){}
@@ -196,7 +199,10 @@ public class QueryController {
 		}
 
         //收集数据
-        MobileUDKey mUdk=MobileParam.build(m).getUserDeviceKey();
+        MobileUDKey mUdk=null;
+        try {
+            mUdk=MobileParam.build(m).getUserDeviceKey();
+        }catch(Exception e) {}
         m.put("ApiType", "content/removeByApp");
         m.put("ObjType", 1);
         m.put("ObjId", contentId);//id
@@ -237,7 +243,10 @@ public class QueryController {
 			return map;
 		}
         //收集数据
-        MobileUDKey mUdk=MobileParam.build(m).getUserDeviceKey();
+        MobileUDKey mUdk=null;
+        try {
+            mUdk=MobileParam.build(m).getUserDeviceKey();
+        }catch(Exception e) {}
         m.put("ApiType", "content/addByWeb");
         m.put("ObjType", 1);
         //m.put("ObjId", contentId);//id
@@ -313,7 +322,10 @@ public class QueryController {
 		}
 		String contentid = m.get("ContentId")+"";
         //收集数据
-        MobileUDKey mUdk=MobileParam.build(m).getUserDeviceKey();
+        MobileUDKey mUdk=null;
+        try {
+            mUdk=MobileParam.build(m).getUserDeviceKey();
+        }catch(Exception e) {}
         m.put("ApiType", "content/getContentInfo2Updata");
         m.put("ObjType", 1);
         m.put("ObjId", contentid);//id

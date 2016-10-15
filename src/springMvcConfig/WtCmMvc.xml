@@ -18,6 +18,9 @@
   <context:component-scan base-package="com.woting" use-default-filters="false">
     <context:include-filter type="regex" expression=".*.web.*Controller"/>
   </context:component-scan>
+  <context:component-scan base-package="com.spiritdata.dataanal" use-default-filters="false">
+    <context:include-filter type="regex" expression=".*.web.*Controller"/>
+  </context:component-scan>
 
   <bean id="loginService" class="com.woting.passport.login.service.LoginServiceImpl"/>
   

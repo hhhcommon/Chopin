@@ -46,7 +46,7 @@
         <if test="equipVer!=null"> and equipmentVersion=#{equipVer,jdbcType=VARCHAR}</if>
         <if test="exploreName!=null"> and exploreName=#{exploreName,jdbcType=VARCHAR}</if>
         <if test="exploreVer!=null"> and exploreVer=#{exploreVer,jdbcType=VARCHAR}</if>
-        <if test="objType!=null and objType!=0"> and objType=#{objType,jdbcType=INTEGER}</if>
+        <if test="objType!=null"> and objType=#{objType,jdbcType=INTEGER}</if>
         <if test="objId!=null"> and objId=#{objId,jdbcType=VARCHAR}</if>
         <if test="objUrl!=null"> and objUrl=#{objUrl,jdbcType=VARCHAR}</if>
         <if test="fromUrl!=null"> and fromUrl=#{fromUrl,jdbcType=VARCHAR}</if>
@@ -89,7 +89,7 @@
       <if test="equipVer!=null">equipmentVersion,</if>
       <if test="exploreName!=null">exploreName,</if>
       <if test="exploreVer!=null">exploreVer,</if>
-      <if test="objType!=null and objType!=0">objType,</if>
+      <if test="objType!=null">objType,</if>
       <if test="objId!=null">objId,</if>
       <if test="fromUrl!=null">fromUrl,</if>
       <if test="objUrl!=null">objUrl,</if>
@@ -106,7 +106,7 @@
       <if test="equipVer!=null">#{equipVer,jdbcType=VARCHAR},</if>
       <if test="exploreName!=null">#{exploreName,jdbcType=VARCHAR},</if>
       <if test="exploreVer!=null">#{exploreVer,jdbcType=VARCHAR},</if>
-      <if test="objType!=null and objType!=0">#{objType,jdbcType=INTEGER},</if>
+      <if test="objType!=null">#{objType,jdbcType=INTEGER},</if>
       <if test="objId!=null">#{objId,jdbcType=VARCHAR},</if>
       <if test="objUrl!=null">#{objUrl,jdbcType=VARCHAR},</if>
       <if test="fromUrl!=null">#{fromUrl,jdbcType=VARCHAR},</if>
@@ -127,7 +127,7 @@
       <if test="equipVer!=null">equipmentVersion=#{equipVer,jdbcType=VARCHAR},</if>
       <if test="exploreName!=null">exploreName=#{exploreName,jdbcType=VARCHAR},</if>
       <if test="exploreVer!=null">exploreVer=#{exploreVer,jdbcType=VARCHAR},</if>
-      <if test="objType!=null and objType!=0">objType=#{objType,jdbcType=INTEGER},</if>
+      <if test="objType!=null">objType=#{objType,jdbcType=INTEGER},</if>
       <if test="objId!=null">objId=#{objId,jdbcType=VARCHAR},</if>
       <if test="fromUrl!=null">#{fromUrl,jdbcType=VARCHAR},</if>
       <if test="objUrl!=null">#{objUrl,jdbcType=VARCHAR},</if>

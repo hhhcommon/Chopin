@@ -21,7 +21,7 @@ public abstract class GatherUtils {
     public static void SaveLogFromAPI(MobileUDKey udk, Map<String, Object> data) throws InterruptedException {
         VisitLogPo vlp=new VisitLogPo();
 
-        vlp.setOwnerId(udk==null?(data.get("UserId")==null?"err":data.get("UserId")+""):udk.getUserId());
+        vlp.setOwnerId(udk==null?(data.get("UserId")==null?"err":data.get("UserId")+""):(udk.getUserId()==null?"unknow":udk.getUserId()));
         vlp.setOwnerType(201);
         //1-GPS信息
         String temp=data.get("pointInfo")==null?null:data.get("pointInfo")+"";
@@ -42,7 +42,7 @@ public abstract class GatherUtils {
         vlp.setExploreVer(StringUtils.isNullOrEmptyOrSpace(temp)?null:temp);
         //9-访问实体的类型
         temp=data.get("ObjType")==null?null:data.get("ObjType")+"";
-        vlp.setObjType(StringUtils.isNullOrEmptyOrSpace(temp)?null:Integer.parseInt(temp));
+        vlp.setObjType(StringUtils.isNullOrEmptyOrSpace(temp)?0:Integer.parseInt(temp));
         //A-访问实体的Id
         temp=data.get("ObjId")==null?null:data.get("ObjId")+"";
         vlp.setObjId(StringUtils.isNullOrEmptyOrSpace(temp)?null:temp);

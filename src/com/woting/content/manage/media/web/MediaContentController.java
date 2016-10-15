@@ -34,7 +34,10 @@ public class MediaContentController {
 			String userId, channelId, beginCatalogId, pagestr;
 			int perSize = 3, pageSize = 10, page = 1;
             //收集数据
-            MobileUDKey mUdk=MobileParam.build(m).getUserDeviceKey();
+			MobileUDKey mUdk=null;
+			try {
+			    mUdk=MobileParam.build(m).getUserDeviceKey();
+			}catch(Exception e) {}
             m.put("ApiType", "content/getContents");
             m.put("ObjType", 1);//文章
             //m.put("ObjId", m.get("UserId"));//id
@@ -112,7 +115,10 @@ public class MediaContentController {
 				return map;
 			}
             //收集数据
-            MobileUDKey mUdk=MobileParam.build(m).getUserDeviceKey();
+            MobileUDKey mUdk=null;
+            try {
+                mUdk=MobileParam.build(m).getUserDeviceKey();
+            }catch(Exception e) {}
             m.put("ApiType", "content/getContentInfo");
             m.put("ObjType", 1);//文章
             //m.put("ObjId", m.get("UserId"));//id
@@ -165,7 +171,10 @@ public class MediaContentController {
 				return map;
 			}
             //收集数据
-            MobileUDKey mUdk=MobileParam.build(m).getUserDeviceKey();
+            MobileUDKey mUdk=null;
+            try {
+                mUdk=MobileParam.build(m).getUserDeviceKey();
+            }catch(Exception e) {}
             m.put("ApiType", "content/getNoPubList");
             m.put("ObjType", 1);//文章
             //m.put("ObjId", m.get("UserId"));//id
@@ -297,7 +306,10 @@ public class MediaContentController {
 					userId = null;
 			}
             //收集数据
-            MobileUDKey mUdk=MobileParam.build(m).getUserDeviceKey();
+            MobileUDKey mUdk=null;
+            try {
+                mUdk=MobileParam.build(m).getUserDeviceKey();
+            }catch(Exception e) {}
             m.put("ApiType", "content/directContent");
             m.put("ObjType", 1);//文章
             //m.put("ObjId", m.get("UserId"));//id
@@ -346,7 +358,10 @@ public class MediaContentController {
 				return map;
 			}
             //收集数据
-            MobileUDKey mUdk=MobileParam.build(m).getUserDeviceKey();
+            MobileUDKey mUdk=null;
+            try {
+                mUdk=MobileParam.build(m).getUserDeviceKey();
+            }catch(Exception e) {}
             m.put("ApiType", "content/removeContent");
             m.put("ObjType", 1);//文章
             //m.put("ObjId", m.get("UserId"));//id

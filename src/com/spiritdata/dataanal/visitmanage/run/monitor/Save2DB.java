@@ -19,7 +19,7 @@ public class Save2DB extends Thread {
         while (true) {
             try {
                 this.vms.Save2DB();
-            } catch (InterruptedException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

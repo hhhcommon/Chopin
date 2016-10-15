@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.spiritdata.framework.util.SequenceUUID;
 import com.spiritdata.framework.util.SpiritRandom;
 import com.spiritdata.framework.util.StringUtils;
+import com.spiritdata.framework.ext.redis.BlockLockConfig;
 import com.spiritdata.framework.ext.redis.ExpirableBlockKey;
 import com.spiritdata.framework.ext.redis.RedisBlockLock;
 import com.spiritdata.framework.util.JsonUtils;
@@ -136,7 +137,10 @@ public class PassportController {
             }
             //3-注册成功后，自动登陆，及后处理
             mUdk.setUserId(nu.getUserId());
-            ExpirableBlockKey rLock=RedisBlockLock.lock(redisUdk.getKey_Lock(), rConn);
+            BlockLockConfig blConf=new BlockLockConfig();
+            blConf.setWaitingType(2);
+            blConf.setWaitingTime(50);//50毫秒
+            ExpirableBlockKey rLock=RedisBlockLock.lock(redisUdk.getKey_Lock(), rConn, blConf);
             try {
                 sessionService.registUser(mUdk, nu);
                 MobileUsedPo mu=new MobileUsedPo();
@@ -231,7 +235,10 @@ public class PassportController {
             }
             RedisUserDeviceKey redisUdk=new RedisUserDeviceKey(mUdk);
             RedisConnection rConn=redisConn.getConnection();
-            ExpirableBlockKey rLock=RedisBlockLock.lock(redisUdk.getKey_Lock(), rConn);
+            BlockLockConfig blConf=new BlockLockConfig();
+            blConf.setWaitingType(2);
+            blConf.setWaitingTime(50);//50毫秒
+            ExpirableBlockKey rLock=RedisBlockLock.lock(redisUdk.getKey_Lock(), rConn, blConf);
             try {
                 sessionService.registUser(mUdk, u);
                 MobileUsedPo mu=new MobileUsedPo();
@@ -317,7 +324,10 @@ public class PassportController {
             //2-注销
             RedisConnection rConn=redisConn.getConnection();
             RedisUserDeviceKey redisUdk=new RedisUserDeviceKey(mUdk);
-            ExpirableBlockKey rLock=RedisBlockLock.lock(redisUdk.getKey_Lock(), rConn);
+            BlockLockConfig blConf=new BlockLockConfig();
+            blConf.setWaitingType(2);
+            blConf.setWaitingTime(50);//50毫秒
+            ExpirableBlockKey rLock=RedisBlockLock.lock(redisUdk.getKey_Lock(), rConn, blConf);
             try {
                 sessionService.logoutSession(mUdk);
                 //保存使用情况
@@ -974,7 +984,10 @@ public class PassportController {
             mUdk.setUserId(_userId);
             RedisConnection rConn=redisConn.getConnection();
             RedisUserDeviceKey redisUdk=new RedisUserDeviceKey(mUdk);
-            ExpirableBlockKey rLock=RedisBlockLock.lock(redisUdk.getKey_Lock(), rConn);
+            BlockLockConfig blConf=new BlockLockConfig();
+            blConf.setWaitingType(2);
+            blConf.setWaitingTime(50);//50毫秒
+            ExpirableBlockKey rLock=RedisBlockLock.lock(redisUdk.getKey_Lock(), rConn, blConf);
             try {
                 sessionService.registUser(mUdk, (UserPo)rm.get("userInfo"));
                 //3.2-保存使用情况
