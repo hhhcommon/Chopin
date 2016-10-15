@@ -151,7 +151,7 @@
 								var userinfo = jsonData.OpinionList[i].UserInfo;
 								var commentinfo = '<li class="listItem"><div class="comment2">' +
 									'<div class="left">' +
-									'<img src=" ' + makeUserImg(isOrNull(userinfo) == null ? "/Chopin/article/comment_default.png" : userinfo.PortraitBig) + '" data-options="defaultImg:person_60" style="width: 50px;height: 50px;border-radius: 50%;">' +
+									'<img src=" ' + (isOrNull(userinfo) == null ? "/Chopin/article/comment_default.png" : userinfo.PortraitBig) + '" data-options="defaultImg:person_60" style="width: 50px;height: 50px;border-radius: 50%;" onerror="imgError(this);">' +
 									'</div>' +
 									'<div class="right">' +
 									'<div><span style="color:#699;">' + (isOrNull(userinfo) == null ? "游客" : userinfo.UserName) + '</span></div>' +
@@ -174,7 +174,6 @@
 					error: function(jqXHR) {
 						alert("发生错误测试" + jqXHR.status);
 					}
-					
 				});
 			}
 		}
@@ -214,13 +213,7 @@
 			}
 			return month + "-" + date + "&nbsp;&nbsp;" + hour + ":" + minute + ":" + second;
 		}
-		function makeUserImg(userpath) {
-			//			if(userpath.indexOf("http://") < 0) {
-			//				userpath = rootPath + userpath;
-			//			}
-			return userpath;
-		}
-
+		
 		function makeCommentInfo(commentstr) {
 			return commentstr.replace(/#\[/g, '<img style="width: 18px;height: 18px;" src=" ').replace(/\]#/g, '">').replace(/face/g, rootPath + "asset/members");
 		}
@@ -229,6 +222,10 @@
 			var h = document.body.scrollHeight;
 			window.parent.setCommentHeight(h);
 		}
+		
+		function imgError(image){
+			image.src="/Chopin/article/comment_default.png";
+    }
 	</script>
 
 </html>

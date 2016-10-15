@@ -95,6 +95,7 @@ body{
   width:33px;
   background:url(./resources/chopin/imgs/searchIcon.png) top left no-repeat;
   margin-left:5px;
+  cursor: pointer;
 }
 .nav {
   width:90px;
@@ -405,19 +406,34 @@ body{
 }
 /*上传作品样式*/
 .uploadOpus_modal{
-  width:950px;
-  height:560px;
+  width:100%;
+  height:541px;
   position: fixed;
-  margin-top: 145px;
-  margin-left: 15%;
+  margin-top: 85px;
   z-index: 1948;
   background:url(./resources/chopin/imgs/uploadOpus.png) no-repeat;
   background-size: 100% 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow:hidden;
   display: none;
 }
-.channelBarTitle {
+.modal-dialog{
+  width:100%;
+  height:100%;
+  position:absolute;
+}
+.channelBarTitles{
+  height: 55px;
+  position: absolute;
+  top:25px;
+  left:22%;
+}
+.barTitleAreas{
+  float: left;
+  height: 55px;
+  width: 200px;
+  margin-left:22%;
+}
+.channelBarTitle{
   height: 55px;
   margin-top:40px;
 }
@@ -457,12 +473,6 @@ body{
   padding-left: 12px;
   font-style: italic;
 }
-.channelBarConetent{
-  width: 100%;
-  height: 685px;
-  border: 1px solid black;
-  margin-top: 20px;
-}
 .uploadBtn{
   width: 240px;
   height: 80px;
@@ -473,82 +483,72 @@ body{
 }
 .bgmask{
   width: 710px;
-  height: 485px;
+  height: 435px;
   margin: auto;
   position:absolute;
-  top:204px;
-  left:120px;
+  top:75px;
+  left:22%;
   cursor: pointer;
   background:url(./resources/chopin/imgs/maskUpload.png) no-repeat;
   background-size: 100% 100%;
 }
-.changeFile{
-  width: 64%;
-  height: 40px;
-  display: none;
-  top:34%;
-  left: 19%;
-  position: absolute;
-  cursor: pointer;
-}
 #ul_File,.ulFile{
-  width: 100%;
-  height: 40px;
+  width: 510px;
+  height: 35px;
   position: absolute;
-  top: -60px;
-  left: -4px;
   font-family: vista_MS;
   font-size: 15px;
+  margin-left:15px;
 }
 .form-group{
   width: 92%;
-  margin-top: 40px;
+  margin-top: 25px;
   margin-left: 3.4%;
 }
 .control-label{
   width: 50px;
-  height: 40px;
+  height: 35px;
   font-size: 20px;
   line-height: 40px;
-  padding-left: 25px;
+  padding-left: 9px;
   color:#fff;
   font-family: vista_MS;
 }
 #titleName{
   width: 510px;
-  height: 40px;
+  height: 35px;
   position: absolute;
-  margin-left:40px;
+  margin-left:16px;
   font-size:15px;
 }
 #abstractName{
   width: 510px;
-  height: 40px;
+  height: 35px;
   position: absolute;
-  margin-left:40px;
+  margin-left:16px;
   font-size:15px;
 }
 #descName{
   width: 510px;
   position: absolute;
-  margin-left:40px;
+  margin-left:16px;
   font-size:15px;
 }
 .channelBarFooter{
   width: 250px;
-  height: 40px;
+  height: 35px;
   position: absolute;
-  margin-top: 155px;
+  margin-top: 110px;
   margin-left: 230px;
 }
 .commit,.cancel{
   width: 80px;
-  height: 40px;
+  height: 30px;
   border: 1px solid transparent;
   background: rgba(255,166,52,1);
   float: left;
   color:#fff;
-  font-size: 15px;
+  font-size: 18px;
   font-family:vista_MS;
   font-weight: bolder;
   cursor: pointer;
@@ -556,42 +556,57 @@ body{
 .cancel{
   margin-left:55px;
 }
+.waitting{
+  width: 710px;
+  height: 435px;
+  margin: auto;
+  position:absolute;
+  top:75px;
+  left:22%;
+  display: none;
+  background:url(./resources/chopin/imgs/waitting.png) no-repeat;
+  background-size: 100% 100%;
+}
 /*搜索样式*/
 .cancelSearch{
-  width: 23%;
-  text-align: center;
-  display: block;
-  top: 3%;
-  border: 1px solid white;
-  border-radius: 2px;
-  color: white;
-  float: left;
-  margin-left:3px;
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  background: #0E0E0E;
+  top: 39px;
+  right: 275px;
+  background:url(./resources/chopin/imgs/search1.png) no-repeat;
+  background-size: 100% 100%;
+  margin-left: 5px;
+  border: 1px solid transparent;
   display: none;
 }
 .header-search-slide{
-  position: absolute;
-  z-index: 3;
-  right: 0;
+  position: fixed;
+  top:80px;
+  left:0px;
+  z-index:2013;
+  height:auto;
   display: none;
   clear: both;
   width: 100%;
-  background: rgba(255,255,255,.9);
+  background: #0E0E0E;
   box-shadow: 0 0 3px 0 rgba(0,0,0,.2);
 }
 .header-search-slide form{
   overflow: hidden;
   padding: 25px 25%;
 }
-.header-search-slide form input[type=search]{
+.header-search-slide form input[type=text]{
   font-size: 20px;
   line-height: 30px;
   float: left;
-  width: 90%;
+  width: 620px;
   height: 50px;
   margin: 0 auto;
   padding-right: 10px;
-  padding-left: 20px;
+  padding-left: 0px;
   border: 0;
   border: 2px solid #ddd;
   border-right: none;
@@ -599,8 +614,8 @@ body{
 }
 .header-search-slide form .search-btn {
   font-size: 16px;
-  width: 10%;
-  height: 50px;
+  width: 85px;
+  height: 54px;
   padding: 0 12px;
   cursor: pointer;
   -webkit-transition: all .25s;
@@ -611,7 +626,59 @@ body{
   color: #fff;
   border: none;
   border-radius: 0 2px 2px 0;
-  background: #45b6f7;
+  background: #FFA634;
+  position: absolute;
+  top: 25px;
+  margin-left:-1px;
+}
+.header-search-slide form .search-btn a{
+  font-size: 20px;
+  color: #fff;
+  text-decoration: none;
+  font-family:vista_MS;
+}
+.header-search-slide form label {
+  font-size: 16px;
+  font-weight: 100;
+  float: left;
+  margin-top: 23px;
+  margin-right: 20px;
+  color: #fff;
+}
+.header-search-slide form ul {
+  font-size: 16px;
+  margin-top:24px;
+  margin-left:81px;
+  position: absolute;
+  width:550px;
+  height:auto;
+  font-family:vista_MS;
+}
+.header-search-slide form ul li {
+  float: left;
+  padding-top: 0px;
+  padding-right: 10px;
+  color: #fff;
+  font-size: 15px;
+  font-family:vista_MS;
+  cursor: pointer;
+}
+/*自动联想样式*/
+#append{
+  width: 632px;
+  height:auto;
+  background:#fff;
+}
+.item{
+  width: 98.3%;
+  height: 30px;
+  padding:3px 5px;
+  cursor:pointer;
+  font-size: 16px;
+  font-family:vista_MS;
+}
+.addbg{
+  background:#ddd;
 }
 </style>
 </head>
@@ -648,9 +715,9 @@ body{
   </div>
   <div id="oper" class="topBlock" style="width:208px;padding-top:12px;">
     <button class="searchBtn"></button>
-    <button class="cancelSearch">×</button>
+    <button class="cancelSearch"></button>
     <button  id="logBtn" class="operButton" style="margin-left:75px;cursor:pointer;" onclick="login()">登录</button>
-    <button  id="regBtn"class="operButton" style="margin-left:5px;cursor:pointer;">注册</button>
+    <button  id="regBtn"class="operButton" style="margin-left:5px;cursor:pointer;" onclick="regist()">注册</button>
   </div>
 </div>
 
@@ -701,17 +768,13 @@ body{
 </div>
 <div class="header-search-slide">
   <form method="get" id="searchform-slide" class="searchform" action="" role="search">
-    <input class="field" name="s" value="" placeholder="输入关键词并回车" type="search">
-    <button class="search-btn" type="submit"><a href="#">搜索</a></button>
-    <label>热门搜索：</label>
-    <ul>
-      <li><a href="#">肖邦音乐</a></li>
-      <li><a href="#">肖邦故乡</a></li>
-      <li><a href="#">肖邦生平</a></li>
-      <li><a href="#">肖邦作品集</a></li>
-      <li><a href="#">肖邦成就</a></li>
-      <li><a href="#">肖邦作曲</a></li>
-    </ul>
+    <div style="width:720px;height:55px;">
+      <input class="field" name="s" value="" placeholder="输入关键词并回车" type="text" onKeyup="getContent(this);" autocomplete="off"/>
+      <button class="search-btn" type="submit"><a href="#">搜索</a></button>
+    </div>
+    <div id="append"></div>
+    <label>热词搜索：</label>
+    <ul></ul>
   </form>
 </div>
 <iframe id="_SESSION" src="session.jsp" width="0" height="0" style="display:none"></iframe>
@@ -725,7 +788,7 @@ body{
     <li class="login_header3">忘记密码</li>
   </ul>
   <div class="login_content">
-    <form action="" name="loginform" id="loginform" style="margin-left:47px">
+    <form action="" name="loginform" id="loginform">
       <div class="input_group "style="top:50px;">
         <span class="usernameSpan">账号</span>
         <input class="form-control required" id="usernameInput" name="usernameInput" type="text" placeholder="手机号/用户名" aria-invalid="true" minlength="15">
@@ -741,46 +804,47 @@ body{
   </div>
   <div class="register_content">
     <div class="qr_code" style="top:145px;"><img src="./resources/chopin/imgs/scanCode.png" alt="" /></div>
-    <div class="registeByApp">请通过扫码安装APP注册账号</div>
+    <div class="registeByApp">请通过扫码注册账号</div>
   </div>
   <div class="forget_content">
     <div class="qr_code" style="top:145px;"><img src="./resources/chopin/imgs/scanCode.png" alt="" /></div>
-    <div class="registeByApp">请通过扫码安装APP找回密码</div>
+    <div class="registeByApp">请通过扫码找回密码</div>
   </div>
 </div>
 <!--上传作品界面-->
 <div class="uploadOpus_modal">
   <div class="modal-dialog">
-    <div class="channelBarTitle">
-      <div class="barTitleArea">
+    <div class="channelBarTitles">
+      <div class="barTitleAreas">
         <div class="cName"><div class="h_split"></div>上传作品</div>
-        <div class="eName">uploadOpus</div>
+        <!--<div class="eName">uploadOpus</div>-->
       </div>
     </div>
     <div class="channelBarConetent">
-      <div class="uploadBtn"></div>
-      <div class="changeFile">
-        <input id="ul_File" name="ul_File"  type="text"  placeholder="点击，选择文件上传"  readonly />
-        <input class="ulFile" name="ulFile" type="file" style="display:none;" value="" />
-      </div>
       <div class="bgmask">
         <div class="form-group">
-          <label class="control-label">标 题</label>
+          <label class="control-label">上传文件</label>
+          <input id="ul_File" name="ul_File"  type="text"  placeholder="点击，选择文件上传"  readonly />
+          <input class="ulFile" name="ulFile" type="file" style="display:none;" value="" />
+        </div>
+        <div class="form-group">
+          <label class="control-label" style="margin-left:39px;">标题</label>
           <input id="titleName" name="titleName"  type="text" aria-required="true">
         </div>
-        <div class="form-group">
-          <label class="control-label">摘 要</label>
+        <div class="form-group" >
+          <label class="control-label" style="margin-left:39px;">摘要</label>
           <input id="abstractName" name="abstractName"  type="text" aria-required="true">
         </div>
-        <div class="form-group">
-          <label class="control-label">描 述</label>
-          <textarea name="descName" id="descName" cols="30" rows="10"></textarea>
+        <div class="form-group" >
+          <label class="control-label" style="margin-left:39px;">描述</label>
+          <textarea name="descName" id="descName" cols="30" rows="5"></textarea>
         </div>
         <div class="channelBarFooter">
-          <button class="commit" type="button" class="btn btn-primary">提交</button>
-          <button class="cancel" type="button" class="btn btn-white" data-dismiss="modal">取消</button>
+          <button class="commit" type="button">提 交</button>
+          <button class="cancel" type="button" data-dismiss="modal">取 消</button>
         </div>
       </div>
+      <div class="waitting"></div>
     </div>
   </div>
 </div>
@@ -913,19 +977,29 @@ function myResize() {
 }
 
 function showChannelPage(channelId) {
+  $(".mask,.login_modal,.header-search-slide").hide();
   var _cUrl=rootPath+"channels.html?ChannelId="+channelId;
   showInIframe(_cUrl);
 }
 function showMyFavoritePage(userId) {
+  $(".cancelSearch").css({"display":"none"});
+  $(".searchBtn").css({"display":"block"});
+  $(".mask,.login_modal,.header-search-slide").hide();
   var _cUrl=rootPath+"myFavorite.html?UserId="+userId;
   showInIframe(_cUrl);
 }
 function showMyOpusPage(userId) {
+  $(".cancelSearch").css({"display":"none"});
+  $(".searchBtn").css({"display":"block"});
+  $(".mask,.login_modal,.header-search-slide").hide();
   var _cUrl=rootPath+"myOpus.html?UserId="+userId;
   showInIframe(_cUrl);
 }
-function showUploadOpusPage(userId) {
-  var _cUrl=rootPath+"uploadOpus.html?UserId="+userId;
+function showMySearchPage(searchStr){
+  $(".cancelSearch").css({"display":"none"});
+  $(".searchBtn").css({"display":"block"});
+  $(".mask,.login_modal,.header-search-slide").hide();
+  var _cUrl=rootPath+"mySearch.html?SearchStr="+searchStr;
   showInIframe(_cUrl);
 }
 function showInIframe(iframeSrc) {
@@ -1045,9 +1119,9 @@ $(".login_header3").on("click",function(){
   $(".forget_content").show();
 })
 
-//取消登陆
+//取消登陆或注册
 $(document).on("click",".mask",function(){
-  var sure=confirm("确定要取消登陆吗？");
+  var sure=confirm("确定要取消吗？");
   if(sure==true){
     $(".login_modal,.mask").hide();
   }else{
@@ -1055,11 +1129,31 @@ $(document).on("click",".mask",function(){
   }
 })
 
-/*登陆相关的方法*/
-function login() {
+//点击注册按钮
+function regist(){
+  $(".header-search-slide").hide().slideUp(100);
+  $(".searchBtn").css({"display":"block"});
+  $(".cancelSearch").css({"display":"none"});
   $("#usernameInput").val("");
   $("#userpasswordInput").val("");
   $(".mask").show();
+  $(".login_header1,.login_header2,.login_header3").css({"background":"gray"});
+  $(".login_header2").css({"background":"rgb(14, 14, 14)"});
+  $(".register_content").show();
+  $(".login_modal").show();
+}
+
+/*登陆相关的方法*/
+function login() {
+  $(".header-search-slide").hide().slideUp(100);
+  $(".searchBtn").css({"display":"block"});
+  $(".cancelSearch").css({"display":"none"});
+  $("#usernameInput").val("");
+  $("#userpasswordInput").val("");
+  $(".mask").show();
+  $(".login_header1,.login_header2,.login_header3").css({"background":"gray"});
+  $(".login_header1").css({"background":"rgb(14, 14, 14)"});
+  $(".login_content").show();
   $(".login_modal").show();
 }
 $(document).on("click",".logined",function(){
@@ -1195,12 +1289,9 @@ $(".opus").on("click",function(){
  * 上传作品*/
 $(".upload").on("click",function(){
   var userId=$(".userCenter_un").attr("userId");
-  $("#ul_File,#titleName,#abstractName,#descName").val(" ");
+  $("#ul_File,#titleName,#abstractName,#descName").val("");
+  $(".ulFile").val("");
   $(".mask,.uploadOpus_modal").show();
-});
-$(".uploadBtn").on("click",function(){
-  $(".changeFile").show();
-  $(this).hide();
 });
 $("#ul_File").on("click", function() {
   $(".ulFile").click();
@@ -1217,7 +1308,8 @@ $(".ulFile").change(function() {
 });
 //点击提交按钮，上传作品
 $(".commit").on("click",function(){
-   $.ajax({
+  $(".waitting").show();
+  $.ajax({
     url:rootPath+"common/uploadCM.do",
     type:"POST",
     data:oMyForm,
@@ -1228,10 +1320,12 @@ $(".commit").on("click",function(){
     //表单提交前进行验证
     success: function (opeResult){
       if(opeResult.ful[0].success=="TRUE"){
-        alert("文件上传成功");
         var filePath=opeResult.ful[0].storeFilepath;
         _this.attr("value",filePath);
         uploadMyOpus(filePath);
+      }else{
+        alert("你还没有选择文件上传");
+        $(".waitting").hide();
       }
     },
     error: function(jqXHR){
@@ -1246,8 +1340,8 @@ function uploadMyOpus(filePath){
   data.ContentTitle=$("#titleName").val();
   data.FilePath=filePath;
   data.ChannelId="6";
-  data.ContentDecsn=$("#descName").val();
-  console.log(JSON.stringify(data));
+  data.ContentDecsn=$("#abstractName").val();
+  data.ContentInfo=$("#descName").val();
   $.ajax({
     url:rootPath+"content/addByApp.do",
     type:"POST",
@@ -1258,10 +1352,13 @@ function uploadMyOpus(filePath){
     dataType:"json",
     //表单提交前进行验证
     success: function (jsonData){
-      alert(allFields(jsonData));
       if(jsonData.ReturnType=="1001"){
         alert("作品上传成功");
+        $(".waitting").hide();
         $(".mask,.uploadOpus_modal").hide();
+      }else{
+        $(".waitting").hide();
+        alert(jsonData.Message+",请修改后在上传");
       }
     },
     error:function(jqXHR){
@@ -1277,28 +1374,200 @@ $(".cancel").on("click",function(){
 
 /*
 * 
-*
 * 搜索的相关操作和方法*/
 //点击导航栏的搜索按钮
 $(".searchBtn").on("click",function(){
+  $(".field").val("");
+  $(".header-search-slide form ul").html("");
+  $(".mask").show();
+  $(".login_modal").hide();
   $(".header-search-slide").slideDown(100);
   $(".searchBtn").css({"display":"none"});
   $(".cancelSearch").css({"display":"block"});
+  //点击搜索，得到搜索热词
+  var userId=$(".userCenter_un").attr("userId");
+  var _data={
+    "IMEI":deviceId,
+    "PCDType":"3",
+    "FunType":"1",
+    "WordSize":"10",
+    "ReturnType":"1"
+  };
+  if(typeof(userId)!="undefined"){//非游客登录
+    _data.UserId=userId;
+  }
+  $.ajax({
+    url:rootPath+"getHotKeys.do",
+    type:"POST",
+    data:JSON.stringify(_data),
+    cache: false,
+    processData: false,
+    contentType: false,
+    dataType:"json",
+    //表单提交前进行验证
+    success: function (jsonData){
+      if(jsonData.ReturnType=="1001"){
+        var hotKeyList=jsonData.KeyList;
+        var arr=hotKeyList.split('\,');
+        for(var i=0;i<arr.length;i++){
+          var str = "'"+arr[i]+"'";
+          var nli='<li onclick="showMySearchPage('+str+')">'+arr[i]+'</li>';
+          $(".header-search-slide form ul").append(nli);
+        }
+      }else{
+        $(".header-search-slide form ul").html("无搜索热词");
+      }
+    },
+    error:function(jqXHR){
+      alert("发生错误" + jqXHR.status);
+    }
+  });
 });
+
 //点击取消搜索
 $(".cancelSearch").on("click",function(){
-  $(".search").css({"display":"block"});
+  $(".login_modal").hide();
+  $(".searchBtn").css({"display":"block"});
   $(".cancelSearch").css({"display":"none"});
   $(".header-search-slide").slideUp(100);
 });
-//点击搜索栏里的搜索按钮
-$(".header-search-slide .search-btn").on("click",function(){
-  if($(".field").val()){
-   aler("搜索");
-    return false;
-  }else{
-    alert("请输入您要查询的内容!");
+
+//输入框里面内容发生变化，自动联想，暂时还不可用，需要修改
+var datas = new Array();
+$(".field").on("input propertychange",function(){
+  var userId=$(".userCenter_un").attr("userId");
+  var _data={
+    "IMEI":deviceId,
+    "PCDType":"3",
+    "FunType":"1",
+    "WordSize":"10",
+    "ReturnType":"1",
+    "KeyWord":decodeURIComponent($(".field").val())
+  };
+  if(typeof(userId)!="undefined"){//非游客登录
+    _data.UserId=userId;
+  }
+  $.ajax({
+    url:rootPath+"searchHotKeys.do",
+    type:"POST",
+    data:JSON.stringify(_data),
+    cache: false,
+    processData: false,
+    contentType: false,
+    dataType:"json",
+    //表单提交前进行验证
+    success: function (jsonData){
+      if(jsonData.ReturnType=="1001"){
+        var searchHotKeyList=jsonData.KeyList;
+        datas=searchHotKeyList.split('\,');
+      }
+    },
+    error:function(jqXHR){
+      alert("发生错误" + jqXHR.status);
+    }
+  });
+});
+$(document).ready(function(){
+  $(document).keydown(function(e){//键盘上的事件
+    e = e || window.event;
+    var keycode = e.which ? e.which : e.keyCode;
+    if(keycode == 38){//键盘上的上
+      if(jQuery.trim($("#append").html())==""){
+        return;
+      }
+      movePrev();
+    }else if(keycode == 40){//键盘上的下
+      if(jQuery.trim($("#append").html())==""){
+        return;
+      }
+      $(".field").blur();
+      if($(".item").hasClass("addbg")){
+        moveNext();
+      }else{
+        $(".item").removeClass('addbg').eq(0).addClass('addbg');
+      }
+    }else if(keycode == 13){//键盘上的enter
+      dojob();
+    }
+  });
+   
+  $("#append").on("mousedown",".item",function(e){//鼠标的事件
+    dojob();
+  });
+  var movePrev = function(){
+    $(".field").blur();
+    var index = $(".addbg").prevAll().length;
+    if(index == 0){
+      $(".item").removeClass('addbg').eq($(".item").length-1).addClass('addbg');
+    }else{
+      $(".item").removeClass('addbg').eq(index-1).addClass('addbg');
+    }
+  }
+  var moveNext = function(){
+    var index = $(".addbg").prevAll().length;
+    if(index == $(".item").length-1){
+      $(".item").removeClass('addbg').eq(0).addClass('addbg');
+    }else{
+      $(".item").removeClass('addbg').eq(index+1).addClass('addbg');
+    }
+  }
+  var dojob = function(){
+    $(".field").blur();
+    var value = $(".addbg").text();
+    $(".field").val(value);
+    $("#append").hide().html("");
+    $(".header-search-slide").slideUp(100);
+    $(".searchBtn").css({"display":"block"});
+    $(".cancelSearch").css({"display":"none"});
+    $(".mask").hide();
+    var searchStr=$(".field").val();
+    showMySearchPage(searchStr);
   }
 });
+function getContent(obj){
+  var kw = jQuery.trim($(obj).val());//去掉字符串首尾空格的固定写法
+  if(kw == ""){
+    $("#append").hide().html("");
+    return false;
+  }
+  var html = "";
+  for(var i = 0; i < datas.length; i++){
+    if (datas[i].indexOf(kw) >= 0) {
+      html=html + "<div class='item' onmouseenter='getFocus(this)' onClick='getCon(this);'>" + datas[i] + "</div>"
+    }
+  }
+  if(html != ""){
+    $("#append").show().html(html);
+  }else{
+    $("#append").hide().html("");
+  }
+}
+function getFocus(obj){
+  $(".item").removeClass("addbg");
+  $(obj).addClass("addbg");
+}
+function getCon(obj){
+  var value = $(obj).text();
+  $(".field").val(value);
+  $("#append").hide().html("");
+}
+
+//点击input边上的搜索，得到搜索结果
+$(".search-btn").on("click",function(){
+  $(".mask").hide();
+  $(".searchBtn").css({"display":"block"});
+  $(".cancelSearch").css({"display":"none"});
+  $(".header-search-slide").slideUp(100);
+  var searchStr=$(".field").val();
+  showMySearchPage(searchStr);
+})
+//点击取消搜索
+$(".cancelSearch").on("click",function(){
+  $(".mask").hide();
+  $(".searchBtn").css({"display":"block"});
+  $(".cancelSearch").css({"display":"none"});
+  $(".header-search-slide").slideUp(100);
+  $(".field").val("");
+})
 </script>
 </html>

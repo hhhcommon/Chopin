@@ -33,11 +33,11 @@
   Map<String, Object> m=RequestUtils.getDataFromRequest(request);
   String contentId=(m==null||m.get("ContentId")==null)?null:m.get("ContentId")+"";
   if(contentId.equals("vote001")) {
-    response.sendRedirect("http://www.wotingfm.com/Chopin/vote.html?UserTeam=%e9%9d%92%e5%b9%b4%e7%bb%84");
+    response.sendRedirect("http://123.56.254.75:1108/Chopin/vote.html?UserTeam=%e9%9d%92%e5%b9%b4%e7%bb%84");
     return;
   }
   if(contentId.equals("vote002")) {
-    response.sendRedirect("http://www.wotingfm.com/Chopin/vote.html?UserTeam=%e5%b0%91%e5%b9%b4%e7%bb%84");
+    response.sendRedirect("http://123.56.254.75:1108/Chopin/vote.html?UserTeam=%e5%b0%91%e5%b9%b4%e7%bb%84");
     return;
   }
   String userId=(m==null||m.get("UserId")==null)?null:m.get("UserId")+"";
@@ -474,11 +474,7 @@ body { padding:0; }
 %>
   <div class="a_html"><%=htmlUrl%><p style="height:20px;">&nbsp;</p></div>
 <%
-<<<<<<< HEAD
 	  String commentpath = "http://123.56.254.75:1108/Chopin/article/comment.html?ContentId="+contentId;
-=======
-  String commentpath = "http://www.wotingfm.com/Chopin/article/comment.html?ContentId="+contentId;
->>>>>>> refs/remotes/origin/master
 %>
   <div class="a_comment"><iframe id="comment" class='_comment' frameborder='no' scrolling='no' src='<%=commentpath%>'></iframe></div>
 <%
@@ -491,7 +487,7 @@ body { padding:0; }
 %>
   <div class="a_nullhtml"><div class="word"><%=nullHtml%></div></div>
 <%
-  String commentpath = "http://www.wotingfm.com/Chopin/article/comment.html?ContentId="+contentId;
+  String commentpath = "http://123.56.254.75:1108/Chopin/article/comment.html?ContentId="+contentId;
 %>
   <div class="a_comment"><iframe id="comment" class='_comment' frameborder='no' scrolling='no' src='<%=commentpath%>'></iframe></div>
 <%
@@ -503,7 +499,6 @@ body { padding:0; }
 var deviceId="<%=sid%>";
 //主函数
 $(function() {
-  console.log(window.parent);
   window.parent.setMainHeight(0);
   if ($(window).width()<<%=widthLimit%>) {
     $("._video").attr("width", $(window).width());
