@@ -111,9 +111,15 @@ public class CommonController {
                 if ((retM.get("ReturnType")+"").equals("2001")) {
                     map.put("ReturnType", "0000");
                     map.put("Message", "无法获取设备Id(IMEI)");
+                } else {
+                    //处理过客
+                    if ((retM.get("ReturnType")+"").equals("2003")||(retM.get("ReturnType")+"").equals("2002")) {
+                        mUdk.setUserId("0");
+                    }
                 }
             }
             if (map.get("ReturnType")!=null) return map;
+            
 
             //获得查询串
             String searchStr=(m.get("SearchStr")==null?null:m.get("SearchStr")+"");

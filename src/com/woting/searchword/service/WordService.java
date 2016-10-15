@@ -231,8 +231,16 @@ public class WordService {
         if (rType==1&&ownerWords!=null&&sysWords!=null) {//合并merge
             for (Word w: sysWords) insertWord2OwnerWordList(ownerWords, w);
             allWords=new ArrayList<Word>();
-            for (int i=0; i<(topSize>ownerWords.size()?ownerWords.size():topSize); i++) {
-                allWords.add(ownerWords.get(i));
+            for (int i=0; i<ownerWords.size(); i++) {
+                if (allWords.size()>=topSize) break;
+                boolean canInsert=true;
+                for (Word _w: allWords) {
+                    if (_w.equals(ownerWords.get(i))) {
+                        canInsert=false;
+                        break;
+                    }
+                }
+                if (canInsert) allWords.add(ownerWords.get(i));
             }
         }
 
@@ -264,10 +272,10 @@ public class WordService {
     //======================================================================================================
     //以下为私有功能
     private void insertWord2OwnerWordList(List<Word> ownerWordList, Word word) {
-        //先检查是否已经存在
-        for (int i=0; i<ownerWordList.size(); i++) {
-            if (ownerWordList.get(i).getWord().equals(word.getWord())) return;
-        }
+//        //先检查是否已经存在
+//        for (int i=0; i<ownerWordList.size(); i++) {
+//            if (ownerWordList.get(i).getWord().equals(word.getWord())) return;
+//        }
         int insertIndex=-1;
         if (ownerWordList.size()==0) insertIndex=0;
         else {
