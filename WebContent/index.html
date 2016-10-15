@@ -583,11 +583,11 @@ body{
   display: none;
 }
 .header-search-slide{
-  position: absolute;
+  position: fixed;
   top:80px;
-  left:17px;
+  left:0px;
   z-index:2013;
-  height:150px;
+  height:auto;
   display: none;
   clear: both;
   width: 100%;
@@ -598,15 +598,15 @@ body{
   overflow: hidden;
   padding: 25px 25%;
 }
-.header-search-slide form input[type=search]{
+.header-search-slide form input[type=text]{
   font-size: 20px;
   line-height: 30px;
   float: left;
-  width: 90%;
+  width: 620px;
   height: 50px;
   margin: 0 auto;
   padding-right: 10px;
-  padding-left: 20px;
+  padding-left: 0px;
   border: 0;
   border: 2px solid #ddd;
   border-right: none;
@@ -614,8 +614,8 @@ body{
 }
 .header-search-slide form .search-btn {
   font-size: 16px;
-  width: 10%;
-  height: 50px;
+  width: 85px;
+  height: 54px;
   padding: 0 12px;
   cursor: pointer;
   -webkit-transition: all .25s;
@@ -627,6 +627,9 @@ body{
   border: none;
   border-radius: 0 2px 2px 0;
   background: #FFA634;
+  position: absolute;
+  top: 25px;
+  margin-left:-1px;
 }
 .header-search-slide form .search-btn a{
   font-size: 20px;
@@ -644,12 +647,16 @@ body{
 }
 .header-search-slide form ul {
   font-size: 16px;
-  margin-top: 20px;
+  margin-top:24px;
+  margin-left:81px;
+  position: absolute;
+  width:550px;
+  height:auto;
   font-family:vista_MS;
 }
 .header-search-slide form ul li {
   float: left;
-  padding-top: 3px;
+  padding-top: 0px;
   padding-right: 10px;
 }
 .header-search-slide form ul li a{
@@ -658,10 +665,22 @@ body{
   text-decoration: none;
   font-family:vista_MS;
 }
-.autocomplete{
-  width:100px;
-  height:20px;
-  border:2px solid red;
+/*自动联想样式*/
+#append{
+  width: 632px;
+  height:auto;
+  background:#fff;
+}
+.item{
+  width: 98.3%;
+  height: 30px;
+  padding:3px 5px;
+  cursor:pointer;
+  font-size: 16px;
+  font-family:vista_MS;
+}
+.addbg{
+  background:#ddd;
 }
 </style>
 </head>
@@ -700,7 +719,7 @@ body{
     <button class="searchBtn"></button>
     <button class="cancelSearch"></button>
     <button  id="logBtn" class="operButton" style="margin-left:75px;cursor:pointer;" onclick="login()">登录</button>
-    <button  id="regBtn"class="operButton" style="margin-left:5px;cursor:pointer;">注册</button>
+    <button  id="regBtn"class="operButton" style="margin-left:5px;cursor:pointer;" onclick="regist()">注册</button>
   </div>
 </div>
 
@@ -751,18 +770,13 @@ body{
 </div>
 <div class="header-search-slide">
   <form method="get" id="searchform-slide" class="searchform" action="" role="search">
-    <input class="field" name="s" value="" placeholder="输入关键词并回车" type="search">
-    <!--<div class="autocomplete"><ul class="hotSearch"><li>1232435435</li></ul></div>-->
-    <button class="search-btn" type="submit"><a href="#">搜索</a></button>
+    <div style="width:720px;height:55px;">
+      <input class="field" name="s" value="" placeholder="输入关键词并回车" type="text" onKeyup="getContent(this);" autocomplete="off"/>
+      <button class="search-btn" type="submit"><a href="#">搜索</a></button>
+    </div>
+    <div id="append"></div>
     <label>热词搜索：</label>
-    <ul>
-      <!--<li><a href="#">肖邦音乐</a></li>
-      <li><a href="#">肖邦故乡</a></li>
-      <li><a href="#">肖邦生平</a></li>
-      <li><a href="#">肖邦作品集</a></li>
-      <li><a href="#">肖邦成就</a></li>
-      <li><a href="#">肖邦作曲</a></li>-->
-    </ul>
+    <ul></ul>
   </form>
 </div>
 <iframe id="_SESSION" src="session.jsp" width="0" height="0" style="display:none"></iframe>
@@ -1097,15 +1111,26 @@ $(".login_header3").on("click",function(){
   $(".forget_content").show();
 })
 
-//取消登陆
+//取消登陆或注册
 $(document).on("click",".mask",function(){
-  var sure=confirm("确定要取消登陆吗？");
+  var sure=confirm("确定要取消吗？");
   if(sure==true){
     $(".login_modal,.mask").hide();
   }else{
     return false;
   }
 })
+
+//点击注册按钮
+function regist(){
+  $("#usernameInput").val("");
+  $("#userpasswordInput").val("");
+  $(".mask").show();
+  $(".login_header1,.login_header2,.login_header3").css({"background":"gray"});
+  $(".login_header2").css({"background":"rgb(14, 14, 14)"});
+  $(".register_content").show();
+  $(".login_modal").show();
+}
 
 /*登陆相关的方法*/
 function login() {
@@ -1332,6 +1357,7 @@ $(".cancel").on("click",function(){
 * 搜索的相关操作和方法*/
 //点击导航栏的搜索按钮
 $(".searchBtn").on("click",function(){
+  $(".field").val("");
   $(".header-search-slide form ul").html("");
   $(".mask").show();
   $(".header-search-slide").slideDown(100);
@@ -1383,8 +1409,9 @@ $(".cancelSearch").on("click",function(){
   $(".header-search-slide").slideUp(100);
 });
 
-//输入框里面内容发生变化，暂时还不可用，需要修改
-$(".field").on("input propertychange",function(){//得到搜索热词
+//输入框里面内容发生变化，自动联想，暂时还不可用，需要修改
+var datas = new Array();
+$(".field").on("input propertychange",function(){
   var userId=$(".userCenter_un").attr("userId");
   var _data={
     "IMEI":deviceId,
@@ -1392,7 +1419,7 @@ $(".field").on("input propertychange",function(){//得到搜索热词
     "FunType":"1",
     "WordSize":"10",
     "ReturnType":"1",
-    "KeyWord":$(".field").val()
+    "KeyWord":decodeURIComponent($(".field").val())
   };
   if(typeof(userId)!="undefined"){//非游客登录
     _data.UserId=userId;
@@ -1408,18 +1435,101 @@ $(".field").on("input propertychange",function(){//得到搜索热词
     //表单提交前进行验证
     success: function (jsonData){
       if(jsonData.ReturnType=="1001"){
-        
-      }else{
-        alert(jsonData.ReturnType);
+        var searchHotKeyList=jsonData.KeyList;
+        datas=searchHotKeyList.split('\,');
       }
     },
     error:function(jqXHR){
       alert("发生错误" + jqXHR.status);
     }
   });
-})
+});
+$(document).ready(function(){
+  $(document).keydown(function(e){//键盘上的事件
+    e = e || window.event;
+    var keycode = e.which ? e.which : e.keyCode;
+    if(keycode == 38){//键盘上的上
+      if(jQuery.trim($("#append").html())==""){
+        return;
+      }
+      movePrev();
+    }else if(keycode == 40){//键盘上的下
+      if(jQuery.trim($("#append").html())==""){
+        return;
+      }
+      $(".field").blur();
+      if($(".item").hasClass("addbg")){
+        moveNext();
+      }else{
+        $(".item").removeClass('addbg').eq(0).addClass('addbg');
+      }
+    }else if(keycode == 13){//键盘上的enter
+      dojob();
+    }
+  });
+   
+  $("#append").on("mousedown",".item",function(e){//鼠标的事件
+    dojob();
+  });
+  var movePrev = function(){
+    $(".field").blur();
+    var index = $(".addbg").prevAll().length;
+    if(index == 0){
+      $(".item").removeClass('addbg').eq($(".item").length-1).addClass('addbg');
+    }else{
+      $(".item").removeClass('addbg').eq(index-1).addClass('addbg');
+    }
+  }
+  var moveNext = function(){
+    var index = $(".addbg").prevAll().length;
+    if(index == $(".item").length-1){
+      $(".item").removeClass('addbg').eq(0).addClass('addbg');
+    }else{
+      $(".item").removeClass('addbg').eq(index+1).addClass('addbg');
+    }
+  }
+  var dojob = function(){
+    $(".field").blur();
+    var value = $(".addbg").text();
+    $(".field").val(value);
+    $("#append").hide().html("");
+    $(".header-search-slide").slideUp(100);
+    $(".searchBtn").css({"display":"block"});
+    $(".cancelSearch").css({"display":"none"});
+    $(".mask").hide();
+    var searchStr=$(".field").val();
+    showMySearchPage(searchStr);
+  }
+});
+function getContent(obj){
+  var kw = jQuery.trim($(obj).val());//去掉字符串首尾空格的固定写法
+  if(kw == ""){
+    $("#append").hide().html("");
+    return false;
+  }
+  var html = "";
+  for(var i = 0; i < datas.length; i++){
+    if (datas[i].indexOf(kw) >= 0) {
+      html=html + "<div class='item' onmouseenter='getFocus(this)' onClick='getCon(this);'>" + datas[i] + "</div>"
+    }
+  }
+  if(html != ""){
+    $("#append").show().html(html);
+  }else{
+    $("#append").hide().html("");
+  }
+}
+function getFocus(obj){
+  $(".item").removeClass("addbg");
+  $(obj).addClass("addbg");
+}
+function getCon(obj){
+  var value = $(obj).text();
+  $(".field").val(value);
+  $("#append").hide().html("");
+}
 
-//点击搜索，得到搜索结果
+//点击input边上的搜索，得到搜索结果
 $(".search-btn").on("click",function(){
   $(".mask").hide();
   $(".searchBtn").css({"display":"block"});
@@ -1427,6 +1537,14 @@ $(".search-btn").on("click",function(){
   $(".header-search-slide").slideUp(100);
   var searchStr=$(".field").val();
   showMySearchPage(searchStr);
+})
+//点击取消搜索
+$(".cancelSearch").on("click",function(){
+  $(".mask").hide();
+  $(".searchBtn").css({"display":"block"});
+  $(".cancelSearch").css({"display":"none"});
+  $(".header-search-slide").slideUp(100);
+  $(".field").val("");
 })
 </script>
 </html>
