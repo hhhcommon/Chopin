@@ -54,7 +54,10 @@ public class QueryController {
         m.put("ObjType", 1);//文章
         m.put("V_Url", request.getRequestURL().toString());//URL
         m.put("AllParam", JsonUtils.objToJson(m));
-        MobileUDKey mUdk=MobileParam.build(m).getUserDeviceKey();
+        MobileUDKey mUdk=null;
+        try {
+        	mUdk=MobileParam.build(m).getUserDeviceKey();
+        } catch(Exception _e) {}
         try {
             GatherUtils.SaveLogFromAPI(mUdk, m);
         } catch(Exception _e){}
@@ -111,7 +114,9 @@ public class QueryController {
             map.put("ReturnType", "0000");
             map.put("Message", "无法获取需要的参数");
         } else {
-            mUdk=MobileParam.build(m).getUserDeviceKey();
+	        try {
+	        	mUdk=MobileParam.build(m).getUserDeviceKey();
+	        } catch(Exception _e) {}
             if (mUdk!=null) {
                 if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
                     mUdk.setDeviceId(request.getSession().getId());
@@ -196,7 +201,10 @@ public class QueryController {
 		}
 
         //收集数据
-        MobileUDKey mUdk=MobileParam.build(m).getUserDeviceKey();
+		MobileUDKey mUdk=null;
+        try {
+        	mUdk=MobileParam.build(m).getUserDeviceKey();
+        } catch(Exception _e) {}
         m.put("ApiType", "content/removeByApp");
         m.put("ObjType", 1);
         m.put("ObjId", contentId);//id
@@ -219,7 +227,7 @@ public class QueryController {
 	}
 	
 	/**
-	 * 移动端添加内容
+	 * 管理端添加内容
 	 * 
 	 * @param request
 	 * @return
@@ -237,7 +245,10 @@ public class QueryController {
 			return map;
 		}
         //收集数据
-        MobileUDKey mUdk=MobileParam.build(m).getUserDeviceKey();
+		MobileUDKey mUdk=null;
+        try {
+        	mUdk=MobileParam.build(m).getUserDeviceKey();
+        } catch(Exception _e) {}
         m.put("ApiType", "content/addByWeb");
         m.put("ObjType", 1);
         //m.put("ObjId", contentId);//id
@@ -269,6 +280,9 @@ public class QueryController {
 		String thirdpath = m.get("ThirdPath")+"";
 		if(thirdpath.equals("null") || thirdpath.equals(""))
 			thirdpath = null;
+		String livePcUrl = m.get("LivePcUrl")+"";
+		if(livePcUrl.equals("null") || livePcUrl.equals(""))
+			livePcUrl = null;
 		String username = m.get("UserName")+"";
 		if (!mastatus.equals("一般文章")) {
 			if (username.equals("null") || username.equals("")) {
@@ -291,7 +305,7 @@ public class QueryController {
 			map.put("Message", "参数不全");
 			return map;
 		}
-		map = queryService.makeContentHtml(channelids, pubimg, themeImg, isShow, mediaSrc, thirdpath, source, sourcepath, mastatus, username, list);
+		map = queryService.makeContentHtml(channelids, pubimg, themeImg, isShow, mediaSrc, thirdpath, livePcUrl, source, sourcepath, mastatus, username, list);
 		return map;
 	}
 	
@@ -313,7 +327,10 @@ public class QueryController {
 		}
 		String contentid = m.get("ContentId")+"";
         //收集数据
-        MobileUDKey mUdk=MobileParam.build(m).getUserDeviceKey();
+		MobileUDKey mUdk=null;
+        try {
+        	mUdk=MobileParam.build(m).getUserDeviceKey();
+        } catch(Exception _e) {}
         m.put("ApiType", "content/getContentInfo2Updata");
         m.put("ObjType", 1);
         m.put("ObjId", contentid);//id
@@ -386,6 +403,9 @@ public class QueryController {
 		String thirdpath = m.get("ThirdPath")+"";
 		if(thirdpath.equals("null") || thirdpath.equals(""))
 			thirdpath = null;
+		String livePcUrl = m.get("LivePcUrl")+"";
+		if(livePcUrl.equals("null") || livePcUrl.equals(""))
+			livePcUrl = null;
 		String username = m.get("UserName")+"";
 		if (!mastatus.equals("一般文章")) {
 			if (username.equals("null") || username.equals("")) {
@@ -408,7 +428,7 @@ public class QueryController {
 			map.put("Message", "参数不全");
 			return map;
 		}
-		map = queryService.updateContentHtml(contentid, channelids, pubimg, themeImg, isShow, mediaSrc, thirdpath, source, sourcepath, mastatus, username, list);
+		map = queryService.updateContentHtml(contentid, channelids, pubimg, themeImg, isShow, mediaSrc, thirdpath, livePcUrl, source, sourcepath, mastatus, username, list);
 		return map;
 	}
 	

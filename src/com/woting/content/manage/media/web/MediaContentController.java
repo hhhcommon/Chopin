@@ -34,7 +34,10 @@ public class MediaContentController {
 			String userId, channelId, beginCatalogId, pagestr;
 			int perSize = 3, pageSize = 10, page = 1;
             //收集数据
-            MobileUDKey mUdk=MobileParam.build(m).getUserDeviceKey();
+            MobileUDKey mUdk=null;
+            try {
+            	mUdk=MobileParam.build(m).getUserDeviceKey();
+            } catch(Exception _e) {}
             m.put("ApiType", "content/getContents");
             m.put("ObjType", 1);//文章
             //m.put("ObjId", m.get("UserId"));//id
@@ -112,7 +115,10 @@ public class MediaContentController {
 				return map;
 			}
             //收集数据
-            MobileUDKey mUdk=MobileParam.build(m).getUserDeviceKey();
+			MobileUDKey mUdk=null;
+	        try {
+	        	mUdk=MobileParam.build(m).getUserDeviceKey();
+	        } catch(Exception _e) {}
             m.put("ApiType", "content/getContentInfo");
             m.put("ObjType", 1);//文章
             //m.put("ObjId", m.get("UserId"));//id
@@ -165,7 +171,10 @@ public class MediaContentController {
 				return map;
 			}
             //收集数据
-            MobileUDKey mUdk=MobileParam.build(m).getUserDeviceKey();
+			MobileUDKey mUdk=null;
+	        try {
+	        	mUdk=MobileParam.build(m).getUserDeviceKey();
+	        } catch(Exception _e) {}
             m.put("ApiType", "content/getNoPubList");
             m.put("ObjType", 1);//文章
             //m.put("ObjId", m.get("UserId"));//id
@@ -218,7 +227,9 @@ public class MediaContentController {
                 map.put("ReturnType", "0000");
                 map.put("Message", "无法获取需要的参数");
             } else {
-                mUdk=MobileParam.build(m).getUserDeviceKey();
+    	        try {
+    	        	mUdk=MobileParam.build(m).getUserDeviceKey();
+    	        } catch(Exception _e) {}
                 if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
                     mUdk.setDeviceId(request.getSession().getId());
                 }
@@ -297,7 +308,10 @@ public class MediaContentController {
 					userId = null;
 			}
             //收集数据
-            MobileUDKey mUdk=MobileParam.build(m).getUserDeviceKey();
+			MobileUDKey mUdk=null;
+	        try {
+	        	mUdk=MobileParam.build(m).getUserDeviceKey();
+	        } catch(Exception _e) {}
             m.put("ApiType", "content/directContent");
             m.put("ObjType", 1);//文章
             //m.put("ObjId", m.get("UserId"));//id
@@ -346,7 +360,10 @@ public class MediaContentController {
 				return map;
 			}
             //收集数据
-            MobileUDKey mUdk=MobileParam.build(m).getUserDeviceKey();
+			MobileUDKey mUdk=null;
+	        try {
+	        	mUdk=MobileParam.build(m).getUserDeviceKey();
+	        } catch(Exception _e) {}
             m.put("ApiType", "content/removeContent");
             m.put("ObjType", 1);//文章
             //m.put("ObjId", m.get("UserId"));//id
@@ -404,7 +421,10 @@ public class MediaContentController {
 				map.put("Message", "无法获取相关的参数");
 				return map;
 			}
-            MobileUDKey mUdk=MobileParam.build(m).getUserDeviceKey();
+			MobileUDKey mUdk=null;
+	        try {
+	        	mUdk=MobileParam.build(m).getUserDeviceKey();
+	        } catch(Exception _e) {}
             m.put("ApiType", "content/getPlayerContents");
             m.put("ObjType", 1);//文章
             //m.put("ObjId", m.get("UserId"));//id
