@@ -296,6 +296,10 @@ li{list-style: none;}
   width: 360px;
   height: 27px;
 }
+.form-group #uploadMediaForApp,.form-group #uploadMediaForPc{
+  width: 360px;
+  height: 27px;
+}
 .first{
   width: 142px;
   height: 25px;
@@ -547,15 +551,33 @@ li, a, input {
             </div>
             <div class="form-group" id="2">
               <label class="col-sm-2 control-label">引用：</label>
-              <div class="col-sm-10" style="margin-left: 25px;">
+              <!--<div class="col-sm-10" style="margin-left: 25px;">
               <input id="thirdpath" name="titleName" class="form-control" type="text" aria-required="true" placeholder="第三方视频地址" list="thirdpartypath" style="width: 360px;height: 27px;">
               <datalist id="thirdpartypath">
                 <option value="http://v.qq.com/iframe/player.html?vid=j0327cet597&tiny=0&auto=0  腾讯地址">
                 <option value="http://player.youku.com/embed/XMTc0MDM4NjA2NA==  优酷地址">
                 <option value="http://open.iqiyi.com/developer/player_js/coopPlayerIndex.html?vid=21926e39d7fcc357fe1767ae9075702d&tvId=543739800  爱奇艺地址">
               </datalist>
+              </div>-->
+              <div class="col-sm-10" style="margin-left: 25px;">
+              <input id="thirdpathForApp" name="titleName" class="form-control " type="text" aria-required="true" placeholder="第三方视频地址" list="thirdpartypath" style="width: 360px;height: 27px;">
+              <datalist id="thirdpartypath">
+                <option value="http://v.qq.com/iframe/player.html?vid=j0327cet597&tiny=0&auto=0  腾讯地址">
+                <option value="http://player.youku.com/embed/XMTc0MDM4NjA2NA==  优酷地址">
+                <option value="http://open.iqiyi.com/developer/player_js/coopPlayerIndex.html?vid=21926e39d7fcc357fe1767ae9075702d&tvId=543739800  爱奇艺地址">
+              </datalist>
               </div>
-              <span class="help-block m-b-none"style="width: 170px;height: 27px;position: absolute;top: -2px;left: 459px;"><i class="fa fa-info-circle"></i>题图,引用和媒体只能提交一个</span>
+              <div class="col-sm-10" style="margin-left: 25px;">
+              <input id="thirdpathForPc" name="titleName" class="form-control " type="text" aria-required="true" placeholder="第三方视频地址" list="thirdpartypath" style="width: 360px;height: 27px;">
+              <datalist id="thirdpartypath">
+                <option value="http://v.qq.com/iframe/player.html?vid=j0327cet597&tiny=0&auto=0  腾讯地址">
+                <option value="http://player.youku.com/embed/XMTc0MDM4NjA2NA==  优酷地址">
+                <option value="http://open.iqiyi.com/developer/player_js/coopPlayerIndex.html?vid=21926e39d7fcc357fe1767ae9075702d&tvId=543739800  爱奇艺地址">
+              </datalist>
+              </div>
+              <span class="help-block m-b-none"style="width:auto ;height: 27px;position: absolute;top: 35px;left: 405px;"><i class="fa fa-info-circle"></i>引用第三方地址 , Pc端使用的直播地址,后缀为flv地址链接</span>
+              <span class="help-block m-b-none"style="width:auto;height: 27px;position: absolute;top: 0px;left: 405px;"><i class="fa fa-info-circle"></i>引用第三方地址 ，App端使用的直播地址,后缀为m3u8地址链接</span>
+              <span class="help-block m-b-none"style="width:auto;height: 27px;position: absolute;top: 95px;left: 405px;"><i class="fa fa-info-circle"></i>题图,引用和媒体只能提交一个</span>
             </div>
             <div class="form-group" id="2">
               <label class="col-sm-2 control-label">媒体：</label>
@@ -563,7 +585,7 @@ li, a, input {
                 <input id="uploadMedia" name="uploadMedia" class="form-control" type="text"  placeholder="点击，选择音/视频上传" style="background-color:#fff;" readonly/>
                 <input id="media" class="form-control" name="media" type="file" style="display:none;" value="" accept=".mp3,.mp4"/>
               </div>
-              <button type="button" id="removesrc" class="btn" style="width: 170px;height: 27px;position: absolute;top: -2px;left: 459px;">重置</button>
+              <button type="button" id="removesrc" class="btn" style="width: 60px;height: 27px;position: absolute;top: 0px;left: 610px;">重置</button>
             </div>
             <div class="form-group">
               <label class="col-sm-2 control-label">类型：</label>
@@ -685,7 +707,7 @@ $(function(){
   $("#add").on("click",function(){
     type=1;
     $(".segment").remove();//清空数据
-    $("#titleName,#descnName,#channelId,#source,#website,#competitorName,#uploadThemeImg,#uploadMedia,#thirdpath,#carousel").val("");//清空数据
+    $("#titleName,#descnName,#channelId,#source,#website,#competitorName,#uploadThemeImg,#uploadMedia,#thirdpathForPc,#thirdpathForApp,#carousel").val("");//清空数据
     $("#only").removeAttr('checked');
     $("#channelName").html(" ");
     $("#themeImg,#media").attr("value","");
@@ -700,7 +722,7 @@ $(function(){
     type=2;
     segmentIndex=3
     $(".segment").remove();//清空数据
-    $("#titleName,#descnName,#channelId,#source,#website,#competitorName,#uploadThemeImg,#uploadMedia,#thirdpath").val("");//清空数据
+    $("#titleName,#descnName,#channelId,#source,#website,#competitorName,#uploadThemeImg,#uploadMedia,#thirdpathForPc,#thirdpathForApp").val("");//清空数据
     $("#channelName").html(" ");
     $("#themeImg,#media").attr("value","");
     $("#channelName li").each(function(){
@@ -1575,7 +1597,8 @@ function createArticle(){
   postData.MediaSrc=$("#media").attr("value");
   postData.Source=$("#source").val();
   postData.SourcePath=$("#website").val();
-  postData.ThirdPath=$("#thirdpath").val();
+  postData.ThirdPath=$("#thirdpathForApp").val();
+  postData.LivePcUrl=$("#thirdpathForPc").val();
   postData.ContentStatus=$("select").find("option:selected").text();
   postData.UserName=$("#competitorName").val();
   postData.List=list;
@@ -1608,7 +1631,7 @@ function hiden(){
 //修改功能
 function modifyArticle(jsonData,contentid){
   $("#titleName,#source,#website,#descnName,#uploadThemeImg").val("");//标题 来源 网址 摘要 题图
-  $("#carousel,#thirdpath,#uploadMedia,.competitorName,#only").val("");// 轮播图 引用 媒体 选手姓名 勾选框 
+  $("#carousel,#thirdpathForApp,#thirdpathForPc,#uploadMedia,.competitorName,#only").val("");// 轮播图 引用 媒体 选手姓名 勾选框 
   $("#contentid").remove();
   var contentids='<input type="text" id="contentid"  style="display:none;" value='+contentid+'>';
   $(".row").append(contentids);
@@ -1638,7 +1661,10 @@ function modifyArticle(jsonData,contentid){
     $("#carousel").val(ContentPubImgName);
   }
   if(jsonData.ThirdPath!=""&&jsonData.ThirdPath!=null){
-    $("#thirdpath").val(jsonData.ThirdPath);
+    $("#thirdpathForApp").val(jsonData.ThirdPath);
+  }
+  if(jsonData.LivePcUrl!=""&&jsonData.LivePcUrl!=null){
+    $("#thirdpathForPc").val(jsonData.LivePcUrl);
   }
   if(jsonData.MediaSrc!=""&&jsonData.MediaSrc!=null){
     var arr=jsonData.MediaSrc.split('\/');
@@ -1852,7 +1878,8 @@ function saveModify(){
   }
   postData.Source=$("#source").val();
   postData.SourcePath=$("#website").val();
-  postData.ThirdPath=$("#thirdpath").val();
+  postData.ThirdPath=$("#thirdpathForApp").val();
+  postData.LivePcUrl=$("#thirdpathForPc").val();
   postData.ContentStatus=$("select").find("option:selected").text();
   postData.UserName=$("#competitorName").val();
   postData.List=list;
