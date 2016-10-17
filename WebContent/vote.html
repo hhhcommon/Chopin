@@ -26,6 +26,8 @@
 <script src="./resources/js/framework.utils.js"></script>
 <script src="./resources/plugins/spiritui/jq.spirit.utils.js"></script>
 <script src="./resources/plugins/bootstrap/js/bootstrap.min.js"></script>
+<!--收集数据-->
+<script src="./resources/plugins/webAnal/spirit.webanal.js"></script>
 
 <link rel="stylesheet" media="screen" href="./resources/plugins/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="./resources/chopin/css/font.css"/>
@@ -265,7 +267,7 @@ body {margin:0;}
 <iframe id="_SESSION" src="session.jsp" width="0" height="0" style="display:none"></iframe>
 </center></body>
 
-<script>alert("in123");
+<script>
 var deviceId="";
 function setDeviceId(sessionId) {
   deviceId=isApp?deviceId:sessionId;

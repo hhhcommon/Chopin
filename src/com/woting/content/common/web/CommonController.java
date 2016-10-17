@@ -1,6 +1,7 @@
 package com.woting.content.common.web;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,8 @@ import com.woting.passport.mobile.MobileParam;
 import com.woting.passport.mobile.MobileUDKey;
 import com.woting.passport.session.SessionService;
 import com.woting.searchword.service.WordService;
+import com.spiritdata.dataanal.visitmanage.core.persistence.pojo.VisitLogPo;
+import com.spiritdata.dataanal.visitmanage.run.mem.VisitMemoryService;
 import com.spiritdata.framework.util.JsonUtils;
 import com.spiritdata.framework.util.RequestUtils;
 import org.jsoup.nodes.Document;
@@ -434,5 +437,43 @@ public class CommonController {
         } catch(Exception e) {
             return "{\"ReturnType\":\"1000\",\"Message\":\"地址错误\"}";
         }
+    }
+
+    @RequestMapping(value="/gatherVisitLog.do")
+    @ResponseBody
+    /**
+     * 用jsonP的方式获取数据
+     * @param request 其中必须有RemoteUrl参数
+     * @return json结构
+     */
+    public void gatherVisitLog(HttpServletRequest req) throws Exception {
+        Map<String, Object> m=RequestUtils.getDataFromRequest(req);
+        MobileUDKey mUdk=new MobileUDKey();
+        mUdk.setDeviceId(m.get("IMEI")==null?req.getSession().getId():m.get("IMEI")+"");
+        mUdk.setPCDType(m.get("PCDType")==null?3:Integer.parseInt(m.get("PCDType")+""));
+        sessionService.dealUDkeyEntry(mUdk, "");
+
+        Owner o=new Owner();
+        o.setOwnerId(mUdk.getUserId()==null?"unknow":mUdk.getUserId());
+        o.setOwnerType(201);
+        VisitLogPo vlp = new VisitLogPo();
+        vlp.setOwnerId(o.getOwnerId());
+        vlp.setOwnerType(o.getOwnerType());
+        vlp.setPointInfo(m.get("pointInfo")==null?null:m.get("pointInfo")+"");
+        vlp.setClientIp(m.get("clientIp")==null?null:m.get("clientIp")+"");
+        vlp.setClientMac(req.getSession().getId());
+        vlp.setEquipName(mUdk.getPCDType()+"");
+        vlp.setEquipVer(m.get("equipVer")==null?null:m.get("equipVer")+"");
+        vlp.setExploreName(m.get("exploreName")==null?null:m.get("exploreName")+"");
+        vlp.setExploreVer(m.get("exploreVer")==null?null:m.get("exploreVer")+"");
+        vlp.setObjType(m.get("objType")==null?null:Integer.parseInt(m.get("objType")+""));
+        vlp.setObjId(m.get("objId")==null?null:m.get("objId")+"");
+        vlp.setObjUrl(m.get("objUrl")==null?null:m.get("objUrl")+"");
+        vlp.setFromUrl(m.get("fromUrl")==null?null:m.get("fromUrl")+"");
+
+        vlp.setVisitTime(new Timestamp(System.currentTimeMillis()));
+
+        VisitMemoryService vms=VisitMemoryService.getInstance();
+        vms.put2Queue(vlp);
     }
 }

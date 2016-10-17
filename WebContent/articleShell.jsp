@@ -59,6 +59,8 @@
 <script src="./resources/js/framework.utils.js"></script>
 <script src="./resources/plugins/spiritui/jq.spirit.utils.js"></script>
 <script src="./resources/plugins/spiritui/jq.spirit.pageFrame.js"></script>
+<!--收集数据-->
+<script src="./resources/plugins/webAnal/spirit.webanal.js"></script>
 
 <link rel="stylesheet" type="text/css" href="./resources/css/common.css"/>
 <link rel="stylesheet" type="text/css" href="./resources/css/mainPage.css"/>
@@ -363,7 +365,7 @@ body { padding:0; }
   }
   if (!StringUtils.isNullOrEmptyOrSpace(mediaUrl)) {
     //视音频
-    String voiceExtName="mp3;m4a;m3u8";
+    String voiceExtName="mp3;m4a";
     String _mf="";
     int pos1=mediaUrl.lastIndexOf("/");
     int pos2=mediaUrl.lastIndexOf("\\");

@@ -33,11 +33,11 @@
   Map<String, Object> m=RequestUtils.getDataFromRequest(request);
   String contentId=(m==null||m.get("ContentId")==null)?null:m.get("ContentId")+"";
   if(contentId.equals("vote001")) {
-    response.sendRedirect("http://123.56.254.75:1108/Chopin/vote.html?UserTeam=%e9%9d%92%e5%b9%b4%e7%bb%84");
+    response.sendRedirect("http://www.wotingfm.com/Chopin/vote.html?UserTeam=%e9%9d%92%e5%b9%b4%e7%bb%84");
     return;
   }
   if(contentId.equals("vote002")) {
-    response.sendRedirect("http://123.56.254.75:1108/Chopin/vote.html?UserTeam=%e5%b0%91%e5%b9%b4%e7%bb%84");
+    response.sendRedirect("http://www.wotingfm.com/Chopin/vote.html?UserTeam=%e5%b0%91%e5%b9%b4%e7%bb%84");
     return;
   }
   String userId=(m==null||m.get("UserId")==null)?null:m.get("UserId")+"";
@@ -67,6 +67,8 @@
 <script src="./resources/js/framework.utils.js"></script>
 <script src="./resources/plugins/spiritui/jq.spirit.utils.js"></script>
 <script src="./resources/plugins/spiritui/jq.spirit.pageFrame.js"></script>
+<!--收集数据-->
+<script src="./resources/plugins/webAnal/spirit.webanal.js"></script>
 
 <link rel="stylesheet" type="text/css" href="./resources/css/common.css"/>
 <link rel="stylesheet" type="text/css" href="./resources/css/mainPage.css"/>
@@ -391,7 +393,7 @@ body { padding:0; }
   }
   if (!StringUtils.isNullOrEmptyOrSpace(mediaUrl)) {
     //视音频
-    String voiceExtName="mp3;m4a;m3u8";
+    String voiceExtName="mp3;m4a";
     String _mf="";
     int pos1=mediaUrl.lastIndexOf("/");
     int pos2=mediaUrl.lastIndexOf("\\");
@@ -410,7 +412,7 @@ body { padding:0; }
 %>
   <div id="a_media" class="a_media"><audio class="_audio" loop="loop" controls="true" autoplay="true" src="<%=mediaUrl%>"></audio></div>
 <% } else { %>
-  <div id="a_media" class="a_media"><iframe class="_video" frameborder="no" scrolling="no" src="<%=mediaUrl%>"></iframe></div>
+  <div id="a_media" class="a_media" ><video class="_video" autoplay="autoplay" frameborder="1" scrolling="no" src="<%=mediaUrl%>"></video></div>
 <%
     }
   }
@@ -474,7 +476,7 @@ body { padding:0; }
 %>
   <div class="a_html"><%=htmlUrl%><p style="height:20px;">&nbsp;</p></div>
 <%
-	  String commentpath = "http://123.56.254.75:1108/Chopin/article/comment.html?ContentId="+contentId;
+	  String commentpath = "http://www.wotingfm.com/Chopin/article/comment.html?ContentId="+contentId;
 %>
   <div class="a_comment"><iframe id="comment" class='_comment' frameborder='no' scrolling='no' src='<%=commentpath%>'></iframe></div>
 <%
@@ -487,7 +489,7 @@ body { padding:0; }
 %>
   <div class="a_nullhtml"><div class="word"><%=nullHtml%></div></div>
 <%
-  String commentpath = "http://123.56.254.75:1108/Chopin/article/comment.html?ContentId="+contentId;
+  String commentpath = "http://www.wotingfm.com/Chopin/article/comment.html?ContentId="+contentId;
 %>
   <div class="a_comment"><iframe id="comment" class='_comment' frameborder='no' scrolling='no' src='<%=commentpath%>'></iframe></div>
 <%

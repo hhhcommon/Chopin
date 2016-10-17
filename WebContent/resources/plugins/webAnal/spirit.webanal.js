@@ -37,7 +37,7 @@ function _getExploreInfo() {
 var GatherFun = {
   _enterPage:function() {
     if (_gatherImg!=null) {
-      var _src="http://localhost:1108/Chopin/vLog/_gather.jpg";
+      var _src="http://www.wotingfm.com/Chopin/gatherVisitLog.do";
       //收集信息
       var params = {};
       if (document) {//文档信息，title，url以及来源url
@@ -79,7 +79,6 @@ var GatherFun = {
         args += i + '=' + encodeURIComponent(params[i]);
       }
       _src+='?objType=99&'+args;
-      alert(_src);
       _gatherImg.attr("src", _src);
     }
   }  

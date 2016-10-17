@@ -1,4 +1,4 @@
-package com.spiritdata.dataanal.visitmanage.web;
+package com.woting.gather.web;
 
 import java.sql.Timestamp;
 
@@ -18,10 +18,10 @@ import com.spiritdata.framework.util.StringUtils;
  * @author wh
  */
 @Controller
-@RequestMapping(value="/vLog")
+@RequestMapping(value="")
 public class VisitController {
 
-    @RequestMapping("gather.do")
+    @RequestMapping("/gather.do")
     public void save(HttpServletRequest req) throws InterruptedException {
         if (StringUtils.isNullOrEmptyOrSpace(req.getParameter("objType"))) return ;
 
@@ -58,7 +58,7 @@ public class VisitController {
         vms.put2Queue(vlp);
     }
 
-    @RequestMapping("_gather.gif")
+    @RequestMapping("/_gather.gif")
     public void gatherWeb(HttpServletRequest req) throws InterruptedException {
         VisitLogPo vlp = new VisitLogPo();
 
