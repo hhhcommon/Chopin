@@ -202,7 +202,7 @@ public class QueryService {
 
 	@SuppressWarnings("unchecked")
 	public Map<String, Object> makeContentHtml(String channelIds, String pubimg, String themeImg, String isShow, String mediaSrc, String thirdpath,
-			String source, String sourcepath, String mastatus, String username, List<Map<String, Object>> list) {
+			String livePcUrl, String source, String sourcepath, String mastatus, String username, List<Map<String, Object>> list) {
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> statustype = new HashMap<>();
 		statustype.put("一般文章", 0);
@@ -246,6 +246,8 @@ public class QueryService {
 			ma.setSubjectWords(mediaSrc);
 		if (thirdpath != null)
 			ma.setSubjectWords(thirdpath);
+		if(livePcUrl != null)
+			ma.setLivePcUrl(livePcUrl);
 		ma.setCTime(new Timestamp(System.currentTimeMillis()));
 		ma.setMaPublishTime(ma.getCTime());
 		ma.setLangDid(isShow);
@@ -440,6 +442,7 @@ public class QueryService {
 		String masrc = mapo.getSubjectWords(); // 文章媒体
 		String isshow = mapo.getLangDid(); // 是否显示题图,媒体
 		String language = mapo.getLanguage(); // 文章来源和网站<a href='http://www.sin80.com/series/chopin-polonaises'>新芭网</a>
+		String livePcUrl = mapo.getLivePcUrl();
 		String sourcepath = "";
 		String source = "";
 		String pubimgpath = SystemCache.getCache(FConstants.APPOSPATH).getContent()+"dataCenter/media/group03/"+"lunbotu_"+mapo.getId()+".png";
@@ -462,6 +465,7 @@ public class QueryService {
 		map.put("Source", source);
 		map.put("SourcePath", sourcepath);
 		map.put("IsShow", isshow);
+		map.put("LivePcUrl", livePcUrl);
 		if (masrc != null) {
 			if (masrc.contains("wotingfm.com")) {
 				map.put("MediaSrc", masrc);
@@ -555,7 +559,7 @@ public class QueryService {
 		return map;
 	}
 
-	public Map<String, Object> updateContentHtml(String contentid, String channelids, String pubimg, String themeImg, String isShow, String mediaSrc, String thirdpath, String source, String sourcepath, String mastatus, String username,List<Map<String, Object>> list) {
+	public Map<String, Object> updateContentHtml(String contentid, String channelids, String pubimg, String themeImg, String isShow, String mediaSrc, String thirdpath, String livePcUrl, String source, String sourcepath, String mastatus, String username,List<Map<String, Object>> list) {
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> statustype = new HashMap<>();
 		statustype.put("一般文章", 0);
@@ -600,6 +604,9 @@ public class QueryService {
 			ma.setSubjectWords(mediaSrc);
 		if (thirdpath != null)
 			ma.setSubjectWords(thirdpath);
+		if (livePcUrl!=null) {
+			ma.setLivePcUrl(livePcUrl);
+		}
 		ma.setCTime(new Timestamp(System.currentTimeMillis()));
 		ma.setMaPublishTime(ma.getCTime());
 		ma.setLangDid(isShow);

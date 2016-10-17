@@ -104,6 +104,7 @@ public abstract class ContentUtils {
         retM.put("ContentId", one.get("id"));//P01-公共：ID
         retM.put("ContentName", one.get("maTitle"));//P02-公共：名称
         retM.put("ContentSubjectWord", one.get("subjectWords"));//P03-公共：主题词
+        retM.put("LivePcUrl", one.get("livePcUrl"));
         retM.put("ContentPub", one.get("maPublisher"));//P05-公共：发布者，集团名称
         retM.put("ContentPubTime", one.get("maPublishTime")==null?null:Timestamp.valueOf(one.get("maPublishTime")+""));//P06-公共：发布时间
         retM.put("ContentImg", one.get("maImg"));//P07-公共：相关图片
