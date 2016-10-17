@@ -363,7 +363,7 @@ body { padding:0; }
 %>
 <div id="a_content">
   <div id="a_title"><%=title%></div>
-  <div id="a_time"><span id="_time"><%=time%></span></div>
+  <div id="a_time"><span id="_time"><%=time%></span><span id="_wt" style="positon:relative; left:5px;">&nbsp;&nbsp;(我听科技)</span></div>
 <%if (!StringUtils.isNullOrEmptyOrSpace(source)) {
   source=source.replace("<a ", "<a target='_blank' ");%>
   <div id="a_source"><span id="_source">来源:<%=source%></span></div>
@@ -417,7 +417,7 @@ body { padding:0; }
       isVideo=true;
       if (!StringUtils.isNullOrEmptyOrSpace(pcLiveUrl)||mediaUrl.indexOf(".m3u8")!=-1) {
 %>
-  <div id="a_media" class="a_media" ><video id="h5Video" class="_video" frameborder="1" scrolling="no" src="<%=mediaUrl%>"></video></div>
+  <div id="a_media" class="a_media" ><video id="h5Video" class="_video" frameborder="1" controls="controls" scrolling="no" src="<%=mediaUrl%>"></video></div>
 <%
       } else {
 %>
@@ -509,15 +509,20 @@ body { padding:0; }
 </center></body>
 <script>
 var deviceId="<%=sid%>";
-var _livePcUrl="<%=pcLiveUrl%>";
+var _livePcUrl="<%=pcLiveUrl==null?"":pcLiveUrl%>";
 var isVideo=<%=isVideo%>;
 var isApp=(navigator.userAgent.toLowerCase()).indexOf("window")==-1;
 //主函数
 $(function() {
   try {
     window.parent.setMainHeight(0);
+    $("#_wt").hide();
   } catch(e){}
-  //
+  // 
+  if (!isApp&&isVideo&&_livePcUrl&&_livePcUrl!="") {
+  	var livepcpath = '"'+'http://www.wotingfm.com/Chopin/getPlayer.html?Url='+_livePcUrl+'"';
+    $(".a_media").html('<iframe class="_video" frameborder="no" scrolling="no" src='+livepcpath+'></iframe>');
+  }
   if ($(window).width()<<%=widthLimit%>) {
     $("._video").attr("width", $(window).width());
     $("._video").attr("height", ($(window).width()-10)*0.6);
@@ -529,12 +534,9 @@ $(function() {
     $(".video").height($("._video").height());
     $(".a_media").height($("._video").height());
   }
-  if (!isApp&&isVideo&&_livePcUrl&&_livePcUrl!="") {
-    ($(".a_media").find("._video")).attr("src", _livePcUrl);
-  }
+ 
   try {
     var p=document.getElementById("h5Video");
-    //$("#h5Video").attr("style","border:1px solid black; background-color:");
     p.play();
   } catch(e) {}
   window.setTimeout(function() {
