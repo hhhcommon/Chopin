@@ -1356,6 +1356,9 @@ function uploadMyOpus(filePath){
         alert("作品上传成功");
         $(".waitting").hide();
         $(".mask,.uploadOpus_modal").hide();
+      }else{
+        $(".waitting").hide();
+        alert(jsonData.Message+",请修改后在上传");
       }
     },
     error:function(jqXHR){
