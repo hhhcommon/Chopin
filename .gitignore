@@ -9,7 +9,6 @@ fs-config
 /src/test
 
 /WebContent/log
-/WebContent/article
 /WebContent/media
 /WebContent/tempUpload
 /WebContent/dataCenter
