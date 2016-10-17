@@ -44,6 +44,8 @@
   String rootPath=(String)(SystemCache.getCache(FConstants.APPOSPATH).getContent());
   int widthLimit=Integer.parseInt((m==null||m.get("ScreenWidth")==null)?"440":m.get("ScreenWidth")+"");
   boolean isPlaying=false;
+  String pcLiveUrl="";
+  boolean isVideo=false;
 %>
 <!DOCTYPE html>
 <!-- 内容页的壳子，为app使用 -->
@@ -329,23 +331,23 @@ body { padding:0; }
   String showImg=contents.get("LangDid")==null?"false":contents.get("LangDid")+"";
   //主媒体
   String mediaUrl=contents.get("ContentSubjectWord")==null?null:contents.get("ContentSubjectWord")+"";
+  pcLiveUrl=contents.get("LivePcUrl")==null?null:contents.get("LivePcUrl")+"";
   //主内容
   String htmlUrl=contents.get("ContentPlay")==null?null:contents.get("ContentPlay")+"";
   //读取文档内容
   if (!StringUtils.isNullOrEmptyOrSpace(htmlUrl)) {
-      htmlUrl=htmlUrl.substring(htmlUrl.indexOf("dataCenter")+10);
-      htmlUrl=rootPath+"dataCenter"+htmlUrl;
-      try {
-          htmlUrl=FileUtils.readFileToString(new File(htmlUrl), "utf-8");
-          int pos1=htmlUrl.indexOf("<body>");
-          int pos2=htmlUrl.indexOf("</body>");
-          if (pos1!=-1&&pos2!=-1) {
-              htmlUrl=htmlUrl.substring(pos1+6, pos2);
-              //替换所有的img
-          } else htmlUrl="";
-      } catch(Exception e) {
-          htmlUrl="";
-      }
+    htmlUrl=htmlUrl.substring(htmlUrl.indexOf("dataCenter")+10);
+    htmlUrl=rootPath+"dataCenter"+htmlUrl;
+    try {
+      htmlUrl=FileUtils.readFileToString(new File(htmlUrl), "utf-8");
+      int pos1=htmlUrl.indexOf("<body>");
+      int pos2=htmlUrl.indexOf("</body>");
+      if (pos1!=-1&&pos2!=-1) {
+        htmlUrl=htmlUrl.substring(pos1+6, pos2);
+      } else htmlUrl="";
+    } catch(Exception e) {
+      htmlUrl="";
+    }
   }
   if ((StringUtils.isNullOrEmptyOrSpace(imgUrl)&&showImg.equals("true"))&&(StringUtils.isNullOrEmptyOrSpace(mediaUrl)||mediaUrl.length()<5)&&(StringUtils.isNullOrEmptyOrSpace(htmlUrl)||htmlUrl.length()<10)) {
 %>
@@ -411,9 +413,17 @@ body { padding:0; }
     if (isVoice) {
 %>
   <div id="a_media" class="a_media"><audio class="_audio" loop="loop" controls="true" autoplay="true" src="<%=mediaUrl%>"></audio></div>
-<% } else { %>
-  <div id="a_media" class="a_media" ><video class="_video" autoplay="autoplay" frameborder="1" scrolling="no" src="<%=mediaUrl%>"></video></div>
+<%  } else {
+      isVideo=true;
+      if (!StringUtils.isNullOrEmptyOrSpace(pcLiveUrl)||mediaUrl.indexOf(".m3u8")!=-1) {
+%>
+  <div id="a_media" class="a_media" ><video id="h5Video" class="_video" frameborder="1" scrolling="no" src="<%=mediaUrl%>"></video></div>
 <%
+      } else {
+%>
+  <div id="a_media" class="a_media" ><iframe class="_video" frameborder="no" scrolling="no" src="<%=mediaUrl%>"></iframe></div>
+<%
+      }
     }
   }
   if (!StringUtils.isNullOrEmptyOrSpace(htmlUrl)) {
@@ -476,7 +486,7 @@ body { padding:0; }
 %>
   <div class="a_html"><%=htmlUrl%><p style="height:20px;">&nbsp;</p></div>
 <%
-	  String commentpath = "http://www.wotingfm.com/Chopin/article/comment.html?ContentId="+contentId;
+    String commentpath = "http://www.wotingfm.com/Chopin/article/comment.html?ContentId="+contentId;
 %>
   <div class="a_comment"><iframe id="comment" class='_comment' frameborder='no' scrolling='no' src='<%=commentpath%>'></iframe></div>
 <%
@@ -499,9 +509,15 @@ body { padding:0; }
 </center></body>
 <script>
 var deviceId="<%=sid%>";
+var _livePcUrl="<%=pcLiveUrl%>";
+var isVideo=<%=isVideo%>;
+var isApp=(navigator.userAgent.toLowerCase()).indexOf("window")==-1;
 //主函数
 $(function() {
-  window.parent.setMainHeight(0);
+  try {
+    window.parent.setMainHeight(0);
+  } catch(e){}
+  //
   if ($(window).width()<<%=widthLimit%>) {
     $("._video").attr("width", $(window).width());
     $("._video").attr("height", ($(window).width()-10)*0.6);
@@ -513,6 +529,14 @@ $(function() {
     $(".video").height($("._video").height());
     $(".a_media").height($("._video").height());
   }
+  if (!isApp&&isVideo&&_livePcUrl&&_livePcUrl!="") {
+    ($(".a_media").find("._video")).attr("src", _livePcUrl);
+  }
+  try {
+    var p=document.getElementById("h5Video");
+    //$("#h5Video").attr("style","border:1px solid black; background-color:");
+    p.play();
+  } catch(e) {}
   window.setTimeout(function() {
     var sumH=$("body").height();
     try {
@@ -523,7 +547,9 @@ $(function() {
 function setCommentHeight(height) {
   $("#comment").attr("height", height);
   $(".a_comment").height($("#comment").height());
-  window.parent.setMainHeight(document.body.scrollHeight);
+  try {
+    window.parent.setMainHeight(document.body.scrollHeight);
+  } catch(e){}
 }
 </script>
 </html>
