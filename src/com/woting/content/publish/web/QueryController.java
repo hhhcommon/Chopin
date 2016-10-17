@@ -114,7 +114,9 @@ public class QueryController {
             map.put("ReturnType", "0000");
             map.put("Message", "无法获取需要的参数");
         } else {
-            mUdk=MobileParam.build(m).getUserDeviceKey();
+	        try {
+	        	mUdk=MobileParam.build(m).getUserDeviceKey();
+	        } catch(Exception _e) {}
             if (mUdk!=null) {
                 if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
                     mUdk.setDeviceId(request.getSession().getId());
@@ -225,7 +227,7 @@ public class QueryController {
 	}
 	
 	/**
-	 * 移动端添加内容
+	 * 管理端添加内容
 	 * 
 	 * @param request
 	 * @return
@@ -278,6 +280,9 @@ public class QueryController {
 		String thirdpath = m.get("ThirdPath")+"";
 		if(thirdpath.equals("null") || thirdpath.equals(""))
 			thirdpath = null;
+		String livePcUrl = m.get("LivePcUrl")+"";
+		if(livePcUrl.equals("null") || livePcUrl.equals(""))
+			livePcUrl = null;
 		String username = m.get("UserName")+"";
 		if (!mastatus.equals("一般文章")) {
 			if (username.equals("null") || username.equals("")) {
@@ -300,7 +305,7 @@ public class QueryController {
 			map.put("Message", "参数不全");
 			return map;
 		}
-		map = queryService.makeContentHtml(channelids, pubimg, themeImg, isShow, mediaSrc, thirdpath, source, sourcepath, mastatus, username, list);
+		map = queryService.makeContentHtml(channelids, pubimg, themeImg, isShow, mediaSrc, thirdpath, livePcUrl, source, sourcepath, mastatus, username, list);
 		return map;
 	}
 	
@@ -398,6 +403,9 @@ public class QueryController {
 		String thirdpath = m.get("ThirdPath")+"";
 		if(thirdpath.equals("null") || thirdpath.equals(""))
 			thirdpath = null;
+		String livePcUrl = m.get("LivePcUrl")+"";
+		if(livePcUrl.equals("null") || livePcUrl.equals(""))
+			livePcUrl = null;
 		String username = m.get("UserName")+"";
 		if (!mastatus.equals("一般文章")) {
 			if (username.equals("null") || username.equals("")) {
@@ -420,7 +428,7 @@ public class QueryController {
 			map.put("Message", "参数不全");
 			return map;
 		}
-		map = queryService.updateContentHtml(contentid, channelids, pubimg, themeImg, isShow, mediaSrc, thirdpath, source, sourcepath, mastatus, username, list);
+		map = queryService.updateContentHtml(contentid, channelids, pubimg, themeImg, isShow, mediaSrc, thirdpath, livePcUrl, source, sourcepath, mastatus, username, list);
 		return map;
 	}
 	
