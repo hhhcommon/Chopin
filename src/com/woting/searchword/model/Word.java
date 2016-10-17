@@ -54,6 +54,16 @@ public class Word implements Serializable {
     }
 
     @Override
+    public int hashCode() {
+        int retInt=0;
+        for(int i=0;i<this.word.length();i++){
+            char achar=this.word.charAt(i);
+            retInt += achar;
+        }
+        return retInt;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this==o) return true;
         if (o==null||!(o instanceof Word)) return false;

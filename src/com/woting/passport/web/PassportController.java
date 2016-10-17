@@ -18,9 +18,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.spiritdata.framework.util.SequenceUUID;
 import com.spiritdata.framework.util.SpiritRandom;
 import com.spiritdata.framework.util.StringUtils;
+import com.spiritdata.framework.ext.redis.BlockLockConfig;
 import com.spiritdata.framework.ext.redis.ExpirableBlockKey;
 import com.spiritdata.framework.ext.redis.RedisBlockLock;
+import com.spiritdata.framework.util.JsonUtils;
 import com.spiritdata.framework.util.RequestUtils;
+import com.woting.gather.GatherUtils;
 import com.woting.passport.UGA.persistence.pojo.UserPo;
 import com.woting.passport.UGA.service.UserService;
 import com.woting.passport.login.persistence.pojo.MobileUsedPo;
@@ -71,6 +74,13 @@ public class PassportController {
                     map.putAll(mUdk.toHashMapAsBean());
                 }
             }
+            //收集数据
+            m.put("ApiType", "user/register");
+            m.put("ObjType", 4);//用户
+            //m.put("ObjId", request.getRequestURL().toString());//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            GatherUtils.SaveLogFromAPI(mUdk, m);
             if (map.get("ReturnType")!=null) return map;
 
             String ln=(m.get("UserName")==null?null:m.get("UserName")+"");
@@ -127,7 +137,10 @@ public class PassportController {
             }
             //3-注册成功后，自动登陆，及后处理
             mUdk.setUserId(nu.getUserId());
-            ExpirableBlockKey rLock=RedisBlockLock.lock(redisUdk.getKey_Lock(), rConn);
+            BlockLockConfig blConf=new BlockLockConfig();
+            blConf.setWaitingType(2);
+            blConf.setWaitingTime(50);//50毫秒
+            ExpirableBlockKey rLock=RedisBlockLock.lock(redisUdk.getKey_Lock(), rConn, blConf);
             try {
                 sessionService.registUser(mUdk, nu);
                 MobileUsedPo mu=new MobileUsedPo();
@@ -150,6 +163,15 @@ public class PassportController {
             map.put("ReturnType", "T");
             map.put("TClass", e.getClass().getName());
             map.put("Message", e.getMessage());
+            //收集数据
+            Map<String, Object> m=new HashMap<String, Object>();
+            m.put("ApiType", "user/register");
+            m.put("ObjType",4);//用户
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            try {
+                GatherUtils.SaveLogFromAPI(null, m);
+            } catch(Exception _e){}
             return map;
         }
     }
@@ -172,6 +194,13 @@ public class PassportController {
                 map.put("Message", "无法获取需要的参数");
                 return map;
             }
+            //收集数据
+            m.put("ApiType", "user/mlogin");
+            m.put("ObjType", 4);//用户
+            //m.put("ObjId", request.getRequestURL().toString());//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            GatherUtils.SaveLogFromAPI(mUdk, m);
 
             String ln=(m.get("UserName")==null?null:m.get("UserName")+"");
             String pwd=(m.get("Password")==null?null:m.get("Password")+"");
@@ -206,7 +235,10 @@ public class PassportController {
             }
             RedisUserDeviceKey redisUdk=new RedisUserDeviceKey(mUdk);
             RedisConnection rConn=redisConn.getConnection();
-            ExpirableBlockKey rLock=RedisBlockLock.lock(redisUdk.getKey_Lock(), rConn);
+            BlockLockConfig blConf=new BlockLockConfig();
+            blConf.setWaitingType(2);
+            blConf.setWaitingTime(50);//50毫秒
+            ExpirableBlockKey rLock=RedisBlockLock.lock(redisUdk.getKey_Lock(), rConn, blConf);
             try {
                 sessionService.registUser(mUdk, u);
                 MobileUsedPo mu=new MobileUsedPo();
@@ -229,6 +261,16 @@ public class PassportController {
             map.put("ReturnType", "T");
             map.put("TClass", e.getClass().getName());
             map.put("Message", e.getMessage());
+            //收集数据
+            Map<String, Object> m=new HashMap<String, Object>();
+            m.put("ApiType", "user/mlogin");
+            m.put("ObjType",4);//用户
+            //m.put("ObjId", request.getRequestURL().toString());//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            try {
+                GatherUtils.SaveLogFromAPI(null, m);
+            } catch(Exception _e){}
             return map;
         }
 	}
@@ -270,12 +312,22 @@ public class PassportController {
                     map.put("Message", "无法获取用户Id");
                 }
             }
+            //收集数据
+            m.put("ApiType", "user/mlogout");
+            m.put("ObjType", 4);//用户
+            //m.put("ObjId", request.getRequestURL().toString());//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            GatherUtils.SaveLogFromAPI(mUdk, m);
             if (map.get("ReturnType")!=null) return map;
 
             //2-注销
             RedisConnection rConn=redisConn.getConnection();
             RedisUserDeviceKey redisUdk=new RedisUserDeviceKey(mUdk);
-            ExpirableBlockKey rLock=RedisBlockLock.lock(redisUdk.getKey_Lock(), rConn);
+            BlockLockConfig blConf=new BlockLockConfig();
+            blConf.setWaitingType(2);
+            blConf.setWaitingTime(50);//50毫秒
+            ExpirableBlockKey rLock=RedisBlockLock.lock(redisUdk.getKey_Lock(), rConn, blConf);
             try {
                 sessionService.logoutSession(mUdk);
                 //保存使用情况
@@ -298,6 +350,16 @@ public class PassportController {
             map.put("ReturnType", "T");
             map.put("TClass", e.getClass().getName());
             map.put("Message", e.getMessage());
+            //收集数据
+            Map<String, Object> m=new HashMap<String, Object>();
+            m.put("ApiType", "user/mlogout");
+            m.put("ObjType",4);//用户
+            //m.put("ObjId", request.getRequestURL().toString());//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            try {
+                GatherUtils.SaveLogFromAPI(null, m);
+            } catch(Exception _e){}
             return map;
         }
 	}
@@ -319,6 +381,16 @@ public class PassportController {
                 map.put("Message", "无法获取需要的参数");
                 return map;
             }
+            //收集数据
+            MobileUDKey mUdk=MobileParam.build(m).getUserDeviceKey();
+            m.put("ApiType", "user/updatePwd");
+            m.put("ObjType", 4);//用户
+            //m.put("ObjId", request.getRequestURL().toString());//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            GatherUtils.SaveLogFromAPI(mUdk, m);
+            if (map.get("ReturnType")!=null) return map;
+
             String userid=m.get("UserId")+"";
             if(userid.toLowerCase().equals("null")) {
                 map.put("ReturnType", "1002");
@@ -366,6 +438,16 @@ public class PassportController {
             map.put("ReturnType", "T");
             map.put("TClass", e.getClass().getName());
             map.put("Message", e.getMessage());
+            //收集数据
+            Map<String, Object> m=new HashMap<String, Object>();
+            m.put("ApiType", "user/updatePwd");
+            m.put("ObjType", 4);//用户
+            //m.put("ObjId", request.getRequestURL().toString());//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            try {
+                GatherUtils.SaveLogFromAPI(null, m);
+            } catch(Exception _e){}
             return map;
         }
     }
@@ -395,6 +477,13 @@ public class PassportController {
                     map.put("Message", "无法获取会话信息");
                 }
             }
+            //收集数据
+            m.put("ApiType", "user/registerByPhoneNum");
+            m.put("ObjType", 4);//用户
+            //m.put("ObjId", request.getRequestURL().toString());//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            GatherUtils.SaveLogFromAPI(mUdk, m);
             if (map.get("ReturnType")!=null) return map;
 
             //1-获取电话号码
@@ -431,6 +520,15 @@ public class PassportController {
             map.put("ReturnType", "T");
             map.put("TClass", e.getClass().getName());
             map.put("Message", e.getMessage());
+            //收集数据
+            Map<String, Object> m=new HashMap<String, Object>();
+            m.put("ApiType", "user/registerByPhoneNum");
+            m.put("ObjType", 4);//用户
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            try {
+                GatherUtils.SaveLogFromAPI(null, m);
+            } catch(Exception _e){}
             return map;
         }
     }
@@ -460,6 +558,13 @@ public class PassportController {
                     map.put("Message", "无法获取会话信息");
                 }
             }
+            //收集数据
+            m.put("ApiType", "user/retrieveByPhoneNum");
+            m.put("ObjType", 4);//用户
+            //m.put("ObjId", request.getRequestURL().toString());//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            GatherUtils.SaveLogFromAPI(mUdk, m);
             if (map.get("ReturnType")!=null) return map;
 
             //1-获取电话号码
@@ -496,6 +601,15 @@ public class PassportController {
             map.put("ReturnType", "T");
             map.put("TClass", e.getClass().getName());
             map.put("Message", e.getMessage());
+            //收集数据
+            Map<String, Object> m=new HashMap<String, Object>();
+            m.put("ApiType", "user/retrieveByPhoneNum");
+            m.put("ObjType", 4);//用户
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            try {
+                GatherUtils.SaveLogFromAPI(null, m);
+            } catch(Exception _e){}
             return map;
         }
     }
@@ -525,6 +639,13 @@ public class PassportController {
                     map.put("Message", "无法获取会话信息");
                 }
             }
+            //收集数据
+            m.put("ApiType", "user/reSendPhoneCheckCode");
+            m.put("ObjType", 4);//用户
+            //m.put("ObjId", request.getRequestURL().toString());//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            GatherUtils.SaveLogFromAPI(mUdk, m);
             if (map.get("ReturnType")!=null) return map;
 
             //1-获取电话号码
@@ -583,6 +704,15 @@ public class PassportController {
             map.put("ReturnType", "T");
             map.put("TClass", e.getClass().getName());
             map.put("Message", e.getMessage());
+            //收集数据
+            Map<String, Object> m=new HashMap<String, Object>();
+            m.put("ApiType", "user/reSendPhoneCheckCode");
+            m.put("ObjType",4);//用户
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            try {
+                GatherUtils.SaveLogFromAPI(null, m);
+            } catch(Exception _e){}
             return map;
         }
     }
@@ -609,6 +739,13 @@ public class PassportController {
                     map.put("Message", "无法获取会话信息");
                 }
             }
+            //收集数据
+            m.put("ApiType", "user/checkPhoneCheckCode");
+            m.put("ObjType", 4);//用户
+            //m.put("ObjId", request.getRequestURL().toString());//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            GatherUtils.SaveLogFromAPI(mUdk, m);
             if (map.get("ReturnType")!=null) return map;
 
             //1-获取电话号码
@@ -675,6 +812,15 @@ public class PassportController {
             map.put("ReturnType", "T");
             map.put("TClass", e.getClass().getName());
             map.put("Message", e.getMessage());
+            //收集数据
+            Map<String, Object> m=new HashMap<String, Object>();
+            m.put("ApiType", "user/checkPhoneCheckCode");
+            m.put("ObjType", 4);//用户
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            try {
+                GatherUtils.SaveLogFromAPI(null, m);
+            } catch(Exception _e){}
             return map;
         }
     }
@@ -704,6 +850,13 @@ public class PassportController {
                     map.put("Message", "无法获取会话信息");
                 }
             }
+            //收集数据
+            m.put("ApiType", "user/updatePwd_AfterCheckPhoneOK");
+            m.put("ObjType", 4);//用户
+            //m.put("ObjId", request.getRequestURL().toString());//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            GatherUtils.SaveLogFromAPI(mUdk, m);
             if (map.get("ReturnType")!=null) return map;
 
             //1-获取其他参数
@@ -745,6 +898,15 @@ public class PassportController {
             map.put("ReturnType", "T");
             map.put("TClass", e.getClass().getName());
             map.put("Message", e.getMessage());
+            //收集数据
+            Map<String, Object> m=new HashMap<String, Object>();
+            m.put("ApiType", "user/updatePwd_AfterCheckPhoneOK");
+            m.put("ObjType", 4);//用户
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            try {
+                GatherUtils.SaveLogFromAPI(null, m);
+            } catch(Exception _e){}
             return map;
         }
     }
@@ -774,6 +936,13 @@ public class PassportController {
                     map.put("Message", "无法获取设备Id(IMEI)");
                 }
             }
+            //收集数据
+            m.put("ApiType", "user/afterThirdAuth");
+            m.put("ObjType", 4);//用户
+            //m.put("ObjId", request.getRequestURL().toString());//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            GatherUtils.SaveLogFromAPI(mUdk, m);
             if (map.get("ReturnType")!=null) return map;
 
             //1-获取业务参数
@@ -815,7 +984,10 @@ public class PassportController {
             mUdk.setUserId(_userId);
             RedisConnection rConn=redisConn.getConnection();
             RedisUserDeviceKey redisUdk=new RedisUserDeviceKey(mUdk);
-            ExpirableBlockKey rLock=RedisBlockLock.lock(redisUdk.getKey_Lock(), rConn);
+            BlockLockConfig blConf=new BlockLockConfig();
+            blConf.setWaitingType(2);
+            blConf.setWaitingTime(50);//50毫秒
+            ExpirableBlockKey rLock=RedisBlockLock.lock(redisUdk.getKey_Lock(), rConn, blConf);
             try {
                 sessionService.registUser(mUdk, (UserPo)rm.get("userInfo"));
                 //3.2-保存使用情况
@@ -842,6 +1014,15 @@ public class PassportController {
             map.put("ReturnType", "T");
             map.put("TClass", e.getClass().getName());
             map.put("Message", e.getMessage());
+            //收集数据
+            Map<String, Object> m=new HashMap<String, Object>();
+            m.put("ApiType", "user/afterThirdAuth");
+            m.put("ObjType", 4);//用户
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            try {
+                GatherUtils.SaveLogFromAPI(null, m);
+            } catch(Exception _e){}
             return map;
         }
     }
@@ -862,6 +1043,15 @@ public class PassportController {
                 map.put("Message", "无法获取需要的参数");
                 return map;
             }
+            //收集数据
+            MobileUDKey mUdk=MobileParam.build(m).getUserDeviceKey();
+            m.put("ApiType", "user/afterThirdAuth");
+            m.put("ObjType", 4);//用户
+            m.put("ObjId", m.get("UserId"));//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            GatherUtils.SaveLogFromAPI(mUdk, m);
+
             String  userid=m.get("UserId")+"";
             if(userid.toLowerCase().equals("null")) {
             	map.put("ReturnType", "1002");

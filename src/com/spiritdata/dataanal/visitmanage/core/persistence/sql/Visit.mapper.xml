@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+  访问日志
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="visitLog">
+  <!-- 对象定义:任务组信息 -->
+  <resultMap id="BaseResultMap" type="visitLog">
+    <id     column="id"               property="id"          jdbcType="VARCHAR"/>
+    <result column="ownerType"        property="ownerType"   jdbcType="INTEGER"/>
+    <result column="ownerId"          property="ownerId"     jdbcType="VARCHAR"/>
+    <result column="pointInfo"        property="pointInfo"   jdbcType="VARCHAR"/>
+    <result column="clientIp"         property="clientIp"    jdbcType="VARCHAR"/>
+    <result column="clientMacAddr"    property="clientMac"   jdbcType="VARCHAR"/>
+    <result column="equipmentName"    property="equipName"   jdbcType="VARCHAR"/>
+    <result column="equipmentVersion" property="equipVer"    jdbcType="VARCHAR"/>
+    <result column="exploreName"      property="exploreName" jdbcType="VARCHAR"/>
+    <result column="exploreVer"       property="exploreVer"  jdbcType="VARCHAR"/>
+    <result column="objType"          property="objType"     jdbcType="INTEGER"/>
+    <result column="objId"            property="objId"       jdbcType="VARCHAR"/>
+    <result column="objUrl"           property="objUrl"      jdbcType="VARCHAR"/>
+    <result column="fromUrl"          property="fromUrl"     jdbcType="VARCHAR"/>
+    <result column="visitTime"        property="visitTime"   jdbcType="TIMESTAMP"/>
+  </resultMap>
+
+  <!-- 所有列 -->
+  <sql id="Base_Column_List">
+    id, ownerType, ownerId, pointInfo, clientIp, clientMacAddr, equipmentName, equipmentVersion, exploreName, exploreVer, objType, objId, objUrl, fromUrl, visitTime
+  </sql>
+  <sql id="Base_Column_List_A">
+    a.id, a.ownerType, a.ownerId, a.pointInfo, a.clientIp, a.clientMacAddr, a.equipmentName, a.equipmentVersion, a.exploreName, a.exploreVer, a.objType, a.objId, a.objUrl, a.fromUrl, a.visitTime
+  </sql>
+
+  <!-- 条件子句 -->
+  <sql id="WhereClauseByEntiey">
+    <where>
+      <trim prefix="(" suffix=")" prefixOverrides="and">
+        <if test="id!=null"> and id=#{id,jdbcType=VARCHAR}</if>
+        <if test="ownerType!=null and ownerType!=0"> and ownerType=#{ownerType,jdbcType=INTEGER}</if>
+        <if test="ownerId!=null"> and ownerId=#{ownerId,jdbcType=VARCHAR}</if>
+        <if test="pointInfo!=null"> and pointInfo=#{pointInfo,jdbcType=VARCHAR}</if>
+        <if test="clientIp!=null"> and clientIp=#{clientIp,jdbcType=VARCHAR}</if>
+        <if test="clientMac!=null"> and clientMacAddr=#{clientMac,jdbcType=VARCHAR}</if>
+        <if test="equipName!=null"> and equipmentName=#{equipName,jdbcType=VARCHAR}</if>
+        <if test="equipVer!=null"> and equipmentVersion=#{equipVer,jdbcType=VARCHAR}</if>
+        <if test="exploreName!=null"> and exploreName=#{exploreName,jdbcType=VARCHAR}</if>
+        <if test="exploreVer!=null"> and exploreVer=#{exploreVer,jdbcType=VARCHAR}</if>
+        <if test="objType!=null"> and objType=#{objType,jdbcType=INTEGER}</if>
+        <if test="objId!=null"> and objId=#{objId,jdbcType=VARCHAR}</if>
+        <if test="objUrl!=null"> and objUrl=#{objUrl,jdbcType=VARCHAR}</if>
+        <if test="fromUrl!=null"> and fromUrl=#{fromUrl,jdbcType=VARCHAR}</if>
+        <if test="visitTime!=null"> and visitTime=#{visitTime,jdbcType=TIMESTAMP}</if>
+      </trim>
+    </where>
+  </sql>
+
+  <!-- 获得记录条数-->
+  <select id="count" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(*) from sa_visit_log <if test="_parameter!=null"><include refid="WhereClauseByEntiey"/></if>
+  </select>
+
+  <!-- 获得列表 -->
+  <select id="getList" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select <include refid="Base_Column_List"/> from sa_visit_log
+    <if test="_parameter!=null"><include refid="WhereClauseByEntiey"/></if>
+    <if test="orderByClause!=null">order by ${orderByClause}</if>
+  </select>
+
+  <!-- 获得一条数据 -->
+  <select id="getInfo" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select <include refid="Base_Column_List"/> from sa_visit_log <if test="_parameter!=null"><include refid="WhereClauseByEntiey"/></if>
+  </select>
+  <select id="getInfoById" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select <include refid="Base_Column_List"/> from sa_visit_log where id=#{id,jdbcType=VARCHAR}
+  </select>
+
+  <!-- 新增数据 -->
+  <insert id="insert" parameterType="java.util.Map">
+    insert into sa_visit_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id!=null">id,</if>
+      <if test="ownerType!=null and ownerType!=0">ownerType,</if>
+      <if test="ownerId!=null">ownerId,</if>
+      <if test="pointInfo!=null">pointInfo,</if>
+      <if test="clientIp!=null">clientIp,</if>
+      <if test="clientMac!=null">clientMacAddr,</if>
+      <if test="equipName!=null">equipmentName,</if>
+      <if test="equipVer!=null">equipmentVersion,</if>
+      <if test="exploreName!=null">exploreName,</if>
+      <if test="exploreVer!=null">exploreVer,</if>
+      <if test="objType!=null">objType,</if>
+      <if test="objId!=null">objId,</if>
+      <if test="fromUrl!=null">fromUrl,</if>
+      <if test="objUrl!=null">objUrl,</if>
+      <if test="visitTime!=null">visitTime,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id!=null">#{id,jdbcType=VARCHAR},</if>
+      <if test="ownerType!=null and ownerType!=0">#{ownerType,jdbcType=INTEGER},</if>
+      <if test="ownerId!=null">#{ownerId,jdbcType=VARCHAR},</if>
+      <if test="pointInfo!=null">#{pointInfo,jdbcType=VARCHAR},</if>
+      <if test="clientIp!=null">#{clientIp,jdbcType=VARCHAR},</if>
+      <if test="clientMac!=null">#{clientMac,jdbcType=VARCHAR},</if>
+      <if test="equipName!=null">#{equipName,jdbcType=VARCHAR},</if>
+      <if test="equipVer!=null">#{equipVer,jdbcType=VARCHAR},</if>
+      <if test="exploreName!=null">#{exploreName,jdbcType=VARCHAR},</if>
+      <if test="exploreVer!=null">#{exploreVer,jdbcType=VARCHAR},</if>
+      <if test="objType!=null">#{objType,jdbcType=INTEGER},</if>
+      <if test="objId!=null">#{objId,jdbcType=VARCHAR},</if>
+      <if test="objUrl!=null">#{objUrl,jdbcType=VARCHAR},</if>
+      <if test="fromUrl!=null">#{fromUrl,jdbcType=VARCHAR},</if>
+      <if test="visitTime!=null">#{visitTime,jdbcType=TIMESTAMP},</if>
+    </trim>
+  </insert>
+
+  <!-- 修改 根据主键-->
+  <update id="update" parameterType="java.util.Map">
+    update sa_visit_log
+    <set>
+      <if test="ownerType!=null and ownerType!=0">ownerType=#{ownerType,jdbcType=INTEGER,}</if>
+      <if test="ownerId!=null">ownerId=#{ownerId,jdbcType=VARCHAR},</if>
+      <if test="pointInfo!=null">pointInfo=#{pointInfo,jdbcType=VARCHAR},</if>
+      <if test="clientIp!=null">clientIp=#{clientIp,jdbcType=VARCHAR},</if>
+      <if test="clientMac!=null">clientMacAddr=#{clientMac,jdbcType=VARCHAR},</if>
+      <if test="equipName!=null">equipmentName=#{equipName,jdbcType=VARCHAR},</if>
+      <if test="equipVer!=null">equipmentVersion=#{equipVer,jdbcType=VARCHAR},</if>
+      <if test="exploreName!=null">exploreName=#{exploreName,jdbcType=VARCHAR},</if>
+      <if test="exploreVer!=null">exploreVer=#{exploreVer,jdbcType=VARCHAR},</if>
+      <if test="objType!=null">objType=#{objType,jdbcType=INTEGER},</if>
+      <if test="objId!=null">objId=#{objId,jdbcType=VARCHAR},</if>
+      <if test="fromUrl!=null">#{fromUrl,jdbcType=VARCHAR},</if>
+      <if test="objUrl!=null">#{objUrl,jdbcType=VARCHAR},</if>
+      <if test="visitTime!=null">visitTime=#{visitTime,jdbcType=TIMESTAMP},</if>
+    </set>
+    where id=#{id,jdbcType=VARCHAR}
+  </update>
+
+  <!-- 删除数据 -->
+  <delete id="delete" parameterType="java.lang.String">
+    delete from sa_visit_log where id=#{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByEntity" parameterType="java.util.Map">
+    delete from sa_visit_log <if test="_parameter!=null"><include refid="WhereClauseByEntiey"/></if>
+  </delete>
+
+  <!-- 调整所属者Id -->
+  <update id="changeOwner" parameterType="java.util.Map">
+    update sa_visit_log set ownerId=#{newOwnerId,jdbcType=VARCHAR}, ownerType=1 where ownerId=#{oldOwnerId,jdbcType=VARCHAR} and ownerType=2
+  </update>
+</mapper>

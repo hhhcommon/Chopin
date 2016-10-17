@@ -18,6 +18,7 @@
     <result  column="langDid"        property="langDid"        jdbcType="VARCHAR"/>
     <result  column="language"       property="language"       jdbcType="VARCHAR"/>
     <result  column="timeLong"       property="timeLong"       jdbcType="VARCHAR"/>
+    <result  column="livePcUrl"      property="livePcUrl"      jdbcType="VARCHAR"/>
     <result  column="descn"          property="descn"          jdbcType="VARCHAR"/>
     <result  column="pubCount"       property="pubCount"       jdbcType="INTEGER"/>
     <result  column="maStatus"       property="maStatus"       jdbcType="INTEGER"/>
@@ -27,7 +28,7 @@
   
    <!-- 所有列 -->
   <sql id="Base_Media_List">
-    id, maTitle, maPubType, maPubId, maPublisher, maPublishTime, maImg, maURL, subjectWords, keyWords, langDid, language, timeLong, descn, pubCount, maStatus, allText, cTime
+    id, maTitle, maPubType, maPubId, maPublisher, maPublishTime, maImg, maURL, livePcUrl, subjectWords, keyWords, langDid, language, timeLong, descn, pubCount, maStatus, allText, cTime
   </sql>
   
 
@@ -98,6 +99,7 @@
       <if test="maPublisher!=null">maPublisher,</if>
       <if test="maImg!=null">maImg,</if>
       <if test="maURL!=null">maURL,</if>
+      <if test="livePcUrl!=null">livePcUrl,</if>
       <if test="subjectWords!=null">subjectWords,</if>
       <if test="keyWords!=null">keyWords,</if>
       <if test="langDid!=null">langDid,</if>
@@ -116,6 +118,7 @@
       <if test="maPublisher!=null">#{maPublisher,jdbcType=VARCHAR},</if>
       <if test="maImg!=null">#{maImg,jdbcType=VARCHAR},</if>
       <if test="maURL!=null">#{maURL,jdbcType=VARCHAR},</if>
+      <if test="livePcUrl!=null">#{livePcUrl,jdbcType=VARCHAR},</if>
       <if test="subjectWords!=null">#{subjectWords,jdbcType=VARCHAR},</if>
       <if test="keyWords!=null">#{keyWords,jdbcType=VARCHAR},</if>
       <if test="langDid!=null">#{langDid,jdbcType=VARCHAR},</if>
@@ -302,6 +305,7 @@
       <if test="maPublisher!=null">maPublisher=#{maPublisher,jdbcType=VARCHAR},</if>
       <if test="maImg!=null">maImg=#{maImg,jdbcType=VARCHAR},</if>
       <if test="maURL!=null">maURL=#{maURL,jdbcType=VARCHAR},</if>
+      <if test="livePcUrl!=null">livePcUrl=#{livePcUrl,jdbcType=VARCHAR},</if>
       <if test="subjectWords!=null">subjectWords=#{subjectWords,jdbcType=VARCHAR},</if>
       <if test="keyWords!=null">keyWords=#{keyWords,jdbcType=VARCHAR},</if>
       <if test="langDid!=null">langDid=#{langDid,jdbcType=VARCHAR},</if>

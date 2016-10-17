@@ -9,9 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.spiritdata.framework.util.JsonUtils;
 import com.spiritdata.framework.util.RequestUtils;
 import com.spiritdata.framework.util.StringUtils;
 import com.woting.content.publish.service.QueryService;
+import com.woting.gather.GatherUtils;
 import com.woting.passport.UGA.service.UserService;
 import com.woting.passport.mobile.MobileParam;
 import com.woting.passport.mobile.MobileUDKey;
@@ -45,7 +48,21 @@ public class QueryController {
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> m = RequestUtils.getDataFromRequest(request);
 		String userId = m.get("UserId")+"";
-		if(userId.equals("null")) {
+
+        //收集数据
+        m.put("ApiType", "content/addByApp");
+        m.put("ObjType", 1);//文章
+        m.put("V_Url", request.getRequestURL().toString());//URL
+        m.put("AllParam", JsonUtils.objToJson(m));
+        MobileUDKey mUdk=null;
+        try {
+            mUdk=MobileParam.build(m).getUserDeviceKey();
+        }catch(Exception e) {}
+        try {
+            GatherUtils.SaveLogFromAPI(mUdk, m);
+        } catch(Exception _e){}
+
+        if(userId.equals("null")) {
 			map.put("ReturnType", "1012");
 			map.put("Message", "无法获得用户Id");
 			return map;
@@ -97,7 +114,9 @@ public class QueryController {
             map.put("ReturnType", "0000");
             map.put("Message", "无法获取需要的参数");
         } else {
-            mUdk=MobileParam.build(m).getUserDeviceKey();
+	        try {
+	        	mUdk=MobileParam.build(m).getUserDeviceKey();
+	        } catch(Exception _e) {}
             if (mUdk!=null) {
                 if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
                     mUdk.setDeviceId(request.getSession().getId());
@@ -134,6 +153,15 @@ public class QueryController {
                 }                
             }
         }
+        //收集数据
+        m.put("ApiType", "content/getListByApp");
+        m.put("ObjType", 1);
+        //m.put("ObjId", request.getRequestURL().toString());//id
+        m.put("V_Url", request.getRequestURL().toString());//URL
+        m.put("AllParam", JsonUtils.objToJson(m));
+        try {
+            GatherUtils.SaveLogFromAPI(mUdk, m);
+        } catch(Exception e) {}
         if (map.get("ReturnType")!=null) return map;
 
         List<Map<String, Object>> mm = queryService.getContentListByApp(userId);
@@ -171,6 +199,20 @@ public class QueryController {
 			map.put("Message", "无法获得内容Id");
 			return map;
 		}
+
+        //收集数据
+        MobileUDKey mUdk=null;
+        try {
+            mUdk=MobileParam.build(m).getUserDeviceKey();
+        }catch(Exception e) {}
+        m.put("ApiType", "content/removeByApp");
+        m.put("ObjType", 1);
+        m.put("ObjId", contentId);//id
+        m.put("V_Url", request.getRequestURL().toString());//URL
+        m.put("AllParam", JsonUtils.objToJson(m));
+        try {
+            GatherUtils.SaveLogFromAPI(mUdk, m);
+        } catch(Exception e) {}
 		map = queryService.removeContentByApp(userId, contentId);
 		if (map==null) {
 			map = new HashMap<>();
@@ -185,7 +227,7 @@ public class QueryController {
 	}
 	
 	/**
-	 * 移动端添加内容
+	 * 管理端添加内容
 	 * 
 	 * @param request
 	 * @return
@@ -202,7 +244,21 @@ public class QueryController {
 			map.put("Message", "无法获得栏目Id");
 			return map;
 		}
-		String mastatus = m.get("ContentStatus")+"";
+        //收集数据
+        MobileUDKey mUdk=null;
+        try {
+            mUdk=MobileParam.build(m).getUserDeviceKey();
+        }catch(Exception e) {}
+        m.put("ApiType", "content/addByWeb");
+        m.put("ObjType", 1);
+        //m.put("ObjId", contentId);//id
+        m.put("V_Url", request.getRequestURL().toString());//URL
+        m.put("AllParam", JsonUtils.objToJson(m));
+        try {
+            GatherUtils.SaveLogFromAPI(mUdk, m);
+        } catch(Exception e) {}
+
+        String mastatus = m.get("ContentStatus")+"";
 		if (mastatus.equals("null") || mastatus.equals("")) {
 			map.put("ReturnType", "1013");
 			map.put("Message", "无法获得类型信息");
@@ -224,6 +280,9 @@ public class QueryController {
 		String thirdpath = m.get("ThirdPath")+"";
 		if(thirdpath.equals("null") || thirdpath.equals(""))
 			thirdpath = null;
+		String livePcUrl = m.get("LivePcUrl")+"";
+		if(livePcUrl.equals("null") || livePcUrl.equals(""))
+			livePcUrl = null;
 		String username = m.get("UserName")+"";
 		if (!mastatus.equals("一般文章")) {
 			if (username.equals("null") || username.equals("")) {
@@ -246,7 +305,7 @@ public class QueryController {
 			map.put("Message", "参数不全");
 			return map;
 		}
-		map = queryService.makeContentHtml(channelids, pubimg, themeImg, isShow, mediaSrc, thirdpath, source, sourcepath, mastatus, username, list);
+		map = queryService.makeContentHtml(channelids, pubimg, themeImg, isShow, mediaSrc, thirdpath, livePcUrl, source, sourcepath, mastatus, username, list);
 		return map;
 	}
 	
@@ -267,6 +326,20 @@ public class QueryController {
 			return map;
 		}
 		String contentid = m.get("ContentId")+"";
+        //收集数据
+        MobileUDKey mUdk=null;
+        try {
+            mUdk=MobileParam.build(m).getUserDeviceKey();
+        }catch(Exception e) {}
+        m.put("ApiType", "content/getContentInfo2Updata");
+        m.put("ObjType", 1);
+        m.put("ObjId", contentid);//id
+        m.put("V_Url", request.getRequestURL().toString());//URL
+        m.put("AllParam", JsonUtils.objToJson(m));
+        try {
+            GatherUtils.SaveLogFromAPI(mUdk, m);
+        } catch(Exception e) {}
+
 		if(contentid.equals("null")) {
 			map.put("ReturnType", "1011");
 			map.put("Message", "缺少内容Id");
@@ -330,6 +403,9 @@ public class QueryController {
 		String thirdpath = m.get("ThirdPath")+"";
 		if(thirdpath.equals("null") || thirdpath.equals(""))
 			thirdpath = null;
+		String livePcUrl = m.get("LivePcUrl")+"";
+		if(livePcUrl.equals("null") || livePcUrl.equals(""))
+			livePcUrl = null;
 		String username = m.get("UserName")+"";
 		if (!mastatus.equals("一般文章")) {
 			if (username.equals("null") || username.equals("")) {
@@ -352,7 +428,7 @@ public class QueryController {
 			map.put("Message", "参数不全");
 			return map;
 		}
-		map = queryService.updateContentHtml(contentid, channelids, pubimg, themeImg, isShow, mediaSrc, thirdpath, source, sourcepath, mastatus, username, list);
+		map = queryService.updateContentHtml(contentid, channelids, pubimg, themeImg, isShow, mediaSrc, thirdpath, livePcUrl, source, sourcepath, mastatus, username, list);
 		return map;
 	}
 	

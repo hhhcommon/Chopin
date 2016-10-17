@@ -8,9 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.spiritdata.framework.util.JsonUtils;
 import com.spiritdata.framework.util.RequestUtils;
 import com.spiritdata.framework.util.StringUtils;
 import com.woting.content.manage.media.service.MediaContentService;
+import com.woting.gather.GatherUtils;
 import com.woting.passport.mobile.MobileParam;
 import com.woting.passport.mobile.MobileUDKey;
 import com.woting.passport.session.SessionService;
@@ -30,6 +33,17 @@ public class MediaContentController {
 			Map<String, Object> m = RequestUtils.getDataFromRequest(request);
 			String userId, channelId, beginCatalogId, pagestr;
 			int perSize = 3, pageSize = 10, page = 1;
+            //收集数据
+            MobileUDKey mUdk=null;
+            try {
+                mUdk=MobileParam.build(m).getUserDeviceKey();
+            }catch(Exception e) {}
+            m.put("ApiType", "content/getContents");
+            m.put("ObjType", 1);//文章
+            //m.put("ObjId", m.get("UserId"));//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            GatherUtils.SaveLogFromAPI(mUdk, m);
 			if (m == null || m.size() == 0) {
 				userId = null;
 				channelId = null;
@@ -76,6 +90,15 @@ public class MediaContentController {
 			map.put("ReturnType", "T");
 			map.put("TClass", e.getClass().getName());
 			map.put("Message", e.getMessage());
+            //收集数据
+            Map<String, Object> m=new HashMap<String, Object>();
+            m.put("ApiType", "content/getContents");
+            m.put("ObjType", 1);//文章
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            try {
+                GatherUtils.SaveLogFromAPI(null, m);
+            } catch(Exception _e){}
 			return map;
 		}
 	}
@@ -91,6 +114,17 @@ public class MediaContentController {
 				map.put("Message", "无法获取相关的参数");
 				return map;
 			}
+            //收集数据
+            MobileUDKey mUdk=null;
+            try {
+                mUdk=MobileParam.build(m).getUserDeviceKey();
+            }catch(Exception e) {}
+            m.put("ApiType", "content/getContentInfo");
+            m.put("ObjType", 1);//文章
+            //m.put("ObjId", m.get("UserId"));//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            GatherUtils.SaveLogFromAPI(mUdk, m);
 			String userId = m.get("UserId") + "";
 			String contentId = m.get("ContentId") + "";
 			if (contentId.equals("null")) {
@@ -112,6 +146,15 @@ public class MediaContentController {
 			map.put("ReturnType", "T");
 			map.put("TClass", e.getClass().getName());
 			map.put("Message", e.getMessage());
+            //收集数据
+            Map<String, Object> m=new HashMap<String, Object>();
+            m.put("ApiType", "content/getContentInfo");
+            m.put("ObjType", 1);//文章
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            try {
+                GatherUtils.SaveLogFromAPI(null, m);
+            } catch(Exception _e){}
 			return map;
 		}
 	}
@@ -127,6 +170,17 @@ public class MediaContentController {
 				map.put("Message", "无法获取相关的参数");
 				return map;
 			}
+            //收集数据
+            MobileUDKey mUdk=null;
+            try {
+                mUdk=MobileParam.build(m).getUserDeviceKey();
+            }catch(Exception e) {}
+            m.put("ApiType", "content/getNoPubList");
+            m.put("ObjType", 1);//文章
+            //m.put("ObjId", m.get("UserId"));//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            GatherUtils.SaveLogFromAPI(mUdk, m);
 			String channelId = m.get("ChannelId") + "";
 			if (channelId.equals("null")) {
 				map.put("ReturnType", "1011");
@@ -148,6 +202,15 @@ public class MediaContentController {
 			map.put("ReturnType", "T");
 			map.put("TClass", e.getClass().getName());
 			map.put("Message", e.getMessage());
+            //收集数据
+            Map<String, Object> m=new HashMap<String, Object>();
+            m.put("ApiType", "content/getNoPubList");
+            m.put("ObjType", 1);//文章
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            try {
+                GatherUtils.SaveLogFromAPI(null, m);
+            } catch(Exception _e){}
 			return map;
 		}
 	}
@@ -164,11 +227,13 @@ public class MediaContentController {
                 map.put("ReturnType", "0000");
                 map.put("Message", "无法获取需要的参数");
             } else {
-                mUdk=MobileParam.build(m).getUserDeviceKey();
+    	        try {
+    	        	mUdk=MobileParam.build(m).getUserDeviceKey();
+    	        } catch(Exception _e) {}
                 if (StringUtils.isNullOrEmptyOrSpace(mUdk.getDeviceId())) { //是PC端来的请求
                     mUdk.setDeviceId(request.getSession().getId());
                 }
-                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "clickFavorite");
+                Map<String, Object> retM=sessionService.dealUDkeyEntry(mUdk, "playSumCount");
                 if ((retM.get("ReturnType")+"").equals("2001")) {
                     map.put("ReturnType", "0000");
                     map.put("Message", "无法获取设备Id(IMEI)");
@@ -186,6 +251,13 @@ public class MediaContentController {
                     map.put("Message", "无法获取用户Id");
                 }
             }
+            //收集数据
+            m.put("ApiType", "playSumCount");
+            m.put("ObjType", 1);//文章
+            //m.put("ObjId", m.get("UserId"));//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            GatherUtils.SaveLogFromAPI(mUdk, m);
             if (map.get("ReturnType")!=null) return map;
 
 			List<Map<String, Object>> l = mediaContentService.getPlaySumList(userId.equals("0")?null:userId);
@@ -203,6 +275,16 @@ public class MediaContentController {
 			map.put("ReturnType", "T");
 			map.put("TClass", e.getClass().getName());
 			map.put("Message", e.getMessage());
+            //收集数据
+            Map<String, Object> m=new HashMap<String, Object>();
+            m.put("ApiType", "playSumCount");
+            m.put("ObjType", 1);//文章
+            //m.put("ObjId", m.get("UserId"));//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            try {
+                GatherUtils.SaveLogFromAPI(null, m);
+            } catch(Exception _e){}
 			return map;
 		}
 	}
@@ -225,7 +307,19 @@ public class MediaContentController {
 				if (userId.equals("null"))
 					userId = null;
 			}
-			List<Map<String, Object>> contents = mediaContentService.getDirectContentList(userId, channelId, "1");
+            //收集数据
+            MobileUDKey mUdk=null;
+            try {
+                mUdk=MobileParam.build(m).getUserDeviceKey();
+            }catch(Exception e) {}
+            m.put("ApiType", "content/directContent");
+            m.put("ObjType", 1);//文章
+            //m.put("ObjId", m.get("UserId"));//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            GatherUtils.SaveLogFromAPI(mUdk, m);
+
+            List<Map<String, Object>> contents = mediaContentService.getDirectContentList(userId, channelId, "1");
 			if (contents != null) {
 				map.put("ResultInfo", contents);
 				map.put("AllCount", contents.size());
@@ -241,6 +335,15 @@ public class MediaContentController {
 			map.put("ReturnType", "T");
 			map.put("TClass", e.getClass().getName());
 			map.put("Message", e.getMessage());
+            //收集数据
+            Map<String, Object> m=new HashMap<String, Object>();
+            m.put("ApiType", "content/directContent");
+            m.put("ObjType", 1);//文章
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            try {
+                GatherUtils.SaveLogFromAPI(null, m);
+            } catch(Exception _e){}
 			return map;
 		}
 	}
@@ -256,7 +359,19 @@ public class MediaContentController {
 				map.put("Message", "无法获取相关的参数");
 				return map;
 			}
-			String channelId = m.get("ChannelId")+"";
+            //收集数据
+            MobileUDKey mUdk=null;
+            try {
+                mUdk=MobileParam.build(m).getUserDeviceKey();
+            }catch(Exception e) {}
+            m.put("ApiType", "content/removeContent");
+            m.put("ObjType", 1);//文章
+            //m.put("ObjId", m.get("UserId"));//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            GatherUtils.SaveLogFromAPI(mUdk, m);
+
+            String channelId = m.get("ChannelId")+"";
 			if (channelId.equals("null")) {
 				map.put("ReturnType", "1012");
 				map.put("Message", "栏目Id为空");
@@ -282,6 +397,15 @@ public class MediaContentController {
 			map.put("ReturnType", "T");
 			map.put("TClass", e.getClass().getName());
 			map.put("Message", e.getMessage());
+            //收集数据
+            Map<String, Object> m=new HashMap<String, Object>();
+            m.put("ApiType", "content/removeContent");
+            m.put("ObjType", 1);//文章
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            try {
+                GatherUtils.SaveLogFromAPI(null, m);
+            } catch(Exception _e){}
 			return map;
 		}
 	}
@@ -297,7 +421,18 @@ public class MediaContentController {
 				map.put("Message", "无法获取相关的参数");
 				return map;
 			}
-			String contentId = m.get("ContentId") + "";
+			MobileUDKey mUdk=null;
+	        try {
+	        	mUdk=MobileParam.build(m).getUserDeviceKey();
+	        } catch(Exception _e) {}
+            m.put("ApiType", "content/getPlayerContents");
+            m.put("ObjType", 1);//文章
+            //m.put("ObjId", m.get("UserId"));//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            GatherUtils.SaveLogFromAPI(mUdk, m);
+
+            String contentId = m.get("ContentId") + "";
 			if (contentId.equals("null")) {
 				map.put("ReturnType", "1011");
 				map.put("Message", "无法获取内容Id");
@@ -319,6 +454,15 @@ public class MediaContentController {
 			map.put("ReturnType", "T");
 			map.put("TClass", e.getClass().getName());
 			map.put("Message", e.getMessage());
+            //收集数据
+            Map<String, Object> m=new HashMap<String, Object>();
+            m.put("ApiType", "content/getPlayerContents");
+            m.put("ObjType", 1);//文章
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            try {
+                GatherUtils.SaveLogFromAPI(null, m);
+            } catch(Exception _e){}
 			return map;
 		}
 	}

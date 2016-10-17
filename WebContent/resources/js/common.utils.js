@@ -88,6 +88,26 @@ function getBrowserVersion() {
 }
 
 /**
+ * 得到当前浏览器版本
+ * @returns browser对象
+ */
+function getBrowser() {
+  var browser = {};
+  var userAgent = navigator.userAgent.toLowerCase();
+
+  var s;
+  (s = userAgent.match(/msie ([\d.]+)/)) ? browser.ie = s[1] :
+  (s = userAgent.match(/net\sclr\s([\d.]+)/)) ? browser.ie = userAgent.match(/rv:([\d.]+)/)[1] :
+  (s = userAgent.match(/firefox\/([\d.]+)/)) ? browser.firefox = s[1] :
+  (s = userAgent.match(/chrome\/([\d.]+)/)) ? browser.chrome = s[1] :
+  (s = userAgent.match(/opera.([\d.]+)/)) ? browser.opera = s[1] :
+  (s = userAgent.match(/version\/([\d.]+).*safari/)) ? browser.safari = s[1]:0;
+
+  return browser;
+}
+
+
+/**
  * 生成UUID，默认为36位
  */
 var CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".split("");  

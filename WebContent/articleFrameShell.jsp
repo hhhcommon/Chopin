@@ -33,17 +33,19 @@
   Map<String, Object> m=RequestUtils.getDataFromRequest(request);
   String contentId=(m==null||m.get("ContentId")==null)?null:m.get("ContentId")+"";
   if(contentId.equals("vote001")) {
-    response.sendRedirect("http://123.56.254.75:1108/Chopin/vote.html?UserTeam=%e9%9d%92%e5%b9%b4%e7%bb%84");
+    response.sendRedirect("http://www.wotingfm.com/Chopin/vote.html?UserTeam=%e9%9d%92%e5%b9%b4%e7%bb%84");
     return;
   }
   if(contentId.equals("vote002")) {
-    response.sendRedirect("http://123.56.254.75:1108/Chopin/vote.html?UserTeam=%e5%b0%91%e5%b9%b4%e7%bb%84");
+    response.sendRedirect("http://www.wotingfm.com/Chopin/vote.html?UserTeam=%e5%b0%91%e5%b9%b4%e7%bb%84");
     return;
   }
   String userId=(m==null||m.get("UserId")==null)?null:m.get("UserId")+"";
   String rootPath=(String)(SystemCache.getCache(FConstants.APPOSPATH).getContent());
   int widthLimit=Integer.parseInt((m==null||m.get("ScreenWidth")==null)?"440":m.get("ScreenWidth")+"");
   boolean isPlaying=false;
+  String pcLiveUrl="";
+  boolean isVideo=false;
 %>
 <!DOCTYPE html>
 <!-- 内容页的壳子，为app使用 -->
@@ -67,6 +69,8 @@
 <script src="./resources/js/framework.utils.js"></script>
 <script src="./resources/plugins/spiritui/jq.spirit.utils.js"></script>
 <script src="./resources/plugins/spiritui/jq.spirit.pageFrame.js"></script>
+<!--收集数据-->
+<script src="./resources/plugins/webAnal/spirit.webanal.js"></script>
 
 <link rel="stylesheet" type="text/css" href="./resources/css/common.css"/>
 <link rel="stylesheet" type="text/css" href="./resources/css/mainPage.css"/>
@@ -327,23 +331,23 @@ body { padding:0; }
   String showImg=contents.get("LangDid")==null?"false":contents.get("LangDid")+"";
   //主媒体
   String mediaUrl=contents.get("ContentSubjectWord")==null?null:contents.get("ContentSubjectWord")+"";
+  pcLiveUrl=contents.get("LivePcUrl")==null?null:contents.get("LivePcUrl")+"";
   //主内容
   String htmlUrl=contents.get("ContentPlay")==null?null:contents.get("ContentPlay")+"";
   //读取文档内容
   if (!StringUtils.isNullOrEmptyOrSpace(htmlUrl)) {
-      htmlUrl=htmlUrl.substring(htmlUrl.indexOf("dataCenter")+10);
-      htmlUrl=rootPath+"dataCenter"+htmlUrl;
-      try {
-          htmlUrl=FileUtils.readFileToString(new File(htmlUrl), "utf-8");
-          int pos1=htmlUrl.indexOf("<body>");
-          int pos2=htmlUrl.indexOf("</body>");
-          if (pos1!=-1&&pos2!=-1) {
-              htmlUrl=htmlUrl.substring(pos1+6, pos2);
-              //替换所有的img
-          } else htmlUrl="";
-      } catch(Exception e) {
-          htmlUrl="";
-      }
+    htmlUrl=htmlUrl.substring(htmlUrl.indexOf("dataCenter")+10);
+    htmlUrl=rootPath+"dataCenter"+htmlUrl;
+    try {
+      htmlUrl=FileUtils.readFileToString(new File(htmlUrl), "utf-8");
+      int pos1=htmlUrl.indexOf("<body>");
+      int pos2=htmlUrl.indexOf("</body>");
+      if (pos1!=-1&&pos2!=-1) {
+        htmlUrl=htmlUrl.substring(pos1+6, pos2);
+      } else htmlUrl="";
+    } catch(Exception e) {
+      htmlUrl="";
+    }
   }
   if ((StringUtils.isNullOrEmptyOrSpace(imgUrl)&&showImg.equals("true"))&&(StringUtils.isNullOrEmptyOrSpace(mediaUrl)||mediaUrl.length()<5)&&(StringUtils.isNullOrEmptyOrSpace(htmlUrl)||htmlUrl.length()<10)) {
 %>
@@ -391,7 +395,7 @@ body { padding:0; }
   }
   if (!StringUtils.isNullOrEmptyOrSpace(mediaUrl)) {
     //视音频
-    String voiceExtName="mp3;m4a;m3u8";
+    String voiceExtName="mp3;m4a";
     String _mf="";
     int pos1=mediaUrl.lastIndexOf("/");
     int pos2=mediaUrl.lastIndexOf("\\");
@@ -409,9 +413,17 @@ body { padding:0; }
     if (isVoice) {
 %>
   <div id="a_media" class="a_media"><audio class="_audio" loop="loop" controls="true" autoplay="true" src="<%=mediaUrl%>"></audio></div>
-<% } else { %>
-  <div id="a_media" class="a_media"><iframe class="_video" frameborder="no" scrolling="no" src="<%=mediaUrl%>"></iframe></div>
+<%  } else {
+      isVideo=true;
+      if (!StringUtils.isNullOrEmptyOrSpace(pcLiveUrl)||mediaUrl.indexOf(".m3u8")!=-1) {
+%>
+  <div id="a_media" class="a_media" ><video id="h5Video" class="_video" frameborder="1" scrolling="no" src="<%=mediaUrl%>"></video></div>
 <%
+      } else {
+%>
+  <div id="a_media" class="a_media" ><iframe class="_video" frameborder="no" scrolling="no" src="<%=mediaUrl%>"></iframe></div>
+<%
+      }
     }
   }
   if (!StringUtils.isNullOrEmptyOrSpace(htmlUrl)) {
@@ -474,7 +486,7 @@ body { padding:0; }
 %>
   <div class="a_html"><%=htmlUrl%><p style="height:20px;">&nbsp;</p></div>
 <%
-	  String commentpath = "http://123.56.254.75:1108/Chopin/article/comment.html?ContentId="+contentId;
+    String commentpath = "http://www.wotingfm.com/Chopin/article/comment.html?ContentId="+contentId;
 %>
   <div class="a_comment"><iframe id="comment" class='_comment' frameborder='no' scrolling='no' src='<%=commentpath%>'></iframe></div>
 <%
@@ -487,7 +499,7 @@ body { padding:0; }
 %>
   <div class="a_nullhtml"><div class="word"><%=nullHtml%></div></div>
 <%
-  String commentpath = "http://123.56.254.75:1108/Chopin/article/comment.html?ContentId="+contentId;
+  String commentpath = "http://www.wotingfm.com/Chopin/article/comment.html?ContentId="+contentId;
 %>
   <div class="a_comment"><iframe id="comment" class='_comment' frameborder='no' scrolling='no' src='<%=commentpath%>'></iframe></div>
 <%
@@ -497,9 +509,15 @@ body { padding:0; }
 </center></body>
 <script>
 var deviceId="<%=sid%>";
+var _livePcUrl="<%=pcLiveUrl%>";
+var isVideo=<%=isVideo%>;
+var isApp=(navigator.userAgent.toLowerCase()).indexOf("window")==-1;
 //主函数
 $(function() {
-  window.parent.setMainHeight(0);
+  try {
+    window.parent.setMainHeight(0);
+  } catch(e){}
+  //
   if ($(window).width()<<%=widthLimit%>) {
     $("._video").attr("width", $(window).width());
     $("._video").attr("height", ($(window).width()-10)*0.6);
@@ -511,6 +529,14 @@ $(function() {
     $(".video").height($("._video").height());
     $(".a_media").height($("._video").height());
   }
+  if (!isApp&&isVideo&&_livePcUrl&&_livePcUrl!="") {
+    ($(".a_media").find("._video")).attr("src", _livePcUrl);
+  }
+  try {
+    var p=document.getElementById("h5Video");
+    //$("#h5Video").attr("style","border:1px solid black; background-color:");
+    p.play();
+  } catch(e) {}
   window.setTimeout(function() {
     var sumH=$("body").height();
     try {
@@ -521,7 +547,9 @@ $(function() {
 function setCommentHeight(height) {
   $("#comment").attr("height", height);
   $(".a_comment").height($("#comment").height());
-  window.parent.setMainHeight(document.body.scrollHeight);
+  try {
+    window.parent.setMainHeight(document.body.scrollHeight);
+  } catch(e){}
 }
 </script>
 </html>

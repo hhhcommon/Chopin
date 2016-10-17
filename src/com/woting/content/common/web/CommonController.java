@@ -1,6 +1,7 @@
 package com.woting.content.common.web;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,11 +17,15 @@ import com.spiritdata.framework.util.StringUtils;
 import com.woting.cm.core.channel.service.ChannelService;
 import com.woting.cm.core.common.model.Owner;
 import com.woting.content.manage.media.service.MediaContentService;
+import com.woting.gather.GatherUtils;
 import com.woting.passport.UGA.service.UserService;
 import com.woting.passport.mobile.MobileParam;
 import com.woting.passport.mobile.MobileUDKey;
 import com.woting.passport.session.SessionService;
 import com.woting.searchword.service.WordService;
+import com.spiritdata.dataanal.visitmanage.core.persistence.pojo.VisitLogPo;
+import com.spiritdata.dataanal.visitmanage.run.mem.VisitMemoryService;
+import com.spiritdata.framework.util.JsonUtils;
 import com.spiritdata.framework.util.RequestUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.Connection;
@@ -81,12 +86,29 @@ public class CommonController {
                 map.put("ServerStatus", "1"); //服务器状态
                 map.put("IsExtension", "0"); //是否推广
             }
+            //收集数据
+            m.put("ApiType", "common/entryApp");
+            m.put("ObjType", 0);//没有任何对应对象
+            //m.put("ObjId", request.getRequestURL().toString());//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            GatherUtils.SaveLogFromAPI(mUdk, m);
             return map;
         } catch(Exception e) {
             e.printStackTrace();
             map.put("ReturnType", "T");
             map.put("TClass", e.getClass().getName());
             map.put("Message", e.getMessage());
+
+            //收集数据
+            Map<String, Object> m=new HashMap<String, Object>();
+            m.put("ApiType", "common/entryApp");
+            m.put("ObjType", 0);//没有任何对应对象
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            try {
+                GatherUtils.SaveLogFromAPI(null, m);
+            } catch(Exception _e){}
             return map;
         }
     }
@@ -111,10 +133,22 @@ public class CommonController {
                 if ((retM.get("ReturnType")+"").equals("2001")) {
                     map.put("ReturnType", "0000");
                     map.put("Message", "无法获取设备Id(IMEI)");
+                } else {
+                    //处理过客
+                    if ((retM.get("ReturnType")+"").equals("2003")||(retM.get("ReturnType")+"").equals("2002")) {
+                        mUdk.setUserId("0");
+                    }
                 }
             }
+            //收集数据
+            m.put("ApiType", "searchByText");
+            m.put("ObjType", 11);//搜索
+            m.put("ObjId", m.get("SearchStr"));//搜索字符串
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            GatherUtils.SaveLogFromAPI(mUdk, m);
             if (map.get("ReturnType")!=null) return map;
-
+            
             //获得查询串
             String searchStr=(m.get("SearchStr")==null?null:m.get("SearchStr")+"");
             if (StringUtils.isNullOrEmptyOrSpace(searchStr)) {
@@ -157,6 +191,15 @@ public class CommonController {
             map.put("ReturnType", "T");
             map.put("TClass", e.getClass().getName());
             map.put("Message", e.getMessage());
+            //收集数据
+            Map<String, Object> m=new HashMap<String, Object>();
+            m.put("ApiType", "searchByText");
+            m.put("ObjType", 11);//搜索
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            try {
+                GatherUtils.SaveLogFromAPI(null, m);
+            } catch(Exception _e){}
             return map;
         }
     }
@@ -188,6 +231,13 @@ public class CommonController {
                     map.put("Message", "无法获取设备Id(IMEI)");
                 }
             }
+            //收集数据
+            m.put("ObjType", 10);//敏感词
+            m.put("ApiType", "getHotKeys");
+            //m.put("ObjId", request.getRequestURL().toString());//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            GatherUtils.SaveLogFromAPI(mUdk, m);
             if (map.get("ReturnType")!=null) return map;
 
             //1-获取功能类型，目前只有1内容搜索
@@ -233,13 +283,21 @@ public class CommonController {
                 }
             }
             map.put("ReturnType", "1001");
-//            map.put("KeyList", "逻辑思维,郭德纲,芈月传奇,数学,恐怖主义,鬼吹灯,盗墓笔记,老梁说事");
             return map;
         } catch(Exception e) {
             e.printStackTrace();
             map.put("ReturnType", "T");
             map.put("TClass", e.getClass().getName());
             map.put("Message", e.getMessage());
+            //收集数据
+            Map<String, Object> m=new HashMap<String, Object>();
+            m.put("ApiType", "getHotKeys");
+            m.put("ObjType", 10);//敏感词
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            try {
+                GatherUtils.SaveLogFromAPI(null, m);
+            } catch(Exception _e){}
             return map;
         }
     }
@@ -270,6 +328,13 @@ public class CommonController {
                     map.put("Message", "无法获取设备Id(IMEI)");
                 }
             }
+            //收集数据
+            m.put("ObjType", 10);//敏感词
+            m.put("ApiType", "searchHotKeys");
+            //m.put("ObjId", request.getRequestURL().toString());//id
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            GatherUtils.SaveLogFromAPI(mUdk, m);
             if (map.get("ReturnType")!=null) return map;
 
             //获得查找词
@@ -328,6 +393,15 @@ public class CommonController {
             map.put("ReturnType", "T");
             map.put("TClass", e.getClass().getName());
             map.put("Message", e.getMessage());
+            //收集数据
+            Map<String, Object> m=new HashMap<String, Object>();
+            m.put("ApiType", "searchHotKeys");
+            m.put("ObjType", 10);//敏感词
+            m.put("V_Url", request.getRequestURL().toString());//URL
+            m.put("AllParam", JsonUtils.objToJson(m));
+            try {
+                GatherUtils.SaveLogFromAPI(null, m);
+            } catch(Exception _e){}
             return map;
         }
     }
@@ -363,5 +437,43 @@ public class CommonController {
         } catch(Exception e) {
             return "{\"ReturnType\":\"1000\",\"Message\":\"地址错误\"}";
         }
+    }
+
+    @RequestMapping(value="/gatherVisitLog.do")
+    @ResponseBody
+    /**
+     * 用jsonP的方式获取数据
+     * @param request 其中必须有RemoteUrl参数
+     * @return json结构
+     */
+    public void gatherVisitLog(HttpServletRequest req) throws Exception {
+        Map<String, Object> m=RequestUtils.getDataFromRequest(req);
+        MobileUDKey mUdk=new MobileUDKey();
+        mUdk.setDeviceId(m.get("IMEI")==null?req.getSession().getId():m.get("IMEI")+"");
+        mUdk.setPCDType(m.get("PCDType")==null?3:Integer.parseInt(m.get("PCDType")+""));
+        sessionService.dealUDkeyEntry(mUdk, "");
+
+        Owner o=new Owner();
+        o.setOwnerId(mUdk.getUserId()==null?"unknow":mUdk.getUserId());
+        o.setOwnerType(201);
+        VisitLogPo vlp = new VisitLogPo();
+        vlp.setOwnerId(o.getOwnerId());
+        vlp.setOwnerType(o.getOwnerType());
+        vlp.setPointInfo(m.get("pointInfo")==null?null:m.get("pointInfo")+"");
+        vlp.setClientIp(m.get("clientIp")==null?null:m.get("clientIp")+"");
+        vlp.setClientMac(req.getSession().getId());
+        vlp.setEquipName(mUdk.getPCDType()+"");
+        vlp.setEquipVer(m.get("equipVer")==null?null:m.get("equipVer")+"");
+        vlp.setExploreName(m.get("exploreName")==null?null:m.get("exploreName")+"");
+        vlp.setExploreVer(m.get("exploreVer")==null?null:m.get("exploreVer")+"");
+        vlp.setObjType(m.get("objType")==null?null:Integer.parseInt(m.get("objType")+""));
+        vlp.setObjId(m.get("objId")==null?null:m.get("objId")+"");
+        vlp.setObjUrl(m.get("objUrl")==null?null:m.get("objUrl")+"");
+        vlp.setFromUrl(m.get("fromUrl")==null?null:m.get("fromUrl")+"");
+
+        vlp.setVisitTime(new Timestamp(System.currentTimeMillis()));
+
+        VisitMemoryService vms=VisitMemoryService.getInstance();
+        vms.put2Queue(vlp);
     }
 }

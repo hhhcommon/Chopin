@@ -25,6 +25,7 @@ public class MediaAsset extends BaseObject implements Serializable, ModelSwapPo 
     private Timestamp maPublishTime; //发布时间
     private String maImg; //媒体图Url
     private String maURL; //媒体主地址，可以是聚合的源，也可以是Wt平台中的文件URL
+    private String livePcUrl; //直播流地址
     private String subjectWords; //主题词
     private String keyWords; //关键词
     private long timeLong; //时长，毫秒数
@@ -88,7 +89,13 @@ public class MediaAsset extends BaseObject implements Serializable, ModelSwapPo 
     public void setMaURL(String maURL) {
         this.maURL=maURL;
     }
-    public String getSubjectWords() {
+    public String getLivePcUrl() {
+		return livePcUrl;
+	}
+	public void setLivePcUrl(String livePcUrl) {
+		this.livePcUrl = livePcUrl;
+	}
+	public String getSubjectWords() {
         return subjectWords;
     }
     public void setSubjectWords(String subjectWords) {
@@ -217,6 +224,7 @@ public class MediaAsset extends BaseObject implements Serializable, ModelSwapPo 
             }
         }
         ret.setMaURL(maURL);
+        ret.setLivePcUrl(livePcUrl);
         ret.setSubjectWords(subjectWords);
         ret.setKeyWords(keyWords);
         if (lang!=null) {
@@ -253,6 +261,7 @@ public class MediaAsset extends BaseObject implements Serializable, ModelSwapPo 
         maPublishTime=_po.getMaPublishTime();
         maImg=_po.getMaImg();
         maURL=_po.getMaURL();
+        livePcUrl=_po.getLivePcUrl();
         subjectWords=_po.getSubjectWords();
         keyWords=_po.getKeyWords();
         //组织分类字典——没有办法现在直接处理，先只把值记录下来

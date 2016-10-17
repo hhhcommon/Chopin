@@ -23,6 +23,8 @@
 <script src="./resources/plugins/spiritui/jq.spirit.utils.js"></script>
 <script src="./resources/plugins/spiritui/jq.spirit.pageFrame.js"></script>
 <!--<script src="./channelData.json"></script>-->
+<!--收集数据-->
+<script src="./resources/plugins/webAnal/spirit.webanal.js"></script>
 
 <link rel="stylesheet" type="text/css" href="./resources/plugins/easyui-1.3.4/themes/default/easyui.css"/>
 <link rel="stylesheet" type="text/css" href="./resources/plugins/easyui-1.3.4/themes/icon.css"/>
@@ -160,7 +162,7 @@ body{
   color:#FFA634;
   font-weight:bold;
 }
-/*登陆界面样式*/
+/*登录界面样式*/
 .login_modal{
   width:400px;
   height:300px;
@@ -778,7 +780,7 @@ body{
   </form>
 </div>
 <iframe id="_SESSION" src="session.jsp" width="0" height="0" style="display:none"></iframe>
-<!--登陆界面遮罩层-->
+<!--登录界面遮罩层-->
 <div class="mask"></div>
 <!--登录界面-->
 <div class="login_modal">
@@ -1172,7 +1174,7 @@ $(document).on("click",".logined",function(){
     data: JSON.stringify(data),
     success: function(jsonData){
       if(jsonData.ReturnType=="1001") {
-        alert("登陆成功！");
+        alert("登录成功！");
         $(".mask").hide();
         $(".login_modal").hide();
         var logSuccess=jsonData.UserInfo.UserName;
@@ -1191,7 +1193,7 @@ $(document).on("click",".logined",function(){
 var overUserCenter=false;
 function loginSuccess(logSuccess,logSuccessId){
   $("#logBtn,#regBtn").hide();
-  var userCenters='<div class="userCenter"><div class="userCenter_un" userId="'+logSuccessId+'" title="'+logSuccess+'">我:'+logSuccess+'</div><span class="selArrow"></span></div>';
+  var userCenters='<div class="userCenter"><div class="userCenter_un" userId="'+logSuccessId+'" title="'+logSuccess+'">'+logSuccess+'</div><span class="selArrow"></span></div>';
   $(".searchBtn").after(userCenters);
   $(document).on("mouseover",".userCenter",function(){
     overUserCenter=true;
@@ -1247,7 +1249,7 @@ function loginSuccess(logSuccess,logSuccessId){
 
 //安全退出
 $(document).on("click",'.exit',function(){
-  var sure=confirm("确定要退出登陆吗？");
+  var sure=confirm("确定要退出登录吗？");
   if (!sure) return;
   var _data={};
   _data.IMEI=deviceId;
@@ -1356,9 +1358,6 @@ function uploadMyOpus(filePath){
         alert("作品上传成功");
         $(".waitting").hide();
         $(".mask,.uploadOpus_modal").hide();
-      }else{
-        $(".waitting").hide();
-        alert(jsonData.Message+",请修改后在上传");
       }
     },
     error:function(jqXHR){

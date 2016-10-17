@@ -9,8 +9,11 @@ fs-config
 /src/test
 
 /WebContent/log
-/WebContent/article
 /WebContent/media
+<<<<<<< HEAD
+/WebContent/dataCenter
+=======
+>>>>>>> refs/heads/master
 /WebContent/tempUpload
 /WebContent/dataCenter
 /WebContent/asset

@@ -20,6 +20,7 @@ public class MediaAssetPo extends BaseObject {
     private String language; //语言名称
     private long timeLong; //时长，毫秒数
     private String descn; //说明
+    private String livePcUrl;
     private int pubCount; //发布状态：0未发布;>0被发布到多少个栏目中（系列节目的发布，这里的单曲也要被加1）
     private int maStatus; //资源状态：0草稿;1提交（包括发布和未发布）
     private String allText; //全文
@@ -62,7 +63,13 @@ public class MediaAssetPo extends BaseObject {
     public void setMaPublisher(String maPublisher) {
         this.maPublisher=maPublisher;
     }
-    public Timestamp getMaPublishTime() {
+    public String getLivePcUrl() {
+		return livePcUrl;
+	}
+	public void setLivePcUrl(String livePcUrl) {
+		this.livePcUrl = livePcUrl;
+	}
+	public Timestamp getMaPublishTime() {
         return maPublishTime;
     }
     public void setMaPublishTime(Timestamp maPublishTime) {
