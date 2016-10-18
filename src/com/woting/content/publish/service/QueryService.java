@@ -573,7 +573,7 @@ public class QueryService {
 		if (pubimg!=null) {
 			String oldpath = pubimg.replace("http://www.wotingfm.com/Chopin/", SystemCache.getCache(FConstants.APPOSPATH).getContent()+"");
 			String newpath = SystemCache.getCache(FConstants.APPOSPATH).getContent()+"dataCenter/media/group03/"+"lunbotu_"+ma.getId()+".png";
-			if (!newpath.contains(ma.getId()+".png")) {
+			if (!oldpath.contains(ma.getId())) {
 				FileUtils.copyFile(oldpath, newpath);
 			    FileUploadUtils.deleteFile(oldpath);
 			}
