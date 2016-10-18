@@ -1,0 +1,19 @@
+<html>
+	<script src="/Chopin/resources/plugins/hplus/js/jquery-2.1.1.min.js"></script>
+	<script src="/Chopin/resources/js/common.utils.js"></script>
+	
+	<body><!--  width=100% height=100%-->
+		<object id="palyer" classid='clsid:D27CDB6E-AE6D-11cf-96B8-4445535411111'  codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0' width=100% height=100%>
+      <param name='movie' value='/Chopin/Flvplayer.swf' />
+      <param name='quality' value='high' />
+      <param name='allowFullScreen' value='true' />
+    </object>
+	</body>
+	<script>
+		var playpath = getUrlParam(window.location.href, "Url");
+		var obj = $("#palyer");
+		var play = '<param name="FlashVars" value="vcastr_file='+playpath+'&IsAutoPlay=1&IsContinue=1"/>'+
+		           '<embed src="/Chopin/Flvplayer.swf" allowfullscreen="true" flashvars="vcastr_file='+playpath+'&IsAutoPlay=1&IsContinue=1" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" style="width: 100%;height: 100%;"/>';
+		obj.append(play);
+	</script>
+</html>
