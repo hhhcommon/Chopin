@@ -366,7 +366,7 @@ body { padding:0; }
   <div id="a_time"><span id="_time"><%=time%></span><span id="_wt" style="positon:relative; left:5px;">&nbsp;&nbsp;(我听科技)</span></div>
 <%if (!StringUtils.isNullOrEmptyOrSpace(source)) {
   source=source.replace("<a ", "<a target='_blank' ");%>
-  <div id="a_source"><span id="_source">来源:<%=source%></span></div>
+  <div id="a_source"><span id="_source">来源：<%=source%></span></div>
 <%}%>
 <%
   if (!StringUtils.isNullOrEmptyOrSpace(imgUrl)&&showImg.equals("true")) {

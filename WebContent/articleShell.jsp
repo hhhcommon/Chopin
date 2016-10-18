@@ -344,7 +344,7 @@ body { padding:0; }
   <div id="a_title"><%=title%></div>
   <div id="a_time"><span id="_time"><%=time%></span></div>
 <%if (!StringUtils.isNullOrEmptyOrSpace(source)) {%>
-  <div id="a_source"><span id="_source">来源:<%=source%></span></div>
+  <div id="a_source"><span id="_source">来源：<%=source%></span></div>
 <%}%>
 <%
   if (!StringUtils.isNullOrEmptyOrSpace(imgUrl)&&showImg.equals("true")) {
